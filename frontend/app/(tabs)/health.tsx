@@ -19,8 +19,7 @@ const REMINDERS = [
   { icon: "oil", label: "Oil change", detail: "Due in 480 km", level: "warn", life: 18 },
   { icon: "car-battery", label: "Battery", detail: "Est. 62% life remaining", level: "good", life: 62 },
   { icon: "air-filter", label: "Air filter", detail: "Overdue by 300 km", level: "bad", life: 4 },
-  { icon: "spark-plug", label: "Spark plugs", detail: "Est. 40% life remaining", level: "warn", life: 40 },
-  { icon: "car-brake-alert", label: "Brake pads", detail: "Est. 71% life remaining", level: "good", life: 71 },
+  { icon: "flash", label: "Spark plugs", detail: "Est. 40% life remaining", level: "warn", life: 40 },  { icon: "car-brake-alert", label: "Brake pads", detail: "Est. 71% life remaining", level: "good", life: 71 },
 ];
 
 export default function Health() {

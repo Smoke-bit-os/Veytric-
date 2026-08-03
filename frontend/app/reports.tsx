@@ -105,7 +105,11 @@ export default function Reports() {
                   <Text style={styles.scoreNum}>{r.health_score ?? "—"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.vehicle} numberOfLines={1}>{r.vehicle}</Text>
+                  <Text style={styles.vehicle} numberOfLines={1}>
+                  {typeof r.vehicle === "string"
+                    ? r.vehicle
+                    : `${r.vehicle?.year ?? ""} ${r.vehicle?.make ?? ""} ${r.vehicle?.model ?? ""}`.trim() || "Vehicle"}
+                </Text>
                   <Text style={styles.date}>{new Date(r.created_at).toLocaleString()}</Text>
                   <Text style={styles.codes}>{r.dtcs.length} code{r.dtcs.length === 1 ? "" : "s"}</Text>
                 </View>

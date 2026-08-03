@@ -18,7 +18,16 @@ Futuristic mobile app "JARVIS AI": intelligent automotive assistant, personal AI
 ## Core Requirements (static)
 - Live HUD dashboard, conversational diagnostics with live-sensor context, voice in/out, vehicle health scoring, garage management, secure profiles.
 
-## Implemented (2026-08-03)
+## Implemented (2026-08-03) — Iteration 2: Innova BLE Integration Module
+- Modular swappable vehicle data layer (`src/vehicle/`): `VehicleDataProvider` interface, `SimulationProvider` (driving-cycle state machine, 43 PIDs), `BleProvider` (react-native-ble-plx ELM327 transport, native-only, web stub `bleProvider.web.ts`). Transport selected via `EXPO_PUBLIC_VEHICLE_MODE` (default simulation). Service context auto-connects + streams + history.
+- Vehicle Connection Center (`app/connect.tsx`): animated radar scan → found → connecting → connected/failed, adapter card (model/signal/battery/firmware/protocol/quality), automatic vehicle identification (VIN/year/make/model/trim/engine/trans/fuel/odometer/emissions/ECU/CalIDs/protocols) → Save to Garage, JARVIS TTS announcement, failure-cause recovery steps.
+- Expanded Live Diagnostics: 43 grouped PIDs with live sensor rows + chart chip selector.
+- Vehicle Health: 12 subsystem color-coded scores, heuristic AI findings (offline), DTC accordion with per-code cloud AI analysis (`POST /api/dtc/analyze`, GPT-5.4), predictive maintenance with life bars.
+- Professional Scan Reports (`app/reports.tsx` + `POST/GET /api/reports`): AI-generated findings + next steps, list, expand, native Share.
+- app.json: BLE plugin + Android BLUETOOTH_SCAN/CONNECT/FINE_LOCATION + iOS NSBluetoothAlwaysUsageDescription.
+- Fixed FE↔BE vehicle payload schema mismatch (dtc/analyze + reports now accept string/dict), hardened reports render, replaced invalid icon. Backend 15/15 pytest pass.
+
+## Implemented (2026-08-03) — Iteration 1
 - Auth (register/login/me, JWT, bcrypt) — tested 11/11 backend pytest.
 - Garage: add/list/activate(single-active)/delete vehicles.
 - AI Repair Assistant: /api/chat with telemetry+vehicle context (GPT 5.4), persistent history, voice record→STT→send, TTS auto-playback, suggestion chips.

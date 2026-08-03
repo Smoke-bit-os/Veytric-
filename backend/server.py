@@ -302,7 +302,7 @@ class DtcAnalyzeInput(BaseModel):
     code: str
     desc: Optional[str] = ""
     telemetry: Optional[dict] = None
-    vehicle: Optional[dict] = None
+    vehicle: Optional[Any] = None
 
 
 @api_router.post("/dtc/analyze")
@@ -331,7 +331,7 @@ async def dtc_analyze(inp: DtcAnalyzeInput, user=Depends(get_current_user)):
 
 # ----------------------------- Routes: Scan Reports -------------------------
 class ReportInput(BaseModel):
-    vehicle: dict
+    vehicle: Any = ""
     dtcs: List[dict] = []
     signals_summary: dict = {}
     health_score: Optional[int] = None
