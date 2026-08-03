@@ -1,0 +1,190 @@
+import React, { useCallback, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Share } from "react-native";
+import { useRouter } from "expo-router";
+import { useFocusEffect } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useVehicle } from "@/src/vehicle/service";
+import { computeSubsystems, overallHealth } from "@/src/vehicle/health";
+import { api } from "@/src/api";
+import { colors, font, radius, spacing } from "@/src/theme";
+
+export default function Reports() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const { identity, dtcs, signals } = useVehicle();
+  const [reports, setReports] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const load = useCallback(() => {
+    api
+      .listReports()
+      .then((r) => setReports(r))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      load();
+    }, [load])
+  );
+
+  const generate = async () => {
+    setGenerating(true);
+    try {
+      const subs = computeSubsystems({ signals, dtcs, identity, phase: "cruise", connected: true });
+      const report = await api.createReport({
+        vehicle: identity
+          ? `${identity.year} ${identity.make} ${identity.model} (${identity.vin})`
+          : "Unknown vehicle",
+        dtcs: dtcs.map((d) => ({ code: d.code, desc: d.desc, type: d.type })),
+        signals_summary: {
+          rpm: Math.round(signals.rpm),
+          coolantTemp: Math.round(signals.coolantTemp),
+          batteryVoltage: signals.batteryVoltage.toFixed(1),
+          chargingVoltage: signals.chargingVoltage.toFixed(1),
+          shortFuelTrim: signals.shortFuelTrim.toFixed(1),
+          longFuelTrim: signals.longFuelTrim.toFixed(1),
+          engineLoad: Math.round(signals.engineLoad),
+        },
+        health_score: overallHealth(subs),
+        mileage: identity?.odometer || null,
+      });
+      setReports((r) => [report, ...r]);
+      setExpanded(report.id);
+    } catch {}
+    setGenerating(false);
+  };
+
+  const share = async (r: any) => {
+    const body =
+      `JARVIS AI — Scan Report\n${r.vehicle}\n${new Date(r.created_at).toLocaleString()}\n` +
+      `Health Score: ${r.health_score}/100\n\nTrouble Codes:\n` +
+      (r.dtcs.length ? r.dtcs.map((d: any) => `• ${d.code} — ${d.desc}`).join("\n") : "None") +
+      `\n\n${r.ai_findings}`;
+    await Share.share({ message: body }).catch(() => {});
+  };
+
+  return (
+    <View style={styles.root}>
+      <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
+        <Pressable testID="reports-back" onPress={() => router.back()} hitSlop={12}>
+          <MaterialCommunityIcons name="chevron-left" size={28} color={colors.onSurface} />
+        </Pressable>
+        <Text style={styles.title}>SCAN REPORTS</Text>
+        <View style={{ width: 28 }} />
+      </View>
+
+      <Pressable testID="generate-report" style={styles.generateBtn} onPress={generate} disabled={generating}>
+        {generating ? (
+          <ActivityIndicator color={colors.onBrandPrimary} />
+        ) : (
+          <>
+            <MaterialCommunityIcons name="file-chart" size={20} color={colors.onBrandPrimary} />
+            <Text style={styles.generateText}>GENERATE NEW SCAN REPORT</Text>
+          </>
+        )}
+      </Pressable>
+
+      <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: insets.bottom + spacing["2xl"] }}>
+        {loading ? (
+          <ActivityIndicator color={colors.brand} style={{ marginTop: 40 }} />
+        ) : reports.length === 0 ? (
+          <View style={styles.empty} testID="reports-empty">
+            <MaterialCommunityIcons name="file-document-outline" size={44} color={colors.onSurfaceSecondary} />
+            <Text style={styles.emptyText}>No reports yet. Generate your first scan report.</Text>
+          </View>
+        ) : (
+          reports.map((r) => (
+            <View key={r.id} style={styles.card} testID={`report-${r.id}`}>
+              <Pressable style={styles.cardTop} onPress={() => setExpanded(expanded === r.id ? null : r.id)}>
+                <View style={styles.scoreBadge}>
+                  <Text style={styles.scoreNum}>{r.health_score ?? "—"}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.vehicle} numberOfLines={1}>{r.vehicle}</Text>
+                  <Text style={styles.date}>{new Date(r.created_at).toLocaleString()}</Text>
+                  <Text style={styles.codes}>{r.dtcs.length} code{r.dtcs.length === 1 ? "" : "s"}</Text>
+                </View>
+                <MaterialCommunityIcons
+                  name={expanded === r.id ? "chevron-up" : "chevron-down"}
+                  size={22}
+                  color={colors.onSurfaceSecondary}
+                />
+              </Pressable>
+
+              {expanded === r.id && (
+                <View style={styles.detail}>
+                  {r.dtcs.map((d: any) => (
+                    <Text key={d.code} style={styles.dtcLine}>
+                      • {d.code} — {d.desc}
+                    </Text>
+                  ))}
+                  <Text style={styles.findings}>{r.ai_findings}</Text>
+                  <Pressable testID={`share-${r.id}`} style={styles.shareBtn} onPress={() => share(r)}>
+                    <MaterialCommunityIcons name="share-variant" size={16} color={colors.brand} />
+                    <Text style={styles.shareText}>Share Report</Text>
+                  </Pressable>
+                </View>
+              )}
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.surface },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+  },
+  title: { color: colors.onSurface, fontFamily: font.display, fontSize: 20, letterSpacing: 1.5 },
+  generateBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.sm,
+    backgroundColor: colors.brand,
+    borderRadius: radius.md,
+    paddingVertical: 15,
+    marginHorizontal: spacing.lg,
+  },
+  generateText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1 },
+  empty: { alignItems: "center", paddingVertical: spacing["3xl"], gap: spacing.md },
+  emptyText: { color: colors.onSurfaceSecondary, textAlign: "center" },
+  card: {
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    marginBottom: spacing.md,
+    overflow: "hidden",
+  },
+  cardTop: { flexDirection: "row", alignItems: "center", gap: spacing.md, padding: spacing.md },
+  scoreBadge: {
+    width: 48,
+    height: 48,
+    borderRadius: radius.sm,
+    backgroundColor: colors.brandTertiary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  scoreNum: { color: colors.brand, fontFamily: font.display, fontSize: 22 },
+  vehicle: { color: colors.onSurface, fontSize: 15, fontWeight: "600" },
+  date: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 1 },
+  codes: { color: colors.warning, fontSize: 12, marginTop: 1 },
+  detail: { padding: spacing.md, borderTopWidth: 1, borderTopColor: colors.divider },
+  dtcLine: { color: colors.onSurfaceTertiary, fontSize: 13, marginBottom: 2 },
+  findings: { color: colors.onSurfaceTertiary, fontSize: 14, lineHeight: 21, marginTop: spacing.sm },
+  shareBtn: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: spacing.md },
+  shareText: { color: colors.brand, fontWeight: "700" },
+});

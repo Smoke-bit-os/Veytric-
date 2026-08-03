@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "@/src/api";
@@ -32,6 +33,7 @@ type Vehicle = {
 export default function Garage() {
   const insets = useSafeAreaInsets();
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
@@ -93,6 +95,17 @@ export default function Garage() {
           </View>
           <Pressable testID="logout-button" style={styles.logout} onPress={logout}>
             <MaterialCommunityIcons name="logout" size={20} color={colors.error} />
+          </Pressable>
+        </View>
+
+        <View style={styles.quickRow}>
+          <Pressable testID="quick-connect" style={styles.quickCard} onPress={() => router.push("/connect")}>
+            <MaterialCommunityIcons name="access-point-network" size={24} color={colors.brand} />
+            <Text style={styles.quickText}>Connection Center</Text>
+          </Pressable>
+          <Pressable testID="quick-reports" style={styles.quickCard} onPress={() => router.push("/reports")}>
+            <MaterialCommunityIcons name="file-chart" size={24} color={colors.brand} />
+            <Text style={styles.quickText}>Scan Reports</Text>
           </Pressable>
         </View>
 
@@ -205,6 +218,18 @@ const styles = StyleSheet.create({
   email: { color: colors.onSurfaceSecondary, fontSize: 13 },
   logout: { padding: spacing.sm },
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: spacing.lg },
+  quickRow: { flexDirection: "row", gap: spacing.md, paddingHorizontal: spacing.lg, marginBottom: spacing.lg },
+  quickCard: {
+    flex: 1,
+    alignItems: "center",
+    gap: spacing.sm,
+    paddingVertical: spacing.lg,
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  quickText: { color: colors.onSurface, fontSize: 13, fontWeight: "600" },
   sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 2, fontWeight: "700" },
   addBtn: {
     flexDirection: "row",

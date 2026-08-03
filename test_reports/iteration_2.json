@@ -1,0 +1,56 @@
+{
+  "summary": "Backend pytest 15/15 PASS at API level (auth, vehicles, chat, voice, dtc/analyze, reports CRUD) — new endpoints POST /api/dtc/analyze, POST/GET /api/reports, GET /api/reports/{id} all work correctly with GPT-5.4 AI content when given the correct schema. Frontend Playwright (mobile 390x844): login + Vehicle Connection Center flow works end-to-end (scan->connected, adapter-card + identity-card show 2018 Jeep Wrangler JL Sahara / VIN 1C4HJXEG9JW174532 / 68,420 mi, save-to-garage transitions to 'SAVED TO GARAGE'), Live Diagnostics badge correctly reads '43 PIDs', Health tab renders 12 subsystem score cards + 4 DTC accordions (P0300/P0171/P0456/P0128) with analyze-{code} button visible after expanding a card, Reports screen renders with generate-report button and empty state. BUT the AI-powered flows are BROKEN by a FE↔BE schema mismatch on the `vehicle` field: /api/dtc/analyze and /api/reports both reject the FE payload with HTTP 422 because FE sends `vehicle` as a formatted string while backend Pydantic models require dict. Additionally, /api/reports responses embed `vehicle` as a dict which the Reports UI tries to render directly inside <Text>, causing 'Objects are not valid as a React child' red-screen when any dict-shaped report is present in the list.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/dtc/analyze & POST /api/reports", "issue": "Field `vehicle` typed as strict `dict` but every real FE call sends a string. Consider Union[str, dict] with a validator to normalize, so the FE contract matches without a redeploy."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Reports list card", "issue": "reports.tsx:108 renders {r.vehicle} directly inside <Text>. When backend returns vehicle as a dict, this throws 'Objects are not valid as a React child' and shows the RN red-screen. Guard with typeof check or format the dict before render.", "testID": "report-<id>", "priority": "HIGH"}
+    ],
+    "integration_issues": [
+      {"flow": "Generate Scan Report", "issue": "POST /api/reports -> 422 dict_type on `vehicle`. reports.tsx:42 sends `vehicle: \"2018 Jeep Wrangler JL (VIN)\"` (string). Backend server.py:334 ReportInput.vehicle: dict rejects it. User cannot create any report from the UI.", "affected_testIDs": ["generate-report"]},
+      {"flow": "AI DTC Analysis", "issue": "POST /api/dtc/analyze -> 422 dict_type on `vehicle`. (tabs)/health.tsx sends `vehicle: \"2018 Jeep Wrangler JL\"` (string). Backend server.py:305 DtcAnalyzeInput.vehicle: Optional[dict] rejects it. UI silently falls back to 'Analysis unavailable. Check connection.' — no real AI analysis is ever shown.", "affected_testIDs": ["analyze-P0300","analyze-P0171","analyze-P0456","analyze-P0128"]}
+    ],
+    "design_issues": [
+      {"screen": "global", "issues": ["Deprecation warnings persist: shadow* style props and props.pointerEvents (RN-web) plus 'spark-plug' is not a valid MaterialCommunityIcons name — swap to 'engine' or similar."]},
+      {"screen": "Health / DTC accordion", "issues": ["The DTC header Pressable has no dedicated testID; testers must click via inner text 'P0300' to expand. Add testID like `dtc-header-{code}` on the Pressable at health.tsx:124 for reliable automation."]}
+    ],
+    "react_native_issues": [
+      {"component": "MaterialCommunityIcons name", "issue": "Warning: \"spark-plug\" is not a valid icon name for family \"material-community\". Reference: warning fired 3x on Health tab render."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/iteration_2.xml"
+  ],
+  "action_items": [
+    "FIX: Normalize `vehicle` payload contract. Preferred: in FE (health.tsx analyze() call, and reports.tsx generate()) send `vehicle: identity ?? {}` (the raw identity dict). In BE change vehicle to Optional[dict] Optional[str] union OR keep dict but make FE always send a dict. Both /api/dtc/analyze and /api/reports need the same treatment.",
+    "FIX: In reports.tsx:108 (and share() formatter line 63) format the vehicle dict before rendering, e.g. `const vehLabel = typeof r.vehicle === 'string' ? r.vehicle : `${r.vehicle.year} ${r.vehicle.make} ${r.vehicle.model}` + (r.vehicle.vin ? ` (${r.vehicle.vin})` : '');`. Without this, any dict-shaped report will crash the Reports screen.",
+    "FIX (small): Replace the invalid MaterialCommunityIcons name 'spark-plug' with a valid one (e.g. 'engine', 'car-battery', or 'circle-slice-8').",
+    "TESTING: Add `testID=\"dtc-header-{code}\"` on the Pressable in health.tsx:124 so automated tests can reliably expand DTC accordions."
+  ],
+  "critical_code_review_comments": [
+    "server.py:305 DtcAnalyzeInput.vehicle: Optional[dict] — FE contract mismatch (sends string). Root cause of AI DTC analysis being unusable in the app.",
+    "server.py:334 ReportInput.vehicle: dict — same root-cause mismatch; blocks all report creation from the app.",
+    "server.py:378-381 create_report returns `vehicle` unchanged (dict). Combined with reports.tsx:108 rendering `{r.vehicle}` inside <Text>, this is a latent red-screen crash for any dict-shaped record.",
+    "reports.tsx:42 and health.tsx analyze() build `vehicle` as an f-string; should send the structured identity object.",
+    "service.tsx auto-connects on layout mount — nice for UX. connect() correctly re-populates dtcs via readDtcs so Health DTC list works after route changes.",
+    "connect.tsx:87 saveToGarage() posts a proper VehicleInput dict — this flow is correct and works end-to-end (verified: 'SAVED TO GARAGE').",
+    "server.py:397 get_report scopes by user_id AND _id — proper ownership check, returns 404 otherwise (test_reports_crud verifies)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (added test_dtc_analyze_requires_auth, test_dtc_analyze_success, test_reports_requires_auth, test_reports_crud)"
+  ],
+  "success_rate": {
+    "backend": "100% (15/15 pytest)",
+    "frontend": "~65% — Connect flow, Garage save, Live Diagnostics 43-PIDs badge, Health scores render, DTC accordions render correctly. Broken: AI DTC analysis (422), Generate Report (422), Reports list rendering when any dict-vehicle report present (red screen)."
+  },
+  "seed_data_creation": "Reused test user mechanic@jarvis.ai. Pytest creates + cleans up TEST_-prefixed vehicles and unique-session chats. Cleaned up 2 stray dict-vehicle reports from the reports collection that the pytest suite had created (to prevent the FE red-screen from blocking further manual testing).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Auth testIDs are auth-email-input / auth-password-input / auth-submit-button (NOT email-input etc as the iteration_1 report claimed). Vehicle Connection Center is at /connect and auto-runs the scan->connect sequence via useEffect. Health DTC accordion header has no dedicated testID — expand by clicking the DTC code text (e.g. get_by_text('P0300')), then `analyze-{code}` appears. Reports screen calls api.listReports() on focus, api.createReport() on generate. Bug reproduction: log in -> tap generate-report -> devtools shows POST /api/reports 422 with dict_type error on `vehicle`. Same 422 pattern on /api/dtc/analyze after expanding any DTC and clicking analyze. Backend pytest suite at /app/backend/tests/backend_test.py is fully green and can serve as regression.",
+  "rca_of_issue": "Single root cause for two user-facing bugs: the frontend was written to send `vehicle` as a human-readable string, but both Pydantic input models (DtcAnalyzeInput.vehicle, ReportInput.vehicle) require a dict. Additionally the reports.tsx UI assumes `vehicle` is a string when rendering. Fix on the FE side is a 3-line change in reports.tsx:42 + share formatter, health.tsx analyze() call, and the <Text>{r.vehicle}</Text> render. Alternatively widen the backend types to accept Union[dict, str]. Reproduction: any authenticated user tapping 'Generate New Scan Report' or 'Ask JARVIS to analyze this code' hits 422 and never gets AI output."
+}

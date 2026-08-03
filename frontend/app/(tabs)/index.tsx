@@ -14,7 +14,7 @@ export default function Home() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { user } = useAuth();
-  const { data } = useTelemetry();
+  const { data, connection } = useTelemetry();
   const [refreshing, setRefreshing] = useState(false);
 
   const greeting = new Date().getHours() < 12 ? "Good morning" : new Date().getHours() < 18 ? "Good afternoon" : "Good evening";
@@ -42,15 +42,30 @@ export default function Home() {
               <Text style={styles.hello}>{greeting.toUpperCase()}</Text>
               <Text style={styles.name}>{user?.name || "Operator"}</Text>
             </View>
-            <View
-              style={[styles.obd, { borderColor: data.connected ? colors.success : colors.error }]}
+            <Pressable
               testID="obd-indicator"
+              onPress={() => router.push("/connect")}
+              style={[
+                styles.obd,
+                { borderColor: connection === "connected" ? colors.success : connection === "failed" || connection === "idle" || connection === "disconnected" ? colors.error : colors.warning },
+              ]}
             >
-              <View style={[styles.dot, { backgroundColor: data.connected ? colors.success : colors.error }]} />
-              <Text style={[styles.obdText, { color: data.connected ? colors.success : colors.error }]}>
-                OBD-II {data.connected ? "LINKED" : "OFFLINE"}
+              <View
+                style={[
+                  styles.dot,
+                  { backgroundColor: connection === "connected" ? colors.success : connection === "failed" ? colors.error : colors.warning },
+                ]}
+              />
+              <Text
+                style={[
+                  styles.obdText,
+                  { color: connection === "connected" ? colors.success : connection === "failed" ? colors.error : colors.warning },
+                ]}
+              >
+                OBD-II {connection === "connected" ? "LINKED" : connection === "failed" ? "OFFLINE" : "SCANNING"}
               </Text>
-            </View>
+              <MaterialCommunityIcons name="chevron-right" size={14} color={colors.onSurfaceSecondary} />
+            </Pressable>
           </View>
 
           <View style={styles.orbSection}>

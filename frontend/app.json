@@ -12,7 +12,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.emergent.jarvisai.gx2hdi",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Talk to JARVIS hands-free for diagnostics"
+        "NSMicrophoneUsageDescription": "Talk to JARVIS hands-free for diagnostics",
+        "NSBluetoothAlwaysUsageDescription": "Connect to your OBD-II scanner for live vehicle data"
       }
     },
     "android": {
@@ -22,7 +23,12 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.emergent.jarvisai.gx2hdi",
-      "permissions": ["RECORD_AUDIO"]
+      "permissions": [
+        "RECORD_AUDIO",
+        "BLUETOOTH_SCAN",
+        "BLUETOOTH_CONNECT",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -44,6 +50,13 @@
         "expo-audio",
         {
           "microphonePermission": "Talk to JARVIS hands-free for diagnostics"
+        }
+      ],
+      [
+        "react-native-ble-plx",
+        {
+          "modes": ["central"],
+          "bluetoothAlwaysPermission": "Connect to your OBD-II scanner for live vehicle data"
         }
       ]
     ],

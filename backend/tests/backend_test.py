@@ -166,3 +166,80 @@ def test_voice_speak(client, auth):
 def test_voice_transcribe_requires_auth(client):
     r = client.post(f"{API}/voice/transcribe")
     assert r.status_code == 401
+
+
+# ---- DTC Analyze (new) ----
+def test_dtc_analyze_requires_auth(client):
+    r = client.post(f"{API}/dtc/analyze", json={"code": "P0300"})
+    assert r.status_code == 401
+
+
+def test_dtc_analyze_success(client, auth):
+    payload = {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "telemetry": {"rpm": 780, "coolantTemp": 88, "shortFuelTrim": 6.4, "longFuelTrim": 8.1, "engineLoad": 22},
+        "vehicle": {"year": 2018, "make": "Jeep", "model": "Wrangler", "engine": "3.6L V6"},
+    }
+    r = client.post(f"{API}/dtc/analyze", json=payload, headers=auth, timeout=120)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["code"] == "P0300"
+    assert isinstance(body["analysis"], str) and len(body["analysis"]) > 40
+
+
+# ---- Scan Reports (new) ----
+def test_reports_requires_auth(client):
+    r = client.get(f"{API}/reports")
+    assert r.status_code == 401
+    r = client.post(f"{API}/reports", json={"vehicle": {}})
+    assert r.status_code == 401
+
+
+def test_reports_crud(client, auth):
+    # list
+    r0 = client.get(f"{API}/reports", headers=auth, timeout=30)
+    assert r0.status_code == 200
+    initial = r0.json()
+    assert isinstance(initial, list)
+
+    # create
+    payload = {
+        "vehicle": {"year": 2018, "make": "Jeep", "model": "Wrangler", "vin": "1C4HJXDG5JW123456", "engine": "3.6L V6"},
+        "dtcs": [
+            {"code": "P0300", "desc": "Random/Multiple Cylinder Misfire", "type": "confirmed"},
+            {"code": "P0171", "desc": "System Too Lean (Bank 1)", "type": "confirmed"},
+        ],
+        "signals_summary": {"rpm": 780, "coolantTemp": 92, "batteryVoltage": "14.2", "engineLoad": 22},
+        "health_score": 78,
+        "mileage": 68210,
+    }
+    r = client.post(f"{API}/reports", json=payload, headers=auth, timeout=120)
+    assert r.status_code == 200, r.text
+    rep = r.json()
+    assert "id" in rep and rep["vehicle"] == payload["vehicle"]
+    assert rep["health_score"] == 78
+    assert rep["dtcs"] == payload["dtcs"]
+    assert "_id" not in rep and "user_id" not in rep
+    assert isinstance(rep.get("ai_findings"), str) and len(rep["ai_findings"]) > 10
+    rid = rep["id"]
+
+    # list newest first, should contain new report first
+    r = client.get(f"{API}/reports", headers=auth, timeout=30)
+    assert r.status_code == 200
+    lst = r.json()
+    assert len(lst) == len(initial) + 1
+    assert lst[0]["id"] == rid
+    assert "_id" not in lst[0] and "user_id" not in lst[0]
+
+    # get single
+    r = client.get(f"{API}/reports/{rid}", headers=auth, timeout=30)
+    assert r.status_code == 200
+    single = r.json()
+    assert single["id"] == rid
+    assert single["ai_findings"] == rep["ai_findings"]
+    assert "_id" not in single and "user_id" not in single
+
+    # get unknown -> 404
+    r = client.get(f"{API}/reports/does-not-exist-xyz", headers=auth, timeout=30)
+    assert r.status_code == 404

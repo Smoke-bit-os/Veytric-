@@ -297,6 +297,111 @@ async def speak(inp: TTSInput, user=Depends(get_current_user)):
     return {"audio": b64, "mime": "audio/mp3"}
 
 
+# ----------------------------- Routes: DTC Intelligence ---------------------
+class DtcAnalyzeInput(BaseModel):
+    code: str
+    desc: Optional[str] = ""
+    telemetry: Optional[dict] = None
+    vehicle: Optional[dict] = None
+
+
+@api_router.post("/dtc/analyze")
+async def dtc_analyze(inp: DtcAnalyzeInput, user=Depends(get_current_user)):
+    prompt = (
+        f"Analyze diagnostic trouble code {inp.code} ({inp.desc}). "
+        f"Vehicle: {inp.vehicle}. Live sensor snapshot: {inp.telemetry}. "
+        "Respond in these clearly labeled sections using plain text with bold labels: "
+        "Meaning; Common Causes (bulleted); Most Likely Cause (based on the live data, 1 line); "
+        "Diagnostic Confidence (a % and one-line rationale); Recommended Tests (numbered); "
+        "Required Tools; Estimated Repair Time; Difficulty (1-5); Estimated Cost (USD range); "
+        "Commonly Replaced Parts. Never recommend replacing parts without diagnostic evidence. Be concise."
+    )
+    chat_client = LlmChat(
+        api_key=EMERGENT_LLM_KEY,
+        session_id=f"{user['_id']}_dtc_{inp.code}",
+        system_message=JARVIS_SYSTEM,
+    ).with_model("openai", "gpt-5.4")
+    try:
+        reply = await chat_client.send_message(UserMessage(text=prompt))
+    except Exception as e:
+        logger.error(f"dtc analyze error: {e}")
+        raise HTTPException(status_code=500, detail="Analysis unavailable")
+    return {"code": inp.code, "analysis": reply if isinstance(reply, str) else str(reply)}
+
+
+# ----------------------------- Routes: Scan Reports -------------------------
+class ReportInput(BaseModel):
+    vehicle: dict
+    dtcs: List[dict] = []
+    signals_summary: dict = {}
+    health_score: Optional[int] = None
+    customer_name: Optional[str] = ""
+    mileage: Optional[int] = None
+    notes: Optional[str] = ""
+
+
+@api_router.post("/reports")
+async def create_report(inp: ReportInput, user=Depends(get_current_user)):
+    findings = ""
+    try:
+        chat_client = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"{user['_id']}_report_{uuid.uuid4()}",
+            system_message=JARVIS_SYSTEM,
+        ).with_model("openai", "gpt-5.4")
+        prompt = (
+            f"Write a concise professional scan-report summary for a {inp.vehicle}. "
+            f"Active codes: {inp.dtcs}. Live sensor summary: {inp.signals_summary}. "
+            f"Overall health score: {inp.health_score}. Provide: AI Findings (2-4 bullets), "
+            "Recommended Next Steps (numbered), and Suggested Maintenance. Keep it tight."
+        )
+        findings = await chat_client.send_message(UserMessage(text=prompt))
+        findings = findings if isinstance(findings, str) else str(findings)
+    except Exception as e:
+        logger.error(f"report ai error: {e}")
+        findings = "AI summary unavailable. Review codes and sensor data below."
+
+    rid = str(uuid.uuid4())
+    doc = {
+        "_id": rid,
+        "user_id": user["_id"],
+        "vehicle": inp.vehicle,
+        "dtcs": inp.dtcs,
+        "signals_summary": inp.signals_summary,
+        "health_score": inp.health_score,
+        "customer_name": inp.customer_name,
+        "mileage": inp.mileage,
+        "notes": inp.notes,
+        "ai_findings": findings,
+        "created_at": now_iso(),
+    }
+    await db.reports.insert_one(doc)
+    doc.pop("user_id", None)
+    doc["id"] = doc.pop("_id")
+    return doc
+
+
+@api_router.get("/reports")
+async def list_reports(user=Depends(get_current_user)):
+    docs = await db.reports.find({"user_id": user["_id"]}).sort("created_at", -1).to_list(100)
+    out = []
+    for d in docs:
+        d.pop("user_id", None)
+        d["id"] = d.pop("_id")
+        out.append(d)
+    return out
+
+
+@api_router.get("/reports/{report_id}")
+async def get_report(report_id: str, user=Depends(get_current_user)):
+    d = await db.reports.find_one({"_id": report_id, "user_id": user["_id"]})
+    if not d:
+        raise HTTPException(status_code=404, detail="Report not found")
+    d.pop("user_id", None)
+    d["id"] = d.pop("_id")
+    return d
+
+
 app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,

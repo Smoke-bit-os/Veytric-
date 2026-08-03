@@ -2,38 +2,36 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LineChart } from "react-native-gifted-charts";
-import { useTelemetry } from "@/src/telemetry";
+import { useVehicle } from "@/src/vehicle/service";
+import { PID_CATALOG } from "@/src/vehicle/health";
 import { colors, font, radius, spacing } from "@/src/theme";
 
-const SENSORS = [
-  { key: "rpm", label: "RPM", unit: "", max: 7000 },
-  { key: "speed", label: "Speed", unit: "km/h", max: 180 },
-  { key: "boost", label: "Boost", unit: "kPa", max: 200 },
-  { key: "coolantTemp", label: "Coolant", unit: "°C", max: 120 },
-  { key: "throttle", label: "Throttle", unit: "%", max: 100 },
-  { key: "batteryVoltage", label: "Battery", unit: "V", max: 15 },
-] as const;
+const CHART_KEYS = ["rpm", "speed", "boost", "maf", "coolantTemp", "engineLoad", "throttle", "batteryVoltage"];
+const CHART_SENSORS = CHART_KEYS.map((k) => PID_CATALOG.find((p) => p.key === k)!).filter(Boolean);
+
+const fmt = (v: any, decimals = 0) =>
+  typeof v === "number" ? (decimals ? v.toFixed(decimals) : Math.round(v)) : v;
 
 export default function Diagnostics() {
   const insets = useSafeAreaInsets();
-  const { data, history } = useTelemetry();
+  const { data, history } = useVehicle();
   const [selected, setSelected] = useState<string>("rpm");
   const width = Dimensions.get("window").width;
 
-  const sensorMeta = SENSORS.find((s) => s.key === selected)!;
+  const meta = PID_CATALOG.find((p) => p.key === selected)!;
   const chartData = (history[selected] || []).map((v) => ({ value: v }));
+
+  const groups = Array.from(new Set(PID_CATALOG.map((p) => p.group)));
 
   return (
     <View style={styles.root}>
-      {/* Sticky header */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-        <Text style={styles.title}>LIVE DIAGNOSTICS</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.chipRow}
-        >
-          {SENSORS.map((s) => {
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>LIVE DIAGNOSTICS</Text>
+          <Text style={styles.pidCount}>{PID_CATALOG.length} PIDs</Text>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
+          {CHART_SENSORS.map((s) => {
             const active = selected === s.key;
             return (
               <Pressable
@@ -52,12 +50,10 @@ export default function Diagnostics() {
       <ScrollView contentContainerStyle={{ paddingBottom: 110, paddingTop: 8 }} showsVerticalScrollIndicator={false}>
         <View style={styles.chartCard} testID="live-chart">
           <View style={styles.chartHeader}>
-            <Text style={styles.chartLabel}>{sensorMeta.label.toUpperCase()}</Text>
+            <Text style={styles.chartLabel}>{meta.label.toUpperCase()}</Text>
             <Text style={styles.chartValue}>
-              {typeof (data as any)[selected] === "number"
-                ? Math.round((data as any)[selected] * 10) / 10
-                : (data as any)[selected]}
-              <Text style={styles.chartUnit}> {sensorMeta.unit}</Text>
+              {fmt((data as any)[selected], meta.decimals)}
+              <Text style={styles.chartUnit}> {meta.unit}</Text>
             </Text>
           </View>
           <LineChart
@@ -79,35 +75,34 @@ export default function Diagnostics() {
             yAxisColor="transparent"
             xAxisColor={colors.divider}
             yAxisTextStyle={{ color: colors.onSurfaceSecondary, fontSize: 9 }}
-            hideYAxisText={false}
             noOfSections={4}
-            maxValue={sensorMeta.max}
+            maxValue={meta.max}
             initialSpacing={0}
             adjustToWidth
             disableScroll
           />
         </View>
 
-        <Text style={styles.sectionTitle}>ACTIVE SENSOR STREAMS</Text>
-        {SENSORS.map((s) => {
-          const raw = (data as any)[s.key];
-          const val = typeof raw === "number" ? Math.round(raw * 10) / 10 : raw;
-          return (
-            <Pressable
-              key={s.key}
-              testID={`sensor-row-${s.key}`}
-              onPress={() => setSelected(s.key)}
-              style={styles.row}
-            >
-              <View style={[styles.liveDot, { opacity: selected === s.key ? 1 : 0.35 }]} />
-              <Text style={styles.rowLabel}>{s.label}</Text>
-              <Text style={styles.rowValue}>
-                {val}
-                <Text style={styles.rowUnit}> {s.unit}</Text>
-              </Text>
-            </Pressable>
-          );
-        })}
+        {groups.map((g) => (
+          <View key={g}>
+            <Text style={styles.sectionTitle}>{g.toUpperCase()}</Text>
+            {PID_CATALOG.filter((p) => p.group === g).map((s) => (
+              <Pressable
+                key={s.key}
+                testID={`sensor-row-${s.key}`}
+                onPress={() => setSelected(s.key)}
+                style={styles.row}
+              >
+                <View style={[styles.liveDot, { opacity: selected === s.key ? 1 : 0.3 }]} />
+                <Text style={styles.rowLabel}>{s.label}</Text>
+                <Text style={styles.rowValue}>
+                  {fmt((data as any)[s.key], s.decimals)}
+                  <Text style={styles.rowUnit}> {s.unit}</Text>
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
@@ -122,7 +117,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
   },
+  titleRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   title: { color: colors.onSurface, fontFamily: font.display, fontSize: 24, letterSpacing: 2 },
+  pidCount: { color: colors.brand, fontSize: 11, letterSpacing: 1, fontWeight: "700" },
   chipRow: { gap: spacing.sm, paddingTop: spacing.md, paddingRight: spacing.lg },
   chip: {
     height: 36,
@@ -151,17 +148,18 @@ const styles = StyleSheet.create({
   chartValue: { color: colors.brand, fontFamily: font.display, fontSize: 32 },
   chartUnit: { fontSize: 13, color: colors.onSurfaceSecondary },
   sectionTitle: {
-    color: colors.onSurfaceSecondary,
+    color: colors.brand,
     fontSize: 11,
     letterSpacing: 2,
     fontWeight: "700",
     marginHorizontal: spacing.lg,
     marginBottom: spacing.sm,
+    marginTop: spacing.md,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 14,
+    paddingVertical: 13,
     paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,

@@ -39,6 +39,8 @@ export default function RootLayout() {
               <Stack.Screen name="index" />
               <Stack.Screen name="auth" />
               <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="connect" options={{ presentation: "modal", animation: "slide_from_bottom" }} />
+              <Stack.Screen name="reports" options={{ presentation: "card", animation: "slide_from_right" }} />
             </Stack>
           </TelemetryProvider>
         </AuthProvider>
