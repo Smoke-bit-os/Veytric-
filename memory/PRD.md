@@ -18,6 +18,15 @@ Futuristic mobile app "JARVIS AI": intelligent automotive assistant, personal AI
 ## Core Requirements (static)
 - Live HUD dashboard, conversational diagnostics with live-sensor context, voice in/out, vehicle health scoring, garage management, secure profiles.
 
+## Implemented (2026-08-03) — Iteration 3: Native BLE production layer + Connection Diagnostics
+- ELM327 command engine (`src/vehicle/obd/elm327.ts`): GATT service auto-resolve, notification buffering, serialized command queue with per-request timeout + latency, AT handshake (ATZ/ATE0/ATL0/ATS0/ATH1/ATSP0), voltage (ATRV), protocol auto-detect (ATDPN → AUTO/CAN 11/29-bit/ISO9141/KWP/J1850), supported-PID discovery (0100/0120/0140/0160 bitmasks), 200-entry request/response log.
+- Pure OBD decoders (`src/vehicle/obd/decoders.ts`): Mode 01 PID map (30+ decoders), bitmask parser, Mode 03/07 DTC decode, Mode 09 VIN/CalID extraction, protocol name map.
+- `BleProvider` rewritten (native): auto adapter detection (name/UUID candidates), full VehicleDataProvider incl. Mode 01 live polling with unsupported-PID fallback, Mode 03/07 DTCs, Mode 04 clear, Mode 02 freeze frame, Mode 09 VIN/CalID/ECU identity, getDiagnostics/getLog/readFreezeFrame/reconnect/onConnectionChange, and 3-attempt backoff auto-reconnect.
+- SimulationProvider mirrors the full surface (synthetic OBD log, diagnostics, freeze frame) so everything is demoable in preview.
+- NEW Connection Diagnostics screen (`app/ble-diagnostics.tsx`): adapter name, device ID (MAC/UUID), protocol, voltage, latency, quality, supported-PID count, reconnect counter + button, freeze-frame viewer, live OBD request/response log monitor.
+- Docs: `/app/BLE_NATIVE_GUIDE.md` (architecture, EXPO_PUBLIC_VEHICLE_MODE=ble, permissions, Emergent build steps, Innova/ELM327 compatibility, hardware test checklist). app.json BLE permissions verified.
+- Tested (frontend): all new + regression flows pass; iteration-2 blockers confirmed fixed.
+
 ## Implemented (2026-08-03) — Iteration 2: Innova BLE Integration Module
 - Modular swappable vehicle data layer (`src/vehicle/`): `VehicleDataProvider` interface, `SimulationProvider` (driving-cycle state machine, 43 PIDs), `BleProvider` (react-native-ble-plx ELM327 transport, native-only, web stub `bleProvider.web.ts`). Transport selected via `EXPO_PUBLIC_VEHICLE_MODE` (default simulation). Service context auto-connects + streams + history.
 - Vehicle Connection Center (`app/connect.tsx`): animated radar scan → found → connecting → connected/failed, adapter card (model/signal/battery/firmware/protocol/quality), automatic vehicle identification (VIN/year/make/model/trim/engine/trans/fuel/odometer/emissions/ECU/CalIDs/protocols) → Save to Garage, JARVIS TTS announcement, failure-cause recovery steps.

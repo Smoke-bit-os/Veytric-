@@ -78,13 +78,13 @@ export default function Reports() {
         <View style={{ width: 28 }} />
       </View>
 
-      <Pressable testID="generate-report" style={styles.generateBtn} onPress={generate} disabled={generating}>
+      <Pressable testID="generate-report" style={[styles.generateBtn, !identity && styles.generateBtnDisabled]} onPress={generate} disabled={generating || !identity}>
         {generating ? (
           <ActivityIndicator color={colors.onBrandPrimary} />
         ) : (
           <>
             <MaterialCommunityIcons name="file-chart" size={20} color={colors.onBrandPrimary} />
-            <Text style={styles.generateText}>GENERATE NEW SCAN REPORT</Text>
+            <Text style={styles.generateText}>{identity ? "GENERATE NEW SCAN REPORT" : "CONNECT A VEHICLE FIRST"}</Text>
           </>
         )}
       </Pressable>
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.lg,
   },
   generateText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1 },
+  generateBtnDisabled: { opacity: 0.5 },
   empty: { alignItems: "center", paddingVertical: spacing["3xl"], gap: spacing.md },
   emptyText: { color: colors.onSurfaceSecondary, textAlign: "center" },
   card: {
