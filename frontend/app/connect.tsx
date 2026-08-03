@@ -156,6 +156,14 @@ export default function ConnectionCenter() {
               <Stat label="FIRMWARE" value={adapter.firmware || "—"} />
               <Stat label="PROTOCOL" value={adapter.protocol} wide />
             </View>
+            <Pressable
+              testID="open-blediag"
+              style={styles.diagBtn}
+              onPress={() => router.push("/ble-diagnostics")}
+            >
+              <MaterialCommunityIcons name="chart-timeline-variant" size={16} color={colors.brand} />
+              <Text style={styles.diagBtnText}>Connection Diagnostics</Text>
+            </Pressable>
           </View>
         )}
 
@@ -278,6 +286,18 @@ const styles = StyleSheet.create({
   cardTitle: { color: colors.onSurface, fontFamily: font.display, fontSize: 18, flex: 1 },
   qualityPill: { backgroundColor: colors.success + "22", borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 },
   qualityText: { color: colors.success, fontSize: 10, fontWeight: "700" },
+  diagBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.sm,
+    marginTop: spacing.md,
+    paddingVertical: 12,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.brand,
+  },
+  diagBtnText: { color: colors.brand, fontWeight: "700" },
   statRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm, marginBottom: spacing.sm },
   stat: { flexGrow: 1, flexBasis: "30%", backgroundColor: colors.surface, borderRadius: radius.sm, padding: spacing.sm },
   statLabel: { color: colors.onSurfaceSecondary, fontSize: 9, letterSpacing: 1 },

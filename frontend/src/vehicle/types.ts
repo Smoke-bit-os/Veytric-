@@ -98,6 +98,33 @@ export interface VehicleSignals {
 
 export type DrivePhase = "startup" | "warmup" | "idle" | "accel" | "cruise" | "decel";
 
+// ---- Diagnostics / logging / freeze-frame ----------------------------------
+export interface ConnectionDiagnostics {
+  adapterName: string;
+  deviceId: string; // MAC (Android) / UUID (iOS)
+  protocol: string; // detected OBD protocol
+  voltage: number; // control module / battery voltage (ATRV)
+  latencyMs: number; // last request round-trip
+  quality: "excellent" | "good" | "fair" | "poor";
+  supportedPidCount: number;
+  reconnectAttempts: number;
+}
+
+export interface ObdLogEntry {
+  ts: number;
+  dir: "tx" | "rx";
+  cmd: string; // command sent, or PID for rx
+  data: string; // raw response / payload
+  latencyMs?: number;
+  ok: boolean;
+}
+
+export interface FreezeFrame {
+  code: string;
+  captured: string; // ISO timestamp
+  signals: Partial<VehicleSignals>;
+}
+
 export interface VehicleData {
   signals: VehicleSignals;
   dtcs: Dtc[];
@@ -127,4 +154,10 @@ export interface VehicleDataProvider {
   subscribe(cb: (signals: VehicleSignals) => void): () => void;
   readDtcs(): Promise<Dtc[]>;
   clearDtcs(): Promise<void>;
+  // Optional richer capabilities (implemented by BLE + Simulation).
+  getDiagnostics?(): ConnectionDiagnostics | null;
+  getLog?(): ObdLogEntry[];
+  readFreezeFrame?(code?: string): Promise<FreezeFrame | null>;
+  reconnect?(): Promise<void>;
+  onConnectionChange?(cb: (connected: boolean) => void): () => void;
 }

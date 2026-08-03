@@ -6,8 +6,11 @@
 
 import {
   AdapterInfo,
+  ConnectionDiagnostics,
   Dtc,
   DrivePhase,
+  FreezeFrame,
+  ObdLogEntry,
   VehicleDataProvider,
   VehicleIdentity,
   VehicleSignals,
@@ -75,6 +78,27 @@ export class SimulationProvider implements VehicleDataProvider {
   private phaseTicks = 0;
   private tick = 0;
   private dtcs = [...SIM_DTCS];
+  private log: ObdLogEntry[] = [];
+  private latencyMs = 32;
+  private logPidIndex = 0;
+  private readonly logPids = ["010C", "010D", "0105", "0111", "010B", "0110", "0142"];
+
+  private recordExchange() {
+    const cmd = this.logPids[this.logPidIndex % this.logPids.length];
+    this.logPidIndex++;
+    this.latencyMs = Math.round(26 + Math.random() * 22);
+    const ts = Date.now();
+    this.log.push({ ts, dir: "tx", cmd, data: cmd, ok: true });
+    this.log.push({
+      ts: ts + this.latencyMs,
+      dir: "rx",
+      cmd,
+      data: "41" + cmd.slice(2) + Math.floor(Math.random() * 255).toString(16).padStart(2, "0").toUpperCase(),
+      latencyMs: this.latencyMs,
+      ok: true,
+    });
+    if (this.log.length > 200) this.log.splice(0, this.log.length - 200);
+  }
 
   async scan(): Promise<AdapterInfo[]> {
     await new Promise((r) => setTimeout(r, 1400));
@@ -117,6 +141,42 @@ export class SimulationProvider implements VehicleDataProvider {
     return this.phase;
   }
 
+  getDiagnostics(): ConnectionDiagnostics {
+    return {
+      adapterName: SIM_ADAPTER.name,
+      deviceId: "SIM:00:1A:7D:DA:71:13",
+      protocol: "ISO 15765-4 CAN (11-bit, 500k)",
+      voltage: Math.round(this.s.batteryVoltage * 10) / 10,
+      latencyMs: this.latencyMs,
+      quality: SIM_ADAPTER.quality,
+      supportedPidCount: 43,
+      reconnectAttempts: 0,
+    };
+  }
+
+  getLog(): ObdLogEntry[] {
+    return this.log;
+  }
+
+  async readFreezeFrame(code?: string): Promise<FreezeFrame> {
+    const c = code || this.dtcs[0]?.code || "P0300";
+    return {
+      code: c,
+      captured: new Date().toISOString(),
+      signals: {
+        rpm: Math.round(this.s.rpm),
+        speed: Math.round(this.s.speed),
+        coolantTemp: Math.round(this.s.coolantTemp),
+        map: Math.round(this.s.map),
+        maf: Math.round(this.s.maf),
+        throttle: Math.round(this.s.throttle),
+        engineLoad: Math.round(this.s.engineLoad),
+        shortFuelTrim: Math.round(this.s.shortFuelTrim * 10) / 10,
+        longFuelTrim: Math.round(this.s.longFuelTrim * 10) / 10,
+      },
+    };
+  }
+
   // --- driving-cycle state machine -----------------------------------------
   private advancePhase() {
     this.phaseTicks++;
@@ -138,6 +198,7 @@ export class SimulationProvider implements VehicleDataProvider {
   private step() {
     this.tick++;
     this.advancePhase();
+    this.recordExchange();
     const s = this.s;
     const warm = s.coolantTemp > 78;
 

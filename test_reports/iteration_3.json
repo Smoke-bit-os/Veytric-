@@ -1,0 +1,36 @@
+{
+  "summary": "Frontend-only Playwright pass on mobile viewport 390x844. ALL requested iteration-3 features PASS: Home 'obd-indicator' routes to /connect; Connection Center auto-completes scan->connected with adapter-card + identity-card + save-to-garage transitioning to 'SAVED TO GARAGE'; 'open-blediag' opens /ble-diagnostics; banner reads 'LINK ACTIVE / EXCELLENT'; all 7 metrics render (ADAPTER=Innova Wireless OBD-II, DEVICE ID, PROTOCOL=ISO 15765-4 CAN, VOLTAGE, LATENCY, SUPPORTED PIDs=43, RECONNECTS); 'load-freeze' populates freeze-frame with 'Captured at DTC P0300' + all 9 sensor cells (RPM 1569, Speed 0 km/h, Coolant 37°C, MAP 43 kPa, Mass Air Flow 13 g/s, Throttle 10%, Engine Load 15%, STFT 2.3%, LTFT 0.5%); obd-log shows live tx(»)/rx(«) entries with timestamps + latency and changes over time (verified by 2.5s snapshot diff); 'blediag-reconnect' completes and banner returns to LINK ACTIVE. REGRESSION also passes: Home dashboard gauges animate (RPM went 4389 -> 1423 across ticks), Live Diagnostics badge '43 PIDs' visible, Health shows 12 subsystem scores + 4 DTC accordions (P0300/P0171/P0456/P0128) with 'open-reports' button, analyze-P0300 returned 1997-char AI response (no 'Analysis unavailable' fallback -> iteration-2 dtc/analyze 422 bug is FIXED), and generate-report produced a valid report with AI Findings/Recommended Next Steps rendered inside Reports screen with NO red-screen (iteration-2 reports 422 + dict-in-Text crash are FIXED). Only cosmetic issues remain: RN-web deprecation warnings (shadow*, props.pointerEvents) and one report generated with 'Unknown vehicle' + '0 codes' when reports.tsx is opened directly without a fresh live-state (identity/dtcs not passed).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "reports.tsx generate()", "issue": "When Reports screen is opened via direct route (not through Home after connect), the newly generated report shows 'Unknown vehicle' and '0 codes' even though live state has 4 DTCs and a valid identity. Suggests generate() reads from context that may be empty on fresh route mount — consider re-fetching identity+dtcs before POST or gating the button until state is ready.", "testID": "generate-report", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "global", "issues": ["RN-web deprecation warnings still logged on every render: 'shadow*' style props (use boxShadow) and 'props.pointerEvents' (use style.pointerEvents). Cosmetic but noisy in console."]}
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Deprecation warning fired multiple times on Home + Connect screens. Migrate to boxShadow for RN-web parity. Reference: any StyleSheet using shadowColor/shadowOffset/shadowOpacity/shadowRadius (e.g. connect.tsx:269-272 radarCore)."},
+      {"component": "props.pointerEvents", "issue": "Deprecation warning fired on Home render. Move pointerEvents into the style prop instead of a JSX prop."}
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_3.json"],
+  "action_items": [
+    "OPTIONAL: In reports.tsx generate(), ensure identity + dtcs are populated before enabling generate-report (or disable button until vehicle service has hydrated). Currently a direct navigation to /reports followed by tap yields 'Unknown vehicle / 0 codes' report.",
+    "COSMETIC: Replace shadow* style props with boxShadow in styles (connect.tsx radarCore + any other StyleSheet using shadowColor/Offset/Opacity/Radius).",
+    "COSMETIC: Move pointerEvents from JSX prop into style prop on any View using it."
+  ],
+  "critical_code_review_comments": [
+    "ble-diagnostics.tsx: 1s polling of getDiagnostics()+getLog() is fine for preview; ensure clearInterval on unmount (already implemented, good).",
+    "ble-diagnostics.tsx:189 time() implementation appends `ts % 1000` as ms which double-counts because toLocaleTimeString may already round; consider using padStart on the actual ms component of Date to avoid mismatched millisecond values (visual only).",
+    "connect.tsx:80-85 auto-scan on mount is a UX win; guarded with started.current ref — no duplicate runs.",
+    "service.tsx (VehicleDataProvider swap to Simulation on web, BLE native-only) is correctly gated. `mode` label 'SIMULATION MODE' visible in Connect header — matches expectation."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "100% for all iteration-3 acceptance items + 100% for iteration-2 regressions (both dtc-analyze and generate-report now succeed with rich AI output and no red-screen)."},
+  "seed_data_creation": "Reused mechanic@jarvis.ai. Saved a vehicle to garage during the connect flow (2018 Jeep Wrangler JL Sahara). One report was created via generate-report (rendered fine, no crash). No cleanup performed — data is idempotent seed for future runs.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Auth testIDs: auth-email-input / auth-password-input / auth-submit-button. Home 'obd-indicator' navigates to /connect. Connection Center auto-runs scan->found->connecting->connected on mount (needs ~4s to reach connected phase). Once connected, 'open-blediag' -> /ble-diagnostics. On BLE Diagnostics, obd-log is a live-updating console driven by a 1s interval polling getLog() — verify by capturing text twice with a 2s gap. Freeze-frame labels come from PID_CATALOG (so 'MAF' shows as 'Mass Air Flow'). To exit /ble-diagnostics use testID blediag-back; from /connect use connect-close. Reports and Health screens do NOT crash anymore when vehicle is a dict — iteration-2 bugs were fixed.",
+  "rca_of_issue": "N/A — all requested flows verified. Prior iteration-2 blockers (POST /api/dtc/analyze 422 dict_type, POST /api/reports 422 dict_type, Reports red-screen from rendering vehicle dict inside <Text>) are all resolved as observed by successful analyze-P0300 AI response (1997 chars) and successful report rendering with AI Findings/Recommended Next Steps sections visible."
+}

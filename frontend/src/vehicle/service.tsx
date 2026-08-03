@@ -39,6 +39,10 @@ interface Ctx {
   connect: (id?: string) => Promise<VehicleIdentity>;
   disconnect: () => Promise<void>;
   clearDtcs: () => Promise<void>;
+  reconnect: () => Promise<void>;
+  getDiagnostics: () => import("./types").ConnectionDiagnostics | null;
+  getLog: () => import("./types").ObdLogEntry[];
+  readFreezeFrame: (code?: string) => Promise<import("./types").FreezeFrame | null>;
 }
 
 const VehicleContext = createContext<Ctx>({} as Ctx);
@@ -112,6 +116,26 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
     setDtcs([]);
   }, []);
 
+  const reconnect = useCallback(async () => {
+    setConnection("connecting");
+    try {
+      await providerRef.current.reconnect?.();
+      startStream();
+      const codes = await providerRef.current.readDtcs();
+      setDtcs(codes);
+      setConnection("connected");
+    } catch {
+      setConnection("failed");
+    }
+  }, [startStream]);
+
+  const getDiagnostics = useCallback(() => providerRef.current.getDiagnostics?.() ?? null, []);
+  const getLog = useCallback(() => providerRef.current.getLog?.() ?? [], []);
+  const readFreezeFrame = useCallback(
+    (code?: string) => providerRef.current.readFreezeFrame?.(code) ?? Promise.resolve(null),
+    []
+  );
+
   // Auto-connect on mount so the app is immediately usable.
   useEffect(() => {
     (async () => {
@@ -150,6 +174,10 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
         connect,
         disconnect,
         clearDtcs,
+        reconnect,
+        getDiagnostics,
+        getLog,
+        readFreezeFrame,
       }}
     >
       {children}

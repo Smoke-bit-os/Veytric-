@@ -1,84 +1,66 @@
-// Production-ready BLE transport for ELM327-compatible OBD-II adapters
-// (Innova Wireless, generic ELM327 clones). Implements the SAME
-// VehicleDataProvider contract as SimulationProvider so the UI / AI / diagnostic
-// layers require ZERO changes when switching to real hardware.
+// Production BLE transport for Innova Wireless / ELM327-compatible OBD-II
+// adapters. Implements the full VehicleDataProvider contract so the UI / AI /
+// diagnostics layers require ZERO changes vs. Simulation.
 //
-// ⚠️ NATIVE-ONLY: react-native-ble-plx is a native module. It does NOT run in
-// Expo Go or the web preview — it requires a native dev/production build
-// (Publish → Deploy → Generate build). It is therefore lazy-required so it is
-// never bundled/executed in the preview. Set EXPO_PUBLIC_VEHICLE_MODE=ble in a
-// native build to activate this transport.
-//
-// Standard ELM327 handshake used below:
-//   ATZ (reset) -> ATE0 (echo off) -> ATL0 -> ATS0 -> ATSP0 (auto protocol)
-//   0100 (probe supported PIDs) -> then poll mode-01 PIDs.
-// Common OBD-II BLE service UUIDs vary by clone; the two most common are
-// FFF0/FFF1(notify)/FFF2(write) and the Nordic UART 6E400001-... set.
+// ⚠️ NATIVE-ONLY (react-native-ble-plx). Not runnable in Expo Go / web preview.
+// Activate on a native dev/production build with EXPO_PUBLIC_VEHICLE_MODE=ble.
 
 import {
   AdapterInfo,
+  ConnectionDiagnostics,
   Dtc,
+  FreezeFrame,
+  ObdLogEntry,
   VehicleDataProvider,
   VehicleIdentity,
   VehicleSignals,
 } from "./types";
+import { Elm327Connection } from "./obd/elm327";
+import { MODE01, POLL_PIDS, decodeDtcs, decodeVin, extractBytes } from "./obd/decoders";
 
-// Candidate GATT service/characteristic UUIDs for ELM327 BLE adapters.
-const SERVICE_CANDIDATES = [
-  { service: "FFF0", notify: "FFF1", write: "FFF2" },
-  { service: "FFE0", notify: "FFE1", write: "FFE1" },
-  {
-    service: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E",
-    notify: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E",
-    write: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E",
-  },
-];
+// Adapters whose advertised name matches are treated as OBD-II scanners.
+const NAME_MATCH = /obd|elm|innova|vgate|viecar|ediag|obdii|konnwei|veepeak/i;
 
-// Mode-01 PID -> signal decoders. Each returns a partial VehicleSignals.
-// (A,B,C,D are the returned data bytes.) Extend as more PIDs are validated
-// against the target adapter.
-const PID_DECODERS: Record<string, { pid: string; decode: (b: number[]) => Partial<VehicleSignals> }> = {
-  rpm: { pid: "010C", decode: (b) => ({ rpm: (b[0] * 256 + b[1]) / 4 }) },
-  speed: { pid: "010D", decode: (b) => ({ speed: b[0] }) },
-  coolantTemp: { pid: "0105", decode: (b) => ({ coolantTemp: b[0] - 40 }) },
-  intakeAirTemp: { pid: "010F", decode: (b) => ({ intakeAirTemp: b[0] - 40 }) },
-  map: { pid: "010B", decode: (b) => ({ map: b[0] }) },
-  maf: { pid: "0110", decode: (b) => ({ maf: (b[0] * 256 + b[1]) / 100 }) },
-  throttle: { pid: "0111", decode: (b) => ({ throttle: (b[0] * 100) / 255 }) },
-  engineLoad: { pid: "0104", decode: (b) => ({ engineLoad: (b[0] * 100) / 255 }) },
-  shortFuelTrim: { pid: "0106", decode: (b) => ({ shortFuelTrim: (b[0] - 128) * (100 / 128) }) },
-  longFuelTrim: { pid: "0107", decode: (b) => ({ longFuelTrim: (b[0] - 128) * (100 / 128) }) },
-  timingAdvance: { pid: "010E", decode: (b) => ({ timingAdvance: b[0] / 2 - 64 }) },
-  fuelLevel: { pid: "012F", decode: (b) => ({ fuelLevel: (b[0] * 100) / 255 }) },
-  baro: { pid: "0133", decode: (b) => ({ baro: b[0] }) },
-  o2Voltage: { pid: "0114", decode: (b) => ({ o2Voltage: b[0] / 200 }) },
-  runTime: { pid: "011F", decode: (b) => ({ runTime: b[0] * 256 + b[1] }) },
-};
+function rssiQuality(rssi: number): AdapterInfo["quality"] {
+  if (rssi > -55) return "excellent";
+  if (rssi > -67) return "good";
+  if (rssi > -80) return "fair";
+  return "poor";
+}
 
 export class BleProvider implements VehicleDataProvider {
   readonly mode = "ble" as const;
   private manager: any = null;
   private device: any = null;
-  private io: { service: string; notify: string; write: string } | null = null;
+  private elm: Elm327Connection | null = null;
+  private adapterInfo: AdapterInfo | null = null;
   private pollTimer: ReturnType<typeof setInterval> | null = null;
+  private signalCb: ((s: VehicleSignals) => void) | null = null;
+  private connCbs: ((connected: boolean) => void)[] = [];
+  private reconnectAttempts = 0;
+  private lastAdapterId: string | null = null;
+  private manualDisconnect = false;
 
   private getManager() {
     if (!this.manager) {
-      // Lazy require — only evaluated on native when BLE mode is active.
       const { BleManager } = require("react-native-ble-plx");
       this.manager = new BleManager();
     }
     return this.manager;
   }
 
+  // --- Automatic adapter detection -----------------------------------------
   async scan(): Promise<AdapterInfo[]> {
     const manager = this.getManager();
     const found: Record<string, AdapterInfo> = {};
-    return new Promise((resolve) => {
-      manager.startDeviceScan(null, null, (error: any, device: any) => {
-        if (error) return;
+    return new Promise((resolve, reject) => {
+      manager.startDeviceScan(null, { allowDuplicates: false }, (error: any, device: any) => {
+        if (error) {
+          manager.stopDeviceScan();
+          return reject(error);
+        }
         const name: string = device?.name || device?.localName || "";
-        if (/obd|elm|innova|vgate|viecar|ediag/i.test(name)) {
+        if (name && NAME_MATCH.test(name)) {
           found[device.id] = {
             id: device.id,
             name,
@@ -101,47 +83,97 @@ export class BleProvider implements VehicleDataProvider {
   async connect(adapterId?: string): Promise<{ adapter: AdapterInfo; identity: VehicleIdentity }> {
     if (!adapterId) throw new Error("adapterId required for BLE connect");
     const manager = this.getManager();
-    this.device = await manager.connectToDevice(adapterId, { requestMTU: 256 });
+    this.manualDisconnect = false;
+    this.lastAdapterId = adapterId;
+
+    this.device = await manager.connectToDevice(adapterId, { requestMTU: 247 });
     await this.device.discoverAllServicesAndCharacteristics();
-    this.io = await this.resolveIo();
-    await this.initElm();
+
+    // Auto-reconnect wiring.
+    this.device.onDisconnected((_err: any) => {
+      this.connCbs.forEach((cb) => cb(false));
+      if (!this.manualDisconnect) this.attemptReconnect();
+    });
+
+    this.elm = new Elm327Connection(this.device);
+    await this.elm.start();
+    await this.elm.init();
+
     const identity = await this.readIdentity();
-    return {
-      adapter: {
-        id: this.device.id,
-        name: this.device.name || "OBD-II Adapter",
-        model: this.device.name || "ELM327",
-        rssi: this.device.rssi ?? -60,
-        battery: null,
-        firmware: null,
-        protocol: "auto",
-        quality: rssiQuality(this.device.rssi ?? -60),
-      },
-      identity,
+    this.adapterInfo = {
+      id: this.device.id,
+      name: this.device.name || "OBD-II Adapter",
+      model: this.device.name || "ELM327",
+      rssi: this.device.rssi ?? -60,
+      battery: null,
+      firmware: await this.readFirmware(),
+      protocol: this.elm.protocol,
+      quality: rssiQuality(this.device.rssi ?? -60),
     };
+    this.reconnectAttempts = 0;
+    this.connCbs.forEach((cb) => cb(true));
+    return { adapter: this.adapterInfo, identity };
+  }
+
+  private async readFirmware(): Promise<string | null> {
+    try {
+      const r = await this.elm!.send("ATI");
+      return r?.trim() || null;
+    } catch {
+      return null;
+    }
   }
 
   async disconnect(): Promise<void> {
+    this.manualDisconnect = true;
     if (this.pollTimer) clearInterval(this.pollTimer);
     this.pollTimer = null;
+    await this.elm?.stop();
     if (this.device) await this.device.cancelConnection().catch(() => {});
     this.device = null;
+    this.elm = null;
   }
 
+  async reconnect(): Promise<void> {
+    if (!this.lastAdapterId) throw new Error("No previous adapter to reconnect");
+    await this.connect(this.lastAdapterId);
+    if (this.signalCb) this.subscribe(this.signalCb);
+  }
+
+  private async attemptReconnect() {
+    if (this.reconnectAttempts >= 3 || !this.lastAdapterId) return;
+    this.reconnectAttempts++;
+    await new Promise((r) => setTimeout(r, 1500 * this.reconnectAttempts));
+    try {
+      await this.reconnect();
+    } catch {
+      this.attemptReconnect();
+    }
+  }
+
+  // --- Live data polling with unsupported-PID fallback ----------------------
   subscribe(cb: (signals: VehicleSignals) => void): () => void {
-    const partial: Partial<VehicleSignals> = {};
+    this.signalCb = cb;
+    const merged: Partial<VehicleSignals> = {};
     this.pollTimer = setInterval(async () => {
-      for (const dec of Object.values(PID_DECODERS)) {
+      if (!this.elm) return;
+      for (const pid of POLL_PIDS) {
+        if (!this.elm.isSupported(pid)) continue; // skip unsupported
+        const dec = MODE01[pid];
+        if (!dec) continue;
         try {
-          const resp = await this.sendObd(dec.pid);
-          const bytes = parseObdBytes(resp, dec.pid);
-          if (bytes) Object.assign(partial, dec.decode(bytes));
+          const resp = await this.elm.send("01" + pid, 1500);
+          if (/NO DATA|ERROR|UNABLE/.test(resp)) continue;
+          const bytes = extractBytes(resp, "41", pid);
+          if (bytes && bytes.length) Object.assign(merged, dec.decode(bytes));
         } catch {
-          /* skip unsupported PID */
+          /* transient — keep last value */
         }
       }
-      cb(partial as VehicleSignals);
-    }, 1000);
+      // derived signals
+      if (merged.map != null) merged.boost = merged.map - (merged.baro ?? 101);
+      cb(merged as VehicleSignals);
+    }, 1100);
     return () => {
       if (this.pollTimer) clearInterval(this.pollTimer);
       this.pollTimer = null;
@@ -149,34 +181,45 @@ export class BleProvider implements VehicleDataProvider {
   }
 
   async readDtcs(): Promise<Dtc[]> {
-    const resp = await this.sendObd("03");
-    return decodeDtcs(resp);
+    if (!this.elm) return [];
+    const [cur, pend] = await Promise.all([
+      this.elm.send("03").catch(() => ""),
+      this.elm.send("07").catch(() => ""),
+    ]);
+    return [...decodeDtcs(cur, "current"), ...decodeDtcs(pend, "pending")] as Dtc[];
   }
 
   async clearDtcs(): Promise<void> {
-    await this.sendObd("04");
+    await this.elm?.send("04");
   }
 
-  // --- ELM327 plumbing ------------------------------------------------------
-  private async resolveIo() {
-    const services = await this.device.services();
-    for (const cand of SERVICE_CANDIDATES) {
-      if (services.some((s: any) => s.uuid.toUpperCase().includes(cand.service))) return cand;
+  async readFreezeFrame(): Promise<FreezeFrame | null> {
+    if (!this.elm) return null;
+    // Mode 02 freeze frame (frame 00) for key PIDs captured when the DTC set.
+    const pids = ["0C", "0D", "05", "0B", "10", "11", "04"];
+    const signals: Partial<VehicleSignals> = {};
+    for (const pid of pids) {
+      try {
+        const resp = await this.elm.send("02" + pid + "00", 1500);
+        const bytes = extractBytes(resp, "42", pid);
+        const dec = MODE01[pid];
+        if (bytes && dec) Object.assign(signals, dec.decode(bytes));
+      } catch {}
     }
-    throw new Error("No compatible OBD-II GATT service found on adapter");
-  }
-
-  private async initElm() {
-    for (const cmd of ["ATZ", "ATE0", "ATL0", "ATS0", "ATH1", "ATSP0", "0100"]) {
-      await this.sendRaw(cmd);
-      await new Promise((r) => setTimeout(r, 150));
-    }
+    let code = "";
+    try {
+      const dtcResp = await this.elm.send("0202");
+      code = decodeDtcs(dtcResp)[0]?.code || "";
+    } catch {}
+    return { code, captured: new Date().toISOString(), signals };
   }
 
   private async readIdentity(): Promise<VehicleIdentity> {
-    const vinResp = await this.sendObd("0902").catch(() => "");
+    const vinResp = await this.elm!.send("0902", 6000).catch(() => "");
     const vin = decodeVin(vinResp);
-    // Year/make/model resolution from VIN would use a decoder service post-connect.
+    const calResp = await this.elm!.send("0904", 6000).catch(() => "");
+    const calAscii = asciiFrom(calResp);
+    const ecuResp = await this.elm!.send("090A", 6000).catch(() => "");
     return {
       vin: vin || "UNKNOWN",
       year: 0,
@@ -189,71 +232,45 @@ export class BleProvider implements VehicleDataProvider {
       fuelType: "",
       odometer: null,
       emissionsReady: false,
-      protocols: ["auto"],
-      ecu: "",
-      calibrationIds: [],
+      protocols: [this.elm!.protocol],
+      ecu: asciiFrom(ecuResp).trim() || "ECU",
+      calibrationIds: calAscii ? [calAscii.trim()] : [],
       cvns: [],
     };
   }
 
-  private async sendObd(pid: string): Promise<string> {
-    return this.sendRaw(pid);
+  getDiagnostics(): ConnectionDiagnostics | null {
+    if (!this.adapterInfo || !this.elm) return null;
+    return {
+      adapterName: this.adapterInfo.name,
+      deviceId: this.adapterInfo.id,
+      protocol: this.elm.protocol,
+      voltage: this.elm.voltage,
+      latencyMs: this.elm.lastLatencyMs,
+      quality: this.adapterInfo.quality,
+      supportedPidCount: this.elm.supportedPids.size,
+      reconnectAttempts: this.reconnectAttempts,
+    };
   }
 
-  private async sendRaw(cmd: string): Promise<string> {
-    if (!this.device || !this.io) throw new Error("Not connected");
-    const { Buffer } = require("buffer");
-    const payload = Buffer.from(`${cmd}\r`).toString("base64");
-    await this.device.writeCharacteristicWithoutResponseForService(
-      this.io.service,
-      this.io.write,
-      payload
-    );
-    const char = await this.device.readCharacteristicForService(this.io.service, this.io.notify);
-    return Buffer.from(char.value, "base64").toString("utf-8");
+  getLog(): ObdLogEntry[] {
+    return this.elm?.log ?? [];
+  }
+
+  onConnectionChange(cb: (connected: boolean) => void): () => void {
+    this.connCbs.push(cb);
+    return () => {
+      this.connCbs = this.connCbs.filter((c) => c !== cb);
+    };
   }
 }
 
-function rssiQuality(rssi: number): AdapterInfo["quality"] {
-  if (rssi > -55) return "excellent";
-  if (rssi > -67) return "good";
-  if (rssi > -80) return "fair";
-  return "poor";
-}
-
-function parseObdBytes(resp: string, pid: string): number[] | null {
-  const hex = resp.replace(/[\s>]/g, "").toUpperCase();
-  const mode = "41" + pid.slice(2);
-  const idx = hex.indexOf(mode);
-  if (idx < 0) return null;
-  const dataHex = hex.slice(idx + 4);
-  const bytes: number[] = [];
-  for (let i = 0; i + 1 < dataHex.length; i += 2) bytes.push(parseInt(dataHex.substr(i, 2), 16));
-  return bytes;
-}
-
-function decodeDtcs(resp: string): Dtc[] {
-  const hex = resp.replace(/[\s>]/g, "").toUpperCase();
-  const out: Dtc[] = [];
-  const body = hex.startsWith("43") ? hex.slice(2) : hex;
-  for (let i = 0; i + 3 < body.length; i += 4) {
-    const raw = body.substr(i, 4);
-    if (raw === "0000") continue;
-    const first = parseInt(raw[0], 16);
-    const letter = ["P", "C", "B", "U"][first >> 2];
-    const code = `${letter}${(first & 3).toString()}${raw.slice(1)}`;
-    out.push({ code, desc: "See diagnostic database", type: "current" });
+function asciiFrom(hex: string): string {
+  const clean = hex.replace(/[\s>\r\n]/g, "").toUpperCase();
+  let out = "";
+  for (let i = 0; i + 1 < clean.length; i += 2) {
+    const c = parseInt(clean.substr(i, 2), 16);
+    if (c >= 32 && c <= 126) out += String.fromCharCode(c);
   }
   return out;
-}
-
-function decodeVin(resp: string): string {
-  const hex = resp.replace(/[\s>]/g, "").toUpperCase();
-  let ascii = "";
-  for (let i = 0; i + 1 < hex.length; i += 2) {
-    const c = parseInt(hex.substr(i, 2), 16);
-    if (c >= 32 && c <= 126) ascii += String.fromCharCode(c);
-  }
-  const m = ascii.match(/[A-HJ-NPR-Z0-9]{17}/);
-  return m ? m[0] : "";
 }
