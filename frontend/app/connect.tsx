@@ -15,6 +15,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { createAudioPlayer, setAudioModeAsync } from "expo-audio";
 import { useVehicle } from "@/src/vehicle/service";
+import { vinService } from "@/src/vehicle/vin/vinService";
 import { api } from "@/src/api";
 import { colors, font, radius, spacing } from "@/src/theme";
 
@@ -45,7 +46,7 @@ function Wave({ delay, active }: { delay: number; active: boolean }) {
 export default function ConnectionCenter() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { scan, connect, adapter, identity, mode } = useVehicle();
+  const { scan, connect, adapter, identity, mode, enrichIdentity } = useVehicle();
   const [phase, setPhase] = useState<Phase>("scanning");
   const [saved, setSaved] = useState(false);
   const [savedMsg, setSavedMsg] = useState("");
@@ -69,9 +70,16 @@ export default function ConnectionCenter() {
       setPhase("found");
       await new Promise((r) => setTimeout(r, 900));
       setPhase("connecting");
-      await connect(adapters[0].id);
+      const idn = await connect(adapters[0].id);
       setPhase("connected");
       announce("Vehicle connected successfully. Beginning complete system scan.");
+      try {
+        const decoded = await vinService.decodeVin(idn.vin);
+        enrichIdentity(decoded);
+        if (decoded.make && decoded.make !== "Unknown") {
+          announce(`Vehicle identified. ${decoded.year || ""} ${decoded.make} ${decoded.model || ""}.`);
+        }
+      } catch {}
     } catch {
       setPhase("failed");
     }
@@ -173,6 +181,16 @@ export default function ConnectionCenter() {
             <View style={styles.cardHead}>
               <MaterialCommunityIcons name="car-info" size={22} color={colors.brand} />
               <Text style={styles.cardTitle}>Vehicle Identified</Text>
+              {identity.confidence != null && identity.confidence > 0 && (
+                <View style={styles.confPill}>
+                  <MaterialCommunityIcons name="shield-check" size={11} color={colors.success} />
+                  <Text style={styles.confText}>{Math.round((identity.confidence || 0) * 100)}% MATCH</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.vehImage} testID="vehicle-image">
+              <MaterialCommunityIcons name="car-sports" size={52} color={colors.brand} />
+              <Text style={styles.vehImageText}>VEHICLE PREVIEW</Text>
             </View>
             <Text style={styles.vehName}>
               {identity.year} {identity.make} {identity.model}
@@ -180,6 +198,13 @@ export default function ConnectionCenter() {
             <Text style={styles.vehTrim}>
               {identity.trim} · {identity.engine} · {identity.driveType}
             </Text>
+            {identity.decodeSource && (
+              <Text style={styles.sourceText}>
+                VIN decoded via {String(identity.decodeSource).toUpperCase()}
+                {identity.checksumValid ? " · checksum valid" : ""}
+                {identity.plant ? ` · ${identity.plant}` : ""}
+              </Text>
+            )}
             <View style={styles.idGrid}>
               <Stat label="VIN" value={identity.vin} wide />
               <Stat label="TRANSMISSION" value={identity.transmission} wide />
@@ -190,6 +215,20 @@ export default function ConnectionCenter() {
               <Stat label="CAL IDs" value={identity.calibrationIds.join(", ")} wide />
               <Stat label="PROTOCOLS" value={identity.protocols.join("; ")} wide />
             </View>
+
+            {identity.ecuModules && identity.ecuModules.length > 0 && (
+              <View style={styles.modulesWrap} testID="ecu-modules">
+                <Text style={styles.modulesTitle}>ECU MODULES DETECTED</Text>
+                <View style={styles.moduleRow}>
+                  {identity.ecuModules.map((m) => (
+                    <View key={m} style={styles.moduleChip}>
+                      <MaterialCommunityIcons name="chip" size={12} color={colors.brand} />
+                      <Text style={styles.moduleText}>{m}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )}
 
             <Pressable
               testID="save-to-garage"
@@ -304,6 +343,44 @@ const styles = StyleSheet.create({
   statValue: { color: colors.onSurface, fontSize: 13, marginTop: 2, fontWeight: "600" },
   vehName: { color: colors.brand, fontFamily: font.display, fontSize: 26 },
   vehTrim: { color: colors.onSurfaceSecondary, fontSize: 13, marginBottom: spacing.md },
+  confPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: colors.success + "22",
+    borderRadius: radius.pill,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  confText: { color: colors.success, fontSize: 10, fontWeight: "700" },
+  vehImage: {
+    height: 96,
+    borderRadius: radius.md,
+    backgroundColor: colors.surfaceTertiary,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: spacing.md,
+    gap: 4,
+  },
+  vehImageText: { color: colors.onSurfaceSecondary, fontSize: 9, letterSpacing: 1.5 },
+  sourceText: { color: colors.info, fontSize: 11, marginBottom: spacing.md },
+  modulesWrap: { marginTop: spacing.sm, marginBottom: spacing.xs },
+  modulesTitle: { color: colors.onSurfaceSecondary, fontSize: 9, letterSpacing: 1, marginBottom: spacing.sm },
+  moduleRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+  moduleChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: colors.surface,
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  moduleText: { color: colors.onSurfaceTertiary, fontSize: 11 },
   idGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   saveBtn: {
     flexDirection: "row",

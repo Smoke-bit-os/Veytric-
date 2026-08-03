@@ -243,3 +243,50 @@ def test_reports_crud(client, auth):
     # get unknown -> 404
     r = client.get(f"{API}/reports/does-not-exist-xyz", headers=auth, timeout=30)
     assert r.status_code == 404
+
+
+
+# ---- VIN Decode (new in iteration 4) ----
+def test_vin_decode_requires_auth(client):
+    r = client.post(f"{API}/vin/decode", json={"vin": "1C4HJXEG9JW174532"})
+    assert r.status_code == 401
+
+
+def test_vin_decode_valid_jeep(client, auth):
+    r = client.post(f"{API}/vin/decode", json={"vin": "1C4HJXEG9JW174532"}, headers=auth, timeout=30)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["validFormat"] is True
+    assert body["confidence"] > 0
+    assert body.get("source") in ("nhtsa", "cache", "local")
+    # Expect Jeep 2018 Wrangler (per NHTSA)
+    make = (body.get("make") or "").upper()
+    assert "JEEP" in make, f"expected JEEP in make, got {body.get('make')}"
+    assert body.get("year") == 2018
+    model = (body.get("model") or "").lower()
+    assert "wrangler" in model, f"expected wrangler in model, got {body.get('model')}"
+    # Optional enrichment fields — check presence, not exact value
+    for key in ("trim", "engine", "transmission", "drivetrain", "plant"):
+        assert key in body, f"missing enrichment key: {key}"
+
+
+def test_vin_decode_invalid(client, auth):
+    r = client.post(f"{API}/vin/decode", json={"vin": "BADVIN123"}, headers=auth, timeout=30)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["validFormat"] is False
+    assert body["confidence"] == 0
+    # Should not crash and should not contain a real make/year
+    assert body.get("checksumValid") in (False, None)
+
+
+def test_vin_decode_cache_hit(client, auth):
+    # First call may fetch from NHTSA; second should be same/cached response.
+    payload = {"vin": "1C4HJXEG9JW174532"}
+    r1 = client.post(f"{API}/vin/decode", json=payload, headers=auth, timeout=30)
+    r2 = client.post(f"{API}/vin/decode", json=payload, headers=auth, timeout=30)
+    assert r1.status_code == 200 and r2.status_code == 200
+    b1, b2 = r1.json(), r2.json()
+    assert b1.get("vin") == b2.get("vin")
+    assert b1.get("make") == b2.get("make")
+    assert b1.get("year") == b2.get("year")

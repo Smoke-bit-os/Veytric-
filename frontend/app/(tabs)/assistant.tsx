@@ -38,7 +38,7 @@ const SUGGESTIONS = [
 export default function Assistant() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ voice?: string }>();
-  const { data } = useTelemetry();
+  const { data, identity } = useTelemetry();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
@@ -76,7 +76,14 @@ export default function Assistant() {
         boost: Math.round(data.boost),
         dtcs: data.dtcs.map((d) => `${d.code} ${d.desc}`),
       };
-      const res = await api.chat({ session_id: SESSION, message: msg, telemetry: snapshot });
+      const res = await api.chat({
+        session_id: SESSION,
+        message: msg,
+        telemetry: snapshot,
+        vehicle: identity
+          ? `${identity.year} ${identity.make} ${identity.model} ${identity.trim} · ${identity.engine} · ${identity.transmission} · ${identity.driveType} · VIN ${identity.vin}`
+          : undefined,
+      });
       setMessages((m) => [...m, { role: "assistant", content: res.reply }]);
       speak(res.reply);
     } catch (e: any) {

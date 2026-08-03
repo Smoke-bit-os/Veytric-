@@ -329,6 +329,119 @@ async def dtc_analyze(inp: DtcAnalyzeInput, user=Depends(get_current_user)):
     return {"code": inp.code, "analysis": reply if isinstance(reply, str) else str(reply)}
 
 
+# ----------------------------- Routes: VIN Decode ---------------------------
+_WMI = {
+    "1C4": ("Jeep", "USA"), "1C6": ("Ram", "USA"), "1C3": ("Chrysler", "USA"),
+    "3C4": ("Jeep", "Mexico"), "2C3": ("Chrysler", "Canada"),
+    "1FA": ("Ford", "USA"), "1FT": ("Ford", "USA"), "1FM": ("Ford", "USA"), "1FD": ("Ford", "USA"),
+    "1G1": ("Chevrolet", "USA"), "1GC": ("Chevrolet", "USA"), "1GT": ("GMC", "USA"), "1GK": ("GMC", "USA"),
+    "1HG": ("Honda", "USA"), "2HG": ("Honda", "Canada"), "JHM": ("Honda", "Japan"), "19X": ("Honda", "USA"),
+    "4T1": ("Toyota", "USA"), "5TD": ("Toyota", "USA"), "JTD": ("Toyota", "Japan"), "JTE": ("Toyota", "Japan"),
+    "WBA": ("BMW", "Germany"), "WBS": ("BMW", "Germany"), "WBY": ("BMW", "Germany"),
+    "WDB": ("Mercedes-Benz", "Germany"), "WDD": ("Mercedes-Benz", "Germany"), "4JG": ("Mercedes-Benz", "USA"),
+    "WVW": ("Volkswagen", "Germany"), "1VW": ("Volkswagen", "USA"), "3VW": ("Volkswagen", "Mexico"),
+    "WAU": ("Audi", "Germany"), "TRU": ("Audi", "Hungary"),
+    "5YJ": ("Tesla", "USA"), "7SA": ("Tesla", "USA"),
+    "1N4": ("Nissan", "USA"), "JN1": ("Nissan", "Japan"), "3N1": ("Nissan", "Mexico"),
+    "KM8": ("Hyundai", "S. Korea"), "5NP": ("Hyundai", "USA"),
+    "KNA": ("Kia", "S. Korea"), "KND": ("Kia", "S. Korea"),
+    "1GN": ("Chevrolet", "USA"), "2T3": ("Toyota", "Canada"), "SAL": ("Land Rover", "UK"),
+    "WP0": ("Porsche", "Germany"), "ZFF": ("Ferrari", "Italy"),
+}
+_YEAR = {c: y for c, y in zip("ABCDEFGHJKLMNPRSTVWXY123456789", list(range(2010, 2031)) + list(range(2031, 2040)))}
+_TRANSLIT = {
+    "0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
+    "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8,
+    "J": 1, "K": 2, "L": 3, "M": 4, "N": 5, "P": 7, "R": 9,
+    "S": 2, "T": 3, "U": 4, "V": 5, "W": 6, "X": 7, "Y": 8, "Z": 9,
+}
+_WEIGHTS = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2]
+
+
+class VinInput(BaseModel):
+    vin: str
+
+
+def _vin_checksum_valid(vin: str) -> bool:
+    if len(vin) != 17:
+        return False
+    try:
+        total = sum(_TRANSLIT.get(vin[i], 0) * _WEIGHTS[i] for i in range(17))
+    except Exception:
+        return False
+    check = total % 11
+    expected = "X" if check == 10 else str(check)
+    return vin[8] == expected
+
+
+def _local_decode(vin: str) -> dict:
+    vin = vin.upper()
+    wmi = vin[:3]
+    make, country = _WMI.get(wmi, _WMI.get(vin[:2] + "_", ("Unknown", "Unknown")))
+    year = _YEAR.get(vin[9], 0) if len(vin) >= 10 else 0
+    plant = vin[10] if len(vin) >= 11 else ""
+    return {
+        "make": make, "country": country, "year": year,
+        "plant": f"Plant code {plant}" if plant else "",
+        "model": "", "trim": "", "engine": "", "transmission": "", "drivetrain": "",
+    }
+
+
+def _nhtsa_decode(vin: str) -> Optional[dict]:
+    try:
+        import requests
+        r = requests.get(
+            f"https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{vin}?format=json",
+            timeout=5,
+        )
+        res = r.json()["Results"][0]
+        if not res.get("Make"):
+            return None
+        disp = res.get("DisplacementL")
+        cyl = res.get("EngineCylinders")
+        engine = " ".join(filter(None, [f"{disp}L" if disp else "", f"{cyl}-cyl" if cyl else "", res.get("EngineModel") or ""])).strip()
+        return {
+            "make": res.get("Make") or "", "model": res.get("Model") or "",
+            "year": int(res["ModelYear"]) if res.get("ModelYear", "").isdigit() else 0,
+            "trim": res.get("Trim") or res.get("Series") or "",
+            "engine": engine, "transmission": res.get("TransmissionStyle") or "",
+            "drivetrain": res.get("DriveType") or "", "plant": res.get("PlantCity") or "",
+            "country": res.get("PlantCountry") or "", "ecu": res.get("VehicleType") or "",
+        }
+    except Exception as e:
+        logger.warning(f"nhtsa decode failed: {e}")
+        return None
+
+
+@api_router.post("/vin/decode")
+async def vin_decode(inp: VinInput, user=Depends(get_current_user)):
+    vin = (inp.vin or "").strip().upper()
+    valid_format = len(vin) == 17 and all(c not in "IOQ" for c in vin)
+    checksum_ok = _vin_checksum_valid(vin) if valid_format else False
+
+    source = "local"
+    confidence = 0.0
+    data = _local_decode(vin) if valid_format else {}
+    nh = _nhtsa_decode(vin) if valid_format else None
+    if nh:
+        source = "nhtsa"
+        data = {**data, **{k: v for k, v in nh.items() if v}}
+        confidence = 0.95 if (nh.get("make") and nh.get("model")) else 0.8
+    elif valid_format and data.get("make") not in (None, "", "Unknown"):
+        confidence = 0.6 if checksum_ok else 0.45
+    elif valid_format:
+        confidence = 0.3
+
+    return {
+        "vin": vin,
+        "validFormat": valid_format,
+        "checksumValid": checksum_ok,
+        "source": source,
+        "confidence": round(confidence, 2),
+        **data,
+    }
+
+
 # ----------------------------- Routes: Scan Reports -------------------------
 class ReportInput(BaseModel):
     vehicle: Any = ""

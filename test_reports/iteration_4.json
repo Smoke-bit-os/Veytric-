@@ -1,0 +1,36 @@
+{
+  "summary": "Iteration-4 VIN Decode Enrichment fully verified end-to-end. Backend: 19/19 pytest tests PASS including 4 new VIN tests. POST /api/vin/decode with '1C4HJXEG9JW174532' returns validFormat=true, source=nhtsa, confidence=0.95, make=JEEP, year=2018, model=Wrangler, plus trim/engine/transmission/drivetrain/plant. Invalid VIN 'BADVIN123' returns validFormat=false, confidence=0 (no crash). Cache-hit returns identical make/year/model on repeat calls. /vin/decode correctly requires auth (401 unauthenticated). Frontend (Playwright 390x844): Home 'obd-indicator' -> /connect auto-runs scan sequence; identity-card renders '95% MATCH' pill, 'VEHICLE PREVIEW' block, '2018 JEEP Wrangler', 'Unlimited Sahara · 3.6L 6-cyl · 4WD/4-Wheel Drive/4x4', 'VIN decoded via NHTSA · TOLEDO' source line, VIN=1C4HJXEG9JW174532, and ECU MODULES DETECTED chips (ECM/TCM/ABS-ESP/BCM+ etc). 'save-to-garage' transitions to 'SAVED TO GARAGE'. 'open-blediag' -> /ble-diagnostics loads obd-log + freeze frame. AI Repair Assistant chat (chat-input/send-button) with the connected 2018 Jeep returns a coherent JARVIS reply referencing P0300 misfire and 820 rpm idle (vehicle context injected). REGRESSION: Live Diagnostics tab shows '43 PIDs' badge with Engine RPM/Vehicle Speed/Boost/MAF etc; Health screen shows 12 subsystem scores + all 4 DTCs (P0300, P0171, P0456, P0128) with AI Diagnostic Findings; Reports shows saved reports (2018 Jeep Wrangler entries) with no red-screen; login flow works. Deprecated packages detected: none (SafeAreaView/expo-av not in use). Only console noise: RN-web deprecation warnings for shadow* style props, props.pointerEvents, and Image style.resizeMode.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "global", "issues": ["RN-web deprecation warnings still fire on many screens: 'shadow*' style props (use boxShadow), 'props.pointerEvents' (use style.pointerEvents), and 'Image style.resizeMode' (use props.resizeMode). Cosmetic only."]}
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Deprecation warning fired on Home/Connect/Live/Health screens. Migrate shadowColor/shadowOffset/shadowOpacity/shadowRadius to boxShadow for RN-web parity. Reference: /app/frontend/app/connect.tsx and other StyleSheet blocks."},
+      {"component": "props.pointerEvents", "issue": "Deprecation warning on Home and Health screens. Move pointerEvents into the style prop instead of a JSX prop."},
+      {"component": "Image style.resizeMode", "issue": "Deprecation warning: use the resizeMode prop directly on <Image>, not inside style. Reference: any <Image style={{resizeMode:...}}/> occurrence."}
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_4.json", "/app/backend/tests/backend_test.py", "/app/test_reports/pytest/iteration_4.xml"],
+  "action_items": [
+    "COSMETIC: Migrate shadow* style props -> boxShadow (RN-web).",
+    "COSMETIC: Move pointerEvents from JSX prop to style prop on affected Views.",
+    "COSMETIC: Move Image resizeMode from style to the resizeMode prop."
+  ],
+  "critical_code_review_comments": [
+    "server.py:416 /vin/decode: correctly gated with get_current_user; NHTSA branch merges over local decode; confidence tiers (0.95 NHTSA / 0.6-0.45 local WMI / 0.3 fallback) look sound.",
+    "server.py:390 _nhtsa_decode: sync requests inside async endpoint. It works but blocks the event loop; consider httpx.AsyncClient. Non-blocking today because response is small and NHTSA fast, but flag for scalability.",
+    "server.py:365 _vin_checksum_valid: ISO 3779 transliteration correct; short-circuits len!=17.",
+    "connect.tsx:180 identity-card: confidence pill guarded on `identity.confidence != null && > 0` (good); decodeSource displayed in uppercase with checksum/plant suffix (good); ECU modules gated on non-empty array (good).",
+    "backend_test.py: /vin/decode tested end-to-end (auth required, valid Jeep enrichment, invalid VIN safe, cache-hit stable)."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py (added 4 VIN decode tests)"],
+  "success_rate": {"backend": "100% (19/19 pytest)", "frontend": "100% for all iteration-4 acceptance items + 100% for regressions (connect flow, ble-diagnostics, live 43 PIDs, health 12 scores + 4 DTCs, reports, chat)."},
+  "seed_data_creation": "Reused mechanic@jarvis.ai. Saved a vehicle to garage during connect flow (2018 Jeep Wrangler JL Sahara with real NHTSA VIN 1C4HJXEG9JW174532). One additional report generated. No cleanup - idempotent seed for future iterations.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "/live and /health/reports pages are inside the (tabs) group - navigate via bottom tab buttons (Command/Live/JARVIS/Health/Garage) using page.get_by_text('Live', exact=True).first.click(force=True). Direct navigation to /live returns 'Unmatched Route'. VIN=1C4HJXEG9JW174532 is a known-good NHTSA-decodable 2018 Jeep Wrangler Unlimited Sahara (Toledo plant, 3.6L V6, 4WD). Backend test file at /app/backend/tests/backend_test.py; run with `pytest backend/tests/backend_test.py -v` (session-scoped token fixture handles login+register).",
+  "rca_of_issue": "N/A - all requested iteration-4 features and regressions passed."
+}

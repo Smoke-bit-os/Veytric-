@@ -40,6 +40,7 @@ interface Ctx {
   disconnect: () => Promise<void>;
   clearDtcs: () => Promise<void>;
   reconnect: () => Promise<void>;
+  enrichIdentity: (partial: Partial<VehicleIdentity>) => void;
   getDiagnostics: () => import("./types").ConnectionDiagnostics | null;
   getLog: () => import("./types").ObdLogEntry[];
   readFreezeFrame: (code?: string) => Promise<import("./types").FreezeFrame | null>;
@@ -131,6 +132,9 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
 
   const getDiagnostics = useCallback(() => providerRef.current.getDiagnostics?.() ?? null, []);
   const getLog = useCallback(() => providerRef.current.getLog?.() ?? [], []);
+  const enrichIdentity = useCallback((partial: Partial<VehicleIdentity>) => {
+    setIdentity((prev) => (prev ? { ...prev, ...partial } : (partial as VehicleIdentity)));
+  }, []);
   const readFreezeFrame = useCallback(
     (code?: string) => providerRef.current.readFreezeFrame?.(code) ?? Promise.resolve(null),
     []
@@ -175,6 +179,7 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
         disconnect,
         clearDtcs,
         reconnect,
+        enrichIdentity,
         getDiagnostics,
         getLog,
         readFreezeFrame,

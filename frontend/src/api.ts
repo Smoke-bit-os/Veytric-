@@ -38,6 +38,7 @@ export const api = {
   chatHistory: (sessionId: string) => request(`/chat/history/${sessionId}`),
 
   analyzeDtc: (payload: any) => request("/dtc/analyze", { method: "POST", body: JSON.stringify(payload) }),
+  decodeVin: (vin: string) => request("/vin/decode", { method: "POST", body: JSON.stringify({ vin }) }),
   createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),
   getReport: (id: string) => request(`/reports/${id}`),

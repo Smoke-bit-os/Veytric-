@@ -41,6 +41,13 @@ export interface VehicleIdentity {
   ecu: string;
   calibrationIds: string[];
   cvns: string[];
+  // VIN-decode enrichment (optional)
+  plant?: string;
+  country?: string;
+  confidence?: number; // 0..1
+  decodeSource?: string; // "nhtsa" | "local" | "cache" | "simulation"
+  checksumValid?: boolean;
+  ecuModules?: string[];
 }
 
 export interface Dtc {
