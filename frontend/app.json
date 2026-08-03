@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.emergent.jarvisai.gx2hdi"
+      "bundleIdentifier": "com.emergent.jarvisai.gx2hdi",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Talk to JARVIS hands-free for diagnostics"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +21,8 @@
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.emergent.jarvisai.gx2hdi"
+      "package": "com.emergent.jarvisai.gx2hdi",
+      "permissions": ["RECORD_AUDIO"]
     },
     "web": {
       "bundler": "metro",
@@ -34,6 +38,12 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#000000"
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Talk to JARVIS hands-free for diagnostics"
         }
       ]
     ],
