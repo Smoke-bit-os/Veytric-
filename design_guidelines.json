@@ -1,0 +1,151 @@
+{
+  "app_name": "JARVIS AI",
+  "personality": "7 Dark-First Utility with 6 Glass / Luxe surfaces",
+  "personality_one_liner": "A futuristic, high-performance AI command center blending dense telemetric utility with premium holographic glassmorphism.",
+  "color": {
+    "surface": "#06080D",
+    "onSurface": "#F0F2F5",
+    "surfaceSecondary": "#111520",
+    "onSurfaceSecondary": "#9AA0B1",
+    "surfaceTertiary": "#1C2235",
+    "onSurfaceTertiary": "#C3C8D6",
+    "surfaceInverse": "#F0F2F5",
+    "onSurfaceInverse": "#06080D",
+    "brand": "#00E5FF",
+    "brandPrimary": "#00E5FF",
+    "onBrandPrimary": "#06080D",
+    "brandSecondary": "#0055FF",
+    "onBrandSecondary": "#FFFFFF",
+    "brandTertiary": "#002B5C",
+    "onBrandTertiary": "#00E5FF",
+    "success": "#00E676",
+    "onSuccess": "#00331A",
+    "warning": "#FFB300",
+    "onWarning": "#4D3600",
+    "error": "#FF3D00",
+    "onError": "#4D1200",
+    "info": "#00B0FF",
+    "onInfo": "#00354D",
+    "border": "#21283B",
+    "borderStrong": "#35405A",
+    "divider": "#151A28"
+  },
+  "typography": {
+    "displayFontFamily": "Rajdhani",
+    "textFontFamily": "Satoshi",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Dense but structured. Use sm/md padding for telemetric grids to maximize data density, but allow generous xl padding around the central AI orb.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": "0",
+  "navigation": "bottom_tabs",
+  "icon_set": "Phosphor",
+  "glassmorphism": {
+    "enabled": true,
+    "do's": [
+      "Use heavy glassmorphism for floating panels and gauge cards over dark backgrounds to mimic a holographic HUD.",
+      "Apply dark tinted bases (≥75% opacity) beneath blurs to ensure text readability.",
+      "Use blur on the bottom tab bar and floating action mic button."
+    ],
+    "dont's": [
+      "Don't blur body text or dense list rows; keep text crisp.",
+      "Don't use light/white glass on this app; stick to dark slate-tinted glass."
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Home Dashboard",
+      "purpose": "Serve as the primary AI HUD, combining the voice companion orb with a live grid of critical telemetry gauges.",
+      "states": {
+        "loading": "Centered glowing cyan pulse.",
+        "empty": "No vehicle connected: Show stylized OBD-II connection prompt.",
+        "error": "OBD-II Connection failed with retry button."
+      },
+      "layout": "Top half: Cinematic hero section containing the pulsing AI orb, an active status string ('System Nominal'), and a real-time OBD-II connection badge. Bottom half: A multi-column grid of modular gauges (RPM, Voltage, Temp) utilizing the display font for large metrics. A sticky FAB at the bottom center for voice activation."
+    },
+    {
+      "name": "Live Diagnostics",
+      "purpose": "Provide deep, real-time sensor streams and charting for mechanic-level analysis.",
+      "states": {
+        "loading": "Skeleton grids for charts.",
+        "empty": "No active data streams selected.",
+        "error": "Sensor timeout error banner."
+      },
+      "layout": "Top section: Interactive, animated line graph for primary selected sensor (e.g., Boost/MAP). Bottom section: Scrollable list of active sensors with mini sparklines and live values. Use dark-first utility separators instead of heavy cards to maximize data density."
+    },
+    {
+      "name": "AI Repair Assistant",
+      "purpose": "Conversational interface allowing natural language queries combined with live sensor context.",
+      "states": {
+        "loading": "Jarvis orb 'thinking' animation in chat.",
+        "empty": "Welcome prompt: 'What diagnostic trouble codes should we look at?'",
+        "error": "Network timeout for AI response."
+      },
+      "layout": "Standard chat layout but futuristic. User bubbles are subtle, JARVIS bubbles are glassmorphic and rich (e.g., returning interactive component cards for 'Service Manuals' or 'Wiring Diagrams' right inside the chat flow)."
+    },
+    {
+      "name": "Vehicle Health",
+      "purpose": "Overview of system status, DTCs, and predictive maintenance alerts.",
+      "states": {
+        "loading": "Scanning vehicle modules animation.",
+        "empty": "All systems clear, no maintenance required.",
+        "error": "Failed to pull ECU data."
+      },
+      "layout": "Hero uses the side-profile sports car image with a heavy gradient-to-dark scrim. Below it, large color-coded health scores (Green/Yellow/Red) for Engine, Transmission, Electrical, etc. Expandable accordion list for active Diagnostic Trouble Codes (DTCs)."
+    }
+  ],
+  "images": {
+    "ai_orb_avatar": {
+      "url": "https://images.unsplash.com/photo-1677080865283-26f94ed332f1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdsb3dpbmclMjBjeWFuJTIwYmx1ZSUyMGFpJTIwb3JiJTIwZnV0dXJpc3RpY3xlbnwwfHx8fDE3ODU3ODc0NzR8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Glowing cyan blue abstract AI orb"
+    },
+    "garage_hero": {
+      "url": "https://images.unsplash.com/photo-1719467292463-9a9a3490d69e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MTJ8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbWV0YWxsaWMlMjBzcG9ydHMlMjBjYXIlMjBzaWRlJTIwcHJvZmlsZSUyMDNkJTIwcmVuZGVyfGVufDB8fHx8MTc4NTc4NzQ3M3ww&ixlib=rb-4.1.0&q=85",
+      "alt": "Dark metallic sports car side profile"
+    },
+    "engine_bay_background": {
+      "url": "https://images.unsplash.com/photo-1654616111851-5394318e3279?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxjYXIlMjBlbmdpbmUlMjBiYXklMjBkZXRhaWxlZCUyMG1lY2hhbmljfGVufDB8fHx8MTc4NTc4NzQ3M3ww&ixlib=rb-4.1.0&q=85",
+      "alt": "Detailed car engine bay mechanic view"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly follow the user's explicit request for glowing Cyan (#00E5FF) and Blue (#0055FF) accents, which overrides the standard blue ban.",
+    "Implement the UI with a 'Dark-First Utility' density for the gauges, but apply 'Glass/Luxe' translucent blur layers over the dark canvas for a premium holographic AI HUD feel.",
+    "Use Rajdhani exclusively for metrics, gauge readouts, and big numbers. Use Satoshi for all body text and UI labels.",
+    "Create a pulsing animation for the JARVIS AI orb on the Home Dashboard using react-native-reanimated. It should feel like it's breathing or listening.",
+    "For any images (like the sports car profile), you MUST overlay a top-to-bottom vertical linear gradient scrim (transparent to ≥80% surfaceInverse) so overlaid health scores and text remain completely legible.",
+    "The data grids (battery voltage, RPM, temps) should look like high-performance telemetry—use monospaced tabular numbers or the display font, avoiding soft rounded cards in favor of sharp, technical dividers."
+  ]
+}
