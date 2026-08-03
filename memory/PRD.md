@@ -18,6 +18,13 @@ Futuristic mobile app "JARVIS AI": intelligent automotive assistant, personal AI
 ## Core Requirements (static)
 - Live HUD dashboard, conversational diagnostics with live-sensor context, voice in/out, vehicle health scoring, garage management, secure profiles.
 
+## Implemented (2026-08-03) — Iteration 4: VIN Decode Enrichment
+- Separate VIN service layer (`src/vehicle/vin/`): ISO 3779 checksum + format validator, offline local decoder (WMI→make/country, year char, plant), and `vinService` orchestrator (cache → backend → local fallback) that works OFFLINE after first decode (cached in storage by VIN).
+- Backend `POST /api/vin/decode`: multi-provider — tries NHTSA vPIC (real, keyless) then local WMI/checksum fallback; returns year/make/model/trim/engine/transmission/drivetrain/plant/country + confidence + source + checksumValid.
+- Auto-enrichment after connect: VIN decoded, merged into vehicle identity (`enrichIdentity`), JARVIS voice announces "Vehicle identified…", enriched profile saved to Garage and linked to scan reports; identity (year/make/model/trim/engine/VIN) injected into AI chat + DTC analysis context so JARVIS understands the exact platform.
+- Connection Center UI: vehicle preview placeholder, confidence % pill, VIN, year/make/model, engine/transmission, decode-source line, and "ECU MODULES DETECTED" chips.
+- Verified: backend 19/19 pytest; all frontend VIN + regression flows pass. NHTSA returned Jeep Wrangler Unlimited Sahara / Toledo / 3.6L / 4WD at 95% confidence.
+
 ## Implemented (2026-08-03) — Iteration 3: Native BLE production layer + Connection Diagnostics
 - ELM327 command engine (`src/vehicle/obd/elm327.ts`): GATT service auto-resolve, notification buffering, serialized command queue with per-request timeout + latency, AT handshake (ATZ/ATE0/ATL0/ATS0/ATH1/ATSP0), voltage (ATRV), protocol auto-detect (ATDPN → AUTO/CAN 11/29-bit/ISO9141/KWP/J1850), supported-PID discovery (0100/0120/0140/0160 bitmasks), 200-entry request/response log.
 - Pure OBD decoders (`src/vehicle/obd/decoders.ts`): Mode 01 PID map (30+ decoders), bitmask parser, Mode 03/07 DTC decode, Mode 09 VIN/CalID extraction, protocol name map.
