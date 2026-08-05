@@ -83,7 +83,31 @@ export async function exportPDF(rec: any, analysis?: string): Promise<string> {
   return shareFile(uri, "application/pdf");
 }
 
-// Comprehensive AI health report -> professional PDF.
+// Advanced scan workflow -> professional PDF.
+export async function exportScanPDF(scan: any): Promise<string> {
+  const esc = (t: string) => (t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const body = esc(scan.ai_report || "")
+    .replace(/\*\*(.+?)\*\*/g, '</p><h3 style="color:#00E5FF;font-size:13px;letter-spacing:1px;margin:16px 0 4px;">$1</h3><p style="color:#C3C8D6;font-size:13px;line-height:1.6;">')
+    .replace(/\n/g, "<br/>");
+  const dtcRows = (scan.dtcs || []).map((d: any) => `<tr><td style="padding:4px;color:#FF8A65;font-family:monospace;">${esc(d.code)}</td><td style="padding:4px;color:#C3C8D6;">${esc(d.desc || "")}</td></tr>`).join("");
+  const modChips = (scan.modules || []).map((m: any) => `<span style="display:inline-block;margin:2px;padding:3px 8px;border-radius:10px;background:#00E5FF22;color:#00E5FF;font-size:11px;">${esc(m.short || m.name)} · ${m.status === "online" ? "online" : "n/a"}</span>`).join("");
+  const html = `
+  <html><head><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
+  <body style="font-family:-apple-system,Helvetica,Arial;background:#06080D;color:#F0F2F5;padding:28px;">
+    <div style="border-bottom:2px solid #00E5FF;padding-bottom:12px;margin-bottom:12px;">
+      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">JARVIS AI · ${esc((scan.title || "SCAN").toUpperCase())}</div>
+      <h1 style="margin:6px 0;font-size:26px;">${esc(scan.vehicle || "Vehicle")}</h1>
+      <div style="color:#9AA0B1;font-size:13px;">Overall Score: <b style="color:#00E5FF;">${scan.overall_score ?? "—"}</b> · ${scan.vin || ""} · ${scan.created_at ? new Date(scan.created_at).toLocaleString() : ""}</div>
+    </div>
+    ${modChips ? `<h3 style="color:#00E5FF;font-size:13px;">MODULES</h3><div>${modChips}</div>` : ""}
+    ${dtcRows ? `<h3 style="color:#00E5FF;font-size:13px;margin-top:14px;">FAULT CODES</h3><table style="width:100%;border-collapse:collapse;">${dtcRows}</table>` : ""}
+    <h3 style="color:#00E5FF;font-size:13px;margin-top:16px;">ANALYSIS</h3>
+    <p style="color:#C3C8D6;font-size:13px;line-height:1.6;">${body}</p>
+  </body></html>`;
+  const { uri } = await Print.printToFileAsync({ html });
+  if (Platform.OS === "web") return "PDF generated (open the mobile app to share).";
+  return shareFile(uri, "application/pdf");
+}
 export async function exportHealthReportPDF(opts: { vehicle: string; mileage?: number | null; healthScore?: number | null; report: string; createdAt?: string }): Promise<string> {
   const body = (opts.report || "")
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")

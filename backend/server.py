@@ -1181,6 +1181,127 @@ async def create_health_report(vehicle_id: str, user=Depends(get_current_user)):
 
 
 
+
+# ============================================================================
+#  Advanced Diagnostics & ECU Intelligence
+#  AI interpretation (GPT-5.4) + persisted scan workflows. Module/readiness/
+#  Mode-06 data is derived client-side from the normalized provider outputs;
+#  these endpoints add AI narrative + report persistence only.
+# ============================================================================
+
+class InterpretInput(BaseModel):
+    kind: str                       # "module" | "system"
+    title: str                      # module or system name
+    vehicle: Optional[str] = ""
+    context: dict = {}              # signals / dtcs / metrics
+
+
+@api_router.post("/diagnostics/interpret")
+async def diagnostics_interpret(inp: InterpretInput, user=Depends(get_current_user)):
+    if inp.kind == "system":
+        prompt = (
+            f"You are analyzing the {inp.title} system of a {inp.vehicle}. "
+            f"Live/aggregated data: {inp.context}. Provide a concise technical interpretation with bold labels: "
+            "Assessment; Notable Readings; Likely Concerns; Recommended Checks. 4-8 short lines."
+        )
+    else:
+        prompt = (
+            f"Assess the health of the {inp.title} module on a {inp.vehicle}. "
+            f"Diagnostic context (fault codes, communication metrics): {inp.context}. "
+            "Provide bold-labeled sections: Assessment; Fault Analysis; Communication Reliability; Recommended Action. Be concise and technical."
+        )
+    try:
+        chat_client = LlmChat(
+            api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_interp_{inp.kind}_{inp.title[:12]}",
+            system_message=JARVIS_SYSTEM,
+        ).with_model("openai", "gpt-5.4")
+        text = await chat_client.send_message(UserMessage(text=prompt))
+        text = text if isinstance(text, str) else str(text)
+    except Exception as e:
+        logger.error(f"interpret error: {e}")
+        raise HTTPException(status_code=500, detail="Interpretation unavailable")
+    return {"interpretation": text}
+
+
+class ScanInput(BaseModel):
+    vehicle_id: Optional[str] = None
+    vin: Optional[str] = ""
+    vehicle: Optional[str] = ""
+    workflow: str                   # full | quick | health | prepurchase | charging | cooling
+    modules: List[dict] = []
+    dtcs: List[dict] = []
+    readiness: List[dict] = []
+    systems: List[dict] = []
+    metrics: dict = {}
+    overall_score: Optional[int] = None
+
+
+WORKFLOW_TITLES = {
+    "full": "Full Vehicle Scan", "quick": "Quick Scan", "health": "Health Check",
+    "prepurchase": "Pre-Purchase Inspection", "charging": "Charging System Test",
+    "cooling": "Cooling System Evaluation",
+}
+
+
+@api_router.post("/scans")
+async def create_scan(inp: ScanInput, user=Depends(get_current_user)):
+    title = WORKFLOW_TITLES.get(inp.workflow, "Vehicle Scan")
+    findings = ""
+    try:
+        chat_client = LlmChat(
+            api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_scan_{uuid.uuid4()}",
+            system_message=JARVIS_SYSTEM,
+        ).with_model("openai", "gpt-5.4")
+        prompt = (
+            f"Generate a professional {title} report for a {inp.vehicle}. "
+            f"Detected modules: {inp.modules}. Fault codes: {inp.dtcs}. Readiness monitors: {inp.readiness}. "
+            f"System health: {inp.systems}. Reliability metrics: {inp.metrics}. Overall score: {inp.overall_score}. "
+            "Structure with bold-labeled sections appropriate to the workflow: Summary; Modules Scanned; "
+            "Fault Codes; Readiness; System Health; Concerns; Recommended Actions. Be concise and technical."
+        )
+        findings = await chat_client.send_message(UserMessage(text=prompt))
+        findings = findings if isinstance(findings, str) else str(findings)
+    except Exception as e:
+        logger.error(f"scan report error: {e}")
+        findings = "AI report unavailable. Review the structured results below."
+    sid = str(uuid.uuid4())
+    doc = {
+        "_id": sid, "user_id": user["_id"], "vehicle_id": inp.vehicle_id, "vin": inp.vin,
+        "vehicle": inp.vehicle, "workflow": inp.workflow, "title": title,
+        "modules": inp.modules, "dtcs": inp.dtcs, "readiness": inp.readiness,
+        "systems": inp.systems, "metrics": inp.metrics, "overall_score": inp.overall_score,
+        "ai_report": findings, "created_at": now_iso(),
+    }
+    await db.scans.insert_one(doc)
+    return _clean(doc) | {"id": sid}
+
+
+@api_router.get("/scans")
+async def list_scans(vehicle_id: Optional[str] = None, user=Depends(get_current_user)):
+    q = {"user_id": user["_id"]}
+    if vehicle_id:
+        q["vehicle_id"] = vehicle_id
+    docs = await db.scans.find(q, {"modules": 0, "systems": 0}).sort("created_at", -1).to_list(100)
+    out = []
+    for d in docs:
+        out.append(_clean(d) | {"id": d["_id"]})
+    return out
+
+
+@api_router.get("/scans/{scan_id}")
+async def get_scan(scan_id: str, user=Depends(get_current_user)):
+    d = await db.scans.find_one({"_id": scan_id, "user_id": user["_id"]})
+    if not d:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    return _clean(d) | {"id": d["_id"]}
+
+
+@api_router.delete("/scans/{scan_id}")
+async def delete_scan(scan_id: str, user=Depends(get_current_user)):
+    await db.scans.delete_one({"_id": scan_id, "user_id": user["_id"]})
+    return {"ok": True}
+
+
 app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,

@@ -1,0 +1,46 @@
+{
+  "summary": "Iteration-8 Advanced Vehicle Diagnostics & ECU Intelligence fully verified end-to-end. BACKEND: 16/16 pytest PASS in test_diagnostics.py — auth 401 boundaries on /diagnostics/interpret + /scans (POST/GET/list/DELETE), interpret returns non-empty GPT text for both kind=system and kind=module, POST /scans persists all 6 workflows (full/quick/health/prepurchase/charging/cooling) with non-empty ai_report (GPT-5.4), GET /scans list projection correctly excludes modules & systems while keeping workflow/overall_score/vehicle_id, GET ?vehicle_id= narrows to user+vehicle, single-scan GET returns full doc incl modules(2)/systems(2)/dtcs(4), unknown id returns 404, DELETE removes and subsequent GET → 404. FRONTEND (390x844 mobile web): login mechanic@jarvis.ai. Simulation auto-connect on Command shows OBD-II LINKED + 4 seeded DTCs (P0300/P0171/P0128/P0456). Diagnostics tab labelled 'Live' renders diag-tools row with all 6 tools (tool-ecu/sysmon/scan/live/recorder/conn); tool-live active/non-nav; other 5 route to correct screens. ECU Modules screen: MODULES tab shows 4 detected modules (PCM ONLINE 22 score 96%comm 4 DTC, EPS/HVAC/TPMS ONLINE 96 No faults 96%comm) — tapping PCM expands to show supported functions (Mode01-09), active issues (P0300/P0171/P0128) and historical (P0456), ai-module-pcm triggers GPT which populates ai text (Assessment/Fault Analysis/Communication Reliability/Recommended Action). DIAGNOSTIC DATA tab renders vin-verify (VIN 1C4HJXEG9JW174532 valid/OBD), dtc-classes with Stored(2)/Pending(1)/Permanent(1) breakdown, readiness (Misfire/Fuel/EVAP NOT READY, Comprehensive/Catalyst/O2 Sensor Heater/EGR READY, Heated Cat/Secondary Air N/A), mode06 and reliability cards all present. System Monitor screen: 6 selector chips (engine/transmission/charging/cooling/fuel/emissions), sys-status banner, sys-chart trend, 7 sys-pid rows, sys-interpret triggers GPT, sys-ai renders 'Assessment/Notable Readings/Likely Concerns/Recommended Checks'. Advanced Scan screen: 6 workflow cards; Quick Scan tap → scan-running animated sweep → navigation to /scan-report?id=<uuid> in <30s. Scan Report shows scan-score (51/100 ring), Fault Codes(4) with CURRENT/PENDING/PERMANENT tags, DATA QUALITY (98% Comm EXCELLENT), scan-ai GPT report with bold-labeled sections, report-export triggers PDF alert (web). Returning to Advanced Scan populates Recent Scans list with the saved scan (scan-<id>). Vehicle Profile deep-links from garage → 2018 Jeep Wrangler card: act-ecu → /ecu-modules?id=<vid>, act-sysmon → /system-monitor?id=<vid>, act-scan → /advanced-scan?id=<vid> — all three open the SAME shared screens with vehicle preselected (recent-scans filter by vehicle_id correctly returns empty for this vehicle since none tied to it yet). No red-screen errors. Only carried-over cosmetic RN-web warnings (shadow*/pointerEvents). No new deprecated Expo packages detected.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "global", "issues": ["RN-web deprecation warnings persist (shadow*/pointerEvents) — cosmetic, carried over from prior iterations."]}
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Deprecation warning: shadowColor/shadowOpacity/shadowRadius still present on RN-web. Cosmetic only. Migrate to boxShadow. Reference: multiple files in /app/frontend/app/*.tsx."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_diagnostics.py",
+    "/app/test_reports/pytest/iteration_8.xml",
+    "/app/test_reports/iteration_8.json"
+  ],
+  "action_items": [
+    "OPTIONAL cosmetic (carried over): migrate shadow* → boxShadow across StyleSheet blocks; migrate pointerEvents prop → style.pointerEvents.",
+    "OPTIONAL UX: Advanced Scan requires connection state; on a hard-reload to /advanced-scan the simulation provider hasn't auto-connected yet and an Alert fires. Consider auto-triggering simulation connect on mount of shared diagnostics screens or showing an in-page 'Connecting…' skeleton for a beat instead of blocking with an Alert. Not blocking — in-app navigation works fine."
+  ],
+  "critical_code_review_comments": [
+    "server.py:1199 diagnostics_interpret — Prompts differentiate module vs system with proper bold-labeled section templates; graceful 500 on GPT failure. Session_id includes user id + kind + title[:12] for isolation. Good.",
+    "server.py:1246 create_scan — Persists modules/dtcs/readiness/systems/metrics/overall_score + workflow title mapping. If GPT fails, falls back to 'AI report unavailable. Review the structured results below.' (still 200 with ai_report string) — great UX contract; frontend never sees a broken doc.",
+    "server.py:1279 list_scans — Uses {\"modules\":0,\"systems\":0} projection to keep payloads small on list; user_id + optional vehicle_id filter; sorted desc by created_at limit 100. Correct.",
+    "server.py:1291 get_scan/delete_scan — Both scoped by user_id (auth-safe); get returns 404 when not found (verified in tests).",
+    "server.py: file is now 1317 lines — well beyond the 700-line advisory limit. Recommend splitting into modules (auth, vehicles, intelligence, diagnostics/scans) — carried over from iter-7; not blocking.",
+    "advanced-scan.tsx:35 — start() Alert.alert on !connected: on web this becomes a blocking window.alert. Consider a non-blocking inline banner + auto-connect kick. Minor UX.",
+    "ecu-modules.tsx:74 — testID sits on outer View but the tap target is inner Pressable (cardTop). Works when tapping the visual card top area; automated testing needs to target the inner Pressable. Consider hoisting testID onto the Pressable or wrapping the whole card in a single Pressable.",
+    "scan-report.tsx:144 — report-export gracefully handles web via informational Alert per spec. Good.",
+    "All new screens honor safe-area insets, use StyleSheet.create, wrap text in <Text>, and expose testIDs on every interactive element as required by the code-review guidelines."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_diagnostics.py (new — 16 pytest tests covering interpret system/module, all 6 scan workflows persistence, list projection & vehicle_id filter, single-scan GET/DELETE, 404, and 401 auth guards)"
+  ],
+  "success_rate": {"backend": "100% (16/16 diagnostics tests)", "frontend": "100% (all 6 diag tools + 4 ECU modules + PCM expand + AI + 5 diagnostic-data sections + 6 system chips + sys AI + 6 workflow cards + scan run→report navigation + scan-score/ai/export + recent-scans list + 3 vehicle-profile deep-links)"},
+  "seed_data_creation": "Test suite creates ephemeral scans (all 6 workflows + TEST DEL) and deletes them at teardown. One residual Quick Scan created via UI on the seeded mechanic account is left in place for retest visibility (score 51, no vehicle_id).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Diagnostics testIDs: diag-tools + tool-ecu/sysmon/scan/live/recorder/conn (Live tab). ECU: ecu-back, ecu-tab-modules/ecu-tab-data, module-<key> (pcm/eps/hvac/tpms), ai-module-<key>, vin-verify, dtc-classes, readiness, mode06, reliability. System Monitor: sysmon-back, sys-<key> (engine/transmission/charging/cooling/fuel/emissions), sys-status, sys-chart, sys-pid-<name>, sys-interpret, sys-ai. Advanced Scan: scan-back, scan-running, workflow-<key> (full/quick/health/prepurchase/charging/cooling), scan-<scanId>. Scan Report: report-back, scan-score, scan-ai, report-export. Vehicle Profile deep-links: act-ecu, act-sysmon, act-scan. To keep simulation connected across screens, do NOT hard-reload; navigate via tab bar or in-app router.push. Direct navigation to /advanced-scan on a fresh page shows 'Connect to a vehicle' warning + blocks scan-run with an Alert until simulation auto-connects (~few sec after Command tab renders). Backend base: https://jarvis-ai-1486.preview.emergentagent.com. Auth: mechanic@jarvis.ai / Jarvis2026!. Quick Scan is fastest (2.2s sweep + GPT).",
+  "rca_of_issue": "N/A — all iteration-8 Advanced Diagnostics & ECU Intelligence features (backend interpret + scan CRUD + AI GPT-5.4 report; frontend ECU Modules, System Monitor, Advanced Scan, Scan Report; deep-link cards on Vehicle Profile) passed integration testing."
+}

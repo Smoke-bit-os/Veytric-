@@ -15,6 +15,15 @@ const CHART_SENSORS = CHART_KEYS.map((k) => PID_CATALOG.find((p) => p.key === k)
 const fmt = (v: any, decimals = 0) =>
   typeof v === "number" ? (decimals ? v.toFixed(decimals) : Math.round(v)) : v;
 
+function Tool({ testID, icon, label, onPress, active }: { testID: string; icon: string; label: string; onPress?: () => void; active?: boolean }) {
+  return (
+    <Pressable testID={testID} style={[styles.tool, active && styles.toolActive]} onPress={onPress} disabled={!onPress}>
+      <MaterialCommunityIcons name={icon as any} size={22} color={active ? colors.brand : colors.onSurface} />
+      <Text style={[styles.toolText, active && { color: colors.brand }]}>{label}</Text>
+    </Pressable>
+  );
+}
+
 export default function Diagnostics() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -52,6 +61,16 @@ export default function Diagnostics() {
       </View>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 110, paddingTop: 8 }} showsVerticalScrollIndicator={false}>
+        {/* Diagnostic tools */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.toolsRow} testID="diag-tools">
+          <Tool testID="tool-ecu" icon="chip" label="ECU Modules" onPress={() => router.push("/ecu-modules")} />
+          <Tool testID="tool-sysmon" icon="monitor-dashboard" label="System Monitor" onPress={() => router.push("/system-monitor")} />
+          <Tool testID="tool-scan" icon="radar" label="Advanced Scan" onPress={() => router.push("/advanced-scan")} />
+          <Tool testID="tool-live" icon="pulse" label="Live Data" active />
+          <Tool testID="tool-recorder" icon="record-circle" label="Recorder" onPress={() => router.push("/record")} />
+          <Tool testID="tool-conn" icon="access-point-network" label="Connection" onPress={() => router.push("/ble-diagnostics")} />
+        </ScrollView>
+
         <View style={styles.chartCard} testID="live-chart">
           <View style={styles.chartHeader}>
             <Text style={styles.chartLabel}>{meta.label.toUpperCase()}</Text>
@@ -188,4 +207,8 @@ const styles = StyleSheet.create({
   recFab: { position: "absolute", alignSelf: "center", borderRadius: radius.pill, overflow: "hidden", shadowColor: colors.error, shadowOpacity: 0.6, shadowRadius: 12, elevation: 8 },
   recFabGrad: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 22, paddingVertical: 13 },
   recFabText: { color: "#fff", fontWeight: "800", letterSpacing: 1, fontSize: 13 },
+  toolsRow: { gap: spacing.sm, paddingHorizontal: spacing.lg, paddingBottom: spacing.md },
+  tool: { width: 92, alignItems: "center", gap: 6, paddingVertical: spacing.md, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surfaceSecondary },
+  toolActive: { borderColor: colors.brand, backgroundColor: colors.brandTertiary },
+  toolText: { color: colors.onSurface, fontSize: 11, fontWeight: "600", textAlign: "center" },
 });

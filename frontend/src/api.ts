@@ -63,6 +63,12 @@ export const api = {
   vehicleDashboard: (id: string) => request(`/vehicles/${id}/dashboard`),
   getHealthReport: (id: string) => request(`/vehicles/${id}/health-report`),
   createHealthReport: (id: string) => request(`/vehicles/${id}/health-report`, { method: "POST" }),
+
+  interpretDiagnostics: (payload: any) => request("/diagnostics/interpret", { method: "POST", body: JSON.stringify(payload) }),
+  createScan: (payload: any) => request("/scans", { method: "POST", body: JSON.stringify(payload) }),
+  listScans: (vehicleId?: string) => request(`/scans${vehicleId ? `?vehicle_id=${vehicleId}` : ""}`),
+  getScan: (id: string) => request(`/scans/${id}`),
+  deleteScan: (id: string) => request(`/scans/${id}`, { method: "DELETE" }),
   createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),
   getReport: (id: string) => request(`/reports/${id}`),

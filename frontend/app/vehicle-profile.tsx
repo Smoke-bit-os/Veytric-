@@ -101,6 +101,9 @@ export default function VehicleProfile() {
           <ActionCard testID="act-repairs" icon="car-wrench" label="Repair Log" onPress={() => router.push(`/repair-log?id=${id}`)} />
           <ActionCard testID="act-report" icon="clipboard-pulse" label="Health Report" onPress={() => router.push(`/health-report?id=${id}`)} />
           <ActionCard testID="act-sessions" icon="chart-line" label="Sessions" onPress={() => router.push(`/recordings?vehicle_id=${id}`)} />
+          <ActionCard testID="act-ecu" icon="chip" label="ECU Modules" onPress={() => router.push(`/ecu-modules?id=${id}`)} />
+          <ActionCard testID="act-sysmon" icon="monitor-dashboard" label="System Monitor" onPress={() => router.push(`/system-monitor?id=${id}`)} />
+          <ActionCard testID="act-scan" icon="radar" label="Advanced Scan" onPress={() => router.push(`/advanced-scan?id=${id}`)} />
         </View>
 
         {/* Specs */}

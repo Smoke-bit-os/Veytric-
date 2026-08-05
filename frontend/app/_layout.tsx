@@ -54,6 +54,10 @@ export default function RootLayout() {
                 <Stack.Screen name="trends" options={{ presentation: "card", animation: "slide_from_right" }} />
                 <Stack.Screen name="repair-log" options={{ presentation: "card", animation: "slide_from_right" }} />
                 <Stack.Screen name="health-report" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="ecu-modules" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="system-monitor" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="advanced-scan" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="scan-report" options={{ presentation: "card", animation: "slide_from_right" }} />
               </Stack>
             </RecordingProvider>
           </TelemetryProvider>
