@@ -1,0 +1,39 @@
+{
+  "summary": "Iteration-5 Vehicle Intelligence Layer fully verified end-to-end. Backend: 28/28 pytest tests PASS. New endpoints all working: POST /api/vehicles/upsert-by-vin is idempotent per user+VIN (first call created=true, repeat returns created=false with same id and refreshed last_scan_at; bodyStyle/manufacturer/plant/decode_confidence/decode_source fields persisted). PATCH /api/vehicles/{id} updates name+mileage and reflects on GET; unknown id -> 404. POST /api/vehicles/{id}/history/{kind} works for maintenance|parts|dtc, invalid kind -> 400, entries aggregate correctly under GET /api/vehicles/{id}.history buckets. POST /api/vehicles/{id}/health appends samples (verified last 3 = [81,79,84]); unknown vehicle -> 404. GET /api/vehicles/{id} aggregates history + linked reports via BOTH VIN string match AND vehicle_id, and returns 404 for unknown id. /api/vin/decode 1C4HJXEG9JW174532 now returns bodyStyle + manufacturer (NHTSA source, non-empty). Invalid VIN 'BADVIN123' -> validFormat=false, confidence=0. FRONTEND (390x844 mobile): Home 'obd-indicator' -> /connect auto-scans, shows identity-card (2018 JEEP Wrangler Unlimited Sahara, 95% MATCH, VIN 1C4HJXEG9JW174532, VIN decoded via NHTSA · TOLEDO, ECU modules ECM/TCM/ABS-ESP/BCM/PCM/TCCM/IPC/SRS), 'known-issues-note' ('JARVIS loaded 4 common failure patterns for this platform'), and 'save-to-garage' transitions to 'SAVED TO GARAGE'. Garage tab shows 2018 JEEP Wrangler card with CONNECTED indicator; tap 'profile-{id}' -> /vehicle-profile shows SPECIFICATIONS grid, COMMON FAILURE PATTERNS (Death wobble/Oil cooler leak P0129/TIPM electrical/Rough idle-misfire P0300·P0301), MILEAGE stat editable via 'edit-mileage'->'entry-f1'->'entry-save' (72,500 persisted), Scan History (3 linked reports auto-aggregated by VIN), health sparkline (score 88 latest), 'add-maintenance'/'add-parts' modals with entry-f1+entry-f2+entry-save all functional (TEST_OilChange + TEST_AirFilter persisted). REGRESSION: login, home command gauges (SYSTEM NOMINAL, 4 active codes, live telemetry RPM/coolant/oil/battery/boost/throttle/charging/fuel trims), Connection Diagnostics /ble-diagnostics (LINK ACTIVE, ISO 15765-4 CAN, 43 SUPPORTED PIDs, freeze frame Load button, OBD-II REQ/RES log), Vehicle Health (score 82, AI Diagnostic Findings 'Misfire detected 82%', 12 system scores incl. Engine/Trans/Fuel/Ignition/Cooling/Charging/Emissions/Electrical/ABS/Steering/Airbags/Drivetrain, DTC P0300 visible), Reports list visible, AI chat & login flows unchanged. Deprecated packages detected: none. Minor: RN-web cosmetic warnings (shadow*, pointerEvents, Image resizeMode) still present from previous iteration - not blocking. Note: direct /live URL still returns 'Unmatched Route' but 43 PIDs is verified on /ble-diagnostics.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "global", "issues": ["RN-web deprecation warnings persist: shadow* style props, props.pointerEvents, Image style.resizeMode. Cosmetic only. Carried over from iteration-4 report."]}
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Deprecation warning on multiple screens - migrate to boxShadow. Reference: /app/frontend/app/connect.tsx and StyleSheet blocks across screens."},
+      {"component": "props.pointerEvents", "issue": "Deprecation warning on Home and Health screens - move into style prop."},
+      {"component": "Image style.resizeMode", "issue": "Deprecation warning - use resizeMode prop directly on <Image>."}
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_5.json",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/iteration_5.xml"
+  ],
+  "action_items": [
+    "COSMETIC (carried over): Migrate shadow* -> boxShadow, move pointerEvents/resizeMode off style prop for RN-web parity.",
+    "OPTIONAL: /live direct URL returns 'Unmatched Route'; tab-only access. Consider adding a root route alias or making the (tabs)/live segment reachable directly. Not blocking."
+  ],
+  "critical_code_review_comments": [
+    "server.py:231 upsert-by-vin: correctly keyed on (user_id, vin); first-time active-if-only vehicle is set via count==0; decode_confidence/decode_source stored so profile can reflect enrichment. Returns {created, ...} shape as spec'd. Idempotency verified via 1s-delayed second call refreshing last_scan_at.",
+    "server.py:289 GET vehicles/{id}: aggregates history buckets and links reports via {vehicle_id} OR {vehicle regex=vin}. Note: if a report stores vehicle as a dict (not string), $regex will NOT match — safe today because create_report accepts Any and frontend saves a formatted string, but consider `{'vehicle.vin': vin}` OR `{vehicle_id: ...}` as a more robust query. Currently OK.",
+    "server.py:313 history endpoint: validates kind ∈ {maintenance,parts,dtc} with 400 on invalid; response cleaned of _id/user_id.",
+    "server.py:332 health endpoint: $push with $slice:-60 caps history nicely; 404 on unknown vehicle correct.",
+    "vehicle-profile.tsx: useFocusEffect refetches profile on re-focus — ensures newly added history/mileage shows. Modal reuses entry-f1/entry-f2/entry-save across mileage/maintenance/parts (good DRY)."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py (added 10 new tests: bodyStyle+manufacturer, upsert-by-vin idempotency, patch+get reflects, patch 404, history all-kinds+invalid, health sample append, health 404, get 404, reports aggregation by VIN string AND vehicle_id)"],
+  "success_rate": {"backend": "100% (28/28 pytest)", "frontend": "100% for all iteration-5 acceptance items (identity+known-issues+save-to-garage, profile aggregation, edit-mileage, add-maintenance, add-parts, health sparkline, common failure patterns) + 100% for regressions (login, home gauges, ble-diagnostics 43 PIDs + freeze-frame + OBD log, health 12 scores + P0300, reports)"},
+  "seed_data_creation": "Reused mechanic@jarvis.ai. Vehicle 2018 JEEP Wrangler (VIN 1C4HJXEG9JW174532) persisted from prior iteration; added TEST_OilChange maintenance entry, TEST_AirFilter parts entry, mileage 72500, and one additional linked report. Backend tests self-clean their TEST_ vehicles.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend BASE_URL = EXPO_PUBLIC_BACKEND_URL. Direct navigation to /live still returns 'Unmatched Route' - use /ble-diagnostics (shows 'SUPPORTED PIDs: 43') for 43-PIDs verification or navigate via bottom tab buttons. Vehicle Profile screen uses shared entry-f1/entry-f2/entry-save inputs across mileage/maintenance/parts modals — set modal state first, then fill fields. Known issues for JEEP Wrangler (getKnownIssues): Death wobble, Oil cooler leak, TIPM electrical, Rough idle/misfire (P0300/P0301). backend_test.py fixture upserted_vehicle auto-creates+cleans a TEST vehicle with VIN 1C4HJXEG9JW174532.",
+  "rca_of_issue": "N/A - all iteration-5 features and regressions passed. Backend curl-verified fix from previous iteration ($or malformed) confirmed working: linked reports aggregate by both vehicle_id and VIN regex."
+}

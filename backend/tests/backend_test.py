@@ -290,3 +290,189 @@ def test_vin_decode_cache_hit(client, auth):
     assert b1.get("vin") == b2.get("vin")
     assert b1.get("make") == b2.get("make")
     assert b1.get("year") == b2.get("year")
+
+
+# ---- VIN Decode body/manufacturer (iteration 5) ----
+def test_vin_decode_returns_body_and_manufacturer(client, auth):
+    r = client.post(f"{API}/vin/decode", json={"vin": "1C4HJXEG9JW174532"}, headers=auth, timeout=30)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert "bodyStyle" in body, f"missing bodyStyle: {body}"
+    assert "manufacturer" in body, f"missing manufacturer: {body}"
+    # If NHTSA succeeded, these should be non-empty
+    if body.get("source") == "nhtsa":
+        assert body.get("bodyStyle"), "expected non-empty bodyStyle from NHTSA"
+        assert body.get("manufacturer"), "expected non-empty manufacturer from NHTSA"
+
+
+# ---- Vehicle Profile / Upsert-by-VIN (iteration 5) ----
+TEST_VIN_A = "1C4HJXEG9JW174532"
+TEST_VIN_B = "1HGCM82633A004352"
+
+
+@pytest.fixture(scope="session")
+def upserted_vehicle(client, token):
+    hdr = {"Authorization": f"Bearer {token}"}
+    payload = {
+        "vin": TEST_VIN_A,
+        "nickname": "TEST_UpsertJeep",
+        "mileage": 68000,
+        "spec": {
+            "make": "JEEP", "model": "Wrangler", "year": 2018, "trim": "Unlimited Sahara",
+            "engine": "3.6L V6", "transmission": "8-speed", "drivetrain": "4WD",
+            "bodyStyle": "SUV", "manufacturer": "FCA US LLC", "plant": "TOLEDO",
+            "confidence": 0.95, "source": "nhtsa",
+        },
+    }
+    r = client.post(f"{API}/vehicles/upsert-by-vin", json=payload, headers=hdr, timeout=30)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    yield body
+    # Cleanup - delete any TEST_ vehicles at teardown
+    vid = body.get("id")
+    if vid:
+        client.delete(f"{API}/vehicles/{vid}", headers=hdr)
+
+
+def test_upsert_by_vin_creates_and_updates(client, auth):
+    payload = {
+        "vin": TEST_VIN_B,
+        "nickname": f"TEST_Civic_{uuid.uuid4().hex[:6]}",
+        "spec": {"make": "HONDA", "model": "Civic", "year": 2003, "bodyStyle": "SEDAN", "manufacturer": "HONDA OF AMERICA"},
+    }
+    r1 = client.post(f"{API}/vehicles/upsert-by-vin", json=payload, headers=auth, timeout=30)
+    assert r1.status_code == 200, r1.text
+    b1 = r1.json()
+    assert b1["created"] is True
+    assert b1["vin"] == TEST_VIN_B
+    assert b1.get("bodyStyle") == "SEDAN"
+    assert b1.get("manufacturer") == "HONDA OF AMERICA"
+    assert "id" in b1 and "last_scan_at" in b1
+    vid = b1["id"]
+    ts1 = b1["last_scan_at"]
+
+    # repeat -> created=False, same id, refreshed last_scan_at
+    import time as _t
+    _t.sleep(1.1)
+    payload2 = {**payload, "mileage": 55555}
+    r2 = client.post(f"{API}/vehicles/upsert-by-vin", json=payload2, headers=auth, timeout=30)
+    assert r2.status_code == 200
+    b2 = r2.json()
+    assert b2["created"] is False
+    assert b2["id"] == vid
+    assert b2.get("mileage") == 55555
+    assert b2["last_scan_at"] != ts1
+
+    # cleanup
+    client.delete(f"{API}/vehicles/{vid}", headers=auth)
+
+
+def test_patch_vehicle_and_get_reflects(client, auth, upserted_vehicle):
+    vid = upserted_vehicle["id"]
+    new_name = f"TEST_Renamed_{uuid.uuid4().hex[:5]}"
+    r = client.patch(f"{API}/vehicles/{vid}", json={"name": new_name, "mileage": 71234}, headers=auth, timeout=30)
+    assert r.status_code == 200, r.text
+    assert r.json().get("ok") is True
+
+    g = client.get(f"{API}/vehicles/{vid}", headers=auth, timeout=30)
+    assert g.status_code == 200
+    body = g.json()
+    assert body["name"] == new_name
+    assert body["mileage"] == 71234
+    # aggregated shape
+    assert "history" in body and set(["maintenance", "parts", "dtc"]).issubset(body["history"].keys())
+    assert "reports" in body and isinstance(body["reports"], list)
+
+
+def test_patch_unknown_vehicle_404(client, auth):
+    r = client.patch(f"{API}/vehicles/does-not-exist-xyz", json={"name": "x"}, headers=auth, timeout=30)
+    assert r.status_code == 404
+
+
+def test_history_add_all_kinds_and_invalid(client, auth, upserted_vehicle):
+    vid = upserted_vehicle["id"]
+    for kind, payload in [
+        ("maintenance", {"title": "TEST_OilChange", "detail": "5W-30 full synthetic"}),
+        ("parts", {"title": "TEST_AirFilter", "detail": "K&N drop-in"}),
+        ("dtc", {"title": "P0300", "detail": "Random misfire cleared"}),
+    ]:
+        r = client.post(f"{API}/vehicles/{vid}/history/{kind}", json=payload, headers=auth, timeout=30)
+        assert r.status_code == 200, f"{kind}: {r.text}"
+        body = r.json()
+        assert body["kind"] == kind
+        assert body["title"] == payload["title"]
+        assert "user_id" not in body and "_id" not in body
+
+    # invalid kind
+    r = client.post(f"{API}/vehicles/{vid}/history/bogus", json={"title": "x"}, headers=auth, timeout=30)
+    assert r.status_code == 400
+
+    # GET aggregates all three buckets
+    g = client.get(f"{API}/vehicles/{vid}", headers=auth, timeout=30)
+    assert g.status_code == 200
+    hist = g.json()["history"]
+    assert len(hist["maintenance"]) >= 1
+    assert len(hist["parts"]) >= 1
+    assert len(hist["dtc"]) >= 1
+
+
+def test_health_sample_append_and_get(client, auth, upserted_vehicle):
+    vid = upserted_vehicle["id"]
+    for s in (81, 79, 84):
+        r = client.post(f"{API}/vehicles/{vid}/health", json={"score": s}, headers=auth, timeout=30)
+        assert r.status_code == 200
+        assert r.json().get("ok") is True
+
+    g = client.get(f"{API}/vehicles/{vid}", headers=auth, timeout=30)
+    assert g.status_code == 200
+    hh = g.json().get("health_history", [])
+    assert len(hh) >= 3
+    scores = [h["score"] for h in hh[-3:]]
+    assert scores == [81, 79, 84]
+
+
+def test_health_sample_unknown_vehicle_404(client, auth):
+    r = client.post(f"{API}/vehicles/does-not-exist-xyz/health", json={"score": 50}, headers=auth, timeout=30)
+    assert r.status_code == 404
+
+
+def test_get_vehicle_unknown_404(client, auth):
+    r = client.get(f"{API}/vehicles/does-not-exist-xyz", headers=auth, timeout=30)
+    assert r.status_code == 404
+
+
+def test_get_vehicle_aggregates_reports_by_vin(client, auth, upserted_vehicle):
+    vid = upserted_vehicle["id"]
+    vin = upserted_vehicle["vin"]
+    # create a report whose vehicle.vin contains the upserted VIN (fresh so we know it exists)
+    # Two report shapes: (a) vehicle-as-string containing VIN, (b) vehicle_id link
+    payload_str = {
+        "vehicle": f"2018 Jeep Wrangler VIN:{vin}",
+        "dtcs": [{"code": "P0300", "desc": "Misfire", "type": "confirmed"}],
+        "signals_summary": {"rpm": 780},
+        "health_score": 82,
+    }
+    r = client.post(f"{API}/reports", json=payload_str, headers=auth, timeout=120)
+    assert r.status_code == 200
+    rid_str = r.json()["id"]
+
+    payload_id = {
+        "vehicle": "",
+        "vehicle_id": vid,
+        "dtcs": [{"code": "P0171", "desc": "Lean", "type": "confirmed"}],
+        "signals_summary": {"rpm": 800},
+        "health_score": 80,
+    }
+    r2 = client.post(f"{API}/reports", json=payload_id, headers=auth, timeout=120)
+    assert r2.status_code == 200
+    rid_id = r2.json()["id"]
+
+    g = client.get(f"{API}/vehicles/{vid}", headers=auth, timeout=30)
+    assert g.status_code == 200
+    reports = g.json().get("reports", [])
+    rep_ids = [rep.get("id") for rep in reports]
+    assert rid_str in rep_ids, f"report by VIN string not found in {rep_ids}"
+    assert rid_id in rep_ids, f"report by vehicle_id not found in {rep_ids}"
+    # ensure Mongo _id was excluded
+    for rep in reports:
+        assert "_id" not in rep and "user_id" not in rep

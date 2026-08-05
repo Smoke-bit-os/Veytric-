@@ -23,6 +23,7 @@ import {
 import AIOrb from "@/src/components/AIOrb";
 import { api } from "@/src/api";
 import { useTelemetry } from "@/src/telemetry";
+import { buildVehicleIntelligence } from "@/src/vehicle/enrichment/enrichmentService";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -80,9 +81,7 @@ export default function Assistant() {
         session_id: SESSION,
         message: msg,
         telemetry: snapshot,
-        vehicle: identity
-          ? `${identity.year} ${identity.make} ${identity.model} ${identity.trim} · ${identity.engine} · ${identity.transmission} · ${identity.driveType} · VIN ${identity.vin}`
-          : undefined,
+        vehicle: buildVehicleIntelligence(identity as any)?.platformSummary,
       });
       setMessages((m) => [...m, { role: "assistant", content: res.reply }]);
       speak(res.reply);

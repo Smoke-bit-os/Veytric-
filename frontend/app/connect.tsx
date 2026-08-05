@@ -16,6 +16,10 @@ import Animated, {
 import { createAudioPlayer, setAudioModeAsync } from "expo-audio";
 import { useVehicle } from "@/src/vehicle/service";
 import { vinService } from "@/src/vehicle/vin/vinService";
+import { profileService } from "@/src/vehicle/profile/profileService";
+import { recordRawVin } from "@/src/vehicle/enrichment/vinHistory";
+import { getKnownIssues } from "@/src/vehicle/database/knownIssues";
+import { computeSubsystems, overallHealth } from "@/src/vehicle/health";
 import { api } from "@/src/api";
 import { colors, font, radius, spacing } from "@/src/theme";
 
@@ -46,7 +50,7 @@ function Wave({ delay, active }: { delay: number; active: boolean }) {
 export default function ConnectionCenter() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { scan, connect, adapter, identity, mode, enrichIdentity } = useVehicle();
+  const { scan, connect, adapter, identity, mode, enrichIdentity, signals, dtcs } = useVehicle();
   const [phase, setPhase] = useState<Phase>("scanning");
   const [saved, setSaved] = useState(false);
   const [savedMsg, setSavedMsg] = useState("");
@@ -76,6 +80,7 @@ export default function ConnectionCenter() {
       try {
         const decoded = await vinService.decodeVin(idn.vin);
         enrichIdentity(decoded);
+        recordRawVin(idn.vin, mode === "ble" ? "ble-mode09" : "simulation");
         if (decoded.make && decoded.make !== "Unknown") {
           announce(`Vehicle identified. ${decoded.year || ""} ${decoded.make} ${decoded.model || ""}.`);
         }
@@ -95,16 +100,19 @@ export default function ConnectionCenter() {
   const saveToGarage = async () => {
     if (!identity) return;
     try {
-      await api.addVehicle({
-        name: `${identity.year} ${identity.make} ${identity.model}`,
-        make: identity.make,
-        model: identity.model,
-        year: identity.year,
-        engine: identity.engine,
-        vin: identity.vin,
-      });
+      const res = await profileService.upsertByVin(
+        identity.vin,
+        identity,
+        `${identity.year} ${identity.make} ${identity.model}`.trim()
+      );
+      try {
+        const health = overallHealth(
+          computeSubsystems({ signals, dtcs, identity, phase: "cruise", connected: true })
+        );
+        if (res?.id) await profileService.addHealthSample(res.id, health);
+      } catch {}
       setSaved(true);
-      setSavedMsg("Saved to Garage");
+      setSavedMsg(res?.created === false ? "Profile updated" : "Saved to Garage");
     } catch (e: any) {
       setSavedMsg(e.message || "Could not save");
     }
@@ -229,6 +237,13 @@ export default function ConnectionCenter() {
                 </View>
               </View>
             )}
+
+            <View style={styles.knownRow} testID="known-issues-note">
+              <MaterialCommunityIcons name="brain" size={14} color={colors.brand} />
+              <Text style={styles.knownText}>
+                JARVIS loaded {getKnownIssues(identity.make, identity.model).length} common failure patterns for this platform
+              </Text>
+            </View>
 
             <Pressable
               testID="save-to-garage"
@@ -381,6 +396,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   moduleText: { color: colors.onSurfaceTertiary, fontSize: 11 },
+  knownRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: spacing.md, marginBottom: spacing.xs },
+  knownText: { color: colors.onSurfaceSecondary, fontSize: 12, flex: 1 },
   idGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   saveBtn: {
     flexDirection: "row",

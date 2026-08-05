@@ -39,6 +39,14 @@ export const api = {
 
   analyzeDtc: (payload: any) => request("/dtc/analyze", { method: "POST", body: JSON.stringify(payload) }),
   decodeVin: (vin: string) => request("/vin/decode", { method: "POST", body: JSON.stringify({ vin }) }),
+
+  upsertVehicleByVin: (payload: any) => request("/vehicles/upsert-by-vin", { method: "POST", body: JSON.stringify(payload) }),
+  getVehicleProfile: (id: string) => request(`/vehicles/${id}`),
+  patchVehicle: (id: string, updates: any) => request(`/vehicles/${id}`, { method: "PATCH", body: JSON.stringify(updates) }),
+  addVehicleHistory: (id: string, kind: string, entry: any) =>
+    request(`/vehicles/${id}/history/${kind}`, { method: "POST", body: JSON.stringify(entry) }),
+  addVehicleHealth: (id: string, score: number) =>
+    request(`/vehicles/${id}/health`, { method: "POST", body: JSON.stringify({ score }) }),
   createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),
   getReport: (id: string) => request(`/reports/${id}`),

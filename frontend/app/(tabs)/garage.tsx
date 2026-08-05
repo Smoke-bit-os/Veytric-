@@ -128,15 +128,22 @@ export default function Garage() {
           vehicles.map((v) => (
             <View key={v.id} style={[styles.card, v.is_active && styles.cardActive]} testID={`vehicle-${v.id}`}>
               <View style={styles.cardTop}>
-                <MaterialCommunityIcons name="car-sports" size={26} color={v.is_active ? colors.brand : colors.onSurfaceSecondary} />
-                <View style={{ flex: 1, marginLeft: spacing.md }}>
-                  <Text style={styles.vName}>{v.name}</Text>
-                  <Text style={styles.vMeta}>
-                    {v.year} {v.make} {v.model}
-                    {v.engine ? ` · ${v.engine}` : ""}
-                  </Text>
-                </View>
-                <Pressable testID={`delete-${v.id}`} onPress={() => remove(v.id)} hitSlop={10}>
+                <Pressable
+                  testID={`profile-${v.id}`}
+                  style={styles.cardMain}
+                  onPress={() => router.push(`/vehicle-profile?id=${v.id}`)}
+                >
+                  <MaterialCommunityIcons name="car-sports" size={26} color={v.is_active ? colors.brand : colors.onSurfaceSecondary} />
+                  <View style={{ flex: 1, marginLeft: spacing.md }}>
+                    <Text style={styles.vName}>{v.name}</Text>
+                    <Text style={styles.vMeta}>
+                      {v.year} {v.make} {v.model}
+                      {v.engine ? ` · ${v.engine}` : ""}
+                    </Text>
+                  </View>
+                  <MaterialCommunityIcons name="chevron-right" size={20} color={colors.onSurfaceSecondary} />
+                </Pressable>
+                <Pressable testID={`delete-${v.id}`} onPress={() => remove(v.id)} hitSlop={10} style={{ marginLeft: spacing.sm }}>
                   <MaterialCommunityIcons name="trash-can-outline" size={20} color={colors.onSurfaceSecondary} />
                 </Pressable>
               </View>
@@ -255,6 +262,7 @@ const styles = StyleSheet.create({
   },
   cardActive: { borderColor: colors.brand },
   cardTop: { flexDirection: "row", alignItems: "center" },
+  cardMain: { flexDirection: "row", alignItems: "center", flex: 1 },
   vName: { color: colors.onSurface, fontFamily: font.display, fontSize: 20 },
   vMeta: { color: colors.onSurfaceSecondary, fontSize: 13, marginTop: 2 },
   activateBtn: {

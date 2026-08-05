@@ -167,10 +167,10 @@ async def me(user=Depends(get_current_user)):
 
 
 # ----------------------------- Routes: Vehicles -----------------------------
-@api_router.get("/vehicles", response_model=List[Vehicle])
+@api_router.get("/vehicles")
 async def list_vehicles(user=Depends(get_current_user)):
     docs = await db.vehicles.find({"user_id": user["_id"]}).sort("created_at", 1).to_list(100)
-    return [Vehicle(**{k: v for k, v in d.items() if k != "user_id" and k != "_id"}) for d in docs]
+    return [{k: v for k, v in d.items() if k not in ("user_id", "_id")} for d in docs]
 
 
 @api_router.post("/vehicles", response_model=Vehicle)
@@ -197,6 +197,147 @@ async def activate_vehicle(vehicle_id: str, user=Depends(get_current_user)):
 @api_router.delete("/vehicles/{vehicle_id}")
 async def delete_vehicle(vehicle_id: str, user=Depends(get_current_user)):
     await db.vehicles.delete_one({"id": vehicle_id, "user_id": user["_id"]})
+    await db.vehicle_history.delete_many({"vehicle_id": vehicle_id, "user_id": user["_id"]})
+    return {"ok": True}
+
+
+# ----------------------------- Routes: Vehicle Intelligence / Profile -------
+class VinUpsertInput(BaseModel):
+    vin: str
+    nickname: Optional[str] = ""
+    mileage: Optional[int] = None
+    spec: dict = {}
+
+
+class VehiclePatchInput(BaseModel):
+    name: Optional[str] = None
+    mileage: Optional[int] = None
+
+
+class HistoryEntryInput(BaseModel):
+    title: str
+    detail: Optional[str] = ""
+    meta: dict = {}
+
+
+class HealthSampleInput(BaseModel):
+    score: int
+
+
+def _clean(d: dict) -> dict:
+    return {k: v for k, v in d.items() if k not in ("user_id", "_id")}
+
+
+@api_router.post("/vehicles/upsert-by-vin")
+async def upsert_by_vin(inp: VinUpsertInput, user=Depends(get_current_user)):
+    vin = (inp.vin or "").strip().upper()
+    if not vin:
+        raise HTTPException(status_code=400, detail="VIN required")
+    spec = inp.spec or {}
+    existing = await db.vehicles.find_one({"user_id": user["_id"], "vin": vin})
+    fields = {
+        "make": spec.get("make", ""),
+        "model": spec.get("model", ""),
+        "year": spec.get("year", 0),
+        "trim": spec.get("trim", ""),
+        "engine": spec.get("engine", ""),
+        "transmission": spec.get("transmission", ""),
+        "drivetrain": spec.get("drivetrain", spec.get("driveType", "")),
+        "bodyStyle": spec.get("bodyStyle", ""),
+        "manufacturer": spec.get("manufacturer", ""),
+        "plant": spec.get("plant", ""),
+        "decode_confidence": spec.get("confidence", 0),
+        "decode_source": spec.get("source", spec.get("decodeSource", "")),
+        "last_scan_at": now_iso(),
+    }
+    if inp.mileage is not None:
+        fields["mileage"] = inp.mileage
+    if existing:
+        if inp.nickname:
+            fields["name"] = inp.nickname
+        await db.vehicles.update_one({"_id": existing["_id"]}, {"$set": fields})
+        doc = await db.vehicles.find_one({"_id": existing["_id"]})
+        return {"created": False, **_clean(doc)}
+    count = await db.vehicles.count_documents({"user_id": user["_id"]})
+    doc = {
+        "_id": str(uuid.uuid4()),
+        "id": str(uuid.uuid4()),
+        "user_id": user["_id"],
+        "vin": vin,
+        "name": inp.nickname or f"{fields['year']} {fields['make']} {fields['model']}".strip(),
+        "mileage": inp.mileage,
+        "is_active": count == 0,
+        "health_history": [],
+        "created_at": now_iso(),
+        **fields,
+    }
+    await db.vehicles.insert_one(doc)
+    return {"created": True, **_clean(doc)}
+
+
+@api_router.patch("/vehicles/{vehicle_id}")
+async def patch_vehicle(vehicle_id: str, inp: VehiclePatchInput, user=Depends(get_current_user)):
+    updates = {k: v for k, v in inp.dict().items() if v is not None}
+    if not updates:
+        return {"ok": True}
+    res = await db.vehicles.update_one({"id": vehicle_id, "user_id": user["_id"]}, {"$set": updates})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    return {"ok": True}
+
+
+@api_router.get("/vehicles/{vehicle_id}")
+async def get_vehicle_profile(vehicle_id: str, user=Depends(get_current_user)):
+    doc = await db.vehicles.find_one({"id": vehicle_id, "user_id": user["_id"]})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    hist = await db.vehicle_history.find({"vehicle_id": vehicle_id, "user_id": user["_id"]}).sort("ts", -1).to_list(300)
+    by_kind = {"maintenance": [], "parts": [], "dtc": []}
+    for h in hist:
+        by_kind.setdefault(h.get("kind", "other"), []).append(_clean(h))
+    vin = doc.get("vin", "")
+    or_clauses: list = [{"vehicle_id": vehicle_id}]
+    if vin:
+        or_clauses.append({"vehicle": {"$regex": vin}})
+    reports = await db.reports.find(
+        {"user_id": user["_id"], "$or": or_clauses}
+    ).sort("created_at", -1).to_list(100)
+    rep_out = []
+    for r in reports:
+        rc = _clean(r)
+        rc["id"] = r["_id"]
+        rep_out.append(rc)
+    return {**_clean(doc), "history": by_kind, "reports": rep_out}
+
+
+@api_router.post("/vehicles/{vehicle_id}/history/{kind}")
+async def add_history(vehicle_id: str, kind: str, inp: HistoryEntryInput, user=Depends(get_current_user)):
+    if kind not in ("maintenance", "parts", "dtc"):
+        raise HTTPException(status_code=400, detail="Invalid history kind")
+    entry = {
+        "_id": str(uuid.uuid4()),
+        "id": str(uuid.uuid4()),
+        "user_id": user["_id"],
+        "vehicle_id": vehicle_id,
+        "kind": kind,
+        "title": inp.title,
+        "detail": inp.detail,
+        "meta": inp.meta,
+        "ts": now_iso(),
+    }
+    await db.vehicle_history.insert_one(entry)
+    return _clean(entry)
+
+
+@api_router.post("/vehicles/{vehicle_id}/health")
+async def add_health_sample(vehicle_id: str, inp: HealthSampleInput, user=Depends(get_current_user)):
+    sample = {"ts": now_iso(), "score": inp.score}
+    res = await db.vehicles.update_one(
+        {"id": vehicle_id, "user_id": user["_id"]},
+        {"$push": {"health_history": {"$each": [sample], "$slice": -60}}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
     return {"ok": True}
 
 
@@ -407,6 +548,7 @@ def _nhtsa_decode(vin: str) -> Optional[dict]:
             "engine": engine, "transmission": res.get("TransmissionStyle") or "",
             "drivetrain": res.get("DriveType") or "", "plant": res.get("PlantCity") or "",
             "country": res.get("PlantCountry") or "", "ecu": res.get("VehicleType") or "",
+            "bodyStyle": res.get("BodyClass") or "", "manufacturer": res.get("Manufacturer") or "",
         }
     except Exception as e:
         logger.warning(f"nhtsa decode failed: {e}")
@@ -445,6 +587,7 @@ async def vin_decode(inp: VinInput, user=Depends(get_current_user)):
 # ----------------------------- Routes: Scan Reports -------------------------
 class ReportInput(BaseModel):
     vehicle: Any = ""
+    vehicle_id: Optional[str] = None
     dtcs: List[dict] = []
     signals_summary: dict = {}
     health_score: Optional[int] = None
@@ -479,6 +622,7 @@ async def create_report(inp: ReportInput, user=Depends(get_current_user)):
         "_id": rid,
         "user_id": user["_id"],
         "vehicle": inp.vehicle,
+        "vehicle_id": inp.vehicle_id,
         "dtcs": inp.dtcs,
         "signals_summary": inp.signals_summary,
         "health_score": inp.health_score,
