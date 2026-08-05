@@ -77,6 +77,23 @@ export default function Home() {
           </View>
         </LinearGradient>
 
+        {/* Performance Recorder CTA */}
+        <View style={styles.recRow}>
+          <Pressable
+            testID="home-start-recording"
+            style={styles.recCta}
+            onPress={() => router.push(connection === "connected" ? "/record" : "/connect")}
+          >
+            <LinearGradient colors={[colors.error, "#B71C1C"]} style={styles.recCtaGrad}>
+              <MaterialCommunityIcons name="record-circle" size={22} color="#fff" />
+              <Text style={styles.recCtaText}>{connection === "connected" ? "START RECORDING" : "CONNECT TO RECORD"}</Text>
+            </LinearGradient>
+          </Pressable>
+          <Pressable testID="home-sessions" style={styles.recHistory} onPress={() => router.push("/recordings")}>
+            <MaterialCommunityIcons name="history" size={22} color={colors.brand} />
+          </Pressable>
+        </View>
+
         {/* Gauges */}
         <Text style={styles.sectionTitle}>LIVE TELEMETRY</Text>
         <View style={styles.grid}>
@@ -153,6 +170,11 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   grid: { flexDirection: "row", gap: spacing.sm, paddingHorizontal: spacing.lg, marginBottom: spacing.sm },
+  recRow: { flexDirection: "row", gap: spacing.sm, paddingHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.md },
+  recCta: { flex: 1, borderRadius: radius.md, overflow: "hidden" },
+  recCtaGrad: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.sm, paddingVertical: 16 },
+  recCtaText: { color: "#fff", fontWeight: "800", letterSpacing: 1.2, fontSize: 14 },
+  recHistory: { width: 56, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surfaceSecondary, alignItems: "center", justifyContent: "center" },
   trims: {
     flexDirection: "row",
     backgroundColor: colors.surfaceSecondary,

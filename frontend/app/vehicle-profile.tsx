@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { profileService } from "@/src/vehicle/profile/profileService";
+import { api } from "@/src/api";
 import { getKnownIssues } from "@/src/vehicle/database/knownIssues";
 import { colors, font, radius, spacing } from "@/src/theme";
 
@@ -18,6 +19,7 @@ export default function VehicleProfile() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [profile, setProfile] = useState<any>(null);
+  const [perf, setPerf] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<null | "mileage" | "maintenance" | "parts">(null);
   const [f1, setF1] = useState("");
@@ -27,6 +29,7 @@ export default function VehicleProfile() {
   const load = useCallback(() => {
     if (!id) return;
     profileService.getProfile(id).then(setProfile).catch(() => {}).finally(() => setLoading(false));
+    api.vehiclePerformance(id).then(setPerf).catch(() => {});
   }, [id]);
 
   useFocusEffect(useCallback(() => { load(); }, [load]));
@@ -125,6 +128,39 @@ export default function VehicleProfile() {
               ))}
               <Text style={styles.sparkLast}>{health[health.length - 1].score}</Text>
             </View>
+          </>
+        )}
+
+        {/* Performance Recorder */}
+        <View style={styles.perfHead}>
+          <Text style={styles.sectionTitle}>PERFORMANCE</Text>
+          <Pressable testID="record-new-session" style={styles.recNewBtn} onPress={() => router.push("/record")}>
+            <MaterialCommunityIcons name="record-circle" size={14} color={colors.error} />
+            <Text style={styles.recNewText}>Record New</Text>
+          </Pressable>
+        </View>
+        {!perf || perf.count === 0 ? (
+          <Text style={styles.dim}>No recorded sessions yet for this vehicle.</Text>
+        ) : (
+          <>
+            <View style={styles.perfStatsRow}>
+              {perf.fastest ? <PerfBadge icon="speedometer" label="TOP SPEED" value={`${perf.fastest.maxSpeed} km/h`} /> : null}
+              {perf.highestRpm ? <PerfBadge icon="engine" label="PEAK RPM" value={`${perf.highestRpm.peakRpm}`} /> : null}
+              <PerfBadge icon="chart-line" label="SESSIONS" value={`${perf.count}`} />
+            </View>
+            {(perf.recent || []).slice(0, 4).map((r: any) => (
+              <Pressable key={r.id} testID={`perf-session-${r.id}`} style={styles.perfRow} onPress={() => router.push(`/playback?id=${r.id}`)}>
+                <MaterialCommunityIcons name="chart-bell-curve" size={18} color={colors.brand} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.perfName} numberOfLines={1}>{r.name}</Text>
+                  <Text style={styles.perfMeta}>{Math.round(r.duration || 0)}s · {r.distance ?? 0} km · Health {r.health_score ?? "—"}</Text>
+                </View>
+                <MaterialCommunityIcons name="chevron-right" size={18} color={colors.onSurfaceSecondary} />
+              </Pressable>
+            ))}
+            <Pressable testID="view-all-sessions" style={styles.viewAll} onPress={() => router.push(`/recordings?vehicle_id=${id}`)}>
+              <Text style={styles.viewAllText}>View all sessions</Text>
+            </Pressable>
           </>
         )}
 
@@ -233,6 +269,16 @@ function HistRow({ icon, e }: { icon: string; e: any }) {
   );
 }
 
+function PerfBadge({ icon, label, value }: { icon: string; label: string; value: string }) {
+  return (
+    <View style={styles.perfBadge}>
+      <MaterialCommunityIcons name={icon as any} size={18} color={colors.brand} />
+      <Text style={styles.perfBadgeVal}>{value}</Text>
+      <Text style={styles.perfBadgeLabel}>{label}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.surface },
   center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.surface },
@@ -276,4 +322,16 @@ const styles = StyleSheet.create({
   input: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, color: colors.onSurface, paddingHorizontal: spacing.lg, paddingVertical: 14, marginBottom: spacing.md, fontSize: 15 },
   saveBtn: { backgroundColor: colors.brand, borderRadius: radius.md, paddingVertical: 16, alignItems: "center" },
   saveText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1.5 },
+  perfHead: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" },
+  recNewBtn: { flexDirection: "row", alignItems: "center", gap: 4, borderWidth: 1, borderColor: colors.error, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 5, marginBottom: spacing.sm },
+  recNewText: { color: colors.error, fontWeight: "700", fontSize: 12 },
+  perfStatsRow: { flexDirection: "row", gap: spacing.sm, marginBottom: spacing.sm },
+  perfBadge: { flex: 1, alignItems: "center", gap: 2, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, paddingVertical: spacing.md },
+  perfBadgeVal: { color: colors.brand, fontFamily: font.display, fontSize: 18 },
+  perfBadgeLabel: { color: colors.onSurfaceSecondary, fontSize: 9, letterSpacing: 0.8 },
+  perfRow: { flexDirection: "row", alignItems: "center", gap: spacing.md, backgroundColor: colors.surfaceSecondary, borderRadius: radius.sm, borderWidth: 1, borderColor: colors.border, padding: spacing.md, marginBottom: spacing.xs },
+  perfName: { color: colors.onSurface, fontSize: 14 },
+  perfMeta: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 1 },
+  viewAll: { alignItems: "center", paddingVertical: spacing.sm },
+  viewAllText: { color: colors.brand, fontSize: 13, fontWeight: "600" },
 });

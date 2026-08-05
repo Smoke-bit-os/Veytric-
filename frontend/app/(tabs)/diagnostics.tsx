@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LineChart } from "react-native-gifted-charts";
 import { useVehicle } from "@/src/vehicle/service";
 import { PID_CATALOG } from "@/src/vehicle/health";
@@ -14,6 +17,7 @@ const fmt = (v: any, decimals = 0) =>
 
 export default function Diagnostics() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const { data, history } = useVehicle();
   const [selected, setSelected] = useState<string>("rpm");
   const width = Dimensions.get("window").width;
@@ -104,6 +108,19 @@ export default function Diagnostics() {
           </View>
         ))}
       </ScrollView>
+
+      {data.connected && (
+        <Pressable
+          testID="diag-record"
+          style={[styles.recFab, { bottom: insets.bottom + 84 }]}
+          onPress={() => router.push("/record")}
+        >
+          <LinearGradient colors={[colors.error, "#B71C1C"]} style={styles.recFabGrad}>
+            <MaterialCommunityIcons name="record-circle" size={20} color="#fff" />
+            <Text style={styles.recFabText}>RECORD LIVE SESSION</Text>
+          </LinearGradient>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -168,4 +185,7 @@ const styles = StyleSheet.create({
   rowLabel: { flex: 1, color: colors.onSurface, fontSize: 15 },
   rowValue: { color: colors.onSurface, fontFamily: font.display, fontSize: 20 },
   rowUnit: { fontSize: 11, color: colors.onSurfaceSecondary },
+  recFab: { position: "absolute", alignSelf: "center", borderRadius: radius.pill, overflow: "hidden", shadowColor: colors.error, shadowOpacity: 0.6, shadowRadius: 12, elevation: 8 },
+  recFabGrad: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 22, paddingVertical: 13 },
+  recFabText: { color: "#fff", fontWeight: "800", letterSpacing: 1, fontSize: 13 },
 });
