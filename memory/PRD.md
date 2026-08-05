@@ -18,6 +18,13 @@ Futuristic mobile app "JARVIS AI": intelligent automotive assistant, personal AI
 ## Core Requirements (static)
 - Live HUD dashboard, conversational diagnostics with live-sensor context, voice in/out, vehicle health scoring, garage management, secure profiles.
 
+## Implemented (2026-08-03) — Iteration 5: Vehicle Intelligence Layer
+- Modular additive layer (BLE transport + diagnostics engine untouched): `src/vehicle/database/` (knownIssues failure-pattern KB per make; simProfiles demo VINs), `src/vehicle/enrichment/` (vinHistory raw-VIN store with timestamp+source; enrichmentService → specs + common issues + AI platform summary), `src/vehicle/profile/` (profileService API wrapper).
+- Backend Vehicle Profile system: POST /api/vehicles/upsert-by-vin (idempotent per user+VIN), PATCH /api/vehicles/{id} (name/mileage), GET /api/vehicles/{id} (aggregated specs + health_history + history{maintenance,parts,dtc} + reports linked by vehicle_id OR VIN), POST /api/vehicles/{id}/history/{kind}, POST /api/vehicles/{id}/health (capped 60). VIN decode now returns bodyStyle + manufacturer.
+- New Vehicle Profile screen: specs, editable mileage, common failure patterns (likelihood-coded), scan/maintenance/parts/DTC histories, health-score sparkline. Reachable from Garage vehicle card.
+- Connection Center saves via upsert-by-VIN (+ records raw VIN, appends health sample) and shows a "known failure patterns loaded" note; AI Repair Assistant now receives a vehicle platform summary incl. common issues.
+- Fixed a malformed GET-profile reports query (curl-verified). Tested: backend 28/28 pytest; frontend 100% acceptance + regression.
+
 ## Implemented (2026-08-03) — Iteration 4: VIN Decode Enrichment
 - Separate VIN service layer (`src/vehicle/vin/`): ISO 3779 checksum + format validator, offline local decoder (WMI→make/country, year char, plant), and `vinService` orchestrator (cache → backend → local fallback) that works OFFLINE after first decode (cached in storage by VIN).
 - Backend `POST /api/vin/decode`: multi-provider — tries NHTSA vPIC (real, keyless) then local WMI/checksum fallback; returns year/make/model/trim/engine/transmission/drivetrain/plant/country + confidence + source + checksumValid.
