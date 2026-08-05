@@ -47,6 +47,13 @@ export const api = {
     request(`/vehicles/${id}/history/${kind}`, { method: "POST", body: JSON.stringify(entry) }),
   addVehicleHealth: (id: string, score: number) =>
     request(`/vehicles/${id}/health`, { method: "POST", body: JSON.stringify({ score }) }),
+
+  createRecording: (payload: any) => request("/recordings", { method: "POST", body: JSON.stringify(payload) }),
+  listRecordings: (vehicleId?: string) => request(`/recordings${vehicleId ? `?vehicle_id=${vehicleId}` : ""}`),
+  getRecording: (id: string) => request(`/recordings/${id}`),
+  deleteRecording: (id: string) => request(`/recordings/${id}`, { method: "DELETE" }),
+  vehiclePerformance: (id: string) => request(`/vehicles/${id}/performance`),
+  analyzeRecording: (id: string) => request(`/recordings/${id}/analyze`, { method: "POST" }),
   createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),
   getReport: (id: string) => request(`/reports/${id}`),

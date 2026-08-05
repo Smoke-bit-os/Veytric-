@@ -659,6 +659,123 @@ async def get_report(report_id: str, user=Depends(get_current_user)):
     return d
 
 
+# ----------------------------- Routes: Performance Recordings ---------------
+class RecordingInput(BaseModel):
+    vehicle_id: Optional[str] = None
+    vin: Optional[str] = ""
+    name: str
+    notes: Optional[str] = ""
+    driver_notes: Optional[str] = ""
+    tags: List[str] = []
+    duration: float = 0
+    distance: float = 0
+    health_score: Optional[int] = None
+    summary: dict = {}
+    events: List[dict] = []
+    samples: List[dict] = []
+
+
+@api_router.post("/recordings")
+async def create_recording(inp: RecordingInput, user=Depends(get_current_user)):
+    rid = str(uuid.uuid4())
+    doc = {"_id": rid, "user_id": user["_id"], "created_at": now_iso(), **inp.dict()}
+    await db.recordings.insert_one(doc)
+    return {"id": rid, "created_at": doc["created_at"]}
+
+
+@api_router.get("/recordings")
+async def list_recordings(vehicle_id: Optional[str] = None, user=Depends(get_current_user)):
+    q = {"user_id": user["_id"]}
+    if vehicle_id:
+        q["vehicle_id"] = vehicle_id
+    docs = await db.recordings.find(q, {"samples": 0}).sort("created_at", -1).to_list(200)
+    out = []
+    for d in docs:
+        d.pop("user_id", None)
+        d["id"] = d.pop("_id")
+        out.append(d)
+    return out
+
+
+@api_router.get("/recordings/{rec_id}")
+async def get_recording(rec_id: str, user=Depends(get_current_user)):
+    d = await db.recordings.find_one({"_id": rec_id, "user_id": user["_id"]})
+    if not d:
+        raise HTTPException(status_code=404, detail="Recording not found")
+    d.pop("user_id", None)
+    d["id"] = d.pop("_id")
+    return d
+
+
+@api_router.delete("/recordings/{rec_id}")
+async def delete_recording(rec_id: str, user=Depends(get_current_user)):
+    await db.recordings.delete_one({"_id": rec_id, "user_id": user["_id"]})
+    return {"ok": True}
+
+
+@api_router.get("/vehicles/{vehicle_id}/performance")
+async def vehicle_performance(vehicle_id: str, user=Depends(get_current_user)):
+    recs = await db.recordings.find(
+        {"user_id": user["_id"], "vehicle_id": vehicle_id}, {"samples": 0}
+    ).sort("created_at", -1).to_list(200)
+    if not recs:
+        return {"count": 0, "recent": [], "trends": {}}
+
+    def num(r, k, d=0):
+        return (r.get("summary") or {}).get(k, d)
+
+    recent = [{"id": r["_id"], "name": r.get("name"), "created_at": r.get("created_at"),
+               "duration": r.get("duration"), "distance": r.get("distance"),
+               "summary": r.get("summary", {}), "health_score": r.get("health_score")} for r in recs[:8]]
+    longest = max(recs, key=lambda r: r.get("duration", 0))
+    fastest = max(recs, key=lambda r: num(r, "maxSpeed"))
+    highest_rpm = max(recs, key=lambda r: num(r, "peakRpm"))
+    chrono = list(reversed(recs))
+    trends = {
+        "battery": [{"t": r.get("created_at"), "v": num(r, "lowestVoltage")} for r in chrono],
+        "coolant": [{"t": r.get("created_at"), "v": num(r, "highestCoolant")} for r in chrono],
+        "health": [{"t": r.get("created_at"), "v": r.get("health_score") or 0} for r in chrono],
+    }
+    return {
+        "count": len(recs),
+        "recent": recent,
+        "longest": {"id": longest["_id"], "name": longest.get("name"), "duration": longest.get("duration")},
+        "fastest": {"id": fastest["_id"], "name": fastest.get("name"), "maxSpeed": num(fastest, "maxSpeed")},
+        "highestRpm": {"id": highest_rpm["_id"], "name": highest_rpm.get("name"), "peakRpm": num(highest_rpm, "peakRpm")},
+        "trends": trends,
+    }
+
+
+@api_router.post("/recordings/{rec_id}/analyze")
+async def analyze_recording(rec_id: str, user=Depends(get_current_user)):
+    rec = await db.recordings.find_one({"_id": rec_id, "user_id": user["_id"]})
+    if not rec:
+        raise HTTPException(status_code=404, detail="Recording not found")
+    prev = await db.recordings.find(
+        {"user_id": user["_id"], "vehicle_id": rec.get("vehicle_id"), "_id": {"$ne": rec_id}}, {"samples": 0}
+    ).sort("created_at", -1).to_list(5)
+    prev_summaries = [{"name": p.get("name"), "summary": p.get("summary"), "health": p.get("health_score")} for p in prev]
+    prompt = (
+        f"Analyze this recorded driving session for vehicle {rec.get('vin') or rec.get('vehicle_id')}. "
+        f"Session summary: {rec.get('summary')}. Duration {rec.get('duration')}s, distance {rec.get('distance')}km. "
+        f"Detected events: {rec.get('events')}. Previous sessions for comparison: {prev_summaries}. "
+        "Provide clearly labeled sections with bold labels: Driving Summary; Performance Analysis; "
+        "Charging System Analysis; Cooling System Analysis; Fuel System Analysis; Detected Anomalies; "
+        "Trend Analysis (vs previous sessions); Suggested Maintenance. Be concise and technical."
+    )
+    try:
+        chat_client = LlmChat(
+            api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_rec_{rec_id}", system_message=JARVIS_SYSTEM
+        ).with_model("openai", "gpt-5.4")
+        analysis = await chat_client.send_message(UserMessage(text=prompt))
+        analysis = analysis if isinstance(analysis, str) else str(analysis)
+    except Exception as e:
+        logger.error(f"recording analyze error: {e}")
+        raise HTTPException(status_code=500, detail="Analysis unavailable")
+    await db.recordings.update_one({"_id": rec_id}, {"$set": {"ai_analysis": analysis}})
+    return {"analysis": analysis}
+
+
 app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
