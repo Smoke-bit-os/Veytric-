@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -12,11 +12,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "@/src/api";
 import { useAuth } from "@/src/auth";
+import { maintenanceService, DashboardSummary } from "@/src/vehicle/maintenance/maintenanceService";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 type Vehicle = {
@@ -35,6 +36,7 @@ export default function Garage() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [dash, setDash] = useState<Record<string, DashboardSummary>>({});
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -44,13 +46,25 @@ export default function Garage() {
     try {
       const v = await api.vehicles();
       setVehicles(v);
+      // Offline-first dashboard summaries per vehicle (parallel).
+      const entries = await Promise.all(
+        (v || []).map(async (veh: Vehicle) => {
+          const { data } = await maintenanceService.dashboard(veh.id);
+          return [veh.id, data] as const;
+        })
+      );
+      const map: Record<string, DashboardSummary> = {};
+      entries.forEach(([id, d]) => { if (d) map[id] = d; });
+      setDash(map);
     } catch {}
     setLoading(false);
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      load();
+    }, [])
+  );
 
   const addVehicle = async () => {
     if (!form.name || !form.make || !form.model) return;
@@ -147,6 +161,9 @@ export default function Garage() {
                   <MaterialCommunityIcons name="trash-can-outline" size={20} color={colors.onSurfaceSecondary} />
                 </Pressable>
               </View>
+
+              {dash[v.id] ? <VehicleDash d={dash[v.id]} /> : null}
+
               <Pressable
                 testID={`activate-${v.id}`}
                 style={[styles.activateBtn, v.is_active && styles.activeBtn]}
@@ -206,8 +223,87 @@ export default function Garage() {
   );
 }
 
+const rel = (iso?: string | null) => {
+  if (!iso) return "—";
+  const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  if (d <= 0) return "today";
+  if (d === 1) return "1d ago";
+  if (d < 30) return `${d}d ago`;
+  return `${Math.floor(d / 30)}mo ago`;
+};
+const trendArrow = (dir: string) => (dir === "rising" ? "arrow-up" : dir === "declining" ? "arrow-down" : dir === "recurring" ? "repeat" : "arrow-right");
+const trendColor = (sev: string) => (sev === "warn" || sev === "bad" ? colors.warning : sev === "good" ? colors.success : colors.info);
+const urgencyColor = (u?: string) => (u === "overdue" ? colors.error : u === "soon" ? colors.warning : colors.brand);
+
+function VehicleDash({ d }: { d: DashboardSummary }) {
+  return (
+    <View style={styles.dash} testID="vehicle-dash">
+      <View style={styles.dashRow}>
+        <View style={styles.dashStat}>
+          <Text style={styles.dashLabel}>HEALTH</Text>
+          <Text style={[styles.dashVal, { color: d.healthScore != null ? (d.healthScore >= 80 ? colors.success : d.healthScore >= 65 ? colors.warning : colors.error) : colors.onSurfaceSecondary }]}>
+            {d.healthScore ?? "—"}
+          </Text>
+        </View>
+        <View style={styles.dashStat}>
+          <Text style={styles.dashLabel}>LAST SCAN</Text>
+          <Text style={styles.dashSmall}>{rel(d.lastScan)}</Text>
+        </View>
+        <View style={styles.dashStat}>
+          <Text style={styles.dashLabel}>LAST DRIVE</Text>
+          <Text style={styles.dashSmall}>{rel(d.lastRecording)}</Text>
+        </View>
+        <View style={styles.dashStat}>
+          <Text style={styles.dashLabel}>SERVICE</Text>
+          <Text style={styles.dashSmall}>{rel(d.lastMaintenance)}</Text>
+        </View>
+      </View>
+
+      {d.nextService && (
+        <View style={styles.nextRow}>
+          <MaterialCommunityIcons name="calendar-clock" size={14} color={urgencyColor(d.nextService.urgency)} />
+          <Text style={styles.nextText} numberOfLines={1}>
+            Next: <Text style={{ color: colors.onSurface }}>{d.nextService.name}</Text>
+            {d.nextService.dueMileage ? ` @ ${d.nextService.dueMileage.toLocaleString()} km` : ""}
+          </Text>
+        </View>
+      )}
+
+      {(d.alerts?.length > 0 || d.trends?.length > 0) && (
+        <View style={styles.pillRow}>
+          {(d.alerts || []).slice(0, 2).map((a) => (
+            <View key={a.key} style={[styles.alertPill, { borderColor: urgencyColor(a.urgency) }]}>
+              <MaterialCommunityIcons name="alert" size={11} color={urgencyColor(a.urgency)} />
+              <Text style={[styles.alertText, { color: urgencyColor(a.urgency) }]}>{a.name}</Text>
+            </View>
+          ))}
+          {(d.trends || []).slice(0, 2).map((t) => (
+            <View key={t.key} style={styles.trendPill}>
+              <MaterialCommunityIcons name={trendArrow(t.direction) as any} size={11} color={trendColor(t.severity)} />
+              <Text style={styles.trendText}>{t.key}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.surface },
+  dash: { marginTop: spacing.md, borderTopWidth: 1, borderTopColor: colors.divider, paddingTop: spacing.md },
+  dashRow: { flexDirection: "row", justifyContent: "space-between" },
+  dashStat: { flex: 1, alignItems: "center" },
+  dashLabel: { color: colors.onSurfaceSecondary, fontSize: 8, letterSpacing: 0.8 },
+  dashVal: { fontFamily: font.display, fontSize: 22, marginTop: 1 },
+  dashSmall: { color: colors.onSurface, fontSize: 12, fontWeight: "600", marginTop: 4 },
+  nextRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: spacing.md },
+  nextText: { color: colors.onSurfaceSecondary, fontSize: 12, flex: 1 },
+  pillRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs, marginTop: spacing.sm },
+  alertPill: { flexDirection: "row", alignItems: "center", gap: 3, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 3 },
+  alertText: { fontSize: 10, fontWeight: "700" },
+  trendPill: { flexDirection: "row", alignItems: "center", gap: 3, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 3 },
+  trendText: { color: colors.onSurfaceSecondary, fontSize: 10, fontWeight: "600", textTransform: "capitalize" },
   profile: {
     flexDirection: "row",
     alignItems: "center",

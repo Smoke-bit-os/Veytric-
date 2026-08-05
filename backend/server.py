@@ -312,7 +312,7 @@ async def get_vehicle_profile(vehicle_id: str, user=Depends(get_current_user)):
 
 @api_router.post("/vehicles/{vehicle_id}/history/{kind}")
 async def add_history(vehicle_id: str, kind: str, inp: HistoryEntryInput, user=Depends(get_current_user)):
-    if kind not in ("maintenance", "parts", "dtc"):
+    if kind not in ("maintenance", "parts", "dtc", "repair", "note"):
         raise HTTPException(status_code=400, detail="Invalid history kind")
     entry = {
         "_id": str(uuid.uuid4()),
@@ -774,6 +774,411 @@ async def analyze_recording(rec_id: str, user=Depends(get_current_user)):
         raise HTTPException(status_code=500, detail="Analysis unavailable")
     await db.recordings.update_one({"_id": rec_id}, {"$set": {"ai_analysis": analysis}})
     return {"analysis": analysis}
+
+
+# ============================================================================
+#  Vehicle Intelligence & Maintenance Platform
+#  Heuristic + offline-first engines (timeline / predictions / trends /
+#  dashboard). AI (GPT-5.4) is used ONLY for explanations + health reports.
+# ============================================================================
+
+SERVICE_INTERVALS = [
+    {"key": "oil", "name": "Engine Oil & Filter", "km": 12000, "kw": ["oil change", "oil", "oil filter"]},
+    {"key": "tires", "name": "Tire Rotation", "km": 10000, "kw": ["tire rotation", "tire", "rotation"]},
+    {"key": "airfilter", "name": "Air Filter", "km": 25000, "kw": ["air filter", "engine filter", "cabin filter", "filter"]},
+    {"key": "brakes", "name": "Brake Pads", "km": 40000, "kw": ["brake", "brake pad", "pads", "rotor"]},
+    {"key": "plugs", "name": "Spark Plugs", "km": 50000, "kw": ["spark plug", "plug", "ignition coil"]},
+    {"key": "battery", "name": "Battery", "km": 60000, "kw": ["battery"]},
+    {"key": "trans", "name": "Transmission Service", "km": 60000, "kw": ["transmission", "trans fluid", "atf", "gearbox"]},
+    {"key": "coolant", "name": "Coolant Flush", "km": 80000, "kw": ["coolant", "antifreeze", "radiator flush"]},
+    {"key": "belts", "name": "Serpentine / Timing Belt", "km": 90000, "kw": ["belt", "serpentine", "timing belt"]},
+    {"key": "alternator", "name": "Alternator Inspection", "km": 120000, "kw": ["alternator", "charging system"]},
+]
+
+
+def _slope(points: list) -> float:
+    n = len(points)
+    if n < 2:
+        return 0.0
+    xs = list(range(n))
+    mean_x = (n - 1) / 2.0
+    mean_y = sum(points) / n
+    num = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, points))
+    den = sum((x - mean_x) ** 2 for x in xs) or 1.0
+    return num / den
+
+
+async def _gather_vehicle(vehicle_id: str, user_id: str):
+    """Pull the vehicle + all linked historical data in one place."""
+    veh = await db.vehicles.find_one({"id": vehicle_id, "user_id": user_id})
+    if not veh:
+        return None
+    vin = veh.get("vin", "")
+    hist = await db.vehicle_history.find({"vehicle_id": vehicle_id, "user_id": user_id}).sort("ts", -1).to_list(500)
+    or_clauses: list = [{"vehicle_id": vehicle_id}]
+    if vin:
+        or_clauses.append({"vehicle": {"$regex": vin}})
+    reports = await db.reports.find({"user_id": user_id, "$or": or_clauses}).sort("created_at", -1).to_list(200)
+    rec_q = {"user_id": user_id, "$or": ([{"vehicle_id": vehicle_id}] + ([{"vin": vin}] if vin else []))}
+    recordings = await db.recordings.find(rec_q, {"samples": 0}).sort("created_at", -1).to_list(200)
+    return {"veh": veh, "history": hist, "reports": reports, "recordings": recordings}
+
+
+def _last_service_km(history: list, keywords: list, current_mileage: int):
+    """Find the most recent maintenance/parts/repair entry matching a service by
+    keyword and return the mileage it was performed at (from meta.mileage)."""
+    for h in history:
+        if h.get("kind") not in ("maintenance", "parts", "repair"):
+            continue
+        text = f"{h.get('title','')} {h.get('detail','')}".lower()
+        if any(k in text for k in keywords):
+            m = (h.get("meta") or {}).get("mileage")
+            try:
+                if m is not None:
+                    return int(m)
+            except (TypeError, ValueError):
+                pass
+            return 0  # matched but no mileage recorded -> treat as baseline
+    return None
+
+
+def _compute_predictions(bundle: dict) -> dict:
+    veh = bundle["veh"]
+    history = bundle["history"]
+    reports = bundle["reports"]
+    recordings = bundle["recordings"]
+    mileage = int(veh.get("mileage") or 0)
+
+    # Signal aggregates from recent recordings (offline heuristic evidence).
+    recent_recs = recordings[:8]
+    low_volts = [(r.get("summary") or {}).get("lowestVoltage") for r in recent_recs]
+    low_volts = [v for v in low_volts if isinstance(v, (int, float)) and v > 0]
+    hi_cool = [(r.get("summary") or {}).get("highestCoolant") for r in recent_recs]
+    hi_cool = [v for v in hi_cool if isinstance(v, (int, float))]
+    min_voltage = min(low_volts) if low_volts else None
+    max_coolant = max(hi_cool) if hi_cool else None
+
+    # DTC evidence.
+    dtc_codes: list = []
+    for r in reports:
+        for d in (r.get("dtcs") or []):
+            code = d.get("code") if isinstance(d, dict) else str(d)
+            if code:
+                dtc_codes.append(code)
+    for h in history:
+        if h.get("kind") == "dtc":
+            dtc_codes.append(h.get("title", ""))
+    has_misfire = any(str(c).upper().startswith("P03") for c in dtc_codes)
+
+    items = []
+    for svc in SERVICE_INTERVALS:
+        last_km = _last_service_km(history, svc["kw"], mileage)
+        has_record = last_km is not None
+        base_km = last_km if has_record else 0
+        interval = svc["km"]
+        km_since = max(0, mileage - base_km) if mileage else 0
+        remaining_km = interval - km_since
+        remaining_pct = max(0.0, min(1.0, remaining_km / interval)) if interval else 0.0
+        reasons = []
+        confidence = 0.55
+        if has_record and last_km:
+            confidence = 0.85
+            reasons.append(f"Last service logged at {last_km:,} km")
+        elif not mileage:
+            reasons.append("Set current mileage for accurate predictions")
+            confidence = 0.35
+        else:
+            reasons.append("No prior service record — using factory interval")
+
+        # Sensor / DTC based urgency bumps (heuristic, offline).
+        if svc["key"] == "battery" and min_voltage is not None and min_voltage < 12.2:
+            remaining_pct = min(remaining_pct, 0.15)
+            confidence = min(0.95, confidence + 0.15)
+            reasons.append(f"Recorded battery low of {min_voltage:.1f} V")
+        if svc["key"] == "coolant" and max_coolant is not None and max_coolant > 104:
+            remaining_pct = min(remaining_pct, 0.2)
+            confidence = min(0.95, confidence + 0.12)
+            reasons.append(f"Coolant peaked at {int(max_coolant)}°C")
+        if svc["key"] == "plugs" and has_misfire:
+            remaining_pct = min(remaining_pct, 0.1)
+            confidence = min(0.95, confidence + 0.2)
+            reasons.append("Misfire codes (P03xx) present")
+        if svc["key"] == "alternator" and min_voltage is not None and min_voltage < 12.0:
+            remaining_pct = min(remaining_pct, 0.25)
+            reasons.append("Charging voltage instability observed")
+
+        if remaining_km <= 0 or remaining_pct <= 0.02:
+            urgency = "overdue"
+        elif remaining_pct < 0.15:
+            urgency = "soon"
+        elif remaining_pct < 0.4:
+            urgency = "upcoming"
+        else:
+            urgency = "ok"
+
+        items.append({
+            "key": svc["key"],
+            "name": svc["name"],
+            "intervalKm": interval,
+            "lastServiceKm": base_km if has_record else None,
+            "kmSince": km_since,
+            "remainingKm": remaining_km,
+            "remainingLifePct": round(remaining_pct, 2),
+            "dueMileage": (base_km + interval) if mileage else None,
+            "urgency": urgency,
+            "confidence": round(confidence, 2),
+            "reasons": reasons,
+        })
+
+    order = {"overdue": 0, "soon": 1, "upcoming": 2, "ok": 3}
+    items.sort(key=lambda i: (order[i["urgency"]], i["remainingLifePct"]))
+    return {"mileage": mileage, "items": items}
+
+
+def _compute_trends(bundle: dict) -> dict:
+    veh = bundle["veh"]
+    recordings = list(reversed(bundle["recordings"]))  # chronological
+    reports = bundle["reports"]
+    health_hist = veh.get("health_history") or []
+
+    def series(vals):
+        return [round(float(v), 2) for v in vals if isinstance(v, (int, float))]
+
+    battery = series([(r.get("summary") or {}).get("lowestVoltage") for r in recordings])
+    coolant = series([(r.get("summary") or {}).get("highestCoolant") for r in recordings])
+    maxspeed = series([(r.get("summary") or {}).get("maxSpeed") for r in recordings])
+    health = series([h.get("score") for h in health_hist])
+
+    # Repeated DTC pattern frequency.
+    freq: dict = {}
+    for r in reports:
+        for d in (r.get("dtcs") or []):
+            code = d.get("code") if isinstance(d, dict) else str(d)
+            if code:
+                freq[code] = freq.get(code, 0) + 1
+    repeated = sorted([{"code": k, "count": v} for k, v in freq.items() if v >= 2], key=lambda x: -x["count"])
+
+    findings = []
+
+    def add(key, label, pts, rising_is_bad, unit, thresh):
+        if len(pts) < 3:
+            return
+        s = _slope(pts)
+        direction = "rising" if s > thresh else "declining" if s < -thresh else "stable"
+        if direction == "stable":
+            sev = "info"
+        else:
+            bad = (direction == "rising") == rising_is_bad
+            sev = "warn" if bad else "good"
+        delta = round(pts[-1] - pts[0], 2)
+        findings.append({
+            "key": key, "label": label, "direction": direction, "severity": sev,
+            "slope": round(s, 4), "delta": delta, "unit": unit,
+            "first": pts[0], "last": pts[-1],
+            "summary": f"{label} {direction} over {len(pts)} sessions ({'+' if delta >= 0 else ''}{delta}{unit}).",
+        })
+
+    add("battery", "Battery voltage", battery, rising_is_bad=False, unit=" V", thresh=0.02)
+    add("coolant", "Coolant temperature", coolant, rising_is_bad=True, unit="°C", thresh=0.3)
+    add("health", "Health score", health, rising_is_bad=False, unit="", thresh=0.4)
+    add("maxspeed", "Peak speed", maxspeed, rising_is_bad=False, unit=" km/h", thresh=0.5)
+    if repeated:
+        top = repeated[0]
+        findings.append({
+            "key": "dtc", "label": "Repeated DTC pattern", "direction": "recurring",
+            "severity": "warn", "slope": 0, "delta": top["count"], "unit": "",
+            "summary": f"{top['code']} has recurred {top['count']} times across scans.",
+        })
+
+    return {
+        "series": {"battery": battery, "coolant": coolant, "health": health, "maxSpeed": maxspeed},
+        "repeatedDtcs": repeated,
+        "findings": findings,
+    }
+
+
+def _timeline_events(bundle: dict) -> list:
+    events = []
+    for r in bundle["reports"]:
+        events.append({
+            "ts": r.get("created_at"), "type": "diagnostics", "group": "diagnostics",
+            "title": "Diagnostic Scan", "refId": r["_id"],
+            "subtitle": f"{len(r.get('dtcs') or [])} codes · Health {r.get('health_score', '—')}",
+            "healthScore": r.get("health_score"), "mileage": r.get("mileage"),
+            "hasAi": bool(r.get("ai_findings")), "severity": "warn" if (r.get("dtcs")) else "good",
+        })
+    for r in bundle["recordings"]:
+        sm = r.get("summary") or {}
+        events.append({
+            "ts": r.get("created_at"), "type": "performance", "group": "performance",
+            "title": r.get("name", "Drive Session"), "refId": r["_id"],
+            "subtitle": f"{int(r.get('duration') or 0)}s · {r.get('distance', 0)} km · {sm.get('maxSpeed', 0)} km/h peak",
+            "healthScore": r.get("health_score"), "hasAi": bool(r.get("ai_analysis")), "severity": "info",
+        })
+    kind_map = {
+        "maintenance": ("maintenance", "wrench"), "parts": ("parts", "cog"),
+        "repair": ("repairs", "car-wrench"), "note": ("notes", "note-text"),
+        "dtc": ("diagnostics", "alert-circle"),
+    }
+    for h in bundle["history"]:
+        k = h.get("kind", "note")
+        group, _ = kind_map.get(k, ("notes", "note-text"))
+        meta = h.get("meta") or {}
+        events.append({
+            "ts": h.get("ts"), "type": k, "group": group, "title": h.get("title", ""),
+            "subtitle": h.get("detail", ""), "refId": h.get("id"),
+            "mileage": meta.get("mileage"), "cost": meta.get("cost"),
+            "severity": "warn" if k == "dtc" else "info",
+        })
+    events = [e for e in events if e.get("ts")]
+    events.sort(key=lambda e: e["ts"], reverse=True)
+    return events
+
+
+@api_router.get("/vehicles/{vehicle_id}/timeline")
+async def vehicle_timeline(vehicle_id: str, filter: Optional[str] = None, user=Depends(get_current_user)):
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    events = _timeline_events(bundle)
+    if filter and filter != "all":
+        events = [e for e in events if e["group"] == filter]
+    counts: dict = {}
+    for e in _timeline_events(bundle):
+        counts[e["group"]] = counts.get(e["group"], 0) + 1
+    return {"vehicle_id": vehicle_id, "count": len(events), "counts": counts, "events": events}
+
+
+@api_router.get("/vehicles/{vehicle_id}/predictions")
+async def vehicle_predictions(vehicle_id: str, user=Depends(get_current_user)):
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    return _compute_predictions(bundle)
+
+
+@api_router.get("/vehicles/{vehicle_id}/trends")
+async def vehicle_trends(vehicle_id: str, user=Depends(get_current_user)):
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    return _compute_trends(bundle)
+
+
+@api_router.get("/vehicles/{vehicle_id}/dashboard")
+async def vehicle_dashboard(vehicle_id: str, user=Depends(get_current_user)):
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    veh = bundle["veh"]
+    preds = _compute_predictions(bundle)
+    trends = _compute_trends(bundle)
+    health_hist = veh.get("health_history") or []
+    last_scan = bundle["reports"][0]["created_at"] if bundle["reports"] else None
+    last_rec = bundle["recordings"][0]["created_at"] if bundle["recordings"] else None
+    last_maint = None
+    for h in bundle["history"]:
+        if h.get("kind") in ("maintenance", "repair"):
+            last_maint = h.get("ts")
+            break
+    urgent = [i for i in preds["items"] if i["urgency"] in ("overdue", "soon")]
+    next_service = preds["items"][0] if preds["items"] else None
+    alerts = []
+    for i in urgent[:4]:
+        alerts.append({"key": i["key"], "name": i["name"], "urgency": i["urgency"]})
+    trend_indicators = [{"key": f["key"], "direction": f["direction"], "severity": f["severity"]}
+                        for f in trends["findings"] if f["severity"] != "good"][:4]
+    return {
+        "vehicle_id": vehicle_id,
+        "healthScore": health_hist[-1]["score"] if health_hist else None,
+        "mileage": veh.get("mileage"),
+        "lastScan": last_scan,
+        "lastRecording": last_rec,
+        "lastMaintenance": last_maint,
+        "nextService": {"name": next_service["name"], "dueMileage": next_service["dueMileage"], "urgency": next_service["urgency"]} if next_service else None,
+        "alerts": alerts,
+        "trends": trend_indicators,
+        "counts": {"scans": len(bundle["reports"]), "recordings": len(bundle["recordings"]), "history": len(bundle["history"])},
+    }
+
+
+@api_router.post("/vehicles/{vehicle_id}/trends/explain")
+async def explain_trends(vehicle_id: str, user=Depends(get_current_user)):
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    trends = _compute_trends(bundle)
+    veh = bundle["veh"]
+    if not trends["findings"]:
+        return {"explanation": "Not enough historical data yet to detect long-term trends. Record more drive sessions and run diagnostic scans to build a trend history."}
+    prompt = (
+        f"Vehicle: {veh.get('year')} {veh.get('make')} {veh.get('model')} ({veh.get('engine','')}). "
+        f"Mileage: {veh.get('mileage')} km. Detected long-term telemetry trends (heuristic): {trends['findings']}. "
+        f"Repeated fault codes: {trends['repeatedDtcs']}. "
+        "Explain what these trends likely indicate about the vehicle's health, root causes, and what the owner "
+        "should monitor or service. Use bold labels per trend. Be concise and technical."
+    )
+    try:
+        chat_client = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_trends_{vehicle_id}", system_message=JARVIS_SYSTEM).with_model("openai", "gpt-5.4")
+        explanation = await chat_client.send_message(UserMessage(text=prompt))
+        explanation = explanation if isinstance(explanation, str) else str(explanation)
+    except Exception as e:
+        logger.error(f"trends explain error: {e}")
+        raise HTTPException(status_code=500, detail="Explanation unavailable")
+    return {"explanation": explanation}
+
+
+@api_router.get("/vehicles/{vehicle_id}/health-report")
+async def get_health_report(vehicle_id: str, user=Depends(get_current_user)):
+    doc = await db.vehicle_reports.find_one({"vehicle_id": vehicle_id, "user_id": user["_id"]}, sort=[("created_at", -1)])
+    if not doc:
+        return {"report": None}
+    return _clean(doc) | {"id": doc["_id"]}
+
+
+@api_router.post("/vehicles/{vehicle_id}/health-report")
+async def create_health_report(vehicle_id: str, user=Depends(get_current_user)):
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    veh = bundle["veh"]
+    preds = _compute_predictions(bundle)
+    trends = _compute_trends(bundle)
+    health_hist = veh.get("health_history") or []
+    urgent = [i for i in preds["items"] if i["urgency"] in ("overdue", "soon")]
+    recent_repairs = [f"{h.get('title')} ({(h.get('meta') or {}).get('mileage','?')} km)" for h in bundle["history"] if h.get("kind") in ("repair", "maintenance")][:5]
+    prompt = (
+        f"Generate a comprehensive professional vehicle health report for a "
+        f"{veh.get('year')} {veh.get('make')} {veh.get('model')} {veh.get('trim','')} ({veh.get('engine','')}), "
+        f"VIN {veh.get('vin','')}, mileage {veh.get('mileage')} km. "
+        f"Current health score: {health_hist[-1]['score'] if health_hist else 'N/A'}. "
+        f"Priority maintenance concerns (heuristic): {urgent}. "
+        f"All predicted maintenance: {preds['items']}. "
+        f"Detected long-term trends: {trends['findings']}. Repeated fault codes: {trends['repeatedDtcs']}. "
+        f"Recent repairs/maintenance: {recent_repairs}. "
+        f"Total scans: {len(bundle['reports'])}, recordings: {len(bundle['recordings'])}. "
+        "Produce a report with clearly bold-labeled sections: Current Condition; Recent Repairs & Maintenance; "
+        "Performance Changes; Diagnostic History; Predicted Maintenance; Highest-Priority Concerns; "
+        "Recommended Next Inspections. Be thorough but concise and technical."
+    )
+    try:
+        chat_client = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_hr_{vehicle_id}", system_message=JARVIS_SYSTEM).with_model("openai", "gpt-5.4")
+        report = await chat_client.send_message(UserMessage(text=prompt))
+        report = report if isinstance(report, str) else str(report)
+    except Exception as e:
+        logger.error(f"health report error: {e}")
+        raise HTTPException(status_code=500, detail="Health report unavailable")
+    rid = str(uuid.uuid4())
+    doc = {
+        "_id": rid, "user_id": user["_id"], "vehicle_id": vehicle_id,
+        "vehicle": f"{veh.get('year')} {veh.get('make')} {veh.get('model')}",
+        "mileage": veh.get("mileage"),
+        "health_score": health_hist[-1]["score"] if health_hist else None,
+        "report": report, "predictions": preds, "trends": trends, "created_at": now_iso(),
+    }
+    await db.vehicle_reports.insert_one(doc)
+    return _clean(doc) | {"id": rid}
+
 
 
 app.include_router(api_router)

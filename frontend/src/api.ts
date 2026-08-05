@@ -54,6 +54,15 @@ export const api = {
   deleteRecording: (id: string) => request(`/recordings/${id}`, { method: "DELETE" }),
   vehiclePerformance: (id: string) => request(`/vehicles/${id}/performance`),
   analyzeRecording: (id: string) => request(`/recordings/${id}/analyze`, { method: "POST" }),
+
+  vehicleTimeline: (id: string, filter?: string) =>
+    request(`/vehicles/${id}/timeline${filter && filter !== "all" ? `?filter=${filter}` : ""}`),
+  vehiclePredictions: (id: string) => request(`/vehicles/${id}/predictions`),
+  vehicleTrends: (id: string) => request(`/vehicles/${id}/trends`),
+  explainTrends: (id: string) => request(`/vehicles/${id}/trends/explain`, { method: "POST" }),
+  vehicleDashboard: (id: string) => request(`/vehicles/${id}/dashboard`),
+  getHealthReport: (id: string) => request(`/vehicles/${id}/health-report`),
+  createHealthReport: (id: string) => request(`/vehicles/${id}/health-report`, { method: "POST" }),
   createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),
   getReport: (id: string) => request(`/reports/${id}`),

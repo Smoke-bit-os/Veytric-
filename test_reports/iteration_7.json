@@ -1,0 +1,46 @@
+{
+  "summary": "Iteration-7 Vehicle Intelligence & Maintenance Platform fully verified end-to-end. BACKEND: 19/19 new pytest tests PASS in test_intelligence.py (auth boundaries, 404s for unknown vehicle across timeline/predictions/trends/dashboard/health-report/trends-explain, new history kinds repair+note accepted with meta, predictions shape/sort/urgency + confidence boost when a service is logged with meta.mileage, no-mileage default (100% life, 'Set mileage' hint), timeline events+counts+filter narrowing while counts remain totals, trends series (battery/coolant/health/maxSpeed) + findings after >=3 health samples, dashboard shape with all required fields incl. nextService/alerts/trends/counts, GPT trends/explain returns non-empty string, graceful message when no findings, POST health-report generates + persists GPT report to vehicle_reports, GET returns latest with id/report/predictions/trends/vehicle_id). FRONTEND (390x844 mobile): Login via Sign In → JARVIS home loads. Vehicle Profile action cards all render and navigate: act-timeline→/timeline (7 filter chips tl-filter-all/diagnostics/maintenance/performance/repairs/parts/notes all present, filter narrows list, counts reflect totals), act-predictions→/predictions (10 service cards pred-oil/tires/airfilter/brakes/plugs/battery/trans/coolant/belts/alternator with life bar + urgency pill DUE SOON/OK + confidence % + reasons — spark plugs correctly showed DUE SOON with P03xx misfire reason), act-trends→/trends (findings list, 4 SVG charts trend-chart-battery/coolant/health/maxSpeed, HEALTH SCORE chart drew rising line, btn-explain triggered GPT-5.4 explanation which populated trend-explanation with 'Health score rising (+7 over 4 sessions)' assessment), act-repairs→/repair-log (add-repair opens modal, all 6 fields repair-input-title/parts/labor/mileage/cost/detail present + save-repair persists — new TEST_UI_Repair card appeared with mileage 68,000 km and $300 cost badges), act-report→/health-report (empty state 'No report generated yet' + btn-generate present), act-sessions→/recordings?vehicle_id=. Garage tab: vehicle-dash strip renders with HEALTH 85, LAST SCAN today, LAST DRIVE —, SERVICE today, Next: Spark Plugs, and 'Spark Plugs' alert pill. All 38 frontend UI checks passed. No red screen errors. Only cosmetic RN-web warnings (shadow*, pointerEvents) carried over from prior iterations. No new deprecated Expo packages detected.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "global", "issues": ["RN-web deprecation warnings persist (shadow*/pointerEvents) — carried over from prior iterations, cosmetic only."]}
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Deprecation warning: shadowColor/shadowOpacity/shadowRadius still present. Cosmetic only. Reference: prior iteration_6 report — recording.tsx and others."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_intelligence.py",
+    "/app/test_reports/pytest/iteration_7.xml",
+    "/app/test_reports/iteration_7.json"
+  ],
+  "action_items": [
+    "OPTIONAL (cosmetic, carried over): Migrate shadow* -> boxShadow across styles.",
+    "CONSIDER: /api/vehicles/{id}/health-report GET spec says 'returns latest (report:null when none)'. Implementation returns exactly {\"report\": null} when none — verified. However, non-empty response returns full doc with 'report' string field alongside id/predictions/trends — that matches the frontend contract."
+  ],
+  "critical_code_review_comments": [
+    "server.py:811 _gather_vehicle — Single async pull of vehicle + history + reports + recordings; scoped by user_id everywhere (auth-safe). Reports are matched by either vehicle_id OR VIN regex — good for legacy string-vehicle reports.",
+    "server.py:845 _compute_predictions — Heuristic engine handles 10 services with keyword matching against maintenance/parts/repair titles. Correctly bumps confidence when meta.mileage is present. Sensor-based urgency overrides (battery<12.2V, coolant>104°C, plugs+P03xx, alternator<12.0V) all reasonable. Sorted overdue-first — verified.",
+    "server.py:938 _compute_trends — Uses least-squares slope via _slope helper (correct math). Findings only added when >=3 data points — verified. maxSpeed key in series (not 'maxspeed') — matches frontend contract.",
+    "server.py:1000 _timeline_events — Merges reports (diagnostics), recordings (performance), and vehicle_history into unified event stream sorted desc by ts. Filter narrows events but counts always reflect totals — verified.",
+    "server.py:315 add_history — Correctly accepts new kinds ('repair', 'note') alongside existing (maintenance/parts/dtc). 400 for invalid kind — verified.",
+    "server.py:1139 create_health_report — Persists to vehicle_reports collection with predictions+trends snapshot. GPT-5.4 with graceful 500 on failure. GET returns latest via sort=[('created_at', -1)] — good pattern.",
+    "server.py:1105 explain_trends — Graceful early-return when no findings (returns 200 with friendly message instead of 500 or empty AI) — verified.",
+    "server.py:1044 timeline filter — Filter comparison against event['group'] (not event['type']); works because kind_map maps repair→'repairs', note→'notes' etc. Correct.",
+    "Note: server.py is now 1197 lines — approaching the 700-line advisory limit. Consider splitting Vehicle Intelligence engine (predictions/trends/timeline/dashboard/health-report) into a submodule for maintainability, though this is not blocking."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_intelligence.py (new — 19 pytest tests covering timeline/predictions/trends/dashboard/trends-explain/health-report/history-repair-note/auth-401/404)"
+  ],
+  "success_rate": {"backend": "100% (19/19 new intelligence tests)", "frontend": "100% (38/38 UI checks: 6 action cards + navigation + 7 timeline chips + 10 prediction cards + 4 trend charts + btn-explain + AI generation + 6 repair form fields + save + health-report page + garage vehicle-dash strip)"},
+  "seed_data_creation": "Created TEST_UI_Repair (repair kind, meta.mileage=68000, cost=300), TEST_UI_OilChange (maintenance, mileage=65000), TEST_UI_Log (via UI), and 4 health samples (78/80/82/85) on the existing 2018 Jeep Wrangler in the seeded mechanic@jarvis.ai account. pytest tests auto-cleanup their fresh vehicles.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Intelligence testIDs: act-timeline/predictions/trends/repairs/report/sessions (vehicle-profile), tl-filter-{all|diagnostics|maintenance|performance|repairs|parts|notes}, tl-event-{n}, pred-{oil|tires|airfilter|brakes|plugs|battery|trans|coolant|belts|alternator}, trend-{key}, trend-chart-{battery|coolant|health|maxSpeed}, btn-explain, trend-explanation, add-repair/empty-add-repair, repair-input-{title|parts|labor|mileage|cost|detail}, link-rec-{id}, link-rep-{id}, save-repair, repair-{id}, btn-generate/hr-regenerate/hr-export/hr-content/hr-empty, vehicle-dash (garage card). Auth: mechanic@jarvis.ai / Jarvis2026!. To trigger prediction confidence >0.85 & non-'Set mileage' reasons, PATCH vehicle mileage + POST /vehicles/{id}/history/repair or /maintenance with meta.mileage. Trends findings need >=3 health samples OR >=3 recordings. Simulation auto-connects giving VIN 1C4HJXEG9JW174532 (Jeep Wrangler).",
+  "rca_of_issue": "N/A - all iteration-7 Vehicle Intelligence & Maintenance Platform features (backend heuristic engines + GPT explain/report + frontend screens + action-card navigation + Garage dashboard strip) passed integration testing."
+}

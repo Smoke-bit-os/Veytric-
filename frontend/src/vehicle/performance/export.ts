@@ -82,3 +82,28 @@ export async function exportPDF(rec: any, analysis?: string): Promise<string> {
   if (Platform.OS === "web") return "PDF generated (open the mobile app to share).";
   return shareFile(uri, "application/pdf");
 }
+
+// Comprehensive AI health report -> professional PDF.
+export async function exportHealthReportPDF(opts: { vehicle: string; mileage?: number | null; healthScore?: number | null; report: string; createdAt?: string }): Promise<string> {
+  const body = (opts.report || "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/\*\*(.+?)\*\*/g, '</p><h3 style="color:#00E5FF;font-size:13px;letter-spacing:1px;margin:16px 0 4px;">$1</h3><p style="color:#C3C8D6;font-size:13px;line-height:1.6;">')
+    .replace(/\n/g, "<br/>");
+  const html = `
+  <html><head><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
+  <body style="font-family:-apple-system,Helvetica,Arial;background:#06080D;color:#F0F2F5;padding:28px;">
+    <div style="border-bottom:2px solid #00E5FF;padding-bottom:12px;margin-bottom:6px;">
+      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">JARVIS AI · VEHICLE HEALTH REPORT</div>
+      <h1 style="margin:6px 0;font-size:26px;">${opts.vehicle}</h1>
+      <div style="color:#9AA0B1;font-size:13px;">
+        ${opts.mileage != null ? `${opts.mileage.toLocaleString()} km · ` : ""}
+        ${opts.healthScore != null ? `Health ${opts.healthScore} · ` : ""}
+        ${opts.createdAt ? new Date(opts.createdAt).toLocaleString() : new Date().toLocaleString()}
+      </div>
+    </div>
+    <p style="color:#C3C8D6;font-size:13px;line-height:1.6;">${body}</p>
+  </body></html>`;
+  const { uri } = await Print.printToFileAsync({ html });
+  if (Platform.OS === "web") return "PDF generated (open the mobile app to share).";
+  return shareFile(uri, "application/pdf");
+}

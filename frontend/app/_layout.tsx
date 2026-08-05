@@ -49,6 +49,11 @@ export default function RootLayout() {
                 <Stack.Screen name="recordings" options={{ presentation: "card", animation: "slide_from_right" }} />
                 <Stack.Screen name="playback" options={{ presentation: "card", animation: "slide_from_right" }} />
                 <Stack.Screen name="compare" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="timeline" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="predictions" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="trends" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="repair-log" options={{ presentation: "card", animation: "slide_from_right" }} />
+                <Stack.Screen name="health-report" options={{ presentation: "card", animation: "slide_from_right" }} />
               </Stack>
             </RecordingProvider>
           </TelemetryProvider>

@@ -93,6 +93,16 @@ export default function VehicleProfile() {
           ) : null}
         </LinearGradient>
 
+        {/* Intelligence action cards */}
+        <View style={styles.actionGrid}>
+          <ActionCard testID="act-timeline" icon="timeline-text" label="Timeline" onPress={() => router.push(`/timeline?id=${id}`)} />
+          <ActionCard testID="act-predictions" icon="calendar-clock" label="Predictions" onPress={() => router.push(`/predictions?id=${id}`)} />
+          <ActionCard testID="act-trends" icon="chart-timeline-variant" label="Trends" onPress={() => router.push(`/trends?id=${id}`)} />
+          <ActionCard testID="act-repairs" icon="car-wrench" label="Repair Log" onPress={() => router.push(`/repair-log?id=${id}`)} />
+          <ActionCard testID="act-report" icon="clipboard-pulse" label="Health Report" onPress={() => router.push(`/health-report?id=${id}`)} />
+          <ActionCard testID="act-sessions" icon="chart-line" label="Sessions" onPress={() => router.push(`/recordings?vehicle_id=${id}`)} />
+        </View>
+
         {/* Specs */}
         <Text style={styles.sectionTitle}>SPECIFICATIONS</Text>
         <View style={styles.specGrid}>
@@ -279,6 +289,15 @@ function PerfBadge({ icon, label, value }: { icon: string; label: string; value:
   );
 }
 
+function ActionCard({ testID, icon, label, onPress }: { testID: string; icon: string; label: string; onPress: () => void }) {
+  return (
+    <Pressable testID={testID} style={styles.actionCard} onPress={onPress}>
+      <MaterialCommunityIcons name={icon as any} size={24} color={colors.brand} />
+      <Text style={styles.actionLabel}>{label}</Text>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.surface },
   center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.surface },
@@ -286,6 +305,9 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: spacing.lg, paddingBottom: spacing.md },
   title: { color: colors.onSurface, fontFamily: font.display, fontSize: 18, letterSpacing: 1, flex: 1, textAlign: "center" },
   hero: { alignItems: "center", padding: spacing.xl, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, gap: 4 },
+  actionGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm, marginTop: spacing.md },
+  actionCard: { flexGrow: 1, flexBasis: "30%", alignItems: "center", gap: 6, paddingVertical: spacing.lg, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
+  actionLabel: { color: colors.onSurface, fontSize: 12, fontWeight: "600" },
   heroName: { color: colors.onSurface, fontFamily: font.display, fontSize: 24, marginTop: spacing.sm },
   heroTrim: { color: colors.onSurfaceSecondary, fontSize: 13 },
   confRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: spacing.xs },
