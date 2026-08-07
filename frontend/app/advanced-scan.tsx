@@ -48,8 +48,8 @@ export default function AdvancedScanScreen() {
 
   const finish = async (wf: WorkflowDef) => {
     if (timer.current) clearInterval(timer.current);
-    setProgress(98);
-    setPhase("Generating AI report…");
+    setProgress(100);
+    setPhase("Compiling report…");
     const diag = getDiagnostics();
     const modules = discoverModules(identity, dtcs, diag, connected);
     const rel = reliabilityReport(signals, diag, getLog());
@@ -60,12 +60,16 @@ export default function AdvancedScanScreen() {
       return { key: s.key, name: s.name, level: st.level, note: st.note };
     });
     try {
+      // Persist instantly (no AI wait) then navigate — the report screen
+      // generates the AI narrative on its own with a loading + retry state.
       const res: any = await runScan({ workflow: wf, vehicleId: id, identity, modules, dtcs, readiness, systems, reliability: rel });
       setRunning(null);
+      setProgress(0);
       router.push(`/scan-report?id=${res.id}`);
     } catch {
       setRunning(null);
-      Alert.alert("Scan failed", "Could not complete the scan. Please try again.");
+      setProgress(0);
+      Alert.alert("Scan failed", "Could not save the scan. Please check your connection and try again.");
     }
   };
 

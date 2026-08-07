@@ -1245,35 +1245,49 @@ WORKFLOW_TITLES = {
 
 @api_router.post("/scans")
 async def create_scan(inp: ScanInput, user=Depends(get_current_user)):
+    """Persist the scan immediately with structured results (no AI wait).
+    The AI narrative is generated separately via /scans/{id}/analyze so the UI
+    can navigate to the report instantly and fill in the analysis afterward."""
     title = WORKFLOW_TITLES.get(inp.workflow, "Vehicle Scan")
-    findings = ""
-    try:
-        chat_client = LlmChat(
-            api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_scan_{uuid.uuid4()}",
-            system_message=JARVIS_SYSTEM,
-        ).with_model("openai", "gpt-5.4")
-        prompt = (
-            f"Generate a professional {title} report for a {inp.vehicle}. "
-            f"Detected modules: {inp.modules}. Fault codes: {inp.dtcs}. Readiness monitors: {inp.readiness}. "
-            f"System health: {inp.systems}. Reliability metrics: {inp.metrics}. Overall score: {inp.overall_score}. "
-            "Structure with bold-labeled sections appropriate to the workflow: Summary; Modules Scanned; "
-            "Fault Codes; Readiness; System Health; Concerns; Recommended Actions. Be concise and technical."
-        )
-        findings = await chat_client.send_message(UserMessage(text=prompt))
-        findings = findings if isinstance(findings, str) else str(findings)
-    except Exception as e:
-        logger.error(f"scan report error: {e}")
-        findings = "AI report unavailable. Review the structured results below."
     sid = str(uuid.uuid4())
     doc = {
         "_id": sid, "user_id": user["_id"], "vehicle_id": inp.vehicle_id, "vin": inp.vin,
         "vehicle": inp.vehicle, "workflow": inp.workflow, "title": title,
         "modules": inp.modules, "dtcs": inp.dtcs, "readiness": inp.readiness,
         "systems": inp.systems, "metrics": inp.metrics, "overall_score": inp.overall_score,
-        "ai_report": findings, "created_at": now_iso(),
+        "ai_report": "", "created_at": now_iso(),
     }
     await db.scans.insert_one(doc)
     return _clean(doc) | {"id": sid}
+
+
+@api_router.post("/scans/{scan_id}/analyze")
+async def analyze_scan(scan_id: str, user=Depends(get_current_user)):
+    d = await db.scans.find_one({"_id": scan_id, "user_id": user["_id"]})
+    if not d:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    if d.get("ai_report"):
+        return {"ai_report": d["ai_report"]}
+    title = d.get("title", "Vehicle Scan")
+    prompt = (
+        f"Generate a professional {title} report for a {d.get('vehicle')}. "
+        f"Detected modules: {d.get('modules')}. Fault codes: {d.get('dtcs')}. Readiness monitors: {d.get('readiness')}. "
+        f"System health: {d.get('systems')}. Reliability metrics: {d.get('metrics')}. Overall score: {d.get('overall_score')}. "
+        "Structure with bold-labeled sections appropriate to the workflow: Summary; Modules Scanned; "
+        "Fault Codes; Readiness; System Health; Concerns; Recommended Actions. Be concise and technical."
+    )
+    try:
+        chat_client = LlmChat(
+            api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_scan_{scan_id}",
+            system_message=JARVIS_SYSTEM,
+        ).with_model("openai", "gpt-5.4")
+        findings = await chat_client.send_message(UserMessage(text=prompt))
+        findings = findings if isinstance(findings, str) else str(findings)
+    except Exception as e:
+        logger.error(f"scan analyze error: {e}")
+        raise HTTPException(status_code=500, detail="AI report unavailable")
+    await db.scans.update_one({"_id": scan_id}, {"$set": {"ai_report": findings}})
+    return {"ai_report": findings}
 
 
 @api_router.get("/scans")

@@ -68,6 +68,7 @@ export const api = {
   createScan: (payload: any) => request("/scans", { method: "POST", body: JSON.stringify(payload) }),
   listScans: (vehicleId?: string) => request(`/scans${vehicleId ? `?vehicle_id=${vehicleId}` : ""}`),
   getScan: (id: string) => request(`/scans/${id}`),
+  analyzeScan: (id: string) => request(`/scans/${id}/analyze`, { method: "POST" }),
   deleteScan: (id: string) => request(`/scans/${id}`, { method: "DELETE" }),
   createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),

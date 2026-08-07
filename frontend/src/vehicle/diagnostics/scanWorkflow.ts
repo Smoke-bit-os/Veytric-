@@ -71,5 +71,6 @@ export async function runScan(a: RunScanArgs) {
 export const scanService = {
   list: (vehicleId?: string) => api.listScans(vehicleId),
   get: (id: string) => api.getScan(id),
+  analyze: (id: string) => api.analyzeScan(id),
   remove: (id: string) => api.deleteScan(id),
 };

@@ -19,12 +19,29 @@ export default function ScanReportScreen() {
   const [scan, setScan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [aiError, setAiError] = useState(false);
+
+  const analyze = useCallback(async (sid: string) => {
+    setAnalyzing(true);
+    setAiError(false);
+    try {
+      const res: any = await scanService.analyze(sid);
+      setScan((prev: any) => (prev ? { ...prev, ai_report: res.ai_report } : prev));
+    } catch {
+      setAiError(true);
+    }
+    setAnalyzing(false);
+  }, []);
 
   const load = useCallback(() => {
     if (!id) return;
     setLoading(true);
-    scanService.get(id).then(setScan).catch(() => {}).finally(() => setLoading(false));
-  }, [id]);
+    scanService.get(id).then((s: any) => {
+      setScan(s);
+      if (s && !s.ai_report) analyze(id);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, [id, analyze]);
   useFocusEffect(useCallback(() => { load(); }, [load]));
 
   const exportPdf = async () => {
@@ -125,18 +142,30 @@ export default function ScanReportScreen() {
         )}
 
         <Section title="AI ANALYSIS">
-          <View testID="scan-ai">
-            {String(scan.ai_report || "").split(/\n+/).filter(Boolean).map((line: string, i: number) => {
-              const m = line.match(/^\*\*(.+?)\*\*:?\s*(.*)$/);
-              if (m) return (
-                <View key={i} style={{ marginTop: i === 0 ? 0 : spacing.sm }}>
-                  <Text style={styles.aiLabel}>{m[1]}</Text>
-                  {m[2] ? <Text style={styles.aiBody}>{m[2]}</Text> : null}
-                </View>
-              );
-              return <Text key={i} style={styles.aiBody}>{line.replace(/\*\*/g, "")}</Text>;
-            })}
-          </View>
+          {scan.ai_report ? (
+            <View testID="scan-ai">
+              {String(scan.ai_report).split(/\n+/).filter(Boolean).map((line: string, i: number) => {
+                const m = line.match(/^\*\*(.+?)\*\*:?\s*(.*)$/);
+                if (m) return (
+                  <View key={i} style={{ marginTop: i === 0 ? 0 : spacing.sm }}>
+                    <Text style={styles.aiLabel}>{m[1]}</Text>
+                    {m[2] ? <Text style={styles.aiBody}>{m[2]}</Text> : null}
+                  </View>
+                );
+                return <Text key={i} style={styles.aiBody}>{line.replace(/\*\*/g, "")}</Text>;
+              })}
+            </View>
+          ) : analyzing ? (
+            <View style={styles.aiPending} testID="scan-ai-loading">
+              <ActivityIndicator color={colors.brand} />
+              <Text style={styles.aiPendingText}>Generating AI analysis…</Text>
+            </View>
+          ) : (
+            <Pressable style={styles.aiRetry} testID="scan-ai-retry" onPress={() => id && analyze(id)}>
+              <MaterialCommunityIcons name="refresh" size={18} color={colors.brand} />
+              <Text style={styles.aiRetryText}>{aiError ? "AI analysis failed — tap to retry" : "Generate AI analysis"}</Text>
+            </Pressable>
+          )}
         </Section>
       </ScrollView>
 
@@ -196,6 +225,10 @@ const styles = StyleSheet.create({
   qSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 4 },
   aiLabel: { color: colors.brand, fontFamily: font.display, fontSize: 15, marginBottom: 3 },
   aiBody: { color: colors.onSurfaceTertiary, fontSize: 14, lineHeight: 21, marginBottom: 4 },
+  aiPending: { flexDirection: "row", alignItems: "center", gap: spacing.md, paddingVertical: spacing.md },
+  aiPendingText: { color: colors.onSurfaceSecondary, fontSize: 14 },
+  aiRetry: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, borderWidth: 1, borderColor: colors.brand, borderRadius: radius.sm, paddingVertical: 12, backgroundColor: colors.brandTertiary },
+  aiRetryText: { color: colors.brand, fontWeight: "700", fontSize: 13 },
   footer: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: spacing.lg, paddingTop: spacing.md, borderTopWidth: 1, borderTopColor: colors.divider, backgroundColor: colors.surface },
   exportBtn: { borderRadius: radius.md, overflow: "hidden" },
   exportGrad: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 15 },
