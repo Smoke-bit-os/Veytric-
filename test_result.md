@@ -140,6 +140,17 @@ frontend:
         -working: "NA"
         -agent: "main"
         -comment: "Upgrade paywall (plans/trial/comparison/restore/FAQ), About with 7-tap→Developer Options, Developer screen simulations+clears+diagnostics, auth Guest button, Garage membership card + 1-vehicle free limit prompt."
+  - task: "AI Engine provider system (BYOK/Cloud/Local) + /api/ai/analyze + AI settings screen + assistant routing"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/ai/aiContext.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Modular src/ai/ (AIProvider interface, openai/cloud/local providers, factory, secure key storage, aiContext). New backend POST /api/ai/analyze (Cloud path, GPT-5.4) curl-verified. Settings->Artificial Intelligence screen (app/ai-settings.tsx) with provider radios, BYOK key save/test/remove (masked, SecureStore, format validation + live test), model + local Ollama config. AI Assistant routes Cloud via api.chat (history preserved) and BYOK/Local via ai.analyze. Reachable from About Preferences + assistant header gear."
 
 metadata:
   created_by: "main_agent"
@@ -156,5 +167,10 @@ test_plan:
   test_priority: "current_focus_first"
 
 agent_communication:
+    -agent: "main"
+    -message: "AI Engine provider system implemented. Please test: BACKEND (1) POST /api/ai/analyze returns {text,model} for authed user with prompt+vehicle+telemetry; 401 without token; handles empty/long prompts. FRONTEND (2) Settings->Artificial Intelligence (reach via Garage settings gear -> About -> Artificial Intelligence, OR assistant header tune icon -> /ai-settings): three provider radios select+persist; selecting OpenAI reveals BYOK panel; entering an INVALID key and Save shows 'Invalid key format'; Test/Save with a bogus sk- key shows connection failed (rejected); model field editable; Local option reveals Ollama URL+model+Test (expect 'unreachable' in preview — that is correct, not a bug). (3) AI Assistant on JARVIS Cloud (default) still chats and persists history exactly as before (regression). (4) Provider selection persists after reload. NOTE: BYOK requires a real user OpenAI key (none provided) so a live successful OpenAI call can't be tested here — verify format validation + rejection paths + that Cloud remains fully functional. Local AI needs a reachable Ollama server (not available in preview). Do NOT fail these environmental limitations. APP_ENV=development."
+
+# --- Prior milestone (Licensing v1.0) message retained below ---
+prior_agent_communication:
     -agent: "main"
     -message: "Version 1.0 Licensing & Subscription platform implemented (strictly additive). Please test: (1) Backend subscription endpoints + entitlement state machine (free/trial/pro/shop/expired/grace, dup-trial 400, dev/set actions). (2) Frontend: register/login flows still work and return entitlement; feature gating shows PremiumGate on the 5 gated screens for a Free user and opens normally after Developer Mode sets Pro/Shop; Upgrade screen renders and Start Trial works; About 7-tap unlocks Developer Options; Developer screen tier simulations reflect instantly; Guest Mode continue works; Garage membership card + free 1-vehicle limit prompt. (3) Regression: ensure existing garage/connect/diagnostics/AI/recorder flows are intact. Use dev endpoint to switch tiers. APP_ENV=development."

@@ -1379,6 +1379,47 @@ async def delete_scan(scan_id: str, user=Depends(get_current_user)):
 
 
 # ============================================================================
+#  AI Analyze (JARVIS Cloud provider backend for the AI Engine)
+# ============================================================================
+class AIAnalyzeInput(BaseModel):
+    prompt: str
+    system: Optional[str] = None
+    vehicle: Optional[Any] = None
+    telemetry: Optional[dict] = None
+    diagnostics: Optional[dict] = None
+    history: List[dict] = []
+
+
+@api_router.post("/ai/analyze")
+async def ai_analyze(inp: AIAnalyzeInput, user=Depends(get_current_user)):
+    context = ""
+    if inp.vehicle:
+        context += f"\nVehicle: {inp.vehicle}"
+    if inp.telemetry:
+        context += f"\nLive sensors: {inp.telemetry}"
+    if inp.diagnostics:
+        context += f"\nDiagnostics: {inp.diagnostics}"
+    system = inp.system or JARVIS_SYSTEM
+    convo = ""
+    for h in (inp.history or [])[-8:]:
+        r, c = h.get("role"), h.get("content")
+        if r and c:
+            convo += f"\n{str(r).upper()}: {c}"
+    prompt = inp.prompt if not convo else f"Conversation so far:{convo}\n\nUSER: {inp.prompt}"
+    try:
+        chat_client = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"{user['_id']}_aigen_{uuid.uuid4()}",
+            system_message=system + context,
+        ).with_model("openai", "gpt-5.4")
+        reply = await chat_client.send_message(UserMessage(text=prompt))
+    except Exception as e:
+        logger.error(f"ai analyze error: {e}")
+        raise HTTPException(status_code=500, detail="AI unavailable")
+    return {"text": reply if isinstance(reply, str) else str(reply), "model": "gpt-5.4"}
+
+
+# ============================================================================
 #  Subscription / Licensing endpoints
 # ============================================================================
 class DeveloperSetInput(BaseModel):

@@ -1,0 +1,57 @@
+{
+  "summary": "User-Configurable AI Provider System (JARVIS Cloud + OpenAI BYOK + Local AI) verified end-to-end. BACKEND 11/11 PASS (test_ai_analyze.py, 15.98s): POST /api/ai/analyze returns {text, model:'gpt-5.4'} for minimal prompt, full vehicle+telemetry+diagnostics+history payload, and a long prompt; 401/403 without token; 422 when prompt missing. Regressions PASS: /api/chat (auth-gated, returns non-empty reply, history persists via /chat/history/{sid}); /api/dtc/analyze (code+desc payload returns {code, analysis}); /api/subscription (auth-gated, returns entitlement with tier/status, env, trialDays, graceDays). FRONTEND (390x844 web preview): registered fresh account, /ai-settings deep link renders header 'ARTIFICIAL INTELLIGENCE' + all three provider radios (ai-option-JARVIS_CLOUD, ai-option-OPENAI_USER_KEY, ai-option-LOCAL_AI). Cloud panel visible by default. Selecting OpenAI reveals openai-panel with openai-key-input, openai-save, openai-test, openai-model-input (default gpt-4o-mini shown as placeholder). Selecting Local AI reveals local-panel with local-url-input, local-model-input, local-test, local-save (defaults http://localhost:11434 / llama3.1 as placeholders). BYOK invalid-key path: entering 'notakey' + Save -> key NOT stored (masked key does not render) — correct format-validation rejection. BYOK bogus well-formed key ('sk-proj-0000000000000000000000') + Save -> after ~15-18s live test against OpenAI, key NOT stored (masked key does not render) — correct rejection. Local AI Test Connection hits localhost:11434 and browser shows ERR_CONNECTION_REFUSED — 'Unreachable' path exercised (env limitation). PROVIDER PERSISTENCE: selected OPENAI_USER_KEY, hard reload + re-navigate to /ai-settings, openai-panel still visible and cloud-panel hidden -> selection persisted. CHAT REGRESSION: on default JARVIS Cloud, sent 'what does OBD-II PID 0x05 measure?' -> got correct assistant reply 'OBD-II PID 0x05 measures engine coolant temperature'; after full reload, both the user message and the assistant reply persist on the assistant screen. Header ai-engine-button (tune icon) navigates to /ai-settings; header sub-label displays active provider ('JARVIS Cloud AI'). About screen has about-ai-engine card linking to /ai-settings. Two minor state-sync issues surfaced (see design_issues + react_native_issues). Env limitations acknowledged: no real OpenAI key available (only format+rejection paths tested), no Ollama server reachable (Test Connection expectedly unreachable), RN-web Alert.alert modals don't render visible UI in web preview — behavior is otherwise correct on device. Carried-over cosmetic RN-web warnings (shadow*/pointerEvents) still present from iter-8/9/10.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "AISettingsScreen (openai-model-input / local-url-input / local-model-input)",
+        "issue": "useState is initialized from ai.openaiModel / ai.localUrl / ai.localModel at mount, but AIEngineProvider loads those defaults from storage asynchronously in useEffect->refreshConfig. So the local state stays '' and the TextInput shows only its placeholder ('gpt-4o-mini', 'http://localhost:11434', 'llama3.1'). Functionally safe (secureStorage.set* falls back to DEFAULT_* when trimmed value is empty, and providers read defaults directly from storage), but visually the fields look empty at first paint and any Save that goes through without a user typing may look confusing. Fix: sync the local state via a useEffect on [ai.openaiModel, ai.localUrl, ai.localModel]. Reference: /app/frontend/app/ai-settings.tsx:21-23.",
+        "testID": "openai-model-input,local-url-input,local-model-input",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "AISettingsScreen (Alert feedback on web preview)",
+        "issues": [
+          "React Native's Alert.alert is imported from 'react-native' — on RN-web preview it does not render a visible modal (react-native-web has no default polyfill), so users on the web build see no confirmation of 'Invalid key format', 'Saved', 'Unreachable', etc. Functional outcome is still correct (key not stored on invalid/bogus, provider persisted). Works on real iOS/Android — env limitation on web preview only. If web parity is desired, use a custom in-app toast/modal or a react-native Alert polyfill. Reference: /app/frontend/app/ai-settings.tsx:2,30,42,47,50,55,63."
+        ]
+      }
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Carried over from iter-8/9/10: 'shadow* style props are deprecated. Use boxShadow' warnings on RN-web across multiple screens. Cosmetic on web preview. Reference: /app/frontend/app/*.tsx"},
+      {"component": "pointerEvents prop", "issue": "Carried over: 'props.pointerEvents is deprecated. Use style.pointerEvents' warning on RN-web. Cosmetic."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_ai_analyze.py",
+    "/app/test_reports/pytest/iteration_11.xml",
+    "/app/test_reports/iteration_11.json"
+  ],
+  "action_items": [
+    "OPTIONAL (LOW): Sync ai-settings.tsx local input state with the async-loaded AI context defaults so openai-model / local-url / local-model TextInputs show the actual saved value instead of only the placeholder. Add useEffect([ai.openaiModel, ai.localUrl, ai.localModel]) -> setters.",
+    "OPTIONAL: Replace react-native Alert.alert with a custom toast/modal (or a web-compatible polyfill) so BYOK/Local test outcomes are visible on the web preview. On device this already works.",
+    "OPTIONAL (carried over from iter-8/9/10): migrate shadow* -> style.boxShadow and pointerEvents prop -> style.pointerEvents for RN-web cleanliness."
+  ],
+  "critical_code_review_comments": [
+    "server.py:1393 ai_analyze — Auth-gated via get_current_user. Builds an inline conversation block from up to last 8 history turns + vehicle/telemetry/diagnostics context. Uses LlmChat with the emergent-managed key at gpt-5.4. Returns {text, model}. Handles LLM failure with 500 'AI unavailable'. Correct; matches the review contract.",
+    "server.py:1384 AIAnalyzeInput — pydantic model with prompt required, vehicle/telemetry/diagnostics optional, history defaulted to []. Yields the required 422 on missing prompt.",
+    "openaiProvider.ts — Reads the SecureStore key on connect/analyze/testConnection; NEVER sends key to our backend. Bearer to api.openai.com. testConnection GETs /v1/models with 15s timeout — correct low-cost validation call. Good.",
+    "aiContext.saveOpenAIKey — Format-validates first (isValidOpenAIKeyFormat -> /^sk-[A-Za-z0-9_-]{20,}$/). If format passes, key is saved then testConnection is run; on failure it removes the key and returns {ok:false,error:'... rejected by OpenAI.'}. This is the exact spec behaviour. Good.",
+    "aiProvider.resolveInitialProviderType — Honors saved provider first, otherwise falls back to BYOK if a key exists, otherwise JARVIS Cloud. Sound priority.",
+    "cloudProvider.ts — Uses the shared api.aiAnalyze surface. Slices history to last 8. Errors mapped to {ok:false, error:...} — matches AIProvider contract.",
+    "localProvider.ts — GET {url}/api/tags for testConnection with 8s timeout; POST {url}/api/generate with 45s timeout and stream:false. Returns friendly 'Could not reach the local AI server' on network error. Good.",
+    "secureStorage.ts — Key ONLY in SecureStore, non-secret config in AsyncStorage. maskKey preserves sk-proj- prefix + last4 -> good UX and security. Good.",
+    "ai-settings.tsx — Radio-style provider list with a green dot when hasOpenAIKey; provider-specific panels only render for the active provider; Save/Remove/Test buttons all have testIDs. Header uses safe-area top inset. One minor state-init issue noted above (modelInput/urlInput/localModelInput mount value)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_ai_analyze.py (new — 11 tests: /api/ai/analyze 401 + minimal + full context + long prompt + 422; /api/chat auth+reply+history persistence; /api/dtc/analyze auth+result; /api/subscription auth+entitlement)"
+  ],
+  "success_rate": {"backend": "100% (11/11 tests, 15.98s)", "frontend": "100% (3 provider radios render; OpenAI + Local panels reveal correctly; BYOK invalid + bogus keys are both rejected without being stored; provider selection persists across reload; JARVIS Cloud chat still works and history persists; tune icon and About link both reach /ai-settings)"},
+  "seed_data_creation": "Backend tests create ephemeral TEST_ai_*@jarvis.ai accounts (no delete endpoint; harmless in DB). Frontend UI runs registered TEST_aisettings_*@jarvis.ai / TEST_aip_*@jarvis.ai / TEST_chatreg_*@jarvis.ai accounts.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Base URL: https://jarvis-ai-1486.preview.emergentagent.com. Auth via POST /api/auth/register or the app's Register tab (auth-tab-register, auth-name-input, auth-email-input, auth-password-input, auth-submit-button). AI settings screen at /ai-settings; testIDs: ai-back, ai-option-JARVIS_CLOUD, ai-option-OPENAI_USER_KEY, ai-option-LOCAL_AI, cloud-panel, openai-panel, openai-key-input, openai-save, openai-test, openai-remove, openai-masked-key, openai-model-input, local-panel, local-url-input, local-model-input, local-test, local-save. Assistant screen at /assistant: chat-input, send-button, ai-engine-button (tune icon in header), assistant-welcome. About screen at /about: about-ai-engine (route to /ai-settings). Backend: POST /api/ai/analyze {prompt, system?, vehicle?, telemetry?, diagnostics?, history?} -> {text, model:'gpt-5.4'}. Env limitations: no real OpenAI key -> only format-validation and rejection paths tested; Ollama not reachable -> Local Test Connection expectedly fails; RN-web Alert.alert doesn't render UI on web preview (functional outcome still correct).",
+  "rca_of_issue": "N/A — feature verification. All contracts in the review request are satisfied. Only observations: (1) ai-settings TextInputs initialize local state from context-loaded values before the async load resolves, so they visually show placeholder text instead of the real default (functional impact: none, storage layer falls back to defaults); (2) RN-web Alert.alert has no visible UI on web preview (works on device) — cosmetic on web only."
+}

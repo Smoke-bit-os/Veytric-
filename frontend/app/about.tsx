@@ -6,6 +6,7 @@ import Constants from "expo-constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuth } from "@/src/auth";
 import { useLicense } from "@/src/licensing/LicenseProvider";
+import { useAI } from "@/src/ai/aiContext";
 import { devMode } from "@/src/dev/devMode";
 import { TIER_LABELS, TIER_ACCENT } from "@/src/licensing/licenseConstants";
 import { colors, font, radius, spacing } from "@/src/theme";
@@ -17,6 +18,7 @@ export default function AboutScreen() {
   const router = useRouter();
   const { user, provider } = useAuth();
   const { tier, status, trialDaysRemaining } = useLicense();
+  const ai = useAI();
   const [taps, setTaps] = useState(0);
   const [unlocked, setUnlocked] = useState(false);
 
@@ -74,6 +76,19 @@ export default function AboutScreen() {
           </View>
         </Pressable>
 
+        {/* Preferences */}
+        <Text style={styles.sectionTitle}>PREFERENCES</Text>
+        <Pressable testID="about-ai-engine" style={styles.card} onPress={() => router.push("/ai-settings")}>
+          <View style={styles.memRow}>
+            <MaterialCommunityIcons name="robot-outline" size={22} color={colors.brand} />
+            <View style={{ flex: 1, marginLeft: spacing.md }}>
+              <Text style={styles.memPlan2}>Artificial Intelligence</Text>
+              <Text style={styles.memSub}>{ai.providerName}</Text>
+            </View>
+            <MaterialCommunityIcons name="chevron-right" size={22} color={colors.onSurfaceSecondary} />
+          </View>
+        </Pressable>
+
         {/* App info */}
         <Text style={styles.sectionTitle}>APP</Text>
         <View style={styles.card}>
@@ -125,6 +140,7 @@ const styles = StyleSheet.create({
   rowValue: { color: colors.onSurface, fontSize: 14, fontWeight: "600", maxWidth: "60%", textTransform: "capitalize" },
   memRow: { flexDirection: "row", alignItems: "center", paddingVertical: spacing.lg },
   memPlan: { fontFamily: font.display, fontSize: 20 },
+  memPlan2: { color: colors.onSurface, fontSize: 15, fontWeight: "700" },
   memSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 1 },
   hint: { color: colors.onSurfaceSecondary, fontSize: 12, textAlign: "center", marginTop: spacing.md },
   devUnlocked: { color: colors.success, fontSize: 13, fontWeight: "700", textAlign: "center", marginTop: spacing.lg },

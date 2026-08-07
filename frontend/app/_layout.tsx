@@ -11,6 +11,7 @@ import { useIconFonts } from "@/src/hooks/use-icon-fonts";
 import { AuthProvider } from "@/src/auth";
 import { LicenseProvider } from "@/src/licensing/LicenseProvider";
 import { PurchasesProvider } from "@/src/subscriptions/PurchasesProvider";
+import { AIEngineProvider } from "@/src/ai/aiContext";
 import { TelemetryProvider } from "@/src/telemetry";
 import { RecordingProvider } from "@/src/vehicle/recording/recordingContext";
 
@@ -38,8 +39,9 @@ export default function RootLayout() {
         <AuthProvider>
           <PurchasesProvider>
             <LicenseProvider>
-              <TelemetryProvider>
-                <RecordingProvider>
+              <AIEngineProvider>
+                <TelemetryProvider>
+                  <RecordingProvider>
                   <StatusBar style="light" />
                   <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#06080D" } }}>
                     <Stack.Screen name="index" />
@@ -65,9 +67,11 @@ export default function RootLayout() {
                     <Stack.Screen name="upgrade" options={{ presentation: "modal", animation: "slide_from_bottom" }} />
                     <Stack.Screen name="about" options={{ presentation: "card", animation: "slide_from_right" }} />
                     <Stack.Screen name="developer" options={{ presentation: "card", animation: "slide_from_right" }} />
+                    <Stack.Screen name="ai-settings" options={{ presentation: "card", animation: "slide_from_right" }} />
                   </Stack>
                 </RecordingProvider>
-              </TelemetryProvider>
+                </TelemetryProvider>
+              </AIEngineProvider>
             </LicenseProvider>
           </PurchasesProvider>
         </AuthProvider>

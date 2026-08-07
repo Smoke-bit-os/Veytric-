@@ -78,6 +78,7 @@ export const api = {
     request("/voice/speak", { method: "POST", body: JSON.stringify({ text, voice }) }),
 
   getSubscription: () => request("/subscription"),
+  aiAnalyze: (payload: any) => request("/ai/analyze", { method: "POST", body: JSON.stringify(payload) }),
   startTrial: () => request("/subscription/start-trial", { method: "POST" }),
   restorePurchases: () => request("/subscription/restore", { method: "POST" }),
   validateReceipt: () => request("/subscription/validate", { method: "POST" }),

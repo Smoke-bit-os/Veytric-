@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   useAudioRecorder,
@@ -22,6 +22,8 @@ import {
 } from "expo-audio";
 import AIOrb from "@/src/components/AIOrb";
 import { api } from "@/src/api";
+import { useAI } from "@/src/ai/aiContext";
+import { AIProviderType } from "@/src/ai/types";
 import { useTelemetry } from "@/src/telemetry";
 import { buildVehicleIntelligence } from "@/src/vehicle/enrichment/enrichmentService";
 import { colors, font, radius, spacing } from "@/src/theme";
@@ -39,6 +41,8 @@ const SUGGESTIONS = [
 export default function Assistant() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ voice?: string }>();
+  const router = useRouter();
+  const ai = useAI();
   const { data, identity } = useTelemetry();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -77,14 +81,35 @@ export default function Assistant() {
         boost: Math.round(data.boost),
         dtcs: data.dtcs.map((d) => `${d.code} ${d.desc}`),
       };
-      const res = await api.chat({
-        session_id: SESSION,
-        message: msg,
-        telemetry: snapshot,
-        vehicle: buildVehicleIntelligence(identity as any)?.platformSummary,
-      });
-      setMessages((m) => [...m, { role: "assistant", content: res.reply }]);
-      speak(res.reply);
+      const platformSummary = buildVehicleIntelligence(identity as any)?.platformSummary;
+
+      let reply = "";
+      if (ai.providerType === AIProviderType.JARVIS_CLOUD) {
+        // Cloud keeps server-side session history + persistence.
+        const res = await api.chat({
+          session_id: SESSION,
+          message: msg,
+          telemetry: snapshot,
+          vehicle: platformSummary,
+        });
+        reply = res.reply;
+      } else {
+        // BYOK / Local: stateless analyze with compact local context.
+        const id = identity as any;
+        const res = await ai.analyze(
+          msg,
+          {
+            profile: id ? { vin: id.vin, year: id.year, make: id.make, model: id.model, trim: id.trim, engine: id.engine } : undefined,
+            live: { rpm: snapshot.rpm, coolantTemp: snapshot.coolantTemp, oilTemp: snapshot.oilTemp, batteryVoltage: snapshot.batteryVoltage, chargingVoltage: snapshot.chargingVoltage, shortFuelTrim: snapshot.shortFuelTrim, longFuelTrim: snapshot.longFuelTrim, boost: snapshot.boost },
+            diagnostics: { dtcs: snapshot.dtcs },
+          },
+          { history: messages.slice(-8) },
+        );
+        if (!res.ok) throw new Error(res.error || "AI unavailable");
+        reply = res.text;
+      }
+      setMessages((m) => [...m, { role: "assistant", content: reply }]);
+      speak(reply);
     } catch (e: any) {
       setMessages((m) => [...m, { role: "assistant", content: "⚠️ " + (e.message || "AI unavailable") }]);
     } finally {
@@ -141,9 +166,13 @@ export default function Assistant() {
           <View style={{ marginLeft: spacing.md }}>
             <Text style={styles.title}>JARVIS</Text>
             <Text style={styles.subtitle}>
-              {recording ? "Listening…" : thinking ? "Analyzing telemetry…" : transcribing ? "Transcribing…" : "AI Repair Assistant"}
+              {recording ? "Listening…" : thinking ? "Analyzing telemetry…" : transcribing ? "Transcribing…" : ai.providerName}
             </Text>
           </View>
+          <View style={{ flex: 1 }} />
+          <Pressable testID="ai-engine-button" onPress={() => router.push("/ai-settings")} hitSlop={12} style={styles.engineBtn}>
+            <MaterialCommunityIcons name="tune-variant" size={20} color={colors.brand} />
+          </Pressable>
         </View>
 
         <ScrollView
@@ -231,6 +260,7 @@ const styles = StyleSheet.create({
   },
   title: { color: colors.onSurface, fontFamily: font.display, fontSize: 22, letterSpacing: 2 },
   subtitle: { color: colors.brand, fontSize: 12 },
+  engineBtn: { width: 40, height: 40, borderRadius: 20, borderWidth: 1, borderColor: colors.border, alignItems: "center", justifyContent: "center", backgroundColor: colors.surfaceSecondary },
   messages: { padding: spacing.lg, paddingBottom: spacing.xl },
   welcome: { alignItems: "center", paddingVertical: spacing.xl },
   welcomeTitle: { color: colors.onSurface, fontFamily: font.display, fontSize: 24, marginTop: spacing.lg },
