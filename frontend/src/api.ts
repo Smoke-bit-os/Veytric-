@@ -17,7 +17,15 @@ async function request(path: string, options: RequestInit = {}) {
   const res = await fetch(`${BASE}/api${path}`, { ...options, headers });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(data?.detail || "Request failed");
+    const detail = data?.detail;
+    const message =
+      typeof detail === "string"
+        ? detail
+        : detail?.message || "Request failed";
+    const err: any = new Error(message);
+    err.status = res.status;
+    err.detail = detail; // structured payload (e.g. quota info) when present
+    throw err;
   }
   return data;
 }
@@ -79,6 +87,7 @@ export const api = {
 
   getSubscription: () => request("/subscription"),
   aiAnalyze: (payload: any) => request("/ai/analyze", { method: "POST", body: JSON.stringify(payload) }),
+  aiUsage: () => request("/ai/usage"),
   startTrial: () => request("/subscription/start-trial", { method: "POST" }),
   restorePurchases: () => request("/subscription/restore", { method: "POST" }),
   validateReceipt: () => request("/subscription/validate", { method: "POST" }),

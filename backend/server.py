@@ -1,5 +1,7 @@
 import os
+import re
 import math
+import time
 import uuid
 import base64
 import logging
@@ -109,7 +111,8 @@ def verify_pw(pw: str, hashed: str) -> bool:
 
 
 def make_token(user_id: str) -> str:
-    payload = {"sub": user_id, "exp": datetime.now(timezone.utc) + timedelta(days=30)}
+    now = datetime.now(timezone.utc)
+    payload = {"sub": user_id, "iat": now, "exp": now + timedelta(days=7)}
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGO)
 
 
@@ -192,6 +195,74 @@ def compute_entitlement(u: dict) -> dict:
     }
 
 
+# ----------------------------- Abuse protection helpers ---------------------
+# In-memory per-process throttles (best-effort). Server-side entitlement +
+# monthly usage counters in Mongo are the authoritative controls.
+AI_FREE_MONTHLY_LIMIT = int(os.environ.get("AI_FREE_MONTHLY_LIMIT", "20"))
+AI_TIER_LIMITS = {"free": AI_FREE_MONTHLY_LIMIT, "pro": None, "shop": None}  # None = unlimited
+MAX_PROMPT_CHARS = 12000
+RATE_LIMIT_WINDOW = 60
+RATE_LIMIT_MAX = 20
+LOGIN_WINDOW = 300
+LOGIN_MAX = 10
+
+_rate_buckets: dict = {}
+_login_buckets: dict = {}
+
+
+def _throttle(store: dict, key: str, max_n: int, window: int, msg: str):
+    now = time.time()
+    arr = [t for t in store.get(key, []) if now - t < window]
+    if len(arr) >= max_n:
+        raise HTTPException(status_code=429, detail=msg)
+    arr.append(now)
+    store[key] = arr
+
+
+def _month_key() -> str:
+    now = datetime.now(timezone.utc)
+    return f"{now.year:04d}-{now.month:02d}"
+
+
+def validate_prompt_size(*texts: Optional[str]):
+    total = sum(len(t or "") for t in texts)
+    if total > MAX_PROMPT_CHARS:
+        raise HTTPException(status_code=413, detail=f"Request too large ({total} characters). Maximum is {MAX_PROMPT_CHARS} characters.")
+
+
+async def enforce_cloud_quota(user: dict) -> dict:
+    """Rate-limit + monthly Cloud-AI quota. Only requests that use the
+    JARVIS-managed key call this — BYOK/Local go device->provider directly and
+    never consume quota. Server-computed entitlement is the ONLY source of
+    truth (client-provided tier/quota is never trusted)."""
+    _throttle(_rate_buckets, user["_id"], RATE_LIMIT_MAX, RATE_LIMIT_WINDOW,
+              "Too many requests. Please slow down and try again shortly.")
+    tier = compute_entitlement(user)["tier"]
+    limit = AI_TIER_LIMITS.get(tier, AI_FREE_MONTHLY_LIMIT)
+    month = _month_key()
+    if limit is None:
+        await db.ai_usage.update_one(
+            {"user_id": user["_id"], "month": month},
+            {"$inc": {"requests_used": 1}, "$setOnInsert": {"provider": "cloud"}},
+            upsert=True,
+        )
+        return {"allowed": True, "requests_used": None, "requests_limit": None, "remaining": None, "tier": tier}
+    doc = await db.ai_usage.find_one({"user_id": user["_id"], "month": month})
+    used = int((doc or {}).get("requests_used", 0))
+    if used >= limit:
+        raise HTTPException(status_code=429, detail={
+            "message": f"You've reached the Free plan limit of {limit} JARVIS Cloud AI requests this month. Upgrade to Pro for unlimited AI, or switch to your own OpenAI key (BYOK) or Local AI in Settings → Artificial Intelligence.",
+            "code": "cloud_quota_exceeded",
+            "requests_used": used, "requests_limit": limit, "remaining": 0,
+        })
+    await db.ai_usage.update_one(
+        {"user_id": user["_id"], "month": month},
+        {"$inc": {"requests_used": 1}, "$setOnInsert": {"provider": "cloud"}},
+        upsert=True,
+    )
+    return {"allowed": True, "requests_used": used + 1, "requests_limit": limit, "remaining": max(0, limit - used - 1), "tier": tier}
+
+
 # ----------------------------- Routes: Auth ---------------------------------
 @api_router.get("/")
 async def root():
@@ -200,6 +271,10 @@ async def root():
 
 @api_router.post("/auth/register")
 async def register(inp: RegisterInput):
+    _throttle(_login_buckets, f"reg:{inp.email.lower()}", LOGIN_MAX, LOGIN_WINDOW,
+              "Too many attempts. Please wait a few minutes and try again.")
+    if len(inp.password or "") < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
     existing = await db.users.find_one({"email": inp.email.lower()})
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -217,6 +292,8 @@ async def register(inp: RegisterInput):
 
 @api_router.post("/auth/login")
 async def login(inp: LoginInput):
+    _throttle(_login_buckets, f"login:{inp.email.lower()}", LOGIN_MAX, LOGIN_WINDOW,
+              "Too many login attempts. Please wait a few minutes and try again.")
     user = await db.users.find_one({"email": inp.email.lower()})
     if not user or not verify_pw(inp.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
@@ -360,7 +437,7 @@ async def get_vehicle_profile(vehicle_id: str, user=Depends(get_current_user)):
     vin = doc.get("vin", "")
     or_clauses: list = [{"vehicle_id": vehicle_id}]
     if vin:
-        or_clauses.append({"vehicle": {"$regex": vin}})
+        or_clauses.append({"vehicle": {"$regex": re.escape(vin)}})
     reports = await db.reports.find(
         {"user_id": user["_id"], "$or": or_clauses}
     ).sort("created_at", -1).to_list(100)
@@ -416,6 +493,8 @@ JARVIS_SYSTEM = (
 
 @api_router.post("/chat")
 async def chat(inp: ChatInput, user=Depends(get_current_user)):
+    validate_prompt_size(inp.message)
+    await enforce_cloud_quota(user)
     context = ""
     if inp.vehicle:
         context += f"\nActive vehicle: {inp.vehicle}"
@@ -465,10 +544,25 @@ async def chat_history(session_id: str, user=Depends(get_current_user)):
 
 
 # ----------------------------- Routes: Voice --------------------------------
+ALLOWED_AUDIO_EXT = {".m4a", ".mp3", ".wav", ".mp4", ".mpeg", ".mpga", ".webm", ".aac", ".ogg", ".flac", ".aiff"}
+MAX_AUDIO_BYTES = 25 * 1024 * 1024  # 25 MB
+
+
 @api_router.post("/voice/transcribe")
 async def transcribe(file: UploadFile = File(...), user=Depends(get_current_user)):
-    suffix = os.path.splitext(file.filename or "audio.m4a")[1] or ".m4a"
+    _throttle(_rate_buckets, user["_id"], RATE_LIMIT_MAX, RATE_LIMIT_WINDOW,
+              "Too many requests. Please slow down and try again shortly.")
+    suffix = os.path.splitext(file.filename or "audio.m4a")[1].lower() or ".m4a"
+    if suffix not in ALLOWED_AUDIO_EXT:
+        raise HTTPException(status_code=415, detail="Unsupported audio format")
+    ctype = (file.content_type or "").lower()
+    if ctype and not (ctype.startswith("audio/") or ctype in ("application/octet-stream", "video/mp4", "video/webm")):
+        raise HTTPException(status_code=415, detail="Unsupported audio content type")
     data = await file.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty audio file")
+    if len(data) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="Audio file too large (max 25MB)")
     tmp_path = os.path.join(tempfile.gettempdir(), f"{uuid.uuid4()}{suffix}")
     with open(tmp_path, "wb") as f:
         f.write(data)
@@ -510,6 +604,8 @@ class DtcAnalyzeInput(BaseModel):
 
 @api_router.post("/dtc/analyze")
 async def dtc_analyze(inp: DtcAnalyzeInput, user=Depends(get_current_user)):
+    validate_prompt_size(inp.code, inp.desc)
+    await enforce_cloud_quota(user)
     prompt = (
         f"Analyze diagnostic trouble code {inp.code} ({inp.desc}). "
         f"Vehicle: {inp.vehicle}. Live sensor snapshot: {inp.telemetry}. "
@@ -879,7 +975,7 @@ async def _gather_vehicle(vehicle_id: str, user_id: str):
     hist = await db.vehicle_history.find({"vehicle_id": vehicle_id, "user_id": user_id}).sort("ts", -1).to_list(500)
     or_clauses: list = [{"vehicle_id": vehicle_id}]
     if vin:
-        or_clauses.append({"vehicle": {"$regex": vin}})
+        or_clauses.append({"vehicle": {"$regex": re.escape(vin)}})
     reports = await db.reports.find({"user_id": user_id, "$or": or_clauses}).sort("created_at", -1).to_list(200)
     rec_q = {"user_id": user_id, "$or": ([{"vehicle_id": vehicle_id}] + ([{"vin": vin}] if vin else []))}
     recordings = await db.recordings.find(rec_q, {"samples": 0}).sort("created_at", -1).to_list(200)
@@ -1392,6 +1488,8 @@ class AIAnalyzeInput(BaseModel):
 
 @api_router.post("/ai/analyze")
 async def ai_analyze(inp: AIAnalyzeInput, user=Depends(get_current_user)):
+    validate_prompt_size(inp.prompt, inp.system)
+    usage = await enforce_cloud_quota(user)
     context = ""
     if inp.vehicle:
         context += f"\nVehicle: {inp.vehicle}"
@@ -1416,7 +1514,23 @@ async def ai_analyze(inp: AIAnalyzeInput, user=Depends(get_current_user)):
     except Exception as e:
         logger.error(f"ai analyze error: {e}")
         raise HTTPException(status_code=500, detail="AI unavailable")
-    return {"text": reply if isinstance(reply, str) else str(reply), "model": "gpt-5.4"}
+    return {"text": reply if isinstance(reply, str) else str(reply), "model": "gpt-5.4", "usage": usage}
+
+
+@api_router.get("/ai/usage")
+async def ai_usage(user=Depends(get_current_user)):
+    tier = compute_entitlement(user)["tier"]
+    limit = AI_TIER_LIMITS.get(tier, AI_FREE_MONTHLY_LIMIT)
+    doc = await db.ai_usage.find_one({"user_id": user["_id"], "month": _month_key()})
+    used = int((doc or {}).get("requests_used", 0))
+    return {
+        "tier": tier,
+        "month": _month_key(),
+        "requests_used": used,
+        "requests_limit": limit,
+        "remaining": None if limit is None else max(0, limit - used),
+        "unlimited": limit is None,
+    }
 
 
 # ============================================================================
@@ -1476,8 +1590,9 @@ async def validate_subscription(user=Depends(get_current_user)):
 
 @api_router.post("/subscription/developer/set")
 async def developer_set(inp: DeveloperSetInput, user=Depends(get_current_user)):
-    if APP_ENV == "production":
-        raise HTTPException(status_code=403, detail="Developer mode is disabled in production")
+    # Closed-by-default: only available when development is EXPLICITLY enabled.
+    if APP_ENV != "development":
+        raise HTTPException(status_code=403, detail="Developer mode is disabled")
     now = datetime.now(timezone.utc)
     a = inp.action
     if a == "free":
@@ -1520,13 +1635,27 @@ async def developer_set(inp: DeveloperSetInput, user=Depends(get_current_user)):
 
 
 app.include_router(api_router)
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
+# CORS: explicit allowlist in production (set CORS_ORIGINS as a comma-separated
+# list). Dev fallback avoids the dangerous wildcard-origin + credentials combo
+# (auth is Bearer-token based, so credentials/cookies are not needed).
+_cors_origins = os.environ.get("CORS_ORIGINS", "").strip()
+if _cors_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_credentials=True,
+        allow_origins=[o.strip() for o in _cors_origins.split(",") if o.strip()],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_credentials=False,
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 @app.on_event("shutdown")
