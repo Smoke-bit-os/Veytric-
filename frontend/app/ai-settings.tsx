@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, ActivityIndicator, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -22,6 +22,11 @@ export default function AISettingsScreen() {
   const [urlInput, setUrlInput] = useState(ai.localUrl);
   const [localModelInput, setLocalModelInput] = useState(ai.localModel);
   const [busy, setBusy] = useState<string | null>(null);
+
+  // AIEngineProvider loads config asynchronously — sync inputs once it arrives.
+  useEffect(() => { setModelInput(ai.openaiModel); }, [ai.openaiModel]);
+  useEffect(() => { setUrlInput(ai.localUrl); }, [ai.localUrl]);
+  useEffect(() => { setLocalModelInput(ai.localModel); }, [ai.localModel]);
 
   const saveKey = async () => {
     setBusy("save");
@@ -103,7 +108,7 @@ export default function AISettingsScreen() {
                   <Text style={styles.savedKey} testID="openai-masked-key">{ai.maskedKey}</Text>
                 </View>
               ) : (
-                <Text style={styles.help}>No key saved. Enter your key below — it's stored encrypted on this device only.</Text>
+                <Text style={styles.help}>No key saved. Enter your key below — it&apos;s stored encrypted on this device only.</Text>
               )}
               <TextInput
                 testID="openai-key-input"
@@ -151,7 +156,7 @@ export default function AISettingsScreen() {
                   <Text style={styles.btnPrimaryText}>Save</Text>
                 </Pressable>
               </View>
-              <Text style={styles.help}>Runs fully offline. Requires an Ollama server reachable from this device (won't work in Expo Go / web preview).</Text>
+              <Text style={styles.help}>Runs fully offline. Requires an Ollama server reachable from this device (won&apos;t work in Expo Go / web preview).</Text>
             </View>
           )}
 
