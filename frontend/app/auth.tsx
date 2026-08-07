@@ -19,7 +19,7 @@ import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function AuthScreen() {
   const router = useRouter();
-  const { login, register } = useAuth();
+  const { login, register, loginAsGuest } = useAuth();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -128,6 +128,18 @@ export default function AuthScreen() {
               </LinearGradient>
             </Pressable>
           </View>
+
+          <Pressable
+            testID="auth-guest-button"
+            style={styles.guestBtn}
+            onPress={async () => {
+              await loginAsGuest();
+              router.replace("/(tabs)");
+            }}
+          >
+            <MaterialCommunityIcons name="incognito" size={16} color={colors.onSurfaceSecondary} />
+            <Text style={styles.guestText}>Continue as Guest</Text>
+          </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
     </LinearGradient>
@@ -201,4 +213,6 @@ const styles = StyleSheet.create({
   button: { borderRadius: radius.md, overflow: "hidden", marginTop: spacing.xs },
   buttonGrad: { paddingVertical: 16, alignItems: "center" },
   buttonText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1.5, fontSize: 14 },
+  guestBtn: { flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", marginTop: spacing.xl, padding: spacing.md },
+  guestText: { color: colors.onSurfaceSecondary, fontSize: 14, fontWeight: "600" },
 });

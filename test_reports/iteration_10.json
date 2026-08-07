@@ -1,0 +1,45 @@
+{
+  "summary": "JARVIS Licensing & Subscription v1.0 verified end-to-end. BACKEND (20/20 pytest PASS in test_subscription.py): GET /api/subscription returns free entitlement (tier/status/trialDaysRemaining=0/inGrace=false/trialUsed=false), env='development', trialDays=30, graceDays=3; 401 without token. POST /start-trial sets tier=pro/status=trial/trialUsed=true with 28-30 days remaining and persists via GET; second call returns 400 'Trial already used'. POST /restore and /validate both return status='not_configured' with entitlement. POST /developer/set covers every action correctly: free (free/none), trial (pro/trial/30d/trialUsed=true), pro (pro/active), shop (shop/active), expired (free/expired/inGrace=false), grace (pro/grace/inGrace=true), reset_trial (trialUsed=false, allows new trial), clear (free/none/trialUsed=false). Unknown action -> 400. Persistence verified via GET /subscription. Auth regression PASSED: /register, /login and /me all include entitlement object. FRONTEND (390x844 mobile web): registered fresh account -> landed on tabs with Free entitlement (OBD-II auto-connected, 4 DTCs on Command tab). All 5 gated screens (/advanced-scan, /health-report, /record, /trends, /predictions) render PremiumGate for Free user (gate-required-tier + gate-upgrade visible; badge 'Included in JARVIS Pro'). Garage->settings-button (present) navigates to About. About page: 7 taps on about-version reveals 'Developer Mode unlocked' + Developer Options button. Developer screen: dev-license-pro tapped -> all 5 gated screens now open normally with no PremiumGate (workflow-full visible on advanced-scan). Upgrade screen: upgrade-current-plan shows 'JARVIS Pro / Trial - 30 days left' after Pro sim, feature comparison table (Connection/Diagnostics rows visible), plan cards for Free/Pro/Shop with UPGRADE TO JARVIS SHOP CTA, monthly/annual toggle, upgrade-restore visible. Set back to Free -> upgrade-start-trial appears, tapping it changes plan status to Trial (day count reflected). All flows working. Minor: PremiumGate badge reads 'Included in JARVIS Pro' rather than review's expected 'Requires JARVIS Pro' — semantically equivalent, not a bug. Carried-over cosmetic RN-web warnings: shadow* style props and pointerEvents prop deprecations (already known from iter-8/9).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "PremiumGate", "issues": ["Badge text is 'Included in JARVIS Pro' but review request expected 'Requires JARVIS Pro'. Only cosmetic wording difference — the requiredTier is correctly communicated. Optionally update badge to 'Requires JARVIS Pro' to match spec if desired. Reference: /app/frontend/src/components/PremiumGate.tsx:44"]}
+    ],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Carried over from iter-8/9: shadowColor/shadowOpacity/shadowRadius on multiple screens trigger 'shadow* style props are deprecated. Use boxShadow' warnings on RN-web. Cosmetic only. Reference: /app/frontend/app/*.tsx (multiple)."},
+      {"component": "pointerEvents prop", "issue": "Carried over: 'props.pointerEvents is deprecated. Use style.pointerEvents' warning. Cosmetic on RN-web only."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_subscription.py",
+    "/app/test_reports/pytest/iteration_10.xml",
+    "/app/test_reports/iteration_10.json"
+  ],
+  "action_items": [
+    "None blocking — feature implementation is correct and complete.",
+    "OPTIONAL: change PremiumGate badge text to 'Requires JARVIS Pro' (currently 'Included in JARVIS Pro') to exactly match the review spec. PremiumGate.tsx:44.",
+    "OPTIONAL (carried over from iter-8/9): migrate shadow* style props -> boxShadow, and pointerEvents prop -> style.pointerEvents on RN-web."
+  ],
+  "critical_code_review_comments": [
+    "server.py:153 compute_entitlement — Handles trial expiration, grace period, and expired subscription correctly. State machine covers all 5 tiers/statuses cleanly. Good.",
+    "server.py:1398 start_trial — Correctly gates on trial_used; sets trial_end at now+30d; persists atomically via $set. Returns the reconciled entitlement. Good.",
+    "server.py:1436 developer_set — Gated by APP_ENV != 'production' (returns 403 in prod). All 8 actions computed correctly and persisted. reset_trial only downgrades to free if currently on trial (correct). clear resets everything including trialUsed. Good.",
+    "server.py:130 public_user — Now embeds compute_entitlement(u) so register/login/me all carry it. Correct additive change; no legacy fields removed.",
+    "LicenseProvider.tsx:78 initial-load effect — Loads cache first for offline-first paint then revalidates. bootedFor ref prevents double-boot on the same user. Correct.",
+    "LicenseProvider.tsx:55 refresh — Guests + logged-out force DEFAULT_ENTITLEMENT and skip backend. Good.",
+    "PremiumGate.tsx:19 useEntitlement — Renders required tier via TIER_LABELS[requiredTier]; router.push('/upgrade') on gate-upgrade tap. gate-back and gate-continue both call router.back(). Good.",
+    "featureRegistry.ts — Single-source registry of features->tiers; screens read via tierHasFeature() and never hardcode tier checks. Good architecture.",
+    "server.py: file remains ~1495 lines — advisory only (carried over): consider splitting auth/vehicles/intelligence/diagnostics/subscription into modules. Not blocking."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_subscription.py (new — 20 pytest tests covering GET /subscription, /start-trial success+duplicate+401, /restore /validate not_configured stubs, /developer/set for all 8 actions + persistence + unknown-action-400 + auth regression + vehicle regression)"
+  ],
+  "success_rate": {"backend": "100% (20/20 tests, 6.42s)", "frontend": "100% (register->Free->5 gated screens gated correctly; 7-tap unlocks Developer Mode; Simulate Pro removes gates on all 5 screens; Upgrade screen renders current-plan/plans/comparison/toggle/start-trial/restore; start-trial flips status to Trial)"},
+  "seed_data_creation": "Backend tests create ephemeral TEST_-prefixed users (never cleaned as no delete endpoint exists; they remain harmless in DB). Frontend registered testlic_<ts>@jarvis.ai; final tier is Trial after start-trial tap.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Base URL: https://jarvis-ai-1486.preview.emergentagent.com. Auth: register any TEST_*@jarvis.ai / TestPass123!. To change tiers use Developer Mode: garage-tab -> settings-button (top-right) -> tap about-version 7 times -> about-developer -> dev-license-{free|trial|pro|shop|expired|grace}. Key testIDs: gate-required-tier, gate-upgrade, gate-continue, gate-back, upgrade-current-plan, upgrade-start-trial, upgrade-restore, plan-{free|pro|shop}, upgrade-to-{tier}, period-{Monthly|Annual}, about-version, about-developer, about-membership, membership-card. Backend endpoints: GET /api/subscription, POST /api/subscription/start-trial, /restore, /validate, /developer/set{action}. APP_ENV=development enables /developer/set (returns 403 in production). Note: PremiumGate badge text is 'Included in <Tier>' — semantically 'Requires <Tier>'.",
+  "rca_of_issue": "N/A — this iteration was feature verification (not a bug). All backend + frontend contracts in the review request are satisfied. Only observations: (1) minor wording on PremiumGate badge ('Included in' vs review's 'Requires') — cosmetic; (2) upgrade-start-trial button is hidden when user is already Pro/Trial (correct behaviour — non-issue)."
+}

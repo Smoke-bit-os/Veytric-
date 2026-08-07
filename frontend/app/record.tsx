@@ -10,6 +10,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Gauge from "@/src/components/Gauge";
 import { useVehicle } from "@/src/vehicle/service";
 import { useRecording } from "@/src/vehicle/recording/recordingContext";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
+import PremiumGate from "@/src/components/PremiumGate";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 type LiveEvent = { key: string; type: string; label: string; severity: "info" | "warn" | "bad"; at: number };
@@ -35,6 +37,7 @@ export default function RecordScreen() {
   const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const gate = useEntitlement("performance_recorder");
 
   const connected = connection === "connected";
 
@@ -88,6 +91,8 @@ export default function RecordScreen() {
   const recording = state === "recording";
   const paused = state === "paused";
   const active = recording || paused;
+
+  if (!gate.hasAccess) return <PremiumGate feature="performance_recorder" />;
 
   return (
     <View style={styles.root}>

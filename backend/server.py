@@ -1,4 +1,5 @@
 import os
+import math
 import uuid
 import base64
 import logging
@@ -127,7 +128,68 @@ async def get_current_user(cred: Optional[HTTPAuthorizationCredentials] = Depend
 
 
 def public_user(u: dict) -> dict:
-    return {"id": u["_id"], "name": u["name"], "email": u["email"]}
+    return {"id": u["_id"], "name": u["name"], "email": u["email"], "entitlement": compute_entitlement(u)}
+
+
+# ----------------------------- Licensing / Subscription ---------------------
+# Backend is the source of truth for tier/status/trial. The client caches the
+# computed entitlement (encrypted) for offline-first behaviour but never makes
+# authoritative decisions on its own. Real billing (App Store / Google Play /
+# RevenueCat) plugs into /subscription/validate + /restore later.
+TRIAL_DAYS = 30
+GRACE_DAYS = 3
+APP_ENV = os.environ.get("APP_ENV", "development")
+
+
+def _parse_dt(dt):
+    if not dt:
+        return None
+    try:
+        return datetime.fromisoformat(dt)
+    except Exception:
+        return None
+
+
+def compute_entitlement(u: dict) -> dict:
+    now = datetime.now(timezone.utc)
+    tier = u.get("tier", "free")
+    status = u.get("subscription_status", "none")
+    trial_end = _parse_dt(u.get("trial_end"))
+    sub_end = _parse_dt(u.get("subscription_end"))
+    grace_end = _parse_dt(u.get("grace_period_end"))
+    trial_used = bool(u.get("trial_used", False))
+
+    eff_tier, eff_status, trial_days, in_grace = "free", "none", 0, False
+
+    if status == "trial":
+        if trial_end and trial_end > now:
+            eff_tier, eff_status = "pro", "trial"
+            trial_days = max(0, math.ceil((trial_end - now).total_seconds() / 86400))
+        else:
+            eff_tier, eff_status = "free", "expired"
+    elif status in ("active", "grace"):
+        if sub_end and sub_end <= now:
+            if grace_end and grace_end > now:
+                eff_tier, eff_status, in_grace = tier, "grace", True
+            else:
+                eff_tier, eff_status = "free", "expired"
+        else:
+            eff_tier, eff_status = tier, "active"
+
+    return {
+        "tier": eff_tier,
+        "storedTier": tier,
+        "status": eff_status,
+        "trialUsed": trial_used,
+        "trialDaysRemaining": trial_days,
+        "trialEnd": u.get("trial_end"),
+        "inGrace": in_grace,
+        "gracePeriodEnd": u.get("grace_period_end"),
+        "subscriptionEnd": u.get("subscription_end"),
+        "autoRenew": bool(u.get("auto_renew", False)),
+        "provider": u.get("provider", ""),
+        "lastValidation": u.get("last_validation"),
+    }
 
 
 # ----------------------------- Routes: Auth ---------------------------------
@@ -1314,6 +1376,106 @@ async def get_scan(scan_id: str, user=Depends(get_current_user)):
 async def delete_scan(scan_id: str, user=Depends(get_current_user)):
     await db.scans.delete_one({"_id": scan_id, "user_id": user["_id"]})
     return {"ok": True}
+
+
+# ============================================================================
+#  Subscription / Licensing endpoints
+# ============================================================================
+class DeveloperSetInput(BaseModel):
+    action: str  # free | trial | pro | shop | expired | grace | reset_trial | clear
+
+
+@api_router.get("/subscription")
+async def get_subscription(user=Depends(get_current_user)):
+    return {
+        "entitlement": compute_entitlement(user),
+        "trialDays": TRIAL_DAYS,
+        "graceDays": GRACE_DAYS,
+        "env": APP_ENV,
+    }
+
+
+@api_router.post("/subscription/start-trial")
+async def start_trial(user=Depends(get_current_user)):
+    if user.get("trial_used"):
+        raise HTTPException(status_code=400, detail="Trial already used on this account")
+    now = datetime.now(timezone.utc)
+    fields = {
+        "subscription_status": "trial",
+        "trial_start": now.isoformat(),
+        "trial_end": (now + timedelta(days=TRIAL_DAYS)).isoformat(),
+        "trial_used": True,
+        "provider": "trial",
+        "last_validation": now.isoformat(),
+    }
+    await db.users.update_one({"_id": user["_id"]}, {"$set": fields})
+    return {"entitlement": compute_entitlement({**user, **fields})}
+
+
+@api_router.post("/subscription/restore")
+async def restore_subscription(user=Depends(get_current_user)):
+    # Stub — real App Store / Google Play / RevenueCat restoration plugs in here.
+    return {
+        "status": "not_configured",
+        "message": "Purchase restoration is not configured yet. Connect App Store / Google Play billing to enable.",
+        "entitlement": compute_entitlement(user),
+    }
+
+
+@api_router.post("/subscription/validate")
+async def validate_subscription(user=Depends(get_current_user)):
+    # Stub — server-side receipt validation (Apple/Google/RevenueCat) plugs in here.
+    return {
+        "status": "not_configured",
+        "valid": False,
+        "message": "Server-side receipt validation is not configured yet.",
+        "entitlement": compute_entitlement(user),
+    }
+
+
+@api_router.post("/subscription/developer/set")
+async def developer_set(inp: DeveloperSetInput, user=Depends(get_current_user)):
+    if APP_ENV == "production":
+        raise HTTPException(status_code=403, detail="Developer mode is disabled in production")
+    now = datetime.now(timezone.utc)
+    a = inp.action
+    if a == "free":
+        f = {"tier": "free", "subscription_status": "none", "trial_start": None, "trial_end": None,
+             "subscription_start": None, "subscription_end": None, "grace_period_end": None,
+             "auto_renew": False, "provider": "developer"}
+    elif a == "trial":
+        f = {"tier": "pro", "subscription_status": "trial", "trial_start": now.isoformat(),
+             "trial_end": (now + timedelta(days=TRIAL_DAYS)).isoformat(), "trial_used": True,
+             "provider": "developer", "last_validation": now.isoformat()}
+    elif a in ("pro", "shop"):
+        f = {"tier": a, "subscription_status": "active", "subscription_start": now.isoformat(),
+             "subscription_end": (now + timedelta(days=30)).isoformat(), "grace_period_end": None,
+             "auto_renew": True, "provider": "developer", "last_validation": now.isoformat()}
+    elif a == "expired":
+        f = {"tier": "pro", "subscription_status": "active",
+             "subscription_start": (now - timedelta(days=31)).isoformat(),
+             "subscription_end": (now - timedelta(days=1)).isoformat(),
+             "grace_period_end": (now - timedelta(days=1)).isoformat(),
+             "auto_renew": False, "provider": "developer"}
+    elif a == "grace":
+        f = {"tier": "pro", "subscription_status": "active",
+             "subscription_start": (now - timedelta(days=31)).isoformat(),
+             "subscription_end": (now - timedelta(days=1)).isoformat(),
+             "grace_period_end": (now + timedelta(days=GRACE_DAYS)).isoformat(),
+             "auto_renew": True, "provider": "developer"}
+    elif a == "reset_trial":
+        f = {"trial_used": False, "trial_start": None, "trial_end": None}
+        if user.get("subscription_status") == "trial":
+            f["subscription_status"] = "none"
+            f["tier"] = "free"
+    elif a == "clear":
+        f = {"tier": "free", "subscription_status": "none", "trial_start": None, "trial_end": None,
+             "trial_used": False, "subscription_start": None, "subscription_end": None,
+             "grace_period_end": None, "auto_renew": False, "provider": "developer"}
+    else:
+        raise HTTPException(status_code=400, detail="Unknown developer action")
+    await db.users.update_one({"_id": user["_id"]}, {"$set": f})
+    return {"entitlement": compute_entitlement({**user, **f}), "action": a}
 
 
 app.include_router(api_router)

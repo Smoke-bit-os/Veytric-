@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Polyline, Rect, Line } from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { trendsService, TrendResult, TrendFinding } from "@/src/vehicle/trends/trendsService";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
+import PremiumGate from "@/src/components/PremiumGate";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const dirIcon = (d: string) => (d === "rising" ? "trending-up" : d === "declining" ? "trending-down" : d === "recurring" ? "repeat" : "trending-neutral");
@@ -39,6 +41,7 @@ export default function TrendsScreen() {
   const [offline, setOffline] = useState(false);
   const [explain, setExplain] = useState("");
   const [explaining, setExplaining] = useState(false);
+  const gate = useEntitlement("trend_analysis");
 
   const load = useCallback(() => {
     if (!id) return;
@@ -65,6 +68,8 @@ export default function TrendsScreen() {
     { key: "health", label: "Health Score", color: colors.brand },
     { key: "maxSpeed", label: "Peak Speed", color: colors.success },
   ];
+
+  if (!gate.hasAccess) return <PremiumGate feature="trend_analysis" />;
 
   return (
     <View style={styles.root}>

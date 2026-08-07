@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter, useFocusEffect } from "expo-router";
@@ -17,6 +18,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "@/src/api";
 import { useAuth } from "@/src/auth";
+import { useLicense } from "@/src/licensing/LicenseProvider";
+import { VEHICLE_LIMITS, TIER_LABELS, TIER_ACCENT } from "@/src/licensing/licenseConstants";
 import { maintenanceService, DashboardSummary } from "@/src/vehicle/maintenance/maintenanceService";
 import { colors, font, radius, spacing } from "@/src/theme";
 
@@ -34,6 +37,7 @@ type Vehicle = {
 export default function Garage() {
   const insets = useSafeAreaInsets();
   const { user, logout } = useAuth();
+  const { tier, tierLabel, status, trialDaysRemaining } = useLicense();
   const router = useRouter();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [dash, setDash] = useState<Record<string, DashboardSummary>>({});
@@ -107,10 +111,26 @@ export default function Garage() {
             <Text style={styles.name}>{user?.name}</Text>
             <Text style={styles.email}>{user?.email}</Text>
           </View>
+          <Pressable testID="settings-button" style={styles.logout} onPress={() => router.push("/about")}>
+            <MaterialCommunityIcons name="cog" size={20} color={colors.onSurfaceSecondary} />
+          </Pressable>
           <Pressable testID="logout-button" style={styles.logout} onPress={logout}>
             <MaterialCommunityIcons name="logout" size={20} color={colors.error} />
           </Pressable>
         </View>
+
+        {/* Membership */}
+        <Pressable testID="membership-card" style={[styles.memCard, { borderColor: TIER_ACCENT[tier] }]} onPress={() => router.push("/upgrade")}>
+          <MaterialCommunityIcons name={tier === "free" ? "car" : "crown"} size={22} color={TIER_ACCENT[tier]} />
+          <View style={{ flex: 1, marginLeft: spacing.md }}>
+            <Text style={[styles.memPlan, { color: TIER_ACCENT[tier] }]}>{tierLabel}</Text>
+            <Text style={styles.memSub}>
+              {status === "trial" ? `Trial · ${trialDaysRemaining} days left` : status === "grace" ? "Grace period — renew to keep Pro" : status === "expired" ? "Expired — upgrade to restore" : tier === "free" ? "Unlock Pro diagnostics & AI" : "Active membership"}
+            </Text>
+          </View>
+          {tier === "free" && <View style={styles.upPill}><Text style={styles.upPillText}>UPGRADE</Text></View>}
+          <MaterialCommunityIcons name="chevron-right" size={20} color={colors.onSurfaceSecondary} />
+        </Pressable>
 
         <View style={styles.quickRow}>
           <Pressable testID="quick-connect" style={styles.quickCard} onPress={() => router.push("/connect")}>
@@ -125,7 +145,17 @@ export default function Garage() {
 
         <View style={styles.headerRow}>
           <Text style={styles.sectionTitle}>MY GARAGE</Text>
-          <Pressable testID="add-vehicle-button" style={styles.addBtn} onPress={() => setModal(true)}>
+          <Pressable testID="add-vehicle-button" style={styles.addBtn} onPress={() => {
+            if (vehicles.length >= VEHICLE_LIMITS[tier]) {
+              Alert.alert(
+                "Vehicle limit reached",
+                `The ${TIER_LABELS[tier]} plan allows ${VEHICLE_LIMITS[tier]} vehicle. Upgrade to JARVIS Pro for unlimited vehicles.`,
+                [{ text: "Not now", style: "cancel" }, { text: "Upgrade", onPress: () => router.push("/upgrade") }],
+              );
+              return;
+            }
+            setModal(true);
+          }}>
             <MaterialCommunityIcons name="plus" size={16} color={colors.brand} />
             <Text style={styles.addBtnText}>Add</Text>
           </Pressable>
@@ -320,6 +350,11 @@ const styles = StyleSheet.create({
   name: { color: colors.onSurface, fontFamily: font.display, fontSize: 20 },
   email: { color: colors.onSurfaceSecondary, fontSize: 13 },
   logout: { padding: spacing.sm },
+  memCard: { flexDirection: "row", alignItems: "center", marginHorizontal: spacing.lg, marginBottom: spacing.lg, padding: spacing.lg, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1 },
+  memPlan: { fontFamily: font.display, fontSize: 18 },
+  memSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 1 },
+  upPill: { backgroundColor: colors.brandTertiary, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4, marginRight: spacing.sm },
+  upPillText: { color: colors.brand, fontSize: 10, fontWeight: "800", letterSpacing: 1 },
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: spacing.lg },
   quickRow: { flexDirection: "row", gap: spacing.md, paddingHorizontal: spacing.lg, marginBottom: spacing.lg },
   quickCard: {

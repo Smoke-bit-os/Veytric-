@@ -101,3 +101,60 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Build JARVIS Account, Licensing & Subscription Platform (Version 1.0): Free/Pro/Shop tiers, offline-first encrypted license cache, 30-day one-per-account Pro trial, centralized LicenseProvider + useEntitlement feature gating, upgrade/paywall UI, contextual gates, Guest Mode + social-login stubs, provider-agnostic purchases (RevenueCat-ready), and a hidden Developer Mode (7-tap on version in Settings→About) to simulate tiers/trial/grace/expired and clear caches. Strictly additive — must not break any existing feature."
+
+backend:
+  - task: "Entitlement engine + subscription endpoints"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Added compute_entitlement() (source of truth), GET /api/subscription, POST /api/subscription/start-trial (30d, one-per-account, dup->400), /restore + /validate (not_configured stubs), /developer/set (dev-only; free/trial/pro/shop/expired/grace/reset_trial/clear; 403 if APP_ENV=production). public_user now returns entitlement. Curl-verified all state transitions."
+
+frontend:
+  - task: "LicenseProvider + useEntitlement gating (advanced_scan, ai_health_report, performance_recorder, trend_analysis, predictive_maintenance)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/licensing/LicenseProvider.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Centralized provider mounted in _layout, offline-first SecureStore cache, data-driven featureRegistry. 5 premium screens render PremiumGate when tier lacks access."
+  - task: "Upgrade screen, About (7-tap dev unlock), Developer Mode, Guest Mode, Membership card + free vehicle limit"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/upgrade.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Upgrade paywall (plans/trial/comparison/restore/FAQ), About with 7-tap→Developer Options, Developer screen simulations+clears+diagnostics, auth Guest button, Garage membership card + 1-vehicle free limit prompt."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+
+test_plan:
+  current_focus:
+    - "Entitlement engine + subscription endpoints"
+    - "LicenseProvider + useEntitlement gating (advanced_scan, ai_health_report, performance_recorder, trend_analysis, predictive_maintenance)"
+    - "Upgrade screen, About (7-tap dev unlock), Developer Mode, Guest Mode, Membership card + free vehicle limit"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "current_focus_first"
+
+agent_communication:
+    -agent: "main"
+    -message: "Version 1.0 Licensing & Subscription platform implemented (strictly additive). Please test: (1) Backend subscription endpoints + entitlement state machine (free/trial/pro/shop/expired/grace, dup-trial 400, dev/set actions). (2) Frontend: register/login flows still work and return entitlement; feature gating shows PremiumGate on the 5 gated screens for a Free user and opens normally after Developer Mode sets Pro/Shop; Upgrade screen renders and Start Trial works; About 7-tap unlocks Developer Options; Developer screen tier simulations reflect instantly; Guest Mode continue works; Garage membership card + free 1-vehicle limit prompt. (3) Regression: ensure existing garage/connect/diagnostics/AI/recorder flows are intact. Use dev endpoint to switch tiers. APP_ENV=development."

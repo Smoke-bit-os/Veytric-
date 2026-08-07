@@ -6,6 +6,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { maintenanceService } from "@/src/vehicle/maintenance/maintenanceService";
 import { exportHealthReportPDF } from "@/src/vehicle/performance/export";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
+import PremiumGate from "@/src/components/PremiumGate";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function HealthReportScreen() {
@@ -16,6 +18,7 @@ export default function HealthReportScreen() {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const gate = useEntitlement("ai_health_report");
 
   const load = useCallback(() => {
     if (!id) return;
@@ -50,6 +53,8 @@ export default function HealthReportScreen() {
     } catch { Alert.alert("Export", "Could not export the report."); }
     setExporting(false);
   };
+
+  if (!gate.hasAccess) return <PremiumGate feature="ai_health_report" />;
 
   return (
     <View style={styles.root}>

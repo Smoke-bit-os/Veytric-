@@ -10,6 +10,8 @@ import { readinessMonitors } from "@/src/vehicle/diagnostics/dtcClassifier";
 import { reliabilityReport } from "@/src/vehicle/diagnostics/reliability";
 import { SYSTEMS, systemStatus } from "@/src/vehicle/system-monitor/systems";
 import { WORKFLOWS, WorkflowDef, runScan, scanService } from "@/src/vehicle/diagnostics/scanWorkflow";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
+import PremiumGate from "@/src/components/PremiumGate";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const wfColor = (s: number) => (s >= 80 ? colors.success : s >= 60 ? colors.warning : colors.error);
@@ -20,6 +22,7 @@ export default function AdvancedScanScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { identity, dtcs, signals, connection, getDiagnostics, getLog } = useVehicle();
   const connected = connection === "connected";
+  const gate = useEntitlement("advanced_scan");
   const [running, setRunning] = useState<WorkflowDef | null>(null);
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState("");
@@ -30,6 +33,8 @@ export default function AdvancedScanScreen() {
     scanService.list(id).then((r: any) => setScans(r || [])).catch(() => {});
   }, [id]);
   useFocusEffect(useCallback(() => { load(); }, [load]));
+
+  if (!gate.hasAccess) return <PremiumGate feature="advanced_scan" />;
 
   const start = (wf: WorkflowDef) => {
     if (!connected) { Alert.alert("Not connected", "Connect to a vehicle to run a scan."); return; }

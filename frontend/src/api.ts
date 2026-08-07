@@ -77,6 +77,13 @@ export const api = {
   speak: (text: string, voice = "onyx") =>
     request("/voice/speak", { method: "POST", body: JSON.stringify({ text, voice }) }),
 
+  getSubscription: () => request("/subscription"),
+  startTrial: () => request("/subscription/start-trial", { method: "POST" }),
+  restorePurchases: () => request("/subscription/restore", { method: "POST" }),
+  validateReceipt: () => request("/subscription/validate", { method: "POST" }),
+  developerSetSubscription: (action: string) =>
+    request("/subscription/developer/set", { method: "POST", body: JSON.stringify({ action }) }),
+
   transcribe: async (uri: string) => {
     const form = new FormData();
     form.append("file", { uri, name: "voice.m4a", type: "audio/m4a" } as any);

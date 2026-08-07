@@ -4,6 +4,8 @@ import { useRouter, useLocalSearchParams, useFocusEffect } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { predictionsService, PredictionResult, PredictionItem, URGENCY_META } from "@/src/vehicle/predictions/predictionsService";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
+import PremiumGate from "@/src/components/PremiumGate";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const ICONS: Record<string, string> = {
@@ -19,6 +21,7 @@ export default function PredictionsScreen() {
   const [res, setRes] = useState<PredictionResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [offline, setOffline] = useState(false);
+  const gate = useEntitlement("predictive_maintenance");
 
   const load = useCallback(() => {
     if (!id) return;
@@ -29,6 +32,8 @@ export default function PredictionsScreen() {
   useFocusEffect(useCallback(() => { load(); }, [load]));
 
   const items: PredictionItem[] = res?.items || [];
+
+  if (!gate.hasAccess) return <PremiumGate feature="predictive_maintenance" />;
 
   return (
     <View style={styles.root}>
