@@ -19,6 +19,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "@/src/api";
 import { useAuth } from "@/src/auth";
 import { useLicense } from "@/src/licensing/LicenseProvider";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
 import { VEHICLE_LIMITS, TIER_LABELS, TIER_ACCENT } from "@/src/licensing/licenseConstants";
 import { maintenanceService, DashboardSummary } from "@/src/vehicle/maintenance/maintenanceService";
 import { colors, font, radius, spacing } from "@/src/theme";
@@ -38,6 +39,7 @@ export default function Garage() {
   const insets = useSafeAreaInsets();
   const { user, logout } = useAuth();
   const { tier, tierLabel, status, trialDaysRemaining } = useLicense();
+  const shopGate = useEntitlement("fleet_management");
   const router = useRouter();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [dash, setDash] = useState<Record<string, DashboardSummary>>({});
@@ -142,6 +144,17 @@ export default function Garage() {
             <Text style={styles.quickText}>Scan Reports</Text>
           </Pressable>
         </View>
+
+        {shopGate.hasAccess && (
+          <Pressable testID="shop-dashboard-card" style={styles.shopCard} onPress={() => router.push("/shop")}>
+            <MaterialCommunityIcons name="store-cog" size={24} color={colors.brand} />
+            <View style={{ flex: 1, marginLeft: spacing.md }}>
+              <Text style={styles.shopTitle}>Shop Dashboard</Text>
+              <Text style={styles.shopSub}>Fleet health & customer vehicles</Text>
+            </View>
+            <MaterialCommunityIcons name="chevron-right" size={20} color={colors.onSurfaceSecondary} />
+          </Pressable>
+        )}
 
         <View style={styles.headerRow}>
           <Text style={styles.sectionTitle}>MY GARAGE</Text>
@@ -368,6 +381,9 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   quickText: { color: colors.onSurface, fontSize: 13, fontWeight: "600" },
+  shopCard: { flexDirection: "row", alignItems: "center", marginHorizontal: spacing.lg, marginBottom: spacing.lg, padding: spacing.lg, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.brand },
+  shopTitle: { color: colors.onSurface, fontFamily: font.display, fontSize: 16 },
+  shopSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 1 },
   sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 2, fontWeight: "700" },
   addBtn: {
     flexDirection: "row",

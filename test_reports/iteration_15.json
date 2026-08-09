@@ -1,0 +1,37 @@
+{
+  "summary": "Feature verification for Shop Dashboard (Fleet + Customers MVP). Backend: 14/14 PASS in /app/backend/tests/test_shop_fleet.py (see /app/test_reports/pytest/iteration_15.xml). Covered: (1) GET /api/shop/fleet gating — free/pro users -> 403 with detail.code='shop_required'; shop user -> 200 with {summary, vehicles} full shape (total/healthy/attention/critical/unknown/totalOpenIssues/noScanCount/avgHealth). (2) PATCH /api/vehicles/{id} customer fields gated — free/pro sending customerName/customerNotes -> 403 shop_required; shop -> 200 and values round-trip verified via GET /api/vehicles/{id}. Regression: PATCH with only name/mileage still returns 200 for free AND pro (verified via subsequent GET). (3) Summary math: healthy(>=80), attention(60-79), critical(<60), unknown(no health_history) — seeded 4 vehicles at 90/70/40/none => summary correctly reported 1/1/1/1 with avgHealth=round((90+70+40)/3)=67. openIssues correctly reflects len(dtcs) of the most-recent report (seeded 3 dtcs on v2 -> openIssues=3, totalOpenIssues=3). avgHealth returns null when no scored vehicles; noScanCount counts vehicles without any scan/report (or last one >90d old). (4) Data isolation: registered a 2nd shop user — each user's /shop/fleet returns only their own vehicles (no cross-visibility). (5) No duplicate rows: patching customerName/customerNotes 3x on the same vehicle still yields exactly 1 row in /shop/fleet with the last values applied. (6) Anonymous requests to GET /shop/fleet and PATCH /vehicles/{id} correctly rejected. Frontend (mobile 390x844): SHOP TIER — UI login lands on Command tab, Garage tab renders 'Shop Dashboard' card (testID=shop-dashboard-card); tapping it opens /shop which shows testID=fleet-summary with the 6 stats (VEHICLES=1, AVG HEALTH=85, OPEN ISSUES=0, HEALTHY=1, ATTENTION=0, CRITICAL=0), 'X vehicle(s) with no recent scan' row, testID=fleet-search input, filter chips (filter-all, filter-healthy, filter-attention, filter-critical), and a customer-grouped list ('Unassigned') containing testID=fleet-vehicle-<id>. filter-critical correctly hides the healthy vehicle and shows testID=fleet-empty. Tapping a fleet vehicle navigates to /vehicle-profile which shows testID=customer-card with an 'Assign'/'Edit' testID=edit-customer button. Opening the sheet exposes testID=entry-f1 (name) + testID=entry-f2 (notes) + testID=entry-save. Saving persists — after save the API returns customerName='UI Customer Inc' and customerNotes='Handles A/C service' AND the card visibly shows both. FREE TIER — Garage 'Shop Dashboard' card is HIDDEN; direct navigation to /shop renders PremiumGate ('Fleet Management … Included in JARVIS Shop / UPGRADE NOW'); Vehicle Profile does NOT show the CUSTOMER card. PRO TIER — same as free: Shop Dashboard card hidden, /shop -> PremiumGate. All acceptance criteria pass. Also spot-checked regression on Garage (add vehicle, list, connected badge) and Vehicle Profile (mileage tap-to-set visible, VIN section, health history) — all render correctly.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_shop_fleet.py",
+    "/app/test_reports/pytest/iteration_15.xml"
+  ],
+  "action_items": [
+    "None required. Shop Dashboard MVP is functioning end-to-end with correct Shop-tier gating on both server (403 shop_required) and UI (PremiumGate + card hidden). Customer name/notes persist to existing vehicles doc (no duplicate records).",
+    "Carry-over (not related to this feature): server.py is now ~1864 lines — recommend splitting into routers (auth/vehicles/ai/subscription/shop). Also, pre-existing failures in tests/test_diagnostics.py TestScansCreate (unrelated) remain."
+  ],
+  "critical_code_review_comments": [
+    "server.py PATCH /api/vehicles/{id}: checks compute_entitlement(user)['tier'] != 'shop' BEFORE the DB update — correct order to reject 403 without side-effects (line 433).",
+    "shop_guard dependency correctly returns 403 detail={'message',code:'shop_required'} matching the frontend PremiumGate & mobile UX contract (line 499-502).",
+    "shop_fleet aggregation uses per-user filter user_id: user['_id'] on both vehicles and scans/reports collections — correct tenant isolation. openIssues uses len(combined[0]['dtcs']) which works because 'dtcs' is stored as list[dict] on reports and list on scans; both aggregate to the same len shape. Good.",
+    "_health_status(score) buckets exactly match the spec (>=80 healthy, 60-79 attention, <60 critical, None unknown).",
+    "avgHealth rounds via Python round() which is banker's rounding, but the test case 67.0 exact vs (90+70+40)/3=200/3=66.666... rounds to 67 — spec-compliant.",
+    "Frontend shop.tsx correctly wraps everything with useEntitlement('fleet_management') gate.hasAccess -> PremiumGate; groups by customerName with 'Unassigned' fallback. Filter and search logic is client-side over the fetched list.",
+    "vehicle-profile.tsx conditionally renders CUSTOMER card only when shopGate.hasAccess is true — correctly hidden for Free/Pro. Reuses the shared entry sheet (entry-f1/f2/save testIDs) for the 'customer' modal — clean and consistent."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_shop_fleet.py (new — 14 tests across 6 classes)",
+    "/app/test_reports/pytest/iteration_15.xml (JUnit)"
+  ],
+  "success_rate": {"backend": "100% (14/14)", "frontend": "100% (Shop-tier full flow: garage card -> /shop -> filter -> vehicle -> customer edit -> persist; Free/Pro gating verified for card + /shop + customer-card)"},
+  "seed_data_creation": "Registered ephemeral users via /api/auth/register per test with password Jarvis2026!. For each tier scenario, called POST /api/subscription/developer/set with action free|pro|shop. Vehicles created via POST /api/vehicles (name is required). Health scores added via POST /api/vehicles/{id}/health. dtcs seeded via POST /api/reports with dtcs=[{code:'...'}].",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reuse /app/backend/tests/test_shop_fleet.py for Shop Dashboard / Fleet + Customer regressions. Notes for next agent: (1) POST /api/vehicles requires 'name' field (VehicleInput) — supply name in the payload. (2) POST /api/reports expects dtcs: list[dict] (e.g., [{'code':'P0300'}]). (3) The env var for the public URL is EXPO_PUBLIC_BACKEND_URL (not EXPO_BACKEND_URL) — value = https://jarvis-ai-1486.preview.emergentagent.com. (4) developer/set with action='shop' or 'pro' or 'free' works in APP_ENV=development to switch tiers. (5) Frontend AsyncStorage stores tokens JSON-encoded under key 'jarvis_token' — do NOT inject raw token into localStorage; log in via the UI (INITIALIZE SYSTEM button) instead.",
+  "rca_of_issue": "N/A — feature verified end-to-end. Only self-inflicted test errors (missing 'name' on POST /vehicles, wrong dtcs shape) were corrected during test authoring."
+}

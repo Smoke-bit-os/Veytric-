@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { profileService } from "@/src/vehicle/profile/profileService";
 import { api } from "@/src/api";
 import { getKnownIssues } from "@/src/vehicle/database/knownIssues";
+import { useEntitlement } from "@/src/licensing/LicenseProvider";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const likeColor = (l: string) => (l === "high" ? colors.error : l === "medium" ? colors.warning : colors.success);
@@ -21,10 +22,11 @@ export default function VehicleProfile() {
   const [profile, setProfile] = useState<any>(null);
   const [perf, setPerf] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState<null | "mileage" | "maintenance" | "parts">(null);
+  const [modal, setModal] = useState<null | "mileage" | "maintenance" | "parts" | "customer">(null);
   const [f1, setF1] = useState("");
   const [f2, setF2] = useState("");
   const [saving, setSaving] = useState(false);
+  const shopGate = useEntitlement("fleet_management");
 
   const load = useCallback(() => {
     if (!id) return;
@@ -40,6 +42,8 @@ export default function VehicleProfile() {
     try {
       if (modal === "mileage") {
         await profileService.patch(id, { mileage: parseInt(f1) || 0 });
+      } else if (modal === "customer") {
+        await profileService.patch(id, { customerName: f1, customerNotes: f2 });
       } else {
         await profileService.addHistory(id, modal, { title: f1, detail: f2 });
       }
@@ -92,6 +96,24 @@ export default function VehicleProfile() {
             </View>
           ) : null}
         </LinearGradient>
+
+        {/* Shop-only customer association */}
+        {shopGate.hasAccess && (
+          <View style={styles.customerCard} testID="customer-card">
+            <View style={styles.customerHead}>
+              <View style={styles.customerHeadLeft}>
+                <MaterialCommunityIcons name="account-wrench" size={16} color={colors.brand} />
+                <Text style={styles.customerTitle}>CUSTOMER</Text>
+              </View>
+              <Pressable testID="edit-customer" style={styles.editChip} onPress={() => { setModal("customer"); setF1(profile.customerName || ""); setF2(profile.customerNotes || ""); }}>
+                <MaterialCommunityIcons name="pencil" size={13} color={colors.brand} />
+                <Text style={styles.editChipText}>{profile.customerName ? "Edit" : "Assign"}</Text>
+              </Pressable>
+            </View>
+            <Text style={styles.customerName}>{profile.customerName || "Unassigned"}</Text>
+            {profile.customerNotes ? <Text style={styles.customerNotes}>{profile.customerNotes}</Text> : null}
+          </View>
+        )}
 
         {/* Intelligence action cards */}
         <View style={styles.actionGrid}>
@@ -225,12 +247,12 @@ export default function VehicleProfile() {
           <View style={[styles.sheet, { paddingBottom: insets.bottom + spacing.lg }]}>
             <View style={styles.handle} />
             <Text style={styles.sheetTitle}>
-              {modal === "mileage" ? "Update Mileage" : modal === "maintenance" ? "Add Maintenance" : "Add Part"}
+              {modal === "mileage" ? "Update Mileage" : modal === "customer" ? "Customer Details" : modal === "maintenance" ? "Add Maintenance" : "Add Part"}
             </Text>
             <TextInput
               testID="entry-f1"
               style={styles.input}
-              placeholder={modal === "mileage" ? "Current mileage" : "Title (e.g. Oil change)"}
+              placeholder={modal === "mileage" ? "Current mileage" : modal === "customer" ? "Customer name" : "Title (e.g. Oil change)"}
               placeholderTextColor={colors.onSurfaceSecondary}
               value={f1}
               onChangeText={setF1}
@@ -240,14 +262,14 @@ export default function VehicleProfile() {
               <TextInput
                 testID="entry-f2"
                 style={[styles.input, { height: 80 }]}
-                placeholder="Details (optional)"
+                placeholder={modal === "customer" ? "Customer notes (optional)" : "Details (optional)"}
                 placeholderTextColor={colors.onSurfaceSecondary}
                 value={f2}
                 onChangeText={setF2}
                 multiline
               />
             )}
-            <Pressable testID="entry-save" style={styles.saveBtn} onPress={submit} disabled={saving || !f1}>
+            <Pressable testID="entry-save" style={styles.saveBtn} onPress={submit} disabled={saving || (modal !== "customer" && !f1)}>
               {saving ? <ActivityIndicator color={colors.onBrandPrimary} /> : <Text style={styles.saveText}>SAVE</Text>}
             </Pressable>
           </View>
@@ -309,6 +331,14 @@ const styles = StyleSheet.create({
   title: { color: colors.onSurface, fontFamily: font.display, fontSize: 18, letterSpacing: 1, flex: 1, textAlign: "center" },
   hero: { alignItems: "center", padding: spacing.xl, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, gap: 4 },
   actionGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm, marginTop: spacing.md },
+  customerCard: { backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.brand, padding: spacing.md, marginTop: spacing.md },
+  customerHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  customerHeadLeft: { flexDirection: "row", alignItems: "center", gap: 6 },
+  customerTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 1.5, fontWeight: "700" },
+  editChip: { flexDirection: "row", alignItems: "center", gap: 4, borderWidth: 1, borderColor: colors.brand, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 },
+  editChipText: { color: colors.brand, fontWeight: "700", fontSize: 12 },
+  customerName: { color: colors.onSurface, fontFamily: font.display, fontSize: 18, marginTop: spacing.sm },
+  customerNotes: { color: colors.onSurfaceSecondary, fontSize: 13, marginTop: 4, lineHeight: 18 },
   actionCard: { flexGrow: 1, flexBasis: "30%", alignItems: "center", gap: 6, paddingVertical: spacing.lg, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
   actionLabel: { color: colors.onSurface, fontSize: 12, fontWeight: "600" },
   heroName: { color: colors.onSurface, fontFamily: font.display, fontSize: 24, marginTop: spacing.sm },

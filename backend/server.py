@@ -358,6 +358,8 @@ class VinUpsertInput(BaseModel):
 class VehiclePatchInput(BaseModel):
     name: Optional[str] = None
     mileage: Optional[int] = None
+    customerName: Optional[str] = None
+    customerNotes: Optional[str] = None
 
 
 class HistoryEntryInput(BaseModel):
@@ -426,6 +428,10 @@ async def patch_vehicle(vehicle_id: str, inp: VehiclePatchInput, user=Depends(ge
     updates = {k: v for k, v in inp.dict().items() if v is not None}
     if not updates:
         return {"ok": True}
+    # Customer association/notes are a Shop-only management layer — enforced on
+    # the backend, not just hidden in the UI.
+    if ("customerName" in updates or "customerNotes" in updates) and compute_entitlement(user)["tier"] != "shop":
+        raise HTTPException(status_code=403, detail={"message": "Customer management requires a Shop plan", "code": "shop_required"})
     res = await db.vehicles.update_one({"id": vehicle_id, "user_id": user["_id"]}, {"$set": updates})
     if res.matched_count == 0:
         raise HTTPException(status_code=404, detail="Vehicle not found")
@@ -485,6 +491,85 @@ async def add_health_sample(vehicle_id: str, inp: HealthSampleInput, user=Depend
     if res.matched_count == 0:
         raise HTTPException(status_code=404, detail="Vehicle not found")
     return {"ok": True}
+
+
+# ----------------------------- Routes: Shop Dashboard (Fleet MVP) -----------
+# A Shop-tier management/view layer over the EXISTING vehicle records (no
+# separate customer collection). Access is enforced server-side, not just in UI.
+async def shop_guard(user=Depends(get_current_user)):
+    if compute_entitlement(user)["tier"] != "shop":
+        raise HTTPException(status_code=403, detail={"message": "Fleet management requires a Shop plan", "code": "shop_required"})
+    return user
+
+
+def _health_status(score) -> str:
+    if score is None:
+        return "unknown"
+    if score >= 80:
+        return "healthy"
+    if score >= 60:
+        return "attention"
+    return "critical"
+
+
+@api_router.get("/shop/fleet")
+async def shop_fleet(user=Depends(shop_guard)):
+    vehicles = await db.vehicles.find({"user_id": user["_id"]}).sort("created_at", 1).to_list(1000)
+    scans = await db.scans.find({"user_id": user["_id"]}, {"modules": 0, "systems": 0}).sort("created_at", -1).to_list(4000)
+    reports = await db.reports.find({"user_id": user["_id"]}).sort("created_at", -1).to_list(4000)
+    scans_by: dict = {}
+    reports_by: dict = {}
+    for s in scans:
+        scans_by.setdefault(s.get("vehicle_id"), []).append(s)
+    for r in reports:
+        reports_by.setdefault(r.get("vehicle_id"), []).append(r)
+
+    now = datetime.now(timezone.utc)
+    summary = {"total": 0, "healthy": 0, "attention": 0, "critical": 0, "unknown": 0, "totalOpenIssues": 0, "noScanCount": 0, "avgHealth": None}
+    score_sum = 0
+    score_n = 0
+    out = []
+    for v in vehicles:
+        vid = v.get("id")
+        hh = v.get("health_history") or []
+        score = hh[-1]["score"] if hh else None
+        combined = sorted(scans_by.get(vid, []) + reports_by.get(vid, []),
+                          key=lambda x: x.get("created_at") or "", reverse=True)
+        last_scan = combined[0].get("created_at") if combined else None
+        open_issues = len(combined[0].get("dtcs") or []) if combined else 0
+        has_recent = False
+        if last_scan:
+            try:
+                has_recent = (now - datetime.fromisoformat(last_scan)).days <= 90
+            except Exception:
+                has_recent = False
+        status = _health_status(score)
+        summary["total"] += 1
+        summary[status] += 1
+        summary["totalOpenIssues"] += open_issues
+        if not has_recent:
+            summary["noScanCount"] += 1
+        if score is not None:
+            score_sum += score
+            score_n += 1
+        out.append({
+            "id": vid,
+            "vin": v.get("vin", ""),
+            "name": v.get("name", ""),
+            "year": v.get("year"),
+            "make": v.get("make", ""),
+            "model": v.get("model", ""),
+            "mileage": v.get("mileage"),
+            "customerName": v.get("customerName", ""),
+            "customerNotes": v.get("customerNotes", ""),
+            "healthScore": score,
+            "healthStatus": status,
+            "lastScan": last_scan,
+            "openIssues": open_issues,
+            "hasRecentScan": has_recent,
+        })
+    summary["avgHealth"] = round(score_sum / score_n) if score_n else None
+    return {"summary": summary, "vehicles": out}
 
 
 # ----------------------------- Routes: AI Chat ------------------------------

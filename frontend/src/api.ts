@@ -99,6 +99,7 @@ export const api = {
     request("/voice/speak", { method: "POST", body: JSON.stringify({ text, voice }) }),
 
   getSubscription: () => request("/subscription"),
+  getFleet: () => request("/shop/fleet"),
   aiAnalyze: (payload: any) => request("/ai/analyze", { method: "POST", body: JSON.stringify(payload) }),
   aiUsage: () => request("/ai/usage"),
   startTrial: () => request("/subscription/start-trial", { method: "POST" }),
