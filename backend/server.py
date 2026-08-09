@@ -141,7 +141,7 @@ def public_user(u: dict) -> dict:
 # RevenueCat) plugs into /subscription/validate + /restore later.
 TRIAL_DAYS = 30
 GRACE_DAYS = 3
-APP_ENV = os.environ.get("APP_ENV", "development")
+APP_ENV = os.environ.get("APP_ENV", "production")
 
 
 def _parse_dt(dt):
@@ -261,6 +261,13 @@ async def enforce_cloud_quota(user: dict) -> dict:
         upsert=True,
     )
     return {"allowed": True, "requests_used": used + 1, "requests_limit": limit, "remaining": max(0, limit - used - 1), "tier": tier}
+
+
+async def ai_guard(user=Depends(get_current_user)):
+    """Dependency for endpoints that spend the JARVIS-managed AI key. Applies
+    per-user rate limiting + monthly Cloud quota, then returns the user."""
+    await enforce_cloud_quota(user)
+    return user
 
 
 # ----------------------------- Routes: Auth ---------------------------------
@@ -584,6 +591,8 @@ async def transcribe(file: UploadFile = File(...), user=Depends(get_current_user
 
 @api_router.post("/voice/speak")
 async def speak(inp: TTSInput, user=Depends(get_current_user)):
+    _throttle(_rate_buckets, user["_id"], RATE_LIMIT_MAX, RATE_LIMIT_WINDOW,
+              "Too many requests. Please slow down and try again shortly.")
     try:
         tts = OpenAITextToSpeech(api_key=EMERGENT_LLM_KEY)
         text = inp.text[:4000]
@@ -755,7 +764,7 @@ class ReportInput(BaseModel):
 
 
 @api_router.post("/reports")
-async def create_report(inp: ReportInput, user=Depends(get_current_user)):
+async def create_report(inp: ReportInput, user=Depends(ai_guard)):
     findings = ""
     try:
         chat_client = LlmChat(
@@ -905,7 +914,7 @@ async def vehicle_performance(vehicle_id: str, user=Depends(get_current_user)):
 
 
 @api_router.post("/recordings/{rec_id}/analyze")
-async def analyze_recording(rec_id: str, user=Depends(get_current_user)):
+async def analyze_recording(rec_id: str, user=Depends(ai_guard)):
     rec = await db.recordings.find_one({"_id": rec_id, "user_id": user["_id"]})
     if not rec:
         raise HTTPException(status_code=404, detail="Recording not found")
@@ -1261,7 +1270,7 @@ async def vehicle_dashboard(vehicle_id: str, user=Depends(get_current_user)):
 
 
 @api_router.post("/vehicles/{vehicle_id}/trends/explain")
-async def explain_trends(vehicle_id: str, user=Depends(get_current_user)):
+async def explain_trends(vehicle_id: str, user=Depends(ai_guard)):
     bundle = await _gather_vehicle(vehicle_id, user["_id"])
     if not bundle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
@@ -1295,7 +1304,7 @@ async def get_health_report(vehicle_id: str, user=Depends(get_current_user)):
 
 
 @api_router.post("/vehicles/{vehicle_id}/health-report")
-async def create_health_report(vehicle_id: str, user=Depends(get_current_user)):
+async def create_health_report(vehicle_id: str, user=Depends(ai_guard)):
     bundle = await _gather_vehicle(vehicle_id, user["_id"])
     if not bundle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
@@ -1355,7 +1364,8 @@ class InterpretInput(BaseModel):
 
 
 @api_router.post("/diagnostics/interpret")
-async def diagnostics_interpret(inp: InterpretInput, user=Depends(get_current_user)):
+async def diagnostics_interpret(inp: InterpretInput, user=Depends(ai_guard)):
+    validate_prompt_size(inp.title, inp.vehicle, str(inp.context))
     if inp.kind == "system":
         prompt = (
             f"You are analyzing the {inp.title} system of a {inp.vehicle}. "
@@ -1420,7 +1430,7 @@ async def create_scan(inp: ScanInput, user=Depends(get_current_user)):
 
 
 @api_router.post("/scans/{scan_id}/analyze")
-async def analyze_scan(scan_id: str, user=Depends(get_current_user)):
+async def analyze_scan(scan_id: str, user=Depends(ai_guard)):
     d = await db.scans.find_one({"_id": scan_id, "user_id": user["_id"]})
     if not d:
         raise HTTPException(status_code=404, detail="Scan not found")

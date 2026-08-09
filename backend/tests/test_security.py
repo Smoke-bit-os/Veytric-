@@ -139,6 +139,31 @@ def test_ai_usage_endpoint_reports_server_truth():
     assert u["tier"] == "free" and u["requests_used"] == 5 and u["remaining"] == 15
 
 
+@pytest.mark.parametrize("method,path,body", [
+    ("post", "/reports", {"scan_data": {}, "vehicle": "Jeep"}),
+    ("post", "/diagnostics/interpret", {"kind": "system", "title": "Engine", "vehicle": "Jeep", "context": {}}),
+])
+def test_all_managed_ai_endpoints_enforce_quota(method, path, body):
+    """SEC-003 completeness: managed-key endpoints beyond chat/dtc/analyze are
+    also metered. Seed to the limit -> expect 429 (no LLM call spent)."""
+    _, token, uid = _register()
+    db.ai_usage.update_one({"user_id": uid, "month": _month()},
+                           {"$set": {"requests_used": 20, "provider": "cloud"}}, upsert=True)
+    r = getattr(requests, method)(f"{BASE}{path}", headers=_auth(token), json=body)
+    assert r.status_code == 429
+    assert r.json()["detail"]["code"] == "cloud_quota_exceeded"
+
+
+def test_pro_bypasses_quota_on_guarded_endpoint():
+    _, token, uid = _register()
+    db.ai_usage.update_one({"user_id": uid, "month": _month()},
+                           {"$set": {"requests_used": 999, "provider": "cloud"}}, upsert=True)
+    requests.post(f"{BASE}/subscription/developer/set", headers=_auth(token), json={"action": "pro"})
+    r = requests.post(f"{BASE}/diagnostics/interpret", headers=_auth(token),
+                      json={"kind": "system", "title": "Engine", "vehicle": "Jeep", "context": {}})
+    assert r.status_code == 200
+
+
 # ------------------------------- P3 Hardening -------------------------------
 def test_password_policy_enforced():
     r = requests.post(f"{BASE}/auth/register",
