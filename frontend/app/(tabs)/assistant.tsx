@@ -21,6 +21,7 @@ import {
   setAudioModeAsync,
 } from "expo-audio";
 import AIOrb from "@/src/components/AIOrb";
+import AIUsageBar from "@/src/components/AIUsageBar";
 import { api } from "@/src/api";
 import { useAI } from "@/src/ai/aiContext";
 import { AIProviderType } from "@/src/ai/types";
@@ -93,6 +94,7 @@ export default function Assistant() {
           vehicle: platformSummary,
         });
         reply = res.reply;
+        ai.refreshUsage();
       } else {
         // BYOK / Local: stateless analyze with compact local context.
         const id = identity as any;
@@ -174,6 +176,8 @@ export default function Assistant() {
             <MaterialCommunityIcons name="tune-variant" size={20} color={colors.brand} />
           </Pressable>
         </View>
+
+        <AIUsageBar />
 
         <ScrollView
           ref={scrollRef}

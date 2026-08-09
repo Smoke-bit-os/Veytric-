@@ -10,6 +10,7 @@ import { useFonts } from "expo-font";
 import { useIconFonts } from "@/src/hooks/use-icon-fonts";
 import { AuthProvider } from "@/src/auth";
 import { LicenseProvider } from "@/src/licensing/LicenseProvider";
+import TrialReminder from "@/src/licensing/TrialReminder";
 import { PurchasesProvider } from "@/src/subscriptions/PurchasesProvider";
 import { AIEngineProvider } from "@/src/ai/aiContext";
 import { TelemetryProvider } from "@/src/telemetry";
@@ -43,6 +44,7 @@ export default function RootLayout() {
                 <TelemetryProvider>
                   <RecordingProvider>
                   <StatusBar style="light" />
+                  <TrialReminder />
                   <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#06080D" } }}>
                     <Stack.Screen name="index" />
                     <Stack.Screen name="auth" />

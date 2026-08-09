@@ -914,7 +914,7 @@ async def vehicle_performance(vehicle_id: str, user=Depends(get_current_user)):
 
 
 @api_router.post("/recordings/{rec_id}/analyze")
-async def analyze_recording(rec_id: str, user=Depends(ai_guard)):
+async def analyze_recording(rec_id: str, prepare: bool = False, user=Depends(get_current_user)):
     rec = await db.recordings.find_one({"_id": rec_id, "user_id": user["_id"]})
     if not rec:
         raise HTTPException(status_code=404, detail="Recording not found")
@@ -930,6 +930,9 @@ async def analyze_recording(rec_id: str, user=Depends(ai_guard)):
         "Charging System Analysis; Cooling System Analysis; Fuel System Analysis; Detected Anomalies; "
         "Trend Analysis (vs previous sessions); Suggested Maintenance. Be concise and technical."
     )
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+    await enforce_cloud_quota(user)
     try:
         chat_client = LlmChat(
             api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_rec_{rec_id}", system_message=JARVIS_SYSTEM
@@ -1270,7 +1273,7 @@ async def vehicle_dashboard(vehicle_id: str, user=Depends(get_current_user)):
 
 
 @api_router.post("/vehicles/{vehicle_id}/trends/explain")
-async def explain_trends(vehicle_id: str, user=Depends(ai_guard)):
+async def explain_trends(vehicle_id: str, prepare: bool = False, user=Depends(get_current_user)):
     bundle = await _gather_vehicle(vehicle_id, user["_id"])
     if not bundle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
@@ -1285,6 +1288,9 @@ async def explain_trends(vehicle_id: str, user=Depends(ai_guard)):
         "Explain what these trends likely indicate about the vehicle's health, root causes, and what the owner "
         "should monitor or service. Use bold labels per trend. Be concise and technical."
     )
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+    await enforce_cloud_quota(user)
     try:
         chat_client = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_trends_{vehicle_id}", system_message=JARVIS_SYSTEM).with_model("openai", "gpt-5.4")
         explanation = await chat_client.send_message(UserMessage(text=prompt))
@@ -1304,7 +1310,7 @@ async def get_health_report(vehicle_id: str, user=Depends(get_current_user)):
 
 
 @api_router.post("/vehicles/{vehicle_id}/health-report")
-async def create_health_report(vehicle_id: str, user=Depends(ai_guard)):
+async def create_health_report(vehicle_id: str, prepare: bool = False, user=Depends(get_current_user)):
     bundle = await _gather_vehicle(vehicle_id, user["_id"])
     if not bundle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
@@ -1328,6 +1334,9 @@ async def create_health_report(vehicle_id: str, user=Depends(ai_guard)):
         "Performance Changes; Diagnostic History; Predicted Maintenance; Highest-Priority Concerns; "
         "Recommended Next Inspections. Be thorough but concise and technical."
     )
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+    await enforce_cloud_quota(user)
     try:
         chat_client = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_hr_{vehicle_id}", system_message=JARVIS_SYSTEM).with_model("openai", "gpt-5.4")
         report = await chat_client.send_message(UserMessage(text=prompt))
@@ -1430,11 +1439,11 @@ async def create_scan(inp: ScanInput, user=Depends(get_current_user)):
 
 
 @api_router.post("/scans/{scan_id}/analyze")
-async def analyze_scan(scan_id: str, user=Depends(ai_guard)):
+async def analyze_scan(scan_id: str, prepare: bool = False, user=Depends(get_current_user)):
     d = await db.scans.find_one({"_id": scan_id, "user_id": user["_id"]})
     if not d:
         raise HTTPException(status_code=404, detail="Scan not found")
-    if d.get("ai_report"):
+    if d.get("ai_report") and not prepare:
         return {"ai_report": d["ai_report"]}
     title = d.get("title", "Vehicle Scan")
     prompt = (
@@ -1444,6 +1453,9 @@ async def analyze_scan(scan_id: str, user=Depends(ai_guard)):
         "Structure with bold-labeled sections appropriate to the workflow: Summary; Modules Scanned; "
         "Fault Codes; Readiness; System Health; Concerns; Recommended Actions. Be concise and technical."
     )
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+    await enforce_cloud_quota(user)
     try:
         chat_client = LlmChat(
             api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_scan_{scan_id}",

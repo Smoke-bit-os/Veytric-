@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { AIProvider, AIProviderType, AIResponse, AIVehicleContext, AIAnalyzeOptions } from "./types";
 import { getProvider, resolveInitialProviderType } from "./aiProvider";
 import { aiSecureStorage, maskKey, isValidOpenAIKeyFormat } from "./secureStorage";
+import { api } from "@/src/api";
 
 // ============================================================================
 //  AI Engine context — the single hub the whole app uses for AI. Screens call
@@ -16,6 +17,10 @@ type AIContextValue = {
   setProviderType: (t: AIProviderType) => Promise<void>;
   analyze: (prompt: string, vehicleData?: AIVehicleContext, opts?: AIAnalyzeOptions) => Promise<AIResponse>;
   testConnection: () => Promise<boolean>;
+
+  // Cloud usage meter (Free = monthly quota)
+  usage: { tier: string; requests_used: number; requests_limit: number | null; remaining: number | null; unlimited: boolean } | null;
+  refreshUsage: () => Promise<void>;
 
   // BYOK / OpenAI
   hasOpenAIKey: boolean;
@@ -44,6 +49,15 @@ export function AIEngineProvider({ children }: { children: React.ReactNode }) {
   const [openaiModel, setModel] = useState("");
   const [localUrl, setUrl] = useState("");
   const [localModel, setLocalM] = useState("");
+  const [usage, setUsage] = useState<AIContextValue["usage"]>(null);
+
+  const refreshUsage = useCallback(async () => {
+    try {
+      setUsage(await api.aiUsage());
+    } catch {
+      /* offline / guest — leave last known */
+    }
+  }, []);
 
   const refreshConfig = useCallback(async () => {
     const key = await aiSecureStorage.getOpenAIKey();
@@ -61,6 +75,7 @@ export function AIEngineProvider({ children }: { children: React.ReactNode }) {
       await refreshConfig();
       getProvider(t).connect().catch(() => {});
       setReady(true);
+      refreshUsage();
     })();
   }, [refreshConfig]);
 
@@ -132,6 +147,8 @@ export function AIEngineProvider({ children }: { children: React.ReactNode }) {
         setProviderType,
         analyze,
         testConnection,
+        usage,
+        refreshUsage,
         hasOpenAIKey,
         maskedKey,
         openaiModel,

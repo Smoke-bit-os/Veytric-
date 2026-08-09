@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLicense } from "@/src/licensing/LicenseProvider";
 import { usePurchases } from "@/src/subscriptions/PurchasesProvider";
+import AIUsageBar from "@/src/components/AIUsageBar";
 import { FEATURES, COMPARISON_CATEGORIES } from "@/src/licensing/featureRegistry";
 import { PRICING, TIER_LABELS, TIER_ACCENT, TIER_RANK } from "@/src/licensing/licenseConstants";
 import { Tier } from "@/src/licensing/licenseTypes";
@@ -84,6 +85,8 @@ export default function UpgradeScreen() {
           </View>
           <MaterialCommunityIcons name={tier === "free" ? "car" : "crown"} size={30} color={TIER_ACCENT[tier]} />
         </View>
+
+        <AIUsageBar flush />
 
         {/* Trial CTA */}
         {tier === "free" && !trialUsed && (
