@@ -4,6 +4,7 @@
 
 import { VehicleSignals, Dtc } from "../types";
 import { api } from "@/src/api";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 
 export interface SystemDef {
   key: string;
@@ -60,6 +61,12 @@ export function systemStatus(key: string, s: VehicleSignals, dtcs: Dtc[]): { lev
 }
 
 export async function interpretSystem(name: string, vehicle: string, context: any): Promise<string> {
-  const res = await api.interpretDiagnostics({ kind: "system", title: name, vehicle, context });
-  return res?.interpretation || "";
+  const payload = { kind: "system", title: name, vehicle, context };
+  if (await isCloudActive()) {
+    const res = await api.interpretDiagnostics(payload);
+    return res?.interpretation || "";
+  }
+  const prep = await api.interpretDiagnostics(payload, true);
+  const res = await runPreparedOnActive(prep);
+  return res.text;
 }

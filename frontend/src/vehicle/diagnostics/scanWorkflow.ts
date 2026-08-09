@@ -6,6 +6,7 @@ import { DetectedModule } from "../ecu/ecuService";
 import { ReadinessMonitor } from "./dtcClassifier";
 import { ReliabilityReport } from "./reliability";
 import { Dtc, VehicleIdentity } from "../types";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 
 export type WorkflowKey = "full" | "quick" | "health" | "prepurchase" | "charging" | "cooling";
 
@@ -71,6 +72,17 @@ export async function runScan(a: RunScanArgs) {
 export const scanService = {
   list: (vehicleId?: string) => api.listScans(vehicleId),
   get: (id: string) => api.getScan(id),
-  analyze: (id: string) => api.analyzeScan(id),
+  // Provider-aware: Cloud runs on the backend (quota); BYOK/Local fetch the
+  // prepared prompt, run on the user's engine, then persist without quota.
+  analyze: async (id: string): Promise<{ ai_report: string; provider: string }> => {
+    if (await isCloudActive()) {
+      const r = await api.analyzeScan(id);
+      return { ai_report: r.ai_report, provider: "cloud" };
+    }
+    const prep = await api.analyzeScan(id, true);
+    const res = await runPreparedOnActive(prep);
+    await api.saveScanAi(id, { ai_report: res.text, provider: res.provider, model: res.model }).catch(() => {});
+    return { ai_report: res.text, provider: res.provider };
+  },
   remove: (id: string) => api.deleteScan(id),
 };

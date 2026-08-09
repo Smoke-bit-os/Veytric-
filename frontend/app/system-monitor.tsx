@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
 import { PID_CATALOG } from "@/src/vehicle/health";
 import { SYSTEMS, systemStatus, interpretSystem } from "@/src/vehicle/system-monitor/systems";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const lvlColor = (l: string) => (l === "good" ? colors.success : l === "warn" ? colors.warning : colors.error);
@@ -36,7 +37,7 @@ export default function SystemMonitorScreen() {
       sys.pids.forEach((k) => { ctx[k] = (signals as any)[k]; });
       const text = await interpretSystem(sys.name, vehName, ctx);
       setAi((p) => ({ ...p, [sel]: text }));
-    } catch { Alert.alert("AI", "Interpretation unavailable right now."); }
+    } catch (e: any) { Alert.alert("AI", e?.message || "Interpretation unavailable right now."); }
     setLoading(false);
   };
 
@@ -106,7 +107,10 @@ export default function SystemMonitorScreen() {
         })}
 
         {/* AI interpretation */}
-        <Text style={styles.sectionTitle}>AI INTERPRETATION</Text>
+        <View style={styles.aiHead}>
+          <Text style={[styles.sectionTitle, { marginTop: 0 }]}>AI INTERPRETATION</Text>
+          <AIEngineBadge />
+        </View>
         {ai[sel] ? (
           <View style={styles.aiCard} testID="sys-ai">
             {ai[sel].split(/\n+/).filter(Boolean).map((line, i) => {
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
   chartVal: { color: colors.brand, fontFamily: font.display, fontSize: 28 },
   chartUnit: { fontSize: 12, color: colors.onSurfaceSecondary },
   sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 2, fontWeight: "700", marginTop: spacing.xl, marginBottom: spacing.sm },
+  aiHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing.xl, marginBottom: spacing.sm },
   pidRow: { flexDirection: "row", alignItems: "center", paddingVertical: 12, paddingHorizontal: spacing.md, backgroundColor: colors.surfaceSecondary, borderRadius: radius.sm, borderWidth: 1, borderColor: colors.border, marginBottom: spacing.xs },
   liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.brand, marginRight: spacing.md },
   pidLabel: { flex: 1, color: colors.onSurface, fontSize: 14 },

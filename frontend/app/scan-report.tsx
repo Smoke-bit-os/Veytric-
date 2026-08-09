@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { scanService } from "@/src/vehicle/diagnostics/scanWorkflow";
 import { exportScanPDF } from "@/src/vehicle/performance/export";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const scoreColor = (s: number) => (s >= 80 ? colors.success : s >= 60 ? colors.warning : colors.error);
@@ -20,16 +21,16 @@ export default function ScanReportScreen() {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
-  const [aiError, setAiError] = useState(false);
+  const [aiError, setAiError] = useState("");
 
   const analyze = useCallback(async (sid: string) => {
     setAnalyzing(true);
-    setAiError(false);
+    setAiError("");
     try {
       const res: any = await scanService.analyze(sid);
       setScan((prev: any) => (prev ? { ...prev, ai_report: res.ai_report } : prev));
-    } catch {
-      setAiError(true);
+    } catch (e: any) {
+      setAiError(e?.message || "AI analysis failed");
     }
     setAnalyzing(false);
   }, []);
@@ -141,7 +142,7 @@ export default function ScanReportScreen() {
           </Section>
         )}
 
-        <Section title="AI ANALYSIS">
+        <Section title="AI ANALYSIS" badge>
           {scan.ai_report ? (
             <View testID="scan-ai">
               {String(scan.ai_report).split(/\n+/).filter(Boolean).map((line: string, i: number) => {
@@ -163,7 +164,7 @@ export default function ScanReportScreen() {
           ) : (
             <Pressable style={styles.aiRetry} testID="scan-ai-retry" onPress={() => id && analyze(id)}>
               <MaterialCommunityIcons name="refresh" size={18} color={colors.brand} />
-              <Text style={styles.aiRetryText}>{aiError ? "AI analysis failed — tap to retry" : "Generate AI analysis"}</Text>
+              <Text style={styles.aiRetryText}>{aiError ? `${aiError} — tap to retry` : "Generate AI analysis"}</Text>
             </Pressable>
           )}
         </Section>
@@ -182,10 +183,13 @@ export default function ScanReportScreen() {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children, badge }: { title: string; children: React.ReactNode; badge?: boolean }) {
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.sectionHead}>
+        <Text style={styles.sectionTitle}>{title}</Text>
+        {badge ? <AIEngineBadge /> : null}
+      </View>
       {children}
     </View>
   );
@@ -204,7 +208,8 @@ const styles = StyleSheet.create({
   heroVeh: { color: colors.onSurface, fontFamily: font.display, fontSize: 18, marginTop: spacing.sm },
   heroMeta: { color: colors.onSurfaceSecondary, fontSize: 12 },
   section: { backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.lg, marginBottom: spacing.md },
-  sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 1.5, fontWeight: "700", marginBottom: spacing.sm },
+  sectionHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: spacing.sm },
+  sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 1.5, fontWeight: "700" },
   chipWrap: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs },
   modChip: { flexDirection: "row", alignItems: "center", gap: 5, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 4 },
   modChipText: { color: colors.onSurface, fontSize: 11, fontWeight: "600" },

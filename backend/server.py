@@ -612,9 +612,8 @@ class DtcAnalyzeInput(BaseModel):
 
 
 @api_router.post("/dtc/analyze")
-async def dtc_analyze(inp: DtcAnalyzeInput, user=Depends(get_current_user)):
+async def dtc_analyze(inp: DtcAnalyzeInput, prepare: bool = False, user=Depends(get_current_user)):
     validate_prompt_size(inp.code, inp.desc)
-    await enforce_cloud_quota(user)
     prompt = (
         f"Analyze diagnostic trouble code {inp.code} ({inp.desc}). "
         f"Vehicle: {inp.vehicle}. Live sensor snapshot: {inp.telemetry}. "
@@ -624,6 +623,10 @@ async def dtc_analyze(inp: DtcAnalyzeInput, user=Depends(get_current_user)):
         "Required Tools; Estimated Repair Time; Difficulty (1-5); Estimated Cost (USD range); "
         "Commonly Replaced Parts. Never recommend replacing parts without diagnostic evidence. Be concise."
     )
+    # BYOK / Local: return the prepared prompt only — no managed-key call, no quota.
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+    await enforce_cloud_quota(user)
     chat_client = LlmChat(
         api_key=EMERGENT_LLM_KEY,
         session_id=f"{user['_id']}_dtc_{inp.code}",
@@ -761,28 +764,45 @@ class ReportInput(BaseModel):
     customer_name: Optional[str] = ""
     mileage: Optional[int] = None
     notes: Optional[str] = ""
+    # BYOK / Local: when the client already ran the prompt on the user's own
+    # engine, it posts the generated findings back here to persist WITHOUT
+    # spending the managed cloud key or quota.
+    ai_findings: Optional[str] = None
+    ai_provider: Optional[str] = None
+    ai_model: Optional[str] = None
 
 
 @api_router.post("/reports")
-async def create_report(inp: ReportInput, user=Depends(ai_guard)):
-    findings = ""
-    try:
-        chat_client = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=f"{user['_id']}_report_{uuid.uuid4()}",
-            system_message=JARVIS_SYSTEM,
-        ).with_model("openai", "gpt-5.4")
-        prompt = (
-            f"Write a concise professional scan-report summary for a {inp.vehicle}. "
-            f"Active codes: {inp.dtcs}. Live sensor summary: {inp.signals_summary}. "
-            f"Overall health score: {inp.health_score}. Provide: AI Findings (2-4 bullets), "
-            "Recommended Next Steps (numbered), and Suggested Maintenance. Keep it tight."
-        )
-        findings = await chat_client.send_message(UserMessage(text=prompt))
-        findings = findings if isinstance(findings, str) else str(findings)
-    except Exception as e:
-        logger.error(f"report ai error: {e}")
-        findings = "AI summary unavailable. Review codes and sensor data below."
+async def create_report(inp: ReportInput, prepare: bool = False, user=Depends(get_current_user)):
+    prompt = (
+        f"Write a concise professional scan-report summary for a {inp.vehicle}. "
+        f"Active codes: {inp.dtcs}. Live sensor summary: {inp.signals_summary}. "
+        f"Overall health score: {inp.health_score}. Provide: AI Findings (2-4 bullets), "
+        "Recommended Next Steps (numbered), and Suggested Maintenance. Keep it tight."
+    )
+    # BYOK / Local: return the prepared prompt only — no managed-key call, no quota.
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+
+    if inp.ai_findings:
+        # Client already generated on the user's own engine — persist as-is.
+        findings = inp.ai_findings
+        ai_provider = inp.ai_provider or "byok"
+        ai_model = inp.ai_model
+    else:
+        await enforce_cloud_quota(user)
+        ai_provider, ai_model = "cloud", None
+        try:
+            chat_client = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"{user['_id']}_report_{uuid.uuid4()}",
+                system_message=JARVIS_SYSTEM,
+            ).with_model("openai", "gpt-5.4")
+            findings = await chat_client.send_message(UserMessage(text=prompt))
+            findings = findings if isinstance(findings, str) else str(findings)
+        except Exception as e:
+            logger.error(f"report ai error: {e}")
+            findings = "AI summary unavailable. Review codes and sensor data below."
 
     rid = str(uuid.uuid4())
     doc = {
@@ -797,6 +817,8 @@ async def create_report(inp: ReportInput, user=Depends(ai_guard)):
         "mileage": inp.mileage,
         "notes": inp.notes,
         "ai_findings": findings,
+        "ai_provider": ai_provider,
+        "ai_model": ai_model,
         "created_at": now_iso(),
     }
     await db.reports.insert_one(doc)
@@ -942,8 +964,26 @@ async def analyze_recording(rec_id: str, prepare: bool = False, user=Depends(get
     except Exception as e:
         logger.error(f"recording analyze error: {e}")
         raise HTTPException(status_code=500, detail="Analysis unavailable")
-    await db.recordings.update_one({"_id": rec_id}, {"$set": {"ai_analysis": analysis}})
+    await db.recordings.update_one({"_id": rec_id}, {"$set": {"ai_analysis": analysis, "ai_provider": "cloud"}})
     return {"analysis": analysis}
+
+
+class SaveAnalysisInput(BaseModel):
+    analysis: str
+    provider: Optional[str] = "byok"
+    model: Optional[str] = None
+
+
+@api_router.post("/recordings/{rec_id}/save-analysis")
+async def save_recording_analysis(rec_id: str, inp: SaveAnalysisInput, user=Depends(get_current_user)):
+    """Persist a BYOK/Local-generated recording analysis. No managed key, no quota."""
+    res = await db.recordings.update_one(
+        {"_id": rec_id, "user_id": user["_id"]},
+        {"$set": {"ai_analysis": inp.analysis, "ai_provider": inp.provider, "ai_model": inp.model}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Recording not found")
+    return {"analysis": inp.analysis, "provider": inp.provider}
 
 
 # ============================================================================
@@ -1350,7 +1390,38 @@ async def create_health_report(vehicle_id: str, prepare: bool = False, user=Depe
         "vehicle": f"{veh.get('year')} {veh.get('make')} {veh.get('model')}",
         "mileage": veh.get("mileage"),
         "health_score": health_hist[-1]["score"] if health_hist else None,
-        "report": report, "predictions": preds, "trends": trends, "created_at": now_iso(),
+        "report": report, "predictions": preds, "trends": trends,
+        "ai_provider": "cloud", "ai_model": None, "created_at": now_iso(),
+    }
+    await db.vehicle_reports.insert_one(doc)
+    return _clean(doc) | {"id": rid}
+
+
+class SaveHealthReportInput(BaseModel):
+    report: str
+    provider: Optional[str] = "byok"
+    model: Optional[str] = None
+
+
+@api_router.post("/vehicles/{vehicle_id}/health-report/save")
+async def save_health_report(vehicle_id: str, inp: SaveHealthReportInput, user=Depends(get_current_user)):
+    """Persist a BYOK/Local-generated health report. Recomputes the heuristic
+    predictions/trends server-side (no LLM, no quota) and stores provider metadata."""
+    bundle = await _gather_vehicle(vehicle_id, user["_id"])
+    if not bundle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    veh = bundle["veh"]
+    preds = _compute_predictions(bundle)
+    trends = _compute_trends(bundle)
+    health_hist = veh.get("health_history") or []
+    rid = str(uuid.uuid4())
+    doc = {
+        "_id": rid, "user_id": user["_id"], "vehicle_id": vehicle_id,
+        "vehicle": f"{veh.get('year')} {veh.get('make')} {veh.get('model')}",
+        "mileage": veh.get("mileage"),
+        "health_score": health_hist[-1]["score"] if health_hist else None,
+        "report": inp.report, "predictions": preds, "trends": trends,
+        "ai_provider": inp.provider, "ai_model": inp.model, "created_at": now_iso(),
     }
     await db.vehicle_reports.insert_one(doc)
     return _clean(doc) | {"id": rid}
@@ -1373,7 +1444,7 @@ class InterpretInput(BaseModel):
 
 
 @api_router.post("/diagnostics/interpret")
-async def diagnostics_interpret(inp: InterpretInput, user=Depends(ai_guard)):
+async def diagnostics_interpret(inp: InterpretInput, prepare: bool = False, user=Depends(get_current_user)):
     validate_prompt_size(inp.title, inp.vehicle, str(inp.context))
     if inp.kind == "system":
         prompt = (
@@ -1387,6 +1458,10 @@ async def diagnostics_interpret(inp: InterpretInput, user=Depends(ai_guard)):
             f"Diagnostic context (fault codes, communication metrics): {inp.context}. "
             "Provide bold-labeled sections: Assessment; Fault Analysis; Communication Reliability; Recommended Action. Be concise and technical."
         )
+    # BYOK / Local: return the prepared prompt only — no managed-key call, no quota.
+    if prepare:
+        return {"system": JARVIS_SYSTEM, "prompt": prompt}
+    await enforce_cloud_quota(user)
     try:
         chat_client = LlmChat(
             api_key=EMERGENT_LLM_KEY, session_id=f"{user['_id']}_interp_{inp.kind}_{inp.title[:12]}",
@@ -1466,8 +1541,26 @@ async def analyze_scan(scan_id: str, prepare: bool = False, user=Depends(get_cur
     except Exception as e:
         logger.error(f"scan analyze error: {e}")
         raise HTTPException(status_code=500, detail="AI report unavailable")
-    await db.scans.update_one({"_id": scan_id}, {"$set": {"ai_report": findings}})
+    await db.scans.update_one({"_id": scan_id}, {"$set": {"ai_report": findings, "ai_provider": "cloud"}})
     return {"ai_report": findings}
+
+
+class SaveScanAiInput(BaseModel):
+    ai_report: str
+    provider: Optional[str] = "byok"
+    model: Optional[str] = None
+
+
+@api_router.post("/scans/{scan_id}/save-ai")
+async def save_scan_ai(scan_id: str, inp: SaveScanAiInput, user=Depends(get_current_user)):
+    """Persist a BYOK/Local-generated scan report. No managed key, no quota."""
+    res = await db.scans.update_one(
+        {"_id": scan_id, "user_id": user["_id"]},
+        {"$set": {"ai_report": inp.ai_report, "ai_provider": inp.provider, "ai_model": inp.model}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    return {"ai_report": inp.ai_report, "provider": inp.provider}
 
 
 @api_router.get("/scans")

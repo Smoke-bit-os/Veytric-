@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Polyline, Rect, Line } from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { analysisService, compareSessions, CompareRow } from "@/src/vehicle/performance/analysisService";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const OVERLAY_SIGNALS = [
@@ -57,7 +58,7 @@ export default function CompareScreen() {
     try {
       const res = await analysisService.analyze(b);
       setAiSummary(res?.analysis || "");
-    } catch { Alert.alert("AI", "Comparison analysis is unavailable right now."); }
+    } catch (e: any) { Alert.alert("AI", e?.message || "Comparison analysis is unavailable right now."); }
     setAnalyzing(false);
   };
 
@@ -152,7 +153,10 @@ export default function CompareScreen() {
         )}
 
         {/* AI comparison summary */}
-        <Text style={styles.sectionTitle}>AI COMPARISON SUMMARY</Text>
+        <View style={styles.aiHead}>
+          <Text style={[styles.sectionTitle, { marginTop: 0 }]}>AI COMPARISON SUMMARY</Text>
+          <AIEngineBadge />
+        </View>
         {aiSummary ? (
           <View style={styles.aiCard} testID="ai-compare">
             {aiSummary.split(/\n+/).filter(Boolean).map((line, i) => {
@@ -184,6 +188,7 @@ const styles = StyleSheet.create({
   legDot: { width: 12, height: 4, borderRadius: 2 },
   legName: { color: colors.onSurfaceSecondary, fontSize: 13, flex: 1 },
   sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 2, fontWeight: "700", marginTop: spacing.xl, marginBottom: spacing.sm },
+  aiHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing.xl, marginBottom: spacing.sm },
   chipRow: { gap: spacing.sm, paddingBottom: spacing.sm },
   chip: { paddingHorizontal: 14, height: 34, justifyContent: "center", borderRadius: radius.pill, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surfaceSecondary },
   chipActive: { borderColor: colors.brand, backgroundColor: colors.brandTertiary },

@@ -8,6 +8,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
 import { computeSubsystems, overallHealth, analyzeFaults } from "@/src/vehicle/health";
 import { api } from "@/src/api";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const HERO =
@@ -37,22 +39,31 @@ export default function Health() {
 
   const analyze = async (code: string, desc: string) => {
     setLoadingCode(code);
+    const payload = {
+      code,
+      desc,
+      vehicle: identity ? `${identity.year} ${identity.make} ${identity.model}` : "vehicle",
+      telemetry: {
+        rpm: Math.round(signals.rpm),
+        coolantTemp: Math.round(signals.coolantTemp),
+        shortFuelTrim: signals.shortFuelTrim.toFixed(1),
+        longFuelTrim: signals.longFuelTrim.toFixed(1),
+        batteryVoltage: signals.batteryVoltage.toFixed(1),
+      },
+    };
     try {
-      const res = await api.analyzeDtc({
-        code,
-        desc,
-        vehicle: identity ? `${identity.year} ${identity.make} ${identity.model}` : "vehicle",
-        telemetry: {
-          rpm: Math.round(signals.rpm),
-          coolantTemp: Math.round(signals.coolantTemp),
-          shortFuelTrim: signals.shortFuelTrim.toFixed(1),
-          longFuelTrim: signals.longFuelTrim.toFixed(1),
-          batteryVoltage: signals.batteryVoltage.toFixed(1),
-        },
-      });
-      setAnalysis((a) => ({ ...a, [code]: res.analysis }));
-    } catch {
-      setAnalysis((a) => ({ ...a, [code]: "Analysis unavailable. Check connection." }));
+      let text: string;
+      if (await isCloudActive()) {
+        const res = await api.analyzeDtc(payload);
+        text = res.analysis;
+      } else {
+        const prep = await api.analyzeDtc(payload, true);
+        const res = await runPreparedOnActive(prep);
+        text = res.text;
+      }
+      setAnalysis((a) => ({ ...a, [code]: text }));
+    } catch (e: any) {
+      setAnalysis((a) => ({ ...a, [code]: e?.message || "Analysis unavailable. Check connection." }));
     }
     setLoadingCode(null);
   };
@@ -114,7 +125,10 @@ export default function Health() {
         </View>
 
         {/* DTCs with AI analyze */}
-        <Text style={styles.sectionTitle}>DIAGNOSTIC TROUBLE CODES</Text>
+        <View style={styles.dtcHead}>
+          <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>DIAGNOSTIC TROUBLE CODES</Text>
+          <AIEngineBadge style={{ marginRight: spacing.lg }} />
+        </View>
         {dtcs.length === 0 ? (
           <Text style={styles.clear}>✓ No active trouble codes</Text>
         ) : (
@@ -185,6 +199,7 @@ export default function Health() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.surface },
   hero: { height: 260, justifyContent: "flex-end" },
+  dtcHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   heroContent: { padding: spacing.lg },
   heroTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   heroLabel: { color: colors.brand, fontSize: 11, letterSpacing: 2, fontWeight: "700" },

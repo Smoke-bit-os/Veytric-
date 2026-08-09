@@ -5,6 +5,7 @@ import { Dtc } from "../types";
 import { DetectedModule } from "../ecu/ecuService";
 import { moduleKeyForDtc } from "../ecu/ecuDatabase";
 import { api } from "@/src/api";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 
 export interface ModuleHealth {
   key: string;
@@ -35,7 +36,7 @@ export function computeModuleHealth(modules: DetectedModule[], dtcs: Dtc[], comm
 }
 
 export async function explainModule(module: ModuleHealth, vehicle: string): Promise<string> {
-  const res = await api.interpretDiagnostics({
+  const payload = {
     kind: "module",
     title: module.name,
     vehicle,
@@ -46,6 +47,12 @@ export async function explainModule(module: ModuleHealth, vehicle: string): Prom
       activeIssues: module.activeIssues.map((d) => `${d.code} ${d.desc}`),
       historyIssues: module.historyIssues.map((d) => `${d.code} ${d.desc}`),
     },
-  });
-  return res?.interpretation || "";
+  };
+  if (await isCloudActive()) {
+    const res = await api.interpretDiagnostics(payload);
+    return res?.interpretation || "";
+  }
+  const prep = await api.interpretDiagnostics(payload, true);
+  const res = await runPreparedOnActive(prep);
+  return res.text;
 }

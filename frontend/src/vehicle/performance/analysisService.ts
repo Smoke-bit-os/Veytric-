@@ -1,5 +1,6 @@
 // Session comparison + analysis helpers (transport-agnostic).
 import { api } from "@/src/api";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 
 export interface CompareRow {
   metric: string;
@@ -39,6 +40,17 @@ export const analysisService = {
   list: (vehicleId?: string) => api.listRecordings(vehicleId),
   get: (id: string) => api.getRecording(id),
   remove: (id: string) => api.deleteRecording(id),
-  analyze: (id: string) => api.analyzeRecording(id),
+  // Provider-aware recording analysis. BYOK/Local run on the user's engine and
+  // persist without touching the JARVIS Cloud quota; no silent cloud fallback.
+  analyze: async (id: string): Promise<{ analysis: string; provider: string }> => {
+    if (await isCloudActive()) {
+      const r = await api.analyzeRecording(id);
+      return { analysis: r.analysis, provider: "cloud" };
+    }
+    const prep = await api.analyzeRecording(id, true);
+    const res = await runPreparedOnActive(prep);
+    await api.saveRecordingAnalysis(id, { analysis: res.text, provider: res.provider, model: res.model }).catch(() => {});
+    return { analysis: res.text, provider: res.provider };
+  },
   performance: (vehicleId: string) => api.vehiclePerformance(vehicleId),
 };

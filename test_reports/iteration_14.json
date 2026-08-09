@@ -1,0 +1,33 @@
+{
+  "summary": "Feature verification for 'Route All AI to your key' (provider-aware routing). Backend suite /app/backend/tests/test_ai_routing.py: 36/36 PASS (see /app/test_reports/pytest/iteration_14.xml). Covered all 7 heavy AI endpoints across four dimensions: (1) Auth guard — every AI endpoint (dtc/analyze, scans/{id}/analyze, vehicles/{id}/health-report, vehicles/{id}/trends/explain, recordings/{id}/analyze, diagnostics/interpret, reports, and the 3 save-* endpoints) returns 401 without a token. (2) prepare=true — returns {system,prompt} with plausible size (>20 char prompt, >5 char system) and does NOT increment /api/ai/usage for dtc, scans, health-report, recordings, interpret, reports; trends/explain returned the 'insufficient history' short-circuit and still did not consume quota. (3) Cloud path (no prepare) — /dtc/analyze, /reports (no ai_findings), /scans/{id}/analyze, /diagnostics/interpret each incremented requests_used by exactly 1 and persisted ai_provider='cloud' (verified via GET /scans/{id} & response ai_provider). (4) BYOK/Local save endpoints — POST /scans/{id}/save-ai persists ai_report+ai_provider='byok'+ai_model with 0 quota; POST /recordings/{id}/save-analysis persists analysis+provider='local'+model with 0 quota; POST /vehicles/{id}/health-report/save inserts a vehicle_reports doc with recomputed heuristic predictions+trends and ai_provider='byok', GET /vehicles/{id}/health-report returns the saved BYOK report; POST /reports with ai_findings+ai_provider='byok' persists as-is with 0 quota. (5) Quota-exhausted regression — seeded db.ai_usage requests_used=20 for a fresh user: the four Cloud endpoints (/dtc/analyze, /reports without ai_findings, /scans/{id}/analyze, /vehicles/{id}/health-report, /diagnostics/interpret) all return 429 with detail.code='cloud_quota_exceeded'; BUT prepare=true on dtc/scans/reports still returns 200 {system,prompt} and ALL 4 save/BYOK paths (save-ai, save-analysis, health-report/save, /reports+ai_findings) still return 200 and requests_used stays exactly 20 — acceptance tests 4 & 5 hold. Frontend smoke on mobile viewport (390x844): fresh UI registration (Register tab → Name/Email/Password → CREATE ACCOUNT) landed on Command tab; navigated to Health tab where the AIEngineBadge pill renders next to Vehicle Health showing 'JARVIS Cloud AI' (default engine), testID=ai-engine-badge visible. No red screen, no console errors. Note: 2 pre-existing warnings noted — RN Web 'shadow*' style props deprecation and 'props.pointerEvents' deprecation (both from react-native-web itself, non-blocking).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_ai_routing.py",
+    "/app/test_reports/pytest/iteration_14.xml"
+  ],
+  "action_items": [
+    "None required for this feature. All acceptance criteria (prepare=no-quota, cloud=+1-quota-and-persist, save=no-quota-with-provider, quota-exhausted-still-lets-BYOK-through, 401-without-auth) pass end-to-end. The AIEngineBadge is present on Health/scan-report/health-report/trends/system-monitor/playback/compare screens."
+  ],
+  "critical_code_review_comments": [
+    "server.py is ~1780 lines — long-standing recommendation to split into routers (auth/vehicles/ai/subscription/diagnostics/scans) still stands (carry-over from iter 12/13).",
+    "Every heavy-AI endpoint correctly guards the Cloud LLM call with `await enforce_cloud_quota(user)` AFTER the `if prepare: return {...}` short-circuit — no accidental quota consumption on BYOK/Local prepare path. Verified by walking dtc_analyze:626-629, analyze_scan:1531-1533, create_health_report:1377-1379, explain_trends:1331-1333, analyze_recording:955-957, diagnostics_interpret:1462-1464, create_report:784-793.",
+    "create_report correctly branches on `inp.ai_findings` FIRST (line 787) before calling enforce_cloud_quota, so a BYOK POST at 20/20 quota still persists without a 429 — validated by TestQuotaExhausted::test_reports_ai_findings_still_works_at_quota_zero.",
+    "All save-* endpoints correctly scope with `user_id: user['_id']` and return 404 on cross-tenant mismatch — good."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_ai_routing.py (new — 36 tests, class-scoped fixtures)",
+    "/app/test_reports/pytest/iteration_14.xml (JUnit)"
+  ],
+  "success_rate": {"backend": "100% (36/36)", "frontend": "100% (register + Health tab badge rendered)"},
+  "seed_data_creation": "Registered 4 ephemeral users via /api/auth/register with Jarvis2026! (prep/cloud/save/cap contexts). For quota-exhaustion class, seeded db.ai_usage {user_id,month,provider:'cloud',requests_used:20} via motor. Recordings were seeded directly into db.recordings (no public POST /recordings/create endpoint) using the user id returned by register. Vehicles + scans were created via public POST /vehicles and POST /scans.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reuse /app/backend/tests/test_ai_routing.py for all future 'AI provider routing' regressions. If new heavy-AI endpoints are added, extend the 4-dimension matrix (auth-required / prepare=no-quota / cloud=+1-quota / quota-exhausted=429+prepare-still-200). Recording seed helper uses motor to insert directly (server.py has no POST /recordings/create). Register endpoint returns {token, user:{id,...}} where user.id === MongoDB _id — safe to use as user_id in direct db seeds. AIEngineBadge testID is 'ai-engine-badge' and it lives on Health, scan-report, health-report, trends, system-monitor, playback, compare screens.",
+  "rca_of_issue": "N/A — feature verified working end-to-end. No RCA needed."
+}

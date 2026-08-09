@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SignalChart from "@/src/vehicle/charts/SignalChart";
 import { analysisService } from "@/src/vehicle/performance/analysisService";
 import { exportCSV, exportJSON, exportPDF } from "@/src/vehicle/performance/export";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const SIGNALS: { key: string; label: string; unit: string; color: string; decimals?: number }[] = [
@@ -81,7 +82,7 @@ export default function PlaybackScreen() {
     try {
       const res = await analysisService.analyze(id);
       setAnalysis(res?.analysis || "");
-    } catch { Alert.alert("Analysis", "AI analysis is unavailable right now."); }
+    } catch (e: any) { Alert.alert("Analysis", e?.message || "AI analysis is unavailable right now."); }
     setAnalyzing(false);
   };
 
@@ -184,7 +185,10 @@ export default function PlaybackScreen() {
         )}
 
         {/* AI anomaly analysis */}
-        <Text style={styles.sectionTitle}>AI ANOMALY ANALYSIS</Text>
+        <View style={styles.aiHead}>
+          <Text style={[styles.sectionTitle, { marginTop: 0 }]}>AI ANOMALY ANALYSIS</Text>
+          <AIEngineBadge />
+        </View>
         {analysis ? (
           <View style={styles.aiCard} testID="ai-analysis">
             {analysis.split(/\n+/).filter(Boolean).map((line, i) => {
@@ -241,6 +245,7 @@ const styles = StyleSheet.create({
   chipLabel: { color: colors.onSurfaceSecondary, fontSize: 9, letterSpacing: 1 },
   chipVal: { color: colors.onSurface, fontFamily: font.display, fontSize: 20, marginTop: 2 },
   sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 2, fontWeight: "700", marginTop: spacing.xl, marginBottom: spacing.sm },
+  aiHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing.xl, marginBottom: spacing.sm },
   timeline: { height: 40, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, justifyContent: "center", overflow: "hidden" },
   tlFill: { position: "absolute", left: 0, top: 0, bottom: 0, backgroundColor: colors.brandTertiary },
   tlMark: { position: "absolute", top: 6, width: 8, height: 8, borderRadius: 4 },

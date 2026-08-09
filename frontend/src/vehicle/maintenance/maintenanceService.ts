@@ -2,6 +2,7 @@
 // Repairs & notes are stored via the shared vehicle-history API (kinds repair/note).
 import { api } from "@/src/api";
 import { fetchCached } from "../intelligence/cache";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 
 export interface DashboardSummary {
   vehicle_id: string;
@@ -48,5 +49,13 @@ export const maintenanceService = {
     api.addVehicleHistory(id, "note", { title, detail: detail || "", meta: { mileage: mileage ?? null } }),
 
   getHealthReport: (id: string) => api.getHealthReport(id),
-  createHealthReport: (id: string) => api.createHealthReport(id),
+  // Provider-aware. Cloud generates+persists server-side (quota); BYOK/Local
+  // fetch the prepared prompt, run locally, then persist via the save endpoint
+  // (no quota). The saved doc (with recomputed predictions/trends) is returned.
+  createHealthReport: async (id: string) => {
+    if (await isCloudActive()) return api.createHealthReport(id);
+    const prep = await api.createHealthReport(id, true);
+    const res = await runPreparedOnActive(prep);
+    return api.saveHealthReport(id, { report: res.text, provider: res.provider, model: res.model });
+  },
 };

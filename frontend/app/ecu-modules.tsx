@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Alert } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -37,7 +37,8 @@ export default function EcuModulesScreen() {
 
   const runAi = async (h: ModuleHealth) => {
     setAiLoading(h.key);
-    try { const text = await explainModule(h, vehName); setAi((p) => ({ ...p, [h.key]: text })); } catch {}
+    try { const text = await explainModule(h, vehName); setAi((p) => ({ ...p, [h.key]: text })); }
+    catch (e: any) { Alert.alert("AI", e?.message || "Module interpretation unavailable right now."); }
     setAiLoading(null);
   };
 

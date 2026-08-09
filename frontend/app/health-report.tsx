@@ -8,6 +8,7 @@ import { maintenanceService } from "@/src/vehicle/maintenance/maintenanceService
 import { exportHealthReportPDF } from "@/src/vehicle/performance/export";
 import { useEntitlement } from "@/src/licensing/LicenseProvider";
 import PremiumGate from "@/src/components/PremiumGate";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function HealthReportScreen() {
@@ -34,7 +35,7 @@ export default function HealthReportScreen() {
     try {
       const r = await maintenanceService.createHealthReport(id);
       setReport(r);
-    } catch { Alert.alert("Health Report", "Could not generate the report right now."); }
+    } catch (e: any) { Alert.alert("Health Report", e?.message || "Could not generate the report right now."); }
     setGenerating(false);
   };
 
@@ -90,6 +91,7 @@ export default function HealthReportScreen() {
               {report.health_score != null ? `Health ${report.health_score} · ` : ""}
               {report.created_at ? new Date(report.created_at).toLocaleString() : ""}
             </Text>
+            <AIEngineBadge style={{ marginTop: spacing.sm }} />
           </View>
 
           <View style={styles.reportCard} testID="hr-content">

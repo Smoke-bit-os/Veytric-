@@ -45,7 +45,8 @@ export const api = {
   chat: (payload: any) => request("/chat", { method: "POST", body: JSON.stringify(payload) }),
   chatHistory: (sessionId: string) => request(`/chat/history/${sessionId}`),
 
-  analyzeDtc: (payload: any) => request("/dtc/analyze", { method: "POST", body: JSON.stringify(payload) }),
+  analyzeDtc: (payload: any, prepare = false) =>
+    request(`/dtc/analyze${prepare ? "?prepare=true" : ""}`, { method: "POST", body: JSON.stringify(payload) }),
   decodeVin: (vin: string) => request("/vin/decode", { method: "POST", body: JSON.stringify({ vin }) }),
 
   upsertVehicleByVin: (payload: any) => request("/vehicles/upsert-by-vin", { method: "POST", body: JSON.stringify(payload) }),
@@ -61,24 +62,36 @@ export const api = {
   getRecording: (id: string) => request(`/recordings/${id}`),
   deleteRecording: (id: string) => request(`/recordings/${id}`, { method: "DELETE" }),
   vehiclePerformance: (id: string) => request(`/vehicles/${id}/performance`),
-  analyzeRecording: (id: string) => request(`/recordings/${id}/analyze`, { method: "POST" }),
+  analyzeRecording: (id: string, prepare = false) =>
+    request(`/recordings/${id}/analyze${prepare ? "?prepare=true" : ""}`, { method: "POST" }),
+  saveRecordingAnalysis: (id: string, payload: any) =>
+    request(`/recordings/${id}/save-analysis`, { method: "POST", body: JSON.stringify(payload) }),
 
   vehicleTimeline: (id: string, filter?: string) =>
     request(`/vehicles/${id}/timeline${filter && filter !== "all" ? `?filter=${filter}` : ""}`),
   vehiclePredictions: (id: string) => request(`/vehicles/${id}/predictions`),
   vehicleTrends: (id: string) => request(`/vehicles/${id}/trends`),
-  explainTrends: (id: string) => request(`/vehicles/${id}/trends/explain`, { method: "POST" }),
+  explainTrends: (id: string, prepare = false) =>
+    request(`/vehicles/${id}/trends/explain${prepare ? "?prepare=true" : ""}`, { method: "POST" }),
   vehicleDashboard: (id: string) => request(`/vehicles/${id}/dashboard`),
   getHealthReport: (id: string) => request(`/vehicles/${id}/health-report`),
-  createHealthReport: (id: string) => request(`/vehicles/${id}/health-report`, { method: "POST" }),
+  createHealthReport: (id: string, prepare = false) =>
+    request(`/vehicles/${id}/health-report${prepare ? "?prepare=true" : ""}`, { method: "POST" }),
+  saveHealthReport: (id: string, payload: any) =>
+    request(`/vehicles/${id}/health-report/save`, { method: "POST", body: JSON.stringify(payload) }),
 
-  interpretDiagnostics: (payload: any) => request("/diagnostics/interpret", { method: "POST", body: JSON.stringify(payload) }),
+  interpretDiagnostics: (payload: any, prepare = false) =>
+    request(`/diagnostics/interpret${prepare ? "?prepare=true" : ""}`, { method: "POST", body: JSON.stringify(payload) }),
   createScan: (payload: any) => request("/scans", { method: "POST", body: JSON.stringify(payload) }),
   listScans: (vehicleId?: string) => request(`/scans${vehicleId ? `?vehicle_id=${vehicleId}` : ""}`),
   getScan: (id: string) => request(`/scans/${id}`),
-  analyzeScan: (id: string) => request(`/scans/${id}/analyze`, { method: "POST" }),
+  analyzeScan: (id: string, prepare = false) =>
+    request(`/scans/${id}/analyze${prepare ? "?prepare=true" : ""}`, { method: "POST" }),
+  saveScanAi: (id: string, payload: any) =>
+    request(`/scans/${id}/save-ai`, { method: "POST", body: JSON.stringify(payload) }),
   deleteScan: (id: string) => request(`/scans/${id}`, { method: "DELETE" }),
-  createReport: (payload: any) => request("/reports", { method: "POST", body: JSON.stringify(payload) }),
+  createReport: (payload: any, prepare = false) =>
+    request(`/reports${prepare ? "?prepare=true" : ""}`, { method: "POST", body: JSON.stringify(payload) }),
   listReports: () => request("/reports"),
   getReport: (id: string) => request(`/reports/${id}`),
 

@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
 import { computeSubsystems, overallHealth } from "@/src/vehicle/health";
 import { api } from "@/src/api";
+import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function Reports() {
@@ -36,7 +37,7 @@ export default function Reports() {
     setGenerating(true);
     try {
       const subs = computeSubsystems({ signals, dtcs, identity, phase: "cruise", connected: true });
-      const report = await api.createReport({
+      const payload = {
         vehicle: identity
           ? `${identity.year} ${identity.make} ${identity.model} (${identity.vin})`
           : "Unknown vehicle",
@@ -52,7 +53,22 @@ export default function Reports() {
         },
         health_score: overallHealth(subs),
         mileage: identity?.odometer || null,
-      });
+      };
+      let report: any;
+      if (await isCloudActive()) {
+        report = await api.createReport(payload);
+      } else {
+        // BYOK / Local: fetch the prepared prompt, run on the user's engine,
+        // then persist the findings back without consuming the cloud quota.
+        const prep = await api.createReport(payload, true);
+        const res = await runPreparedOnActive(prep);
+        report = await api.createReport({
+          ...payload,
+          ai_findings: res.text,
+          ai_provider: res.provider,
+          ai_model: res.model,
+        });
+      }
       setReports((r) => [report, ...r]);
       setExpanded(report.id);
     } catch {}

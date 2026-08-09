@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { trendsService, TrendResult, TrendFinding } from "@/src/vehicle/trends/trendsService";
 import { useEntitlement } from "@/src/licensing/LicenseProvider";
 import PremiumGate from "@/src/components/PremiumGate";
+import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const dirIcon = (d: string) => (d === "rising" ? "trending-up" : d === "declining" ? "trending-down" : d === "recurring" ? "repeat" : "trending-neutral");
@@ -57,7 +58,7 @@ export default function TrendsScreen() {
     try {
       const r = await trendsService.explain(id);
       setExplain(r?.explanation || "");
-    } catch { Alert.alert("AI", "Trend explanation is unavailable right now."); }
+    } catch (e: any) { Alert.alert("AI", e?.message || "Trend explanation is unavailable right now."); }
     setExplaining(false);
   };
 
@@ -123,7 +124,10 @@ export default function TrendsScreen() {
             </>
           )}
 
-          <Text style={styles.sectionTitle}>AI EXPLANATION</Text>
+          <View style={styles.aiHead}>
+            <Text style={[styles.sectionTitle, { marginTop: 0 }]}>AI EXPLANATION</Text>
+            <AIEngineBadge />
+          </View>
           {explain ? (
             <View style={styles.aiCard} testID="trend-explanation">
               {explain.split(/\n+/).filter(Boolean).map((line, i) => {
@@ -153,6 +157,7 @@ const styles = StyleSheet.create({
   dim: { color: colors.onSurfaceSecondary, fontSize: 13 },
   noData: { color: colors.onSurfaceSecondary, fontSize: 12, paddingVertical: spacing.lg, textAlign: "center" },
   sectionTitle: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 2, fontWeight: "700", marginTop: spacing.xl, marginBottom: spacing.sm },
+  aiHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing.xl, marginBottom: spacing.sm },
   finding: { flexDirection: "row", alignItems: "center", gap: spacing.md, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md, marginBottom: spacing.sm },
   findingLabel: { color: colors.onSurface, fontSize: 14, fontWeight: "600" },
   findingSummary: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 2 },
