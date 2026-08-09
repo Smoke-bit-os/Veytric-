@@ -55,10 +55,13 @@
       [
         "react-native-ble-plx",
         {
-          "modes": ["central"],
+          "modes": [
+            "central"
+          ],
           "bluetoothAlwaysPermission": "Connect to your OBD-II scanner for live vehicle data"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
