@@ -93,7 +93,7 @@ class ChatInput(BaseModel):
     session_id: str
     message: str
     telemetry: Optional[dict] = None
-    vehicle: Optional[dict] = None
+    vehicle: Optional[Any] = None
 
 
 class TTSInput(BaseModel):
