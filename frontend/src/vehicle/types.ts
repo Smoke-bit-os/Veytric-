@@ -132,6 +132,22 @@ export interface FreezeFrame {
   signals: Partial<VehicleSignals>;
 }
 
+// Developer/debug status report — surfaced in the BLE Diagnostics screen so it
+// is obvious whether the app is on REAL BLE or SIMULATION and where any BLE
+// bring-up step is failing.
+export interface BleStatusReport {
+  mode: ProviderMode; // "ble" | "simulation"
+  nativeBleAvailable: boolean; // react-native-ble-plx native module linked?
+  permissions: "granted" | "denied" | "unknown" | "n/a";
+  bluetoothPoweredOn: boolean | null;
+  adapterDiscovered: boolean;
+  adapterConnected: boolean;
+  elm327Initialized: boolean;
+  protocol: string;
+  pollingActive: boolean;
+  lastError?: string;
+}
+
 export interface VehicleData {
   signals: VehicleSignals;
   dtcs: Dtc[];
@@ -167,4 +183,6 @@ export interface VehicleDataProvider {
   readFreezeFrame?(code?: string): Promise<FreezeFrame | null>;
   reconnect?(): Promise<void>;
   onConnectionChange?(cb: (connected: boolean) => void): () => void;
+  // Debug/telemetry status (BLE + Simulation).
+  getStatusReport?(): BleStatusReport;
 }

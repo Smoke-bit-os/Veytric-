@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
-import { ConnectionDiagnostics, FreezeFrame, ObdLogEntry } from "@/src/vehicle/types";
+import { ConnectionDiagnostics, FreezeFrame, ObdLogEntry, BleStatusReport } from "@/src/vehicle/types";
 import { PID_CATALOG } from "@/src/vehicle/health";
 import { colors, font, radius, spacing } from "@/src/theme";
 
@@ -14,8 +14,9 @@ const qColor = (q: string) =>
 export default function BleDiagnostics() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { getDiagnostics, getLog, readFreezeFrame, reconnect, connection, mode } = useVehicle();
+  const { getDiagnostics, getLog, getStatusReport, readFreezeFrame, reconnect, connection, mode } = useVehicle();
   const [diag, setDiag] = useState<ConnectionDiagnostics | null>(null);
+  const [report, setReport] = useState<BleStatusReport | null>(null);
   const [log, setLog] = useState<ObdLogEntry[]>([]);
   const [freeze, setFreeze] = useState<FreezeFrame | null>(null);
   const [loadingFreeze, setLoadingFreeze] = useState(false);
@@ -25,12 +26,13 @@ export default function BleDiagnostics() {
   useEffect(() => {
     const tick = () => {
       setDiag(getDiagnostics());
+      setReport(getStatusReport());
       setLog([...getLog()].slice(-40));
     };
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [getDiagnostics, getLog]);
+  }, [getDiagnostics, getLog, getStatusReport]);
 
   const loadFreeze = async () => {
     setLoadingFreeze(true);
@@ -61,6 +63,38 @@ export default function BleDiagnostics() {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: insets.bottom + spacing["2xl"] }}>
+        {/* Always-on developer status report */}
+        {report && (
+          <View style={styles.reportCard} testID="provider-status-report">
+            <Text style={styles.sectionTitle}>PROVIDER STATUS REPORT</Text>
+            <StatusRow label="Vehicle mode" value={report.mode === "ble" ? "BLE (REAL)" : "SIMULATION"} good={report.mode === "ble"} />
+            <StatusRow label="Native BLE available" bool={report.nativeBleAvailable} />
+            <StatusRow
+              label="BLE permissions"
+              value={report.permissions.toUpperCase()}
+              good={report.permissions === "granted" || report.permissions === "n/a"}
+              bad={report.permissions === "denied"}
+            />
+            <StatusRow
+              label="Bluetooth powered on"
+              value={report.bluetoothPoweredOn == null ? "UNKNOWN" : report.bluetoothPoweredOn ? "YES" : "NO"}
+              good={report.bluetoothPoweredOn === true}
+              bad={report.bluetoothPoweredOn === false}
+            />
+            <StatusRow label="Adapter discovered" bool={report.adapterDiscovered} />
+            <StatusRow label="Adapter connected" bool={report.adapterConnected} />
+            <StatusRow label="ELM327 initialized" bool={report.elm327Initialized} />
+            <StatusRow label="OBD protocol" value={report.protocol} good={report.protocol !== "Unknown"} />
+            <StatusRow label="Real PID polling active" bool={report.pollingActive} />
+            {report.lastError ? (
+              <View style={styles.reportErr}>
+                <MaterialCommunityIcons name="alert-circle" size={14} color={colors.error} />
+                <Text style={styles.reportErrText}>{report.lastError}</Text>
+              </View>
+            ) : null}
+          </View>
+        )}
+
         {!diag ? (
           <View style={styles.notConnected} testID="blediag-empty">
             <MaterialCommunityIcons name="bluetooth-off" size={44} color={colors.onSurfaceSecondary} />
@@ -175,6 +209,20 @@ export default function BleDiagnostics() {
   );
 }
 
+function StatusRow({ label, value, bool, good, bad }: { label: string; value?: string; bool?: boolean; good?: boolean; bad?: boolean }) {
+  const isYesNo = typeof bool === "boolean";
+  const display = isYesNo ? (bool ? "YES" : "NO") : value ?? "—";
+  const positive = isYesNo ? bool : good;
+  const negative = isYesNo ? !bool : bad;
+  const color = positive ? colors.success : negative ? colors.error : colors.onSurface;
+  return (
+    <View style={styles.statusRow}>
+      <Text style={styles.statusLabel}>{label}</Text>
+      <Text style={[styles.statusValue, { color }]} numberOfLines={1}>{display}</Text>
+    </View>
+  );
+}
+
 function Metric({ label, value, wide, accent }: { label: string; value: string; wide?: boolean; accent?: string }) {
   return (
     <View style={[styles.metric, wide && { flexBasis: "100%" }]}>
@@ -198,6 +246,26 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
   },
   title: { color: colors.onSurface, fontFamily: font.display, fontSize: 18, letterSpacing: 1.5 },
+  reportCard: {
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.brand,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+  },
+  statusRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 7,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.divider,
+  },
+  statusLabel: { color: colors.onSurfaceSecondary, fontSize: 13 },
+  statusValue: { fontFamily: font.display, fontSize: 14, maxWidth: "55%" },
+  reportErr: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: spacing.sm },
+  reportErrText: { color: colors.error, fontSize: 12, flex: 1 },
   notConnected: { alignItems: "center", paddingVertical: spacing["3xl"], gap: spacing.md },
   emptyText: { color: colors.onSurfaceSecondary },
   banner: {

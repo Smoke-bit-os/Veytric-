@@ -7,6 +7,7 @@
 
 import {
   AdapterInfo,
+  BleStatusReport,
   ConnectionDiagnostics,
   Dtc,
   FreezeFrame,
@@ -17,9 +18,13 @@ import {
 } from "./types";
 import { Elm327Connection } from "./obd/elm327";
 import { MODE01, POLL_PIDS, decodeDtcs, decodeVin, extractBytes } from "./obd/decoders";
+import { requestBlePermissions, checkBlePermissions, BlePermissionState } from "./blePermissions";
 
 // Adapters whose advertised name matches are treated as OBD-II scanners.
 const NAME_MATCH = /obd|elm|innova|vgate|viecar|ediag|obdii|konnwei|veepeak/i;
+
+export const NO_ADAPTER_MESSAGE =
+  "No OBD-II Bluetooth adapter detected. Turn on Bluetooth and make sure the adapter is plugged into the vehicle.";
 
 function rssiQuality(rssi: number): AdapterInfo["quality"] {
   if (rssi > -55) return "excellent";
@@ -41,6 +46,25 @@ export class BleProvider implements VehicleDataProvider {
   private lastAdapterId: string | null = null;
   private manualDisconnect = false;
 
+  // --- debug/status tracking -------------------------------------------------
+  private permState: BlePermissionState | "unknown" = "unknown";
+  private btPoweredOn: boolean | null = null;
+  private adapterDiscovered = false;
+  private adapterConnected = false;
+  private elmInitialized = false;
+  private pollingActive = false;
+  private lastError: string | undefined;
+
+  private nativeAvailable(): boolean {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const mod = require("react-native-ble-plx");
+      return !!mod?.BleManager;
+    } catch {
+      return false;
+    }
+  }
+
   private getManager() {
     if (!this.manager) {
       const { BleManager } = require("react-native-ble-plx");
@@ -51,13 +75,42 @@ export class BleProvider implements VehicleDataProvider {
 
   // --- Automatic adapter detection -----------------------------------------
   async scan(): Promise<AdapterInfo[]> {
+    this.lastError = undefined;
+    this.adapterDiscovered = false;
+
+    // 1) Runtime permissions (Android). NEVER falls back to simulation.
+    this.permState = await checkBlePermissions();
+    if (this.permState !== "granted") {
+      this.permState = await requestBlePermissions();
+    }
+    if (this.permState === "denied") {
+      this.lastError =
+        "Bluetooth permission denied. Enable Bluetooth & Nearby-devices permissions for JARVIS in Settings, then retry.";
+      throw new Error(this.lastError);
+    }
+
     const manager = this.getManager();
+
+    // 2) Adapter must be powered on.
+    try {
+      const state = await manager.state();
+      this.btPoweredOn = state === "PoweredOn";
+    } catch {
+      this.btPoweredOn = null;
+    }
+    if (this.btPoweredOn === false) {
+      this.lastError = "Bluetooth is turned off. Turn on Bluetooth and try again.";
+      throw new Error(this.lastError);
+    }
+
+    // 3) Scan for nearby OBD-II adapters.
     const found: Record<string, AdapterInfo> = {};
     return new Promise((resolve, reject) => {
       manager.startDeviceScan(null, { allowDuplicates: false }, (error: any, device: any) => {
         if (error) {
           manager.stopDeviceScan();
-          return reject(error);
+          this.lastError = error?.message || NO_ADAPTER_MESSAGE;
+          return reject(new Error(this.lastError));
         }
         const name: string = device?.name || device?.localName || "";
         if (name && NAME_MATCH.test(name)) {
@@ -75,7 +128,10 @@ export class BleProvider implements VehicleDataProvider {
       });
       setTimeout(() => {
         manager.stopDeviceScan();
-        resolve(Object.values(found));
+        const list = Object.values(found);
+        this.adapterDiscovered = list.length > 0;
+        if (!this.adapterDiscovered) this.lastError = NO_ADAPTER_MESSAGE;
+        resolve(list);
       }, 6000);
     });
   }
@@ -98,6 +154,7 @@ export class BleProvider implements VehicleDataProvider {
     this.elm = new Elm327Connection(this.device);
     await this.elm.start();
     await this.elm.init();
+    this.elmInitialized = true;
 
     const identity = await this.readIdentity();
     this.adapterInfo = {
@@ -111,6 +168,7 @@ export class BleProvider implements VehicleDataProvider {
       quality: rssiQuality(this.device.rssi ?? -60),
     };
     this.reconnectAttempts = 0;
+    this.adapterConnected = true;
     this.connCbs.forEach((cb) => cb(true));
     return { adapter: this.adapterInfo, identity };
   }
@@ -128,10 +186,13 @@ export class BleProvider implements VehicleDataProvider {
     this.manualDisconnect = true;
     if (this.pollTimer) clearInterval(this.pollTimer);
     this.pollTimer = null;
+    this.pollingActive = false;
     await this.elm?.stop();
     if (this.device) await this.device.cancelConnection().catch(() => {});
     this.device = null;
     this.elm = null;
+    this.adapterConnected = false;
+    this.elmInitialized = false;
   }
 
   async reconnect(): Promise<void> {
@@ -154,6 +215,7 @@ export class BleProvider implements VehicleDataProvider {
   // --- Live data polling with unsupported-PID fallback ----------------------
   subscribe(cb: (signals: VehicleSignals) => void): () => void {
     this.signalCb = cb;
+    this.pollingActive = true;
     const merged: Partial<VehicleSignals> = {};
     this.pollTimer = setInterval(async () => {
       if (!this.elm) return;
@@ -177,6 +239,7 @@ export class BleProvider implements VehicleDataProvider {
     return () => {
       if (this.pollTimer) clearInterval(this.pollTimer);
       this.pollTimer = null;
+      this.pollingActive = false;
     };
   }
 
@@ -255,6 +318,21 @@ export class BleProvider implements VehicleDataProvider {
 
   getLog(): ObdLogEntry[] {
     return this.elm?.log ?? [];
+  }
+
+  getStatusReport(): BleStatusReport {
+    return {
+      mode: "ble",
+      nativeBleAvailable: this.nativeAvailable(),
+      permissions: this.permState,
+      bluetoothPoweredOn: this.btPoweredOn,
+      adapterDiscovered: this.adapterDiscovered,
+      adapterConnected: this.adapterConnected,
+      elm327Initialized: this.elmInitialized,
+      protocol: this.elm?.protocol ?? "Unknown",
+      pollingActive: this.pollingActive,
+      lastError: this.lastError,
+    };
   }
 
   onConnectionChange(cb: (connected: boolean) => void): () => void {

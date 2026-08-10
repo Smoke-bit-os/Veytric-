@@ -25,6 +25,9 @@ import { colors, font, radius, spacing } from "@/src/theme";
 
 type Phase = "scanning" | "found" | "connecting" | "connected" | "failed";
 
+const NO_ADAPTER_MESSAGE =
+  "No OBD-II Bluetooth adapter detected. Turn on Bluetooth and make sure the adapter is plugged into the vehicle.";
+
 const FAILURE_CAUSES = [
   { icon: "bluetooth-off", label: "Bluetooth disabled", fix: "Enable Bluetooth in device settings." },
   { icon: "power-plug-off", label: "Adapter unplugged", fix: "Reseat the scanner firmly in the OBD-II port." },
@@ -50,10 +53,11 @@ function Wave({ delay, active }: { delay: number; active: boolean }) {
 export default function ConnectionCenter() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { scan, connect, adapter, identity, mode, enrichIdentity, signals, dtcs } = useVehicle();
-  const [phase, setPhase] = useState<Phase>("scanning");
+  const { scan, connect, adapter, identity, mode, connection, enrichIdentity, signals, dtcs } = useVehicle();
+  const [phase, setPhase] = useState<Phase>(mode === "ble" ? "scanning" : "scanning");
   const [saved, setSaved] = useState(false);
   const [savedMsg, setSavedMsg] = useState("");
+  const [errMsg, setErrMsg] = useState("");
   const started = useRef(false);
 
   const announce = async (text: string) => {
@@ -67,10 +71,11 @@ export default function ConnectionCenter() {
   const runSequence = async () => {
     setSaved(false);
     setSavedMsg("");
+    setErrMsg("");
     setPhase("scanning");
     try {
       const adapters = await scan();
-      if (!adapters.length) throw new Error("no-adapter");
+      if (!adapters.length) throw new Error(NO_ADAPTER_MESSAGE);
       setPhase("found");
       await new Promise((r) => setTimeout(r, 900));
       setPhase("connecting");
@@ -85,7 +90,9 @@ export default function ConnectionCenter() {
           announce(`Vehicle identified. ${decoded.year || ""} ${decoded.make} ${decoded.model || ""}.`);
         }
       } catch {}
-    } catch {
+    } catch (e: any) {
+      // Real BLE NEVER falls back to simulation — surface the exact reason.
+      setErrMsg(e?.message || NO_ADAPTER_MESSAGE);
       setPhase("failed");
     }
   };
@@ -152,6 +159,29 @@ export default function ConnectionCenter() {
           {phase === "failed" && "Connection failed"}
         </Text>
         <Text style={styles.modeTag}>{mode === "ble" ? "BLE TRANSPORT" : "SIMULATION MODE"}</Text>
+
+        {/* Real-data indicator — only for the live BLE provider */}
+        {mode === "ble" ? (
+          <View style={styles.liveBanner} testID="live-ble-banner">
+            <View style={[styles.liveDot, { backgroundColor: connection === "connected" ? colors.success : colors.warning }]} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.liveTitle}>LIVE BLE — REAL VEHICLE DATA</Text>
+              <Text style={styles.liveSub}>
+                {connection === "connected"
+                  ? `Connected · ${adapter?.name || "OBD-II adapter"}`
+                  : connection === "scanning" || connection === "connecting"
+                  ? "Establishing Bluetooth link…"
+                  : "No live link yet · scan to connect"}
+              </Text>
+            </View>
+            <MaterialCommunityIcons name="bluetooth-audio" size={20} color={colors.brand} />
+          </View>
+        ) : (
+          <View style={styles.simBanner} testID="sim-banner">
+            <MaterialCommunityIcons name="flask-outline" size={16} color={colors.warning} />
+            <Text style={styles.simText}>SIMULATION — synthetic data (web/preview). Real BLE runs on the native build.</Text>
+          </View>
+        )}
 
         {/* Connection card */}
         {phase === "connected" && adapter && (
@@ -261,6 +291,10 @@ export default function ConnectionCenter() {
         {/* Failure recovery */}
         {phase === "failed" && (
           <View style={styles.card} testID="failure-card">
+            <View style={styles.errRow} testID="connect-error">
+              <MaterialCommunityIcons name="bluetooth-off" size={20} color={colors.error} />
+              <Text style={styles.errText}>{errMsg || NO_ADAPTER_MESSAGE}</Text>
+            </View>
             <Text style={styles.recoverTitle}>JARVIS diagnosis — likely causes</Text>
             {FAILURE_CAUSES.map((c) => (
               <View key={c.label} style={styles.recoverRow}>
@@ -326,7 +360,45 @@ const styles = StyleSheet.create({
     elevation: 16,
   },
   phaseText: { color: colors.onSurface, fontFamily: font.display, fontSize: 22, textAlign: "center", marginTop: spacing.lg },
-  modeTag: { color: colors.brand, fontSize: 10, letterSpacing: 2, textAlign: "center", marginTop: 4, marginBottom: spacing.lg },
+  modeTag: { color: colors.brand, fontSize: 10, letterSpacing: 2, textAlign: "center", marginTop: 4, marginBottom: spacing.md },
+  liveBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.lg,
+    padding: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.brand,
+    backgroundColor: colors.brandTertiary,
+  },
+  liveDot: { width: 12, height: 12, borderRadius: 6 },
+  liveTitle: { color: colors.brand, fontFamily: font.display, fontSize: 14, letterSpacing: 1 },
+  liveSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 2 },
+  simBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.lg,
+    padding: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.warning,
+    backgroundColor: colors.warning + "18",
+  },
+  simText: { color: colors.warning, fontSize: 11, flex: 1 },
+  errRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    backgroundColor: colors.error + "18",
+    borderRadius: radius.sm,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  errText: { color: colors.error, fontSize: 13, flex: 1, fontWeight: "600" },
   card: {
     marginHorizontal: spacing.lg,
     marginBottom: spacing.md,

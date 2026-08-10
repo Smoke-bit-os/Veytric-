@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
+import { Platform } from "react-native";
 import {
   AdapterInfo,
+  BleStatusReport,
   ConnectionStatus,
   Dtc,
   VehicleData,
@@ -13,15 +15,21 @@ import { PID_CATALOG } from "./health";
 
 const HISTORY_LEN = 40;
 
-// Transport selection. Default = simulation (works everywhere incl. preview).
-// Set EXPO_PUBLIC_VEHICLE_MODE=ble in a NATIVE build to use react-native-ble-plx.
+// Transport selection (platform-aware, deterministic):
+//   • WEB / browser preview  → ALWAYS SimulationProvider (native BLE cannot run
+//     in a browser). This is unconditional so the preview never tries BLE.
+//   • NATIVE (Android/iOS standalone build or dev build) → REAL BleProvider by
+//     default. Only an explicit EXPO_PUBLIC_VEHICLE_MODE=simulation forces the
+//     simulator on native (developer convenience). The default is "ble" so a
+//     production APK/IPA uses real hardware even if the env var wasn't injected.
+// NOTE: EXPO_PUBLIC_* values are inlined at BUILD time by Metro, so the APK
+// carries whatever was set when it was built (see frontend/.env + eas.json).
 function createProvider(): VehicleDataProvider {
-  const mode = process.env.EXPO_PUBLIC_VEHICLE_MODE;
-  if (mode === "ble") {
-    const { BleProvider } = require("./bleProvider");
-    return new BleProvider();
-  }
-  return new SimulationProvider();
+  if (Platform.OS === "web") return new SimulationProvider();
+  const mode = (process.env.EXPO_PUBLIC_VEHICLE_MODE || "ble").toLowerCase();
+  if (mode === "simulation" || mode === "sim") return new SimulationProvider();
+  const { BleProvider } = require("./bleProvider");
+  return new BleProvider();
 }
 
 type FlatData = VehicleSignals & { connected: boolean; dtcs: { code: string; desc: string }[] };
@@ -43,6 +51,7 @@ interface Ctx {
   enrichIdentity: (partial: Partial<VehicleIdentity>) => void;
   getDiagnostics: () => import("./types").ConnectionDiagnostics | null;
   getLog: () => import("./types").ObdLogEntry[];
+  getStatusReport: () => BleStatusReport;
   readFreezeFrame: (code?: string) => Promise<import("./types").FreezeFrame | null>;
 }
 
@@ -132,6 +141,21 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
 
   const getDiagnostics = useCallback(() => providerRef.current.getDiagnostics?.() ?? null, []);
   const getLog = useCallback(() => providerRef.current.getLog?.() ?? [], []);
+  const getStatusReport = useCallback(
+    (): BleStatusReport =>
+      providerRef.current.getStatusReport?.() ?? {
+        mode: providerRef.current.mode,
+        nativeBleAvailable: false,
+        permissions: "n/a",
+        bluetoothPoweredOn: null,
+        adapterDiscovered: false,
+        adapterConnected: false,
+        elm327Initialized: false,
+        protocol: "Unknown",
+        pollingActive: false,
+      },
+    []
+  );
   const enrichIdentity = useCallback((partial: Partial<VehicleIdentity>) => {
     setIdentity((prev) => (prev ? { ...prev, ...partial } : (partial as VehicleIdentity)));
   }, []);
@@ -140,16 +164,20 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
     []
   );
 
-  // Auto-connect on mount so the app is immediately usable.
+  // Auto-connect on mount ONLY in simulation (web/preview/dev). Real BLE must
+  // be started by the user from the Connection Center so the Bluetooth
+  // permission prompt appears on intent — never silently on app launch.
   useEffect(() => {
-    (async () => {
-      try {
-        await scan();
-        await connect();
-      } catch {
-        /* remain disconnected; Connection Center handles recovery */
-      }
-    })();
+    if (providerRef.current.mode === "simulation") {
+      (async () => {
+        try {
+          await scan();
+          await connect();
+        } catch {
+          /* remain disconnected; Connection Center handles recovery */
+        }
+      })();
+    }
     return () => {
       unsubRef.current?.();
       providerRef.current.disconnect().catch(() => {});
@@ -182,6 +210,7 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
         enrichIdentity,
         getDiagnostics,
         getLog,
+        getStatusReport,
         readFreezeFrame,
       }}
     >

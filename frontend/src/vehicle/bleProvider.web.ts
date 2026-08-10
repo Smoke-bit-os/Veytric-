@@ -2,12 +2,26 @@
 // native-only `react-native-ble-plx` is never pulled into the web bundle. The
 // real implementation lives in ./bleProvider.ts (used on native builds).
 
-import { AdapterInfo, Dtc, VehicleDataProvider, VehicleIdentity, VehicleSignals } from "./types";
+import { AdapterInfo, BleStatusReport, Dtc, VehicleDataProvider, VehicleIdentity, VehicleSignals } from "./types";
 
 export class BleProvider implements VehicleDataProvider {
   readonly mode = "ble" as const;
   private err() {
     return new Error("BLE transport is only available on a native build (not web/Expo Go preview).");
+  }
+  getStatusReport(): BleStatusReport {
+    return {
+      mode: "ble",
+      nativeBleAvailable: false,
+      permissions: "n/a",
+      bluetoothPoweredOn: null,
+      adapterDiscovered: false,
+      adapterConnected: false,
+      elm327Initialized: false,
+      protocol: "Unknown",
+      pollingActive: false,
+      lastError: "Web preview cannot use BLE.",
+    };
   }
   async scan(): Promise<AdapterInfo[]> {
     throw this.err();

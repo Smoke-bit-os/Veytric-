@@ -6,6 +6,7 @@
 
 import {
   AdapterInfo,
+  BleStatusReport,
   ConnectionDiagnostics,
   Dtc,
   DrivePhase,
@@ -73,6 +74,7 @@ function baseSignals(): VehicleSignals {
 export class SimulationProvider implements VehicleDataProvider {
   readonly mode = "simulation" as const;
   private timer: ReturnType<typeof setInterval> | null = null;
+  private polling = false;
   private s: VehicleSignals = baseSignals();
   private phase: DrivePhase = "startup";
   private phaseTicks = 0;
@@ -119,6 +121,7 @@ export class SimulationProvider implements VehicleDataProvider {
   }
 
   subscribe(cb: (signals: VehicleSignals) => void): () => void {
+    this.polling = true;
     this.timer = setInterval(() => {
       this.step();
       cb({ ...this.s });
@@ -126,6 +129,7 @@ export class SimulationProvider implements VehicleDataProvider {
     return () => {
       if (this.timer) clearInterval(this.timer);
       this.timer = null;
+      this.polling = false;
     };
   }
 
@@ -156,6 +160,20 @@ export class SimulationProvider implements VehicleDataProvider {
 
   getLog(): ObdLogEntry[] {
     return this.log;
+  }
+
+  getStatusReport(): BleStatusReport {
+    return {
+      mode: "simulation",
+      nativeBleAvailable: false,
+      permissions: "n/a",
+      bluetoothPoweredOn: null,
+      adapterDiscovered: true,
+      adapterConnected: this.timer != null,
+      elm327Initialized: this.timer != null,
+      protocol: "ISO 15765-4 CAN (11-bit, 500k)",
+      pollingActive: this.polling,
+    };
   }
 
   async readFreezeFrame(code?: string): Promise<FreezeFrame> {
