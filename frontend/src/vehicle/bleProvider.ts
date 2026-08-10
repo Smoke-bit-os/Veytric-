@@ -51,8 +51,15 @@ export class BleProvider implements VehicleDataProvider {
   private btPoweredOn: boolean | null = null;
   private adapterDiscovered = false;
   private adapterConnected = false;
+  private servicesDiscovered = false;
+  private characteristicsDiscovered = false;
   private elmInitialized = false;
   private pollingActive = false;
+  private vinReceived = false;
+  private dtcResponseReceived = false;
+  private ecuCommunication = false; // a REAL ECU response has actually arrived
+  private lastRealPid: string | undefined;
+  private lastRealPidTs: number | undefined;
   private lastError: string | undefined;
 
   private nativeAvailable(): boolean {
@@ -144,6 +151,8 @@ export class BleProvider implements VehicleDataProvider {
 
     this.device = await manager.connectToDevice(adapterId, { requestMTU: 247 });
     await this.device.discoverAllServicesAndCharacteristics();
+    this.servicesDiscovered = true;
+    this.characteristicsDiscovered = true;
 
     // Auto-reconnect wiring.
     this.device.onDisconnected((_err: any) => {
@@ -155,8 +164,11 @@ export class BleProvider implements VehicleDataProvider {
     await this.elm.start();
     await this.elm.init();
     this.elmInitialized = true;
+    // init() performs 0100 + ATDPN against the ECU — real communication.
+    this.ecuCommunication = true;
 
     const identity = await this.readIdentity();
+    this.vinReceived = !!identity.vin && identity.vin !== "UNKNOWN" && identity.vin.length === 17;
     this.adapterInfo = {
       id: this.device.id,
       name: this.device.name || "OBD-II Adapter",
@@ -193,6 +205,13 @@ export class BleProvider implements VehicleDataProvider {
     this.elm = null;
     this.adapterConnected = false;
     this.elmInitialized = false;
+    this.servicesDiscovered = false;
+    this.characteristicsDiscovered = false;
+    this.ecuCommunication = false;
+    this.vinReceived = false;
+    this.dtcResponseReceived = false;
+    this.lastRealPid = undefined;
+    this.lastRealPidTs = undefined;
   }
 
   async reconnect(): Promise<void> {
@@ -227,7 +246,12 @@ export class BleProvider implements VehicleDataProvider {
           const resp = await this.elm.send("01" + pid, 1500);
           if (/NO DATA|ERROR|UNABLE/.test(resp)) continue;
           const bytes = extractBytes(resp, "41", pid);
-          if (bytes && bytes.length) Object.assign(merged, dec.decode(bytes));
+          if (bytes && bytes.length) {
+            Object.assign(merged, dec.decode(bytes));
+            this.ecuCommunication = true;
+            this.lastRealPid = "01" + pid;
+            this.lastRealPidTs = Date.now();
+          }
         } catch {
           /* transient — keep last value */
         }
@@ -249,6 +273,11 @@ export class BleProvider implements VehicleDataProvider {
       this.elm.send("03").catch(() => ""),
       this.elm.send("07").catch(() => ""),
     ]);
+    // A response (even an empty "no codes" one) counts as real ECU comms.
+    if (cur || pend) {
+      this.dtcResponseReceived = true;
+      this.ecuCommunication = true;
+    }
     return [...decodeDtcs(cur, "current"), ...decodeDtcs(pend, "pending")] as Dtc[];
   }
 
@@ -323,14 +352,23 @@ export class BleProvider implements VehicleDataProvider {
   getStatusReport(): BleStatusReport {
     return {
       mode: "ble",
+      runtimeProvider: "BLEProvider",
       nativeBleAvailable: this.nativeAvailable(),
       permissions: this.permState,
       bluetoothPoweredOn: this.btPoweredOn,
       adapterDiscovered: this.adapterDiscovered,
       adapterConnected: this.adapterConnected,
+      servicesDiscovered: this.servicesDiscovered,
+      characteristicsDiscovered: this.characteristicsDiscovered,
       elm327Initialized: this.elmInitialized,
       protocol: this.elm?.protocol ?? "Unknown",
+      vinReceived: this.vinReceived,
+      dtcResponseReceived: this.dtcResponseReceived,
+      ecuCommunication: this.ecuCommunication,
+      lastRealPid: this.lastRealPid,
+      lastRealPidTs: this.lastRealPidTs,
       pollingActive: this.pollingActive,
+      simulatedDataGenerated: false, // BLEProvider NEVER fabricates data
       lastError: this.lastError,
     };
   }

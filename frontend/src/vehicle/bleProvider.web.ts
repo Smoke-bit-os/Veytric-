@@ -12,14 +12,21 @@ export class BleProvider implements VehicleDataProvider {
   getStatusReport(): BleStatusReport {
     return {
       mode: "ble",
+      runtimeProvider: "BLEProvider (web stub)",
       nativeBleAvailable: false,
       permissions: "n/a",
       bluetoothPoweredOn: null,
       adapterDiscovered: false,
       adapterConnected: false,
+      servicesDiscovered: false,
+      characteristicsDiscovered: false,
       elm327Initialized: false,
       protocol: "Unknown",
+      vinReceived: false,
+      dtcResponseReceived: false,
+      ecuCommunication: false,
       pollingActive: false,
+      simulatedDataGenerated: false,
       lastError: "Web preview cannot use BLE.",
     };
   }

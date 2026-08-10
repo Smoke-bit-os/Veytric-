@@ -27,8 +27,8 @@ const REMINDERS = [
 export default function Health() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { signals, dtcs, identity } = useVehicle();
-  const vd = { signals, dtcs, identity, phase: "cruise" as const, connected: true };
+  const { signals, dtcs, identity, hasLiveData } = useVehicle();
+  const vd = { signals, dtcs, identity, phase: "cruise" as const, connected: hasLiveData };
   const systems = computeSubsystems(vd);
   const overall = overallHealth(systems);
   const findings = analyzeFaults(vd);
@@ -83,46 +83,63 @@ export default function Health() {
               </Pressable>
             </View>
             <View style={styles.scoreRow}>
-              <Text style={styles.scoreBig}>{overall}</Text>
+              <Text style={styles.scoreBig}>{hasLiveData ? overall : "—"}</Text>
               <Text style={styles.scoreSlash}>/100</Text>
             </View>
             <Text style={styles.heroSub}>
-              {identity ? `${identity.year} ${identity.make} ${identity.model}` : "No vehicle connected"}
+              {hasLiveData
+                ? identity
+                  ? `${identity.year} ${identity.make} ${identity.model}`
+                  : "Live vehicle data"
+                : "Health score unavailable — connect an OBD-II adapter"}
             </Text>
           </View>
         </View>
 
-        {/* AI findings */}
-        <Text style={styles.sectionTitle}>AI DIAGNOSTIC FINDINGS</Text>
-        {findings.map((f) => (
-          <View key={f.title} style={styles.finding} testID={`finding-${f.title.slice(0, 6)}`}>
-            <View style={[styles.findingBar, { backgroundColor: sc(f.level) }]} />
-            <View style={{ flex: 1 }}>
-              <View style={styles.findingHead}>
-                <Text style={styles.findingTitle}>{f.title}</Text>
-                <Text style={[styles.confidence, { color: sc(f.level) }]}>{f.confidence}%</Text>
-              </View>
-              <Text style={styles.findingDetail}>{f.detail}</Text>
-            </View>
+        {!hasLiveData ? (
+          <View style={styles.noLive} testID="health-no-live">
+            <MaterialCommunityIcons name="heart-off-outline" size={40} color={colors.onSurfaceSecondary} />
+            <Text style={styles.noLiveTitle}>Health score unavailable</Text>
+            <Text style={styles.noLiveSub}>Insufficient live vehicle data. Connect an OBD-II adapter to view real system health.</Text>
+            <Pressable testID="health-connect" style={styles.noLiveBtn} onPress={() => router.push("/connect")}>
+              <Text style={styles.noLiveBtnText}>OPEN CONNECTION CENTER</Text>
+            </Pressable>
           </View>
-        ))}
+        ) : (
+          <>
+            {/* AI findings */}
+            <Text style={styles.sectionTitle}>AI DIAGNOSTIC FINDINGS</Text>
+            {findings.map((f) => (
+              <View key={f.title} style={styles.finding} testID={`finding-${f.title.slice(0, 6)}`}>
+                <View style={[styles.findingBar, { backgroundColor: sc(f.level) }]} />
+                <View style={{ flex: 1 }}>
+                  <View style={styles.findingHead}>
+                    <Text style={styles.findingTitle}>{f.title}</Text>
+                    <Text style={[styles.confidence, { color: sc(f.level) }]}>{f.confidence}%</Text>
+                  </View>
+                  <Text style={styles.findingDetail}>{f.detail}</Text>
+                </View>
+              </View>
+            ))}
 
-        {/* System scores */}
-        <Text style={styles.sectionTitle}>SYSTEM SCORES</Text>
-        <View style={styles.scoreGrid}>
-          {systems.map((s) => (
-            <View key={s.name} style={styles.scoreCard} testID={`health-${s.name.toLowerCase()}`}>
-              <View style={styles.scoreCardTop}>
-                <Text style={styles.scoreCardName} numberOfLines={1}>{s.name}</Text>
-                <View style={[styles.badgeDot, { backgroundColor: sc(s.status) }]} />
-              </View>
-              <Text style={[styles.scoreCardVal, { color: sc(s.status) }]}>{s.score}</Text>
-              <View style={styles.scoreTrack}>
-                <View style={[styles.scoreFill, { width: `${s.score}%`, backgroundColor: sc(s.status) }]} />
-              </View>
+            {/* System scores */}
+            <Text style={styles.sectionTitle}>SYSTEM SCORES</Text>
+            <View style={styles.scoreGrid}>
+              {systems.map((s) => (
+                <View key={s.name} style={styles.scoreCard} testID={`health-${s.name.toLowerCase()}`}>
+                  <View style={styles.scoreCardTop}>
+                    <Text style={styles.scoreCardName} numberOfLines={1}>{s.name}</Text>
+                    <View style={[styles.badgeDot, { backgroundColor: sc(s.status) }]} />
+                  </View>
+                  <Text style={[styles.scoreCardVal, { color: sc(s.status) }]}>{s.score}</Text>
+                  <View style={styles.scoreTrack}>
+                    <View style={[styles.scoreFill, { width: `${s.score}%`, backgroundColor: sc(s.status) }]} />
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
+          </>
+        )}
 
         {/* DTCs with AI analyze */}
         <View style={styles.dtcHead}>

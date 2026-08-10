@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -67,25 +67,42 @@ export default function BleDiagnostics() {
         {report && (
           <View style={styles.reportCard} testID="provider-status-report">
             <Text style={styles.sectionTitle}>PROVIDER STATUS REPORT</Text>
-            <StatusRow label="Vehicle mode" value={report.mode === "ble" ? "BLE (REAL)" : "SIMULATION"} good={report.mode === "ble"} />
+            <StatusRow label="Platform" value={Platform.OS.toUpperCase()} good />
+            <StatusRow label="Vehicle mode" value={report.mode === "ble" ? "BLE" : "SIMULATION"} good={report.mode === "ble"} />
+            <StatusRow label="Runtime provider" value={report.runtimeProvider} good={report.runtimeProvider.startsWith("BLEProvider")} />
+            <StatusRow label="SimulationProvider active" bool={report.mode === "simulation"} invert />
+            <StatusRow label="BLEProvider active" bool={report.mode === "ble"} />
             <StatusRow label="Native BLE available" bool={report.nativeBleAvailable} />
             <StatusRow
-              label="BLE permissions"
+              label="Bluetooth"
+              value={report.bluetoothPoweredOn == null ? "UNKNOWN" : report.bluetoothPoweredOn ? "ON" : "OFF"}
+              good={report.bluetoothPoweredOn === true}
+              bad={report.bluetoothPoweredOn === false}
+            />
+            <StatusRow
+              label="Permissions"
               value={report.permissions.toUpperCase()}
               good={report.permissions === "granted" || report.permissions === "n/a"}
               bad={report.permissions === "denied"}
             />
-            <StatusRow
-              label="Bluetooth powered on"
-              value={report.bluetoothPoweredOn == null ? "UNKNOWN" : report.bluetoothPoweredOn ? "YES" : "NO"}
-              good={report.bluetoothPoweredOn === true}
-              bad={report.bluetoothPoweredOn === false}
-            />
+            <StatusRow label="Adapter" value={diag?.adapter?.name || "—"} good={!!diag?.adapter?.name} />
             <StatusRow label="Adapter discovered" bool={report.adapterDiscovered} />
             <StatusRow label="Adapter connected" bool={report.adapterConnected} />
+            <StatusRow label="Services discovered" bool={report.servicesDiscovered} />
+            <StatusRow label="Characteristics discovered" bool={report.characteristicsDiscovered} />
             <StatusRow label="ELM327 initialized" bool={report.elm327Initialized} />
             <StatusRow label="OBD protocol" value={report.protocol} good={report.protocol !== "Unknown"} />
+            <StatusRow label="VIN received" bool={report.vinReceived} />
+            <StatusRow label="Last real PID" value={report.lastRealPid || "—"} good={!!report.lastRealPid} />
+            <StatusRow
+              label="Last real PID timestamp"
+              value={report.lastRealPidTs ? new Date(report.lastRealPidTs).toLocaleTimeString() : "—"}
+              good={!!report.lastRealPidTs}
+            />
             <StatusRow label="Real PID polling active" bool={report.pollingActive} />
+            <StatusRow label="DTC response received" bool={report.dtcResponseReceived} />
+            <StatusRow label="ECU communication" bool={report.ecuCommunication} />
+            <StatusRow label="Simulated vehicle data generated" bool={report.simulatedDataGenerated} invert />
             {report.lastError ? (
               <View style={styles.reportErr}>
                 <MaterialCommunityIcons name="alert-circle" size={14} color={colors.error} />
@@ -209,11 +226,12 @@ export default function BleDiagnostics() {
   );
 }
 
-function StatusRow({ label, value, bool, good, bad }: { label: string; value?: string; bool?: boolean; good?: boolean; bad?: boolean }) {
+function StatusRow({ label, value, bool, good, bad, invert }: { label: string; value?: string; bool?: boolean; good?: boolean; bad?: boolean; invert?: boolean }) {
   const isYesNo = typeof bool === "boolean";
   const display = isYesNo ? (bool ? "YES" : "NO") : value ?? "—";
-  const positive = isYesNo ? bool : good;
-  const negative = isYesNo ? !bool : bad;
+  // invert: a YES is undesirable (e.g. "Simulated data generated"), so YES→red, NO→green.
+  const positive = isYesNo ? (invert ? !bool : bool) : good;
+  const negative = isYesNo ? (invert ? bool : !bool) : bad;
   const color = positive ? colors.success : negative ? colors.error : colors.onSurface;
   return (
     <View style={styles.statusRow}>

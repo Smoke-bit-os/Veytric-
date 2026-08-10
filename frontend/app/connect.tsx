@@ -53,7 +53,7 @@ function Wave({ delay, active }: { delay: number; active: boolean }) {
 export default function ConnectionCenter() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { scan, connect, adapter, identity, mode, connection, enrichIdentity, signals, dtcs } = useVehicle();
+  const { scan, connect, adapter, identity, mode, connection, dataSource, enrichIdentity, signals, dtcs } = useVehicle();
   const [phase, setPhase] = useState<Phase>(mode === "ble" ? "scanning" : "scanning");
   const [saved, setSaved] = useState(false);
   const [savedMsg, setSavedMsg] = useState("");
@@ -160,22 +160,31 @@ export default function ConnectionCenter() {
         </Text>
         <Text style={styles.modeTag}>{mode === "ble" ? "BLE TRANSPORT" : "SIMULATION MODE"}</Text>
 
-        {/* Real-data indicator — only for the live BLE provider */}
+        {/* Real-data indicator — only when actual ECU communication has occurred */}
         {mode === "ble" ? (
-          <View style={styles.liveBanner} testID="live-ble-banner">
-            <View style={[styles.liveDot, { backgroundColor: connection === "connected" ? colors.success : colors.warning }]} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.liveTitle}>LIVE BLE — REAL VEHICLE DATA</Text>
-              <Text style={styles.liveSub}>
-                {connection === "connected"
-                  ? `Connected · ${adapter?.name || "OBD-II adapter"}`
-                  : connection === "scanning" || connection === "connecting"
-                  ? "Establishing Bluetooth link…"
-                  : "No live link yet · scan to connect"}
-              </Text>
+          dataSource === "REAL_BLE" ? (
+            <View style={styles.liveBanner} testID="live-ble-banner">
+              <View style={[styles.liveDot, { backgroundColor: colors.success }]} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.liveTitle}>LIVE BLE — REAL VEHICLE DATA</Text>
+                <Text style={styles.liveSub}>Connected · {adapter?.name || "OBD-II adapter"} · ECU responding</Text>
+              </View>
+              <MaterialCommunityIcons name="bluetooth-audio" size={20} color={colors.brand} />
             </View>
-            <MaterialCommunityIcons name="bluetooth-audio" size={20} color={colors.brand} />
-          </View>
+          ) : (
+            <View style={styles.noLiveBanner} testID="no-live-banner">
+              <View style={[styles.liveDot, { backgroundColor: colors.warning }]} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.noLiveTitle}>NO LIVE VEHICLE CONNECTION</Text>
+                <Text style={styles.liveSub}>
+                  {connection === "scanning" || connection === "connecting"
+                    ? "Establishing Bluetooth link…"
+                    : "Connect an OBD-II adapter to view live vehicle data."}
+                </Text>
+              </View>
+              <MaterialCommunityIcons name="bluetooth-off" size={20} color={colors.warning} />
+            </View>
+          )
         ) : (
           <View style={styles.simBanner} testID="sim-banner">
             <MaterialCommunityIcons name="flask-outline" size={16} color={colors.warning} />
@@ -376,6 +385,19 @@ const styles = StyleSheet.create({
   liveDot: { width: 12, height: 12, borderRadius: 6 },
   liveTitle: { color: colors.brand, fontFamily: font.display, fontSize: 14, letterSpacing: 1 },
   liveSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 2 },
+  noLiveBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.lg,
+    padding: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.warning,
+    backgroundColor: colors.warning + "18",
+  },
+  noLiveTitle: { color: colors.warning, fontFamily: font.display, fontSize: 14, letterSpacing: 1 },
   simBanner: {
     flexDirection: "row",
     alignItems: "center",

@@ -137,16 +137,29 @@ export interface FreezeFrame {
 // bring-up step is failing.
 export interface BleStatusReport {
   mode: ProviderMode; // "ble" | "simulation"
+  runtimeProvider: string; // "BLEProvider" | "SimulationProvider"
   nativeBleAvailable: boolean; // react-native-ble-plx native module linked?
   permissions: "granted" | "denied" | "unknown" | "n/a";
   bluetoothPoweredOn: boolean | null;
   adapterDiscovered: boolean;
   adapterConnected: boolean;
+  servicesDiscovered: boolean;
+  characteristicsDiscovered: boolean;
   elm327Initialized: boolean;
   protocol: string;
+  vinReceived: boolean;
+  dtcResponseReceived: boolean;
+  ecuCommunication: boolean; // a REAL ECU response has actually been received
+  lastRealPid?: string;
+  lastRealPidTs?: number;
   pollingActive: boolean;
+  simulatedDataGenerated: boolean; // has this provider EVER produced synthetic data
   lastError?: string;
 }
+
+// Authoritative source of the vehicle data currently on screen. On native
+// production this can only ever be REAL_BLE or UNAVAILABLE — never SIMULATION.
+export type DataSource = "REAL_BLE" | "SIMULATION" | "UNAVAILABLE";
 
 export interface VehicleData {
   signals: VehicleSignals;

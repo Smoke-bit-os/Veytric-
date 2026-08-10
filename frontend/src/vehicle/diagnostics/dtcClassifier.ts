@@ -73,7 +73,7 @@ export function mode06Results(s: VehicleSignals, dtcs: Dtc[]): Mode06Test[] {
     { id: "0x01", name: "O2 Sensor B1S1 Switch Time", value: o2Switch, min: 0.02, max: 0.12, unit: "s", pass: o2Switch <= 0.12 },
     { id: "0x21", name: "Catalyst Efficiency B1", value: catEff, min: 0.6, max: 1.0, unit: "ratio", pass: catEff >= 0.6 },
     { id: "0x3B", name: "EVAP System Leak", value: evapLeak, min: 0, max: 0.09, unit: '"Hg', pass: evapLeak <= 0.09 },
-    { id: "0xA2", name: "Misfire Cyl. Count", value: misfire ? 14 : round(Math.random() * 2, 0), min: 0, max: 5, unit: "cnt", pass: !misfire },
+    { id: "0xA2", name: "Misfire Cyl. Count", value: misfire ? 14 : 0, min: 0, max: 5, unit: "cnt", pass: !misfire },
     { id: "0x05", name: "Fuel Trim Range B1", value: round((s.longFuelTrim ?? 0), 1), min: -10, max: 10, unit: "%", pass: !lean && Math.abs(s.longFuelTrim ?? 0) <= 10 },
   ];
 }

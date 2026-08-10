@@ -14,7 +14,7 @@ export default function Home() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { user } = useAuth();
-  const { data, connection } = useTelemetry();
+  const { data, connection, hasLiveData } = useTelemetry();
   const [refreshing, setRefreshing] = useState(false);
 
   const greeting = new Date().getHours() < 12 ? "Good morning" : new Date().getHours() < 18 ? "Good afternoon" : "Good evening";
@@ -70,9 +70,11 @@ export default function Home() {
 
           <View style={styles.orbSection}>
             <AIOrb size={150} active={false} />
-            <Text style={styles.status}>SYSTEM NOMINAL</Text>
+            <Text style={styles.status}>{hasLiveData ? "SYSTEM NOMINAL" : "NO LIVE DATA"}</Text>
             <Text style={styles.subStatus}>
-              {data.dtcs.length} active trouble code{data.dtcs.length === 1 ? "" : "s"} detected
+              {hasLiveData
+                ? `${data.dtcs.length} active trouble code${data.dtcs.length === 1 ? "" : "s"} detected`
+                : "Connect an OBD-II adapter to view live vehicle data"}
             </Text>
           </View>
         </LinearGradient>
@@ -96,34 +98,47 @@ export default function Home() {
 
         {/* Gauges */}
         <Text style={styles.sectionTitle}>LIVE TELEMETRY</Text>
-        <View style={styles.grid}>
-          <Gauge label="Engine RPM" value={Math.round(data.rpm)} max={7000} numeric={data.rpm} testID="gauge-rpm" />
-          <Gauge label="Speed" value={Math.round(data.speed)} unit="km/h" max={180} numeric={data.speed} testID="gauge-speed" />
-        </View>
-        <View style={styles.grid}>
-          <Gauge label="Coolant" value={Math.round(data.coolantTemp)} unit="°C" min={60} max={120} numeric={data.coolantTemp} accent={data.coolantTemp > 100 ? colors.warning : colors.brand} testID="gauge-coolant" />
-          <Gauge label="Oil Temp" value={Math.round(data.oilTemp)} unit="°C" min={60} max={130} numeric={data.oilTemp} testID="gauge-oil" />
-        </View>
-        <View style={styles.grid}>
-          <Gauge label="Battery" value={data.batteryVoltage.toFixed(1)} unit="V" min={11} max={15} numeric={data.batteryVoltage} accent={data.batteryVoltage < 12.3 ? colors.warning : colors.success} testID="gauge-battery" />
-          <Gauge label="Boost / MAP" value={Math.round(data.boost)} unit="kPa" max={200} numeric={data.boost} testID="gauge-boost" />
-        </View>
-        <View style={styles.grid}>
-          <Gauge label="Throttle" value={Math.round(data.throttle)} unit="%" max={100} numeric={data.throttle} testID="gauge-throttle" />
-          <Gauge label="Charging" value={data.chargingVoltage.toFixed(1)} unit="V" min={12} max={15} numeric={data.chargingVoltage} accent={colors.success} testID="gauge-charging" />
-        </View>
+        {!hasLiveData ? (
+          <View style={styles.noData} testID="no-live-telemetry">
+            <MaterialCommunityIcons name="engine-off-outline" size={40} color={colors.onSurfaceSecondary} />
+            <Text style={styles.noDataTitle}>No live vehicle data available</Text>
+            <Text style={styles.noDataSub}>Connect an OBD-II adapter to view live vehicle data.</Text>
+            <Pressable testID="no-live-connect" style={styles.noDataBtn} onPress={() => router.push("/connect")}>
+              <Text style={styles.noDataBtnText}>OPEN CONNECTION CENTER</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <>
+            <View style={styles.grid}>
+              <Gauge label="Engine RPM" value={Math.round(data.rpm)} max={7000} numeric={data.rpm} testID="gauge-rpm" />
+              <Gauge label="Speed" value={Math.round(data.speed)} unit="km/h" max={180} numeric={data.speed} testID="gauge-speed" />
+            </View>
+            <View style={styles.grid}>
+              <Gauge label="Coolant" value={Math.round(data.coolantTemp)} unit="°C" min={60} max={120} numeric={data.coolantTemp} accent={data.coolantTemp > 100 ? colors.warning : colors.brand} testID="gauge-coolant" />
+              <Gauge label="Oil Temp" value={Math.round(data.oilTemp)} unit="°C" min={60} max={130} numeric={data.oilTemp} testID="gauge-oil" />
+            </View>
+            <View style={styles.grid}>
+              <Gauge label="Battery" value={data.batteryVoltage.toFixed(1)} unit="V" min={11} max={15} numeric={data.batteryVoltage} accent={data.batteryVoltage < 12.3 ? colors.warning : colors.success} testID="gauge-battery" />
+              <Gauge label="Boost / MAP" value={Math.round(data.boost)} unit="kPa" max={200} numeric={data.boost} testID="gauge-boost" />
+            </View>
+            <View style={styles.grid}>
+              <Gauge label="Throttle" value={Math.round(data.throttle)} unit="%" max={100} numeric={data.throttle} testID="gauge-throttle" />
+              <Gauge label="Charging" value={data.chargingVoltage.toFixed(1)} unit="V" min={12} max={15} numeric={data.chargingVoltage} accent={colors.success} testID="gauge-charging" />
+            </View>
 
-        <View style={styles.trims}>
-          <View style={styles.trimItem}>
-            <Text style={styles.trimLabel}>SHORT FUEL TRIM</Text>
-            <Text style={styles.trimValue}>{data.shortFuelTrim > 0 ? "+" : ""}{data.shortFuelTrim.toFixed(1)}%</Text>
-          </View>
-          <View style={styles.trimDivider} />
-          <View style={styles.trimItem}>
-            <Text style={styles.trimLabel}>LONG FUEL TRIM</Text>
-            <Text style={styles.trimValue}>{data.longFuelTrim > 0 ? "+" : ""}{data.longFuelTrim.toFixed(1)}%</Text>
-          </View>
-        </View>
+            <View style={styles.trims}>
+              <View style={styles.trimItem}>
+                <Text style={styles.trimLabel}>SHORT FUEL TRIM</Text>
+                <Text style={styles.trimValue}>{data.shortFuelTrim > 0 ? "+" : ""}{data.shortFuelTrim.toFixed(1)}%</Text>
+              </View>
+              <View style={styles.trimDivider} />
+              <View style={styles.trimItem}>
+                <Text style={styles.trimLabel}>LONG FUEL TRIM</Text>
+                <Text style={styles.trimValue}>{data.longFuelTrim > 0 ? "+" : ""}{data.longFuelTrim.toFixed(1)}%</Text>
+              </View>
+            </View>
+          </>
+        )}
       </ScrollView>
 
       {/* Voice FAB */}
@@ -170,6 +185,11 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   grid: { flexDirection: "row", gap: spacing.sm, paddingHorizontal: spacing.lg, marginBottom: spacing.sm },
+  noData: { alignItems: "center", marginHorizontal: spacing.lg, padding: spacing.xl, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, gap: spacing.sm },
+  noDataTitle: { color: colors.onSurface, fontFamily: font.display, fontSize: 16, marginTop: spacing.sm },
+  noDataSub: { color: colors.onSurfaceSecondary, fontSize: 13, textAlign: "center" },
+  noDataBtn: { marginTop: spacing.md, borderWidth: 1, borderColor: colors.brand, borderRadius: radius.pill, paddingHorizontal: spacing.lg, paddingVertical: 10 },
+  noDataBtnText: { color: colors.brand, fontWeight: "700", letterSpacing: 1, fontSize: 12 },
   recRow: { flexDirection: "row", gap: spacing.sm, paddingHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.md },
   recCta: { flex: 1, borderRadius: radius.md, overflow: "hidden" },
   recCtaGrad: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.sm, paddingVertical: 16 },

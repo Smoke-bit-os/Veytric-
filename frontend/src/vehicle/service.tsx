@@ -4,6 +4,7 @@ import {
   AdapterInfo,
   BleStatusReport,
   ConnectionStatus,
+  DataSource,
   Dtc,
   VehicleData,
   VehicleDataProvider,
@@ -15,19 +16,20 @@ import { PID_CATALOG } from "./health";
 
 const HISTORY_LEN = 40;
 
-// Transport selection (platform-aware, deterministic):
-//   • WEB / browser preview  → ALWAYS SimulationProvider (native BLE cannot run
-//     in a browser). This is unconditional so the preview never tries BLE.
-//   • NATIVE (Android/iOS standalone build or dev build) → REAL BleProvider by
-//     default. Only an explicit EXPO_PUBLIC_VEHICLE_MODE=simulation forces the
-//     simulator on native (developer convenience). The default is "ble" so a
-//     production APK/IPA uses real hardware even if the env var wasn't injected.
-// NOTE: EXPO_PUBLIC_* values are inlined at BUILD time by Metro, so the APK
-// carries whatever was set when it was built (see frontend/.env + eas.json).
+// Transport selection (platform-aware, deterministic + PRODUCTION-SAFE):
+//   • WEB / browser preview → ALWAYS SimulationProvider.
+//   • NATIVE PRODUCTION (Android/iOS release APK/IPA) → ALWAYS BleProvider.
+//     There is NO way to reach SimulationProvider on a production native build:
+//     the simulation override is honored ONLY when __DEV__ is true (engineer's
+//     dev build). A shipped APK/IPA (where __DEV__ === false) can never
+//     instantiate simulation, regardless of env vars.
 function createProvider(): VehicleDataProvider {
   if (Platform.OS === "web") return new SimulationProvider();
-  const mode = (process.env.EXPO_PUBLIC_VEHICLE_MODE || "ble").toLowerCase();
-  if (mode === "simulation" || mode === "sim") return new SimulationProvider();
+  // Native dev-only escape hatch (never in production):
+  if (__DEV__) {
+    const mode = (process.env.EXPO_PUBLIC_VEHICLE_MODE || "ble").toLowerCase();
+    if (mode === "simulation" || mode === "sim") return new SimulationProvider();
+  }
   const { BleProvider } = require("./bleProvider");
   return new BleProvider();
 }
@@ -42,6 +44,8 @@ interface Ctx {
   adapter: AdapterInfo | null;
   connection: ConnectionStatus;
   mode: string;
+  dataSource: DataSource;
+  hasLiveData: boolean;
   history: Record<string, number[]>;
   scan: () => Promise<AdapterInfo[]>;
   connect: (id?: string) => Promise<VehicleIdentity>;
@@ -145,14 +149,21 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
     (): BleStatusReport =>
       providerRef.current.getStatusReport?.() ?? {
         mode: providerRef.current.mode,
+        runtimeProvider: providerRef.current.mode === "simulation" ? "SimulationProvider" : "BLEProvider",
         nativeBleAvailable: false,
         permissions: "n/a",
         bluetoothPoweredOn: null,
         adapterDiscovered: false,
         adapterConnected: false,
+        servicesDiscovered: false,
+        characteristicsDiscovered: false,
         elm327Initialized: false,
         protocol: "Unknown",
+        vinReceived: false,
+        dtcResponseReceived: false,
+        ecuCommunication: false,
         pollingActive: false,
+        simulatedDataGenerated: false,
       },
     []
   );
@@ -191,6 +202,17 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
     dtcs: dtcs.map((d) => ({ code: d.code, desc: d.desc })),
   };
 
+  // Authoritative data-source state. Native production is either REAL_BLE
+  // (connected + a real ECU response received) or UNAVAILABLE — never SIMULATION.
+  const provStatus = providerRef.current.getStatusReport?.();
+  const dataSource: DataSource =
+    providerRef.current.mode === "simulation"
+      ? "SIMULATION"
+      : connection === "connected" && provStatus?.ecuCommunication
+      ? "REAL_BLE"
+      : "UNAVAILABLE";
+  const hasLiveData = dataSource === "REAL_BLE" || dataSource === "SIMULATION";
+
   return (
     <VehicleContext.Provider
       value={{
@@ -201,6 +223,8 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
         adapter,
         connection,
         mode: providerRef.current.mode,
+        dataSource,
+        hasLiveData,
         history,
         scan,
         connect,

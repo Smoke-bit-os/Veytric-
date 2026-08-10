@@ -4,6 +4,7 @@
 // switch, boost tracks throttle, charging voltage holds ~14.2V, transmission
 // shifts by speed. Implements the same VehicleDataProvider contract as BLE.
 
+import { Platform } from "react-native";
 import {
   AdapterInfo,
   BleStatusReport,
@@ -73,6 +74,19 @@ function baseSignals(): VehicleSignals {
 
 export class SimulationProvider implements VehicleDataProvider {
   readonly mode = "simulation" as const;
+
+  constructor() {
+    // HARD PRODUCTION GUARD: simulated vehicle data may exist ONLY on web or in
+    // a native dev build. A shipped native production APK/IPA (__DEV__ === false)
+    // must NEVER be able to construct this provider. This makes fake telemetry
+    // architecturally impossible in native production, not merely unselected.
+    if (Platform.OS !== "web" && !__DEV__) {
+      throw new Error(
+        "SimulationProvider is disabled in native production builds. Native production uses BLEProvider (real OBD-II) only."
+      );
+    }
+  }
+
   private timer: ReturnType<typeof setInterval> | null = null;
   private polling = false;
   private s: VehicleSignals = baseSignals();
@@ -163,16 +177,26 @@ export class SimulationProvider implements VehicleDataProvider {
   }
 
   getStatusReport(): BleStatusReport {
+    const live = this.timer != null;
     return {
       mode: "simulation",
+      runtimeProvider: "SimulationProvider",
       nativeBleAvailable: false,
       permissions: "n/a",
       bluetoothPoweredOn: null,
       adapterDiscovered: true,
-      adapterConnected: this.timer != null,
-      elm327Initialized: this.timer != null,
+      adapterConnected: live,
+      servicesDiscovered: live,
+      characteristicsDiscovered: live,
+      elm327Initialized: live,
       protocol: "ISO 15765-4 CAN (11-bit, 500k)",
+      vinReceived: live,
+      dtcResponseReceived: live,
+      ecuCommunication: live,
+      lastRealPid: live ? "0105 (simulated)" : undefined,
+      lastRealPidTs: live ? Date.now() : undefined,
       pollingActive: this.polling,
+      simulatedDataGenerated: true,
     };
   }
 
