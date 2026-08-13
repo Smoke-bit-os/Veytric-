@@ -8,6 +8,17 @@
     "scheme": "frontend",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/4f7e910e-accf-4adc-bcd1-76665f149612"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4f7e910e-accf-4adc-bcd1-76665f149612"
+      }
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.emergent.jarvisai.gx2hdi",

@@ -134,3 +134,11 @@ Futuristic mobile app "JARVIS AI": intelligent automotive assistant, personal AI
 - Debug screen (app/ble-diagnostics) reports actual runtime: Platform, Vehicle mode, Runtime provider, SimulationProvider active, BLEProvider active, Native BLE available, Bluetooth, Permissions, Adapter, discovered/connected, Services/Characteristics, ELM327 initialized, OBD protocol, VIN received, Last real PID+ts, Real PID polling, DTC response received, ECU communication, Simulated vehicle data generated.
 - ELM327 flow preserved (ATZ..ATRV, PID discovery, command queue, Mode 01/02/03/04/07/09, reconnect).
 - Verified in-env: web = SimulationProvider (dashboard live gauges; diagnostics Platform: WEB / SimulationProvider active: YES / BLEProvider active: NO). Lint clean; no new TS errors. Physical adapter/vehicle + installed APK: NOT TESTED - hardware required.
+
+## Production fix (2026-06) — stale APK / OTA delivery hardening
+- Deployer RCA (job 2d7ae4ca): installed APK ran STALE pre-fix JS (showed old sim "2016 Jeep Compass" vs current source "2018 Jeep Wrangler JL"). Current source + latest published OTA are BOTH correct; the OTA can't reach the device because the old binary shipped WITHOUT an update client. No native build ran in the deploy pipeline (OTA + backend only).
+- Source hardening applied so future OTAs land + binaries always carry an update client:
+  - Added `expo-updates@~29.0.19` to package.json (dependency, not ephemeral).
+  - app.json: committed `runtimeVersion.policy=appVersion`, `updates.url=https://u.expo.dev/4f7e910e-accf-4adc-bcd1-76665f149612`, `extra.eas.projectId=4f7e910e-accf-4adc-bcd1-76665f149612`.
+- Build-time env is correct (EXPO_PUBLIC_VEHICLE_MODE=ble in .env + eas.json). Verified preview still boots.
+- REQUIRED USER ACTION: regenerate the native Android/iOS build from current source, uninstall the old APK, install the fresh binary. Verify via in-app BLE Diagnostics: BLEProvider active YES / SimulationProvider active NO / Simulated vehicle data generated NO.
