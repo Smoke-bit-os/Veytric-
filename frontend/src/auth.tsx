@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { storage } from "@/src/utils/storage";
 import { api, TOKEN_KEY } from "@/src/api";
+import { cacheClear } from "@/src/vehicle/intelligence/cache";
+import { licenseCache } from "@/src/licensing/licenseCache";
 
 type User = { id: string; name: string; email: string; entitlement?: any };
 type AuthProviderKind = "email" | "guest" | "apple" | "google" | null;
@@ -50,7 +52,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })();
   }, []);
 
+  // Wipe every device-local, user-scoped cache so no data leaks across
+  // accounts or into Guest mode on the same device.
+  const clearLocalUserData = async () => {
+    await cacheClear();                 // predictions/trends/etc. (veh_intel:)
+    await licenseCache.clear().catch(() => {});
+    await storage.clearNamespace("veh:");     // any vehicle-scoped local state
+    await storage.clearNamespace("scan:");    // cached scan state
+  };
+
   const persist = async (res: any) => {
+    // New session → clear anything the previous user/guest left behind first.
+    await clearLocalUserData();
     await storage.secureSet(TOKEN_KEY, res.token);
     await storage.removeItem(GUEST_KEY);
     setUser(res.user);
@@ -68,6 +81,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginAsGuest = async () => {
+    // Guest starts from a clean slate — never inherits a prior user's cache.
+    await clearLocalUserData();
     await storage.setItem(GUEST_KEY, true);
     setUser(GUEST_USER);
     setProvider("guest");
@@ -76,6 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     await storage.secureRemove(TOKEN_KEY);
     await storage.removeItem(GUEST_KEY);
+    await clearLocalUserData();
     setUser(null);
     setProvider(null);
   };

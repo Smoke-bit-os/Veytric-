@@ -1,0 +1,43 @@
+{
+  "summary": "Verified 3 acceptance goals: (1) PREDICTIONS HONESTY — 13/13 pytest passing in test_predictions_and_isolation.py; No-mileage/no-history returns every item with urgency in {unknown, inspect, test}, source=UNAVAILABLE, remainingLifePct=null, remainingKm=null, dueMileage=null, confidence=null. Response body has mileage=null AND mileageKnown=false. Brakes hardcoded to inspect, battery hardcoded to test (both UNAVAILABLE) regardless of mileage. After PATCH mileage=95000 the 8 interval items flip to source=MANUFACTURER_INTERVAL with numeric remainingLifePct (0–1) and confidence=0.55; brakes/battery remain inspect/test UNAVAILABLE. After POST /vehicles/{id}/history/maintenance (oil at 80000km) the OIL item promotes to source=USER_SERVICE_HISTORY with lastServiceKm=80000 and confidence=0.85 while brakes/battery are unaffected. (2) BACKEND USER ISOLATION — User B (fresh account) cannot see User A's vehicle in GET /vehicles (list excludes it), GET /vehicles/{A_id} returns 404, GET /vehicles/{A_id}/predictions returns 404 (vehicle-scoped 404 == access denied), PATCH /vehicles/{A_id} 404, /scans and /reports do not leak A's rows (filtered by user_id). User A still sees own data. Anonymous requests to /vehicles and /vehicles/{id}/predictions return 401/403. (3) FRONTEND LOGOUT + CACHE ISOLATION — Playwright (viewport 390x844): Guest -> tabs load -> Garage 'logout-button' visible -> tap logout -> returns to /auth with 'auth-guest-button' visible -> browser back button STAYS on /auth (the (tabs)/_layout.tsx Redirect to /auth when user==null is authoritative). Register new user -> land in tabs -> seeded window.localStorage keys ['veh_intel:predictions:testv1', 'veh:testv1:mileage', 'scan:testv1:last'] -> tap Logout -> ALL veh_intel:/veh:/scan: keys cleared AND jarvis_token=null. Continue-as-Guest afterwards -> localStorage still empty for those namespaces (no cross-user leakage). (4) PREDICTIONS UI — Promoted user to Pro; the /predictions?id=<vid> screen renders 10 cards each with testID=pred-source-<key> showing 'Source: ...'. With no mileage: every source row reads 'No verifiable data source', Battery card shows 'TEST REQUIRED'+'Physical test recommended', Brake Pads shows 'INSPECT'+'Physical inspection required', interval items show 'UNKNOWN'+'Insufficient data to determine status'. NO '% life left' bar anywhere. After mileage=95000, 8 interval items show 'Source: Manufacturer interval (recommendation)' + numeric '% life left' bar + '55% confidence'. Brakes/Battery remain 'No verifiable data source'. (5) NO REGRESSION — Guest dashboard after logout shows live gauges (RPM 2147, SPEED 99 km/h, COOLANT 87°C, BATTERY 13.8V etc.) — SimulationProvider still active on web preview. Login/Register/Guest flows all functional. Only console noise: React Native web deprecation warnings for shadow*/pointerEvents (cosmetic, non-blocking).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_predictions_and_isolation.py",
+    "/app/test_reports/pytest/iteration_16.xml"
+  ],
+  "action_items": [
+    "None for this master fix — all 3 acceptance goals (predictions honesty, backend isolation, logout+guest cache isolation) verified.",
+    "Nit (non-blocking, unrelated): React Native Web deprecation warnings for 'shadow*' style props and 'props.pointerEvents' — surface only in console; recommend a future pass to migrate to 'boxShadow' and 'style.pointerEvents'.",
+    "Carry-over from previous iterations: server.py is ~1884 lines — splitting into routers (auth/vehicles/predictions/ai/subscription/shop) is still recommended. tests/test_diagnostics.py TestScansCreate remains failing by design (POST /scans returns empty ai_report) — ignore per main-agent note."
+  ],
+  "critical_code_review_comments": [
+    "server.py _compute_predictions correctly encodes the honesty contract: DIRECT_INSPECT={'brakes'} and TEST_ONLY={'battery'} short-circuit BEFORE any interval math, forcing UNAVAILABLE unless real evidence (min_voltage<12.2V for battery) exists. The 'not has_record and not has_mileage and not evidence -> unknown/UNAVAILABLE' branch is placed BEFORE the interval computation, so no fabricated % ever leaks (server.py:1200-1214).",
+    "vehicle_predictions dependency uses get_current_user -> per-user gather_vehicle -> 404 on miss (server.py:1367-1372). Since _gather_vehicle filters by user_id at the Mongo layer, User B looking up A's vehicle_id gets veh=None -> HTTPException 404 — correct tenant boundary with no data leak.",
+    "auth.tsx: logout() correctly (a) secureRemove(TOKEN_KEY), (b) removeItem(GUEST_KEY), (c) clearLocalUserData() which fires cacheClear() (veh_intel:) + licenseCache.clear() + storage.clearNamespace('veh:') + storage.clearNamespace('scan:'), (d) setUser(null). loginAsGuest() and persist() both call clearLocalUserData() FIRST so a new session never inherits prior state.",
+    "(tabs)/_layout.tsx authoritative auth guard: `if (!loading && !user) return <Redirect href='/auth' />;` unmounts the tab stack the moment user==null — this is why the browser Back button after logout does not navigate back into authenticated screens.",
+    "predictions.tsx renders `testID=pred-source-<key>` on every card and only renders the % bar+life text when `measurable = remainingLifePct != null && remainingKm != null` — matching the backend contract 1:1. No fake percentages under any state.",
+    "predictionsService.ts SOURCE_META maps UNAVAILABLE -> 'No verifiable data source' — this is what the user sees for brakes/battery/no-data cards. Correct.",
+    "storage.clearNamespace iterates AsyncStorage.getAllKeys and multiRemove — the correct primitive for namespace-scoped cache eviction (index.ts:102-110).",
+    "predictions endpoint is Pro-gated on the client via useEntitlement('predictive_maintenance') -> PremiumGate; this is UI gating only. The BACKEND endpoint is not entitlement-gated (a Free user could still call it directly). That's fine for honesty (data would still be UNAVAILABLE without mileage) but worth noting for future monetization enforcement."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_predictions_and_isolation.py (NEW — 13 tests across 3 classes)",
+    "/app/test_reports/pytest/iteration_16.xml (JUnit)",
+    "/app/test_reports/iteration_16.json"
+  ],
+  "success_rate": {
+    "backend": "100% (13/13 in test_predictions_and_isolation.py)",
+    "frontend": "100% (guest+user logout, back-guard, cache isolation across all 3 namespaces, predictions UI honesty rendering in both no-mileage and 95k-mileage states)"
+  },
+  "seed_data_creation": "Ephemeral users registered via POST /api/auth/register with password Jarvis2026! and emails 'test_<uuid>@example.com'. Vehicles created via POST /api/vehicles with {name,make='Honda',model='Civic',year=2018}. Mileage set via PATCH /api/vehicles/{id}. Service history logged via POST /api/vehicles/{id}/history/maintenance {title:'Oil change', meta:{mileage:80000}}. Pro tier set via POST /api/subscription/developer/set {action:'pro'}. NOTE for future agents: POST /api/scans REQUIRES 'workflow' field; email domain '.test' is REJECTED by Pydantic EmailStr — must use example.com.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reuse /app/backend/tests/test_predictions_and_isolation.py for predictions/isolation regressions. Payload requirements: POST /api/vehicles needs name+make+model+year; POST /api/scans needs workflow; register emails must NOT use .test (reserved) — use @example.com. Frontend: token stored under localStorage['jarvis_token'] JSON-encoded (strip quotes when injecting into fetch headers). Predictive Maintenance is Pro-gated in UI (useEntitlement); to view the real UI promote user via /api/subscription/developer/set {action:'pro'} then reload. Cache namespaces cleared on auth transitions: veh_intel:, veh:, scan: (plus licenseCache). Web preview uses SimulationProvider — do NOT expect real BLE; live gauges (RPM/SPEED/COOLANT/BATTERY) are simulated by design and are the CORRECT behavior.",
+  "rca_of_issue": "N/A — master fix verified end-to-end. Self-inflicted test authoring issues (email domain .test rejected as reserved; VehicleInput requires make/model/year not just name; ScanInput requires workflow field) were corrected during test authoring — not product bugs."
+}

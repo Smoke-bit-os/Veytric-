@@ -1165,42 +1165,72 @@ def _compute_predictions(bundle: dict) -> dict:
             dtc_codes.append(h.get("title", ""))
     has_misfire = any(str(c).upper().startswith("P03") for c in dtc_codes)
 
+    # Components OBD-II CANNOT directly measure — never fabricate a % / condition.
+    DIRECT_INSPECT = {"brakes"}   # pad thickness not on standard OBD-II
+    TEST_ONLY = {"battery"}       # needs a physical/load battery test
+    has_mileage = mileage > 0
+
     items = []
     for svc in SERVICE_INTERVALS:
+        key = svc["key"]
+        interval = svc["km"]
         last_km = _last_service_km(history, svc["kw"], mileage)
         has_record = last_km is not None
+
+        # Real LIVE_ECU / recorded-evidence signals (only when actually present).
+        evidence = False
+        evidence_pct = 1.0
+        evidence_reason = None
+        if key == "battery" and min_voltage is not None and min_voltage < 12.2:
+            evidence, evidence_pct, evidence_reason = True, 0.15, f"Recorded battery low of {min_voltage:.1f} V"
+        elif key == "coolant" and max_coolant is not None and max_coolant > 104:
+            evidence, evidence_pct, evidence_reason = True, 0.2, f"Coolant peaked at {int(max_coolant)}°C"
+        elif key == "plugs" and has_misfire:
+            evidence, evidence_pct, evidence_reason = True, 0.1, "Misfire codes (P03xx) present"
+        elif key == "alternator" and min_voltage is not None and min_voltage < 12.0:
+            evidence, evidence_pct, evidence_reason = True, 0.25, "Charging voltage instability observed"
+
+        base = {
+            "key": key, "name": svc["name"], "intervalKm": interval,
+            "lastServiceKm": last_km if has_record else None,
+            "kmSince": max(0, mileage - last_km) if (has_record and mileage) else (mileage if has_mileage else 0),
+        }
+
+        # 1) Components we cannot measure and have no legitimate basis for.
+        if key in DIRECT_INSPECT and not has_record and not evidence:
+            items.append({**base, "remainingKm": None, "remainingLifePct": None, "dueMileage": None,
+                          "urgency": "inspect", "source": "UNAVAILABLE", "confidence": None,
+                          "reasons": ["OBD-II cannot directly measure brake pad thickness — physical inspection required."]})
+            continue
+        if key in TEST_ONLY and not has_record and not evidence:
+            items.append({**base, "remainingKm": None, "remainingLifePct": None, "dueMileage": None,
+                          "urgency": "test", "source": "UNAVAILABLE", "confidence": None,
+                          "reasons": ["No verified battery-health measurement available — a physical battery test is recommended."]})
+            continue
+        # 2) No verified mileage AND no service history AND no live evidence → UNKNOWN.
+        if not has_record and not has_mileage and not evidence:
+            items.append({**base, "remainingKm": None, "remainingLifePct": None, "dueMileage": None,
+                          "urgency": "unknown", "source": "UNAVAILABLE", "confidence": None,
+                          "reasons": ["Set current mileage or log service history to enable this prediction."]})
+            continue
+
+        # 3) We have a legitimate basis → interval / history / live-evidence prediction.
         base_km = last_km if has_record else 0
-        interval = svc["km"]
         km_since = max(0, mileage - base_km) if mileage else 0
         remaining_km = interval - km_since
         remaining_pct = max(0.0, min(1.0, remaining_km / interval)) if interval else 0.0
         reasons = []
-        confidence = 0.55
-        if has_record and last_km:
-            confidence = 0.85
+        if has_record:
+            source, confidence = "USER_SERVICE_HISTORY", 0.85
             reasons.append(f"Last service logged at {last_km:,} km")
-        elif not mileage:
-            reasons.append("Set current mileage for accurate predictions")
-            confidence = 0.35
         else:
-            reasons.append("No prior service record — using factory interval")
-
-        # Sensor / DTC based urgency bumps (heuristic, offline).
-        if svc["key"] == "battery" and min_voltage is not None and min_voltage < 12.2:
-            remaining_pct = min(remaining_pct, 0.15)
-            confidence = min(0.95, confidence + 0.15)
-            reasons.append(f"Recorded battery low of {min_voltage:.1f} V")
-        if svc["key"] == "coolant" and max_coolant is not None and max_coolant > 104:
-            remaining_pct = min(remaining_pct, 0.2)
-            confidence = min(0.95, confidence + 0.12)
-            reasons.append(f"Coolant peaked at {int(max_coolant)}°C")
-        if svc["key"] == "plugs" and has_misfire:
-            remaining_pct = min(remaining_pct, 0.1)
-            confidence = min(0.95, confidence + 0.2)
-            reasons.append("Misfire codes (P03xx) present")
-        if svc["key"] == "alternator" and min_voltage is not None and min_voltage < 12.0:
-            remaining_pct = min(remaining_pct, 0.25)
-            reasons.append("Charging voltage instability observed")
+            source, confidence = "MANUFACTURER_INTERVAL", 0.55
+            reasons.append("Manufacturer interval (no service record logged)")
+        if evidence:
+            remaining_pct = min(remaining_pct, evidence_pct)
+            source, confidence = "LIVE_ECU", min(0.95, confidence + 0.15)
+            if evidence_reason:
+                reasons.append(evidence_reason)
 
         if remaining_km <= 0 or remaining_pct <= 0.02:
             urgency = "overdue"
@@ -1211,23 +1241,13 @@ def _compute_predictions(bundle: dict) -> dict:
         else:
             urgency = "ok"
 
-        items.append({
-            "key": svc["key"],
-            "name": svc["name"],
-            "intervalKm": interval,
-            "lastServiceKm": base_km if has_record else None,
-            "kmSince": km_since,
-            "remainingKm": remaining_km,
-            "remainingLifePct": round(remaining_pct, 2),
-            "dueMileage": (base_km + interval) if mileage else None,
-            "urgency": urgency,
-            "confidence": round(confidence, 2),
-            "reasons": reasons,
-        })
+        items.append({**base, "remainingKm": remaining_km, "remainingLifePct": round(remaining_pct, 2),
+                      "dueMileage": (base_km + interval) if mileage else None,
+                      "urgency": urgency, "source": source, "confidence": round(confidence, 2), "reasons": reasons})
 
-    order = {"overdue": 0, "soon": 1, "upcoming": 2, "ok": 3}
-    items.sort(key=lambda i: (order[i["urgency"]], i["remainingLifePct"]))
-    return {"mileage": mileage, "items": items}
+    order = {"overdue": 0, "soon": 1, "test": 2, "inspect": 3, "upcoming": 4, "ok": 5, "unknown": 6}
+    items.sort(key=lambda i: (order.get(i["urgency"], 9), i["remainingLifePct"] if i["remainingLifePct"] is not None else 1.0))
+    return {"mileage": mileage if has_mileage else None, "mileageKnown": has_mileage, "items": items}
 
 
 def _compute_trends(bundle: dict) -> dict:

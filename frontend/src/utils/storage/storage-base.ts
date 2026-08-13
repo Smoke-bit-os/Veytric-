@@ -47,4 +47,7 @@ export abstract class StorageBase {
     value: Value,
   ): Promise<boolean>;
   abstract secureRemove(key: string): Promise<boolean>;
+  // Remove every general-KV key beginning with `prefix` (used to wipe
+  // user-scoped caches on logout / account switch). Never throws.
+  abstract clearNamespace(prefix: string): Promise<void>;
 }

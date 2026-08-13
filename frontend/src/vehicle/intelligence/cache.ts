@@ -20,6 +20,13 @@ export async function cacheGet<T>(key: string): Promise<T | null> {
   }
 }
 
+// Wipe ALL cached vehicle-intelligence entries (predictions, trends, etc.).
+// Called on logout / account switch so no user's data leaks to the next
+// session or to Guest mode on the same device.
+export async function cacheClear(): Promise<void> {
+  await storage.clearNamespace(PREFIX);
+}
+
 // Fetch with offline fallback: try network, cache success, else return last cache.
 export async function fetchCached<T>(key: string, fetcher: () => Promise<T>): Promise<{ data: T | null; fromCache: boolean }> {
   try {

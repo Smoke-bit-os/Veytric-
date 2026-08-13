@@ -98,6 +98,16 @@ export class Storage extends StorageBase {
       return false;
     }
   }
+
+  async clearNamespace(prefix: string): Promise<void> {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const match = keys.filter((k) => k.startsWith(prefix));
+      if (match.length) await AsyncStorage.multiRemove(match);
+    } catch (e) {
+      this.warn("clearNamespace", prefix, e);
+    }
+  }
 }
 
 // The shared singleton — import THIS (`import { storage } from "@/src/utils/storage"`). Do not `new Storage()`.

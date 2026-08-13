@@ -64,6 +64,16 @@ export class Storage extends StorageBase {
   async secureRemove(key: string): Promise<boolean> {
     return this.removeItem(key);
   }
+
+  async clearNamespace(prefix: string): Promise<void> {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const match = keys.filter((k) => k.startsWith(prefix));
+      if (match.length) await AsyncStorage.multiRemove(match);
+    } catch (e) {
+      this.warn("clearNamespace", prefix, e);
+    }
+  }
 }
 
 export const storage = new Storage();

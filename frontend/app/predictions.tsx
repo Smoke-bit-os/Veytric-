@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from
 import { useRouter, useLocalSearchParams, useFocusEffect } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { predictionsService, PredictionResult, PredictionItem, URGENCY_META } from "@/src/vehicle/predictions/predictionsService";
+import { predictionsService, PredictionResult, PredictionItem, URGENCY_META, SOURCE_META } from "@/src/vehicle/predictions/predictionsService";
 import { useEntitlement } from "@/src/licensing/LicenseProvider";
 import PremiumGate from "@/src/components/PremiumGate";
 import { colors, font, radius, spacing } from "@/src/theme";
@@ -62,8 +62,10 @@ export default function PredictionsScreen() {
 
           {items.map((it) => {
             const um = URGENCY_META[it.urgency];
+            const measurable = it.remainingLifePct != null && it.remainingKm != null;
+            const overdue = it.urgency === "overdue";
             return (
-              <View key={it.key} style={[styles.card, { borderColor: it.urgency === "overdue" ? colors.error : colors.border }]} testID={`pred-${it.key}`}>
+              <View key={it.key} style={[styles.card, { borderColor: overdue ? colors.error : colors.border }]} testID={`pred-${it.key}`}>
                 <View style={styles.cardTop}>
                   <View style={styles.iconWrap}>
                     <MaterialCommunityIcons name={(ICONS[it.key] || "wrench") as any} size={22} color={colors.brand} />
@@ -71,8 +73,13 @@ export default function PredictionsScreen() {
                   <View style={{ flex: 1 }}>
                     <Text style={styles.name}>{it.name}</Text>
                     <Text style={styles.sub}>
-                      {it.remainingKm > 0 ? `~${it.remainingKm.toLocaleString()} km remaining` : `${Math.abs(it.remainingKm).toLocaleString()} km overdue`}
-                      {it.dueMileage ? ` · due @ ${it.dueMileage.toLocaleString()} km` : ""}
+                      {measurable
+                        ? `${it.remainingKm! > 0 ? `~${it.remainingKm!.toLocaleString()} km remaining` : `${Math.abs(it.remainingKm!).toLocaleString()} km overdue`}${it.dueMileage ? ` · due @ ${it.dueMileage.toLocaleString()} km` : ""}`
+                        : it.urgency === "inspect"
+                        ? "Physical inspection required"
+                        : it.urgency === "test"
+                        ? "Physical test recommended"
+                        : "Insufficient data to determine status"}
                     </Text>
                   </View>
                   <View style={[styles.urgency, { backgroundColor: um.color + "22", borderColor: um.color }]}>
@@ -80,17 +87,30 @@ export default function PredictionsScreen() {
                   </View>
                 </View>
 
-                {/* Remaining service life bar */}
-                <View style={styles.track}>
-                  <View style={[styles.fill, { width: `${Math.round(it.remainingLifePct * 100)}%`, backgroundColor: um.color }]} />
+                {/* Remaining service life bar — only when we can actually measure it */}
+                {measurable ? (
+                  <>
+                    <View style={styles.track}>
+                      <View style={[styles.fill, { width: `${Math.round(it.remainingLifePct! * 100)}%`, backgroundColor: um.color }]} />
+                    </View>
+                    <View style={styles.footRow}>
+                      <Text style={styles.lifePct}>{Math.round(it.remainingLifePct! * 100)}% life left</Text>
+                      {it.confidence != null && (
+                        <View style={styles.confRow}>
+                          <MaterialCommunityIcons name="shield-check" size={12} color={colors.onSurfaceSecondary} />
+                          <Text style={styles.conf}>{Math.round(it.confidence * 100)}% confidence</Text>
+                        </View>
+                      )}
+                    </View>
+                  </>
+                ) : null}
+
+                {/* Authoritative data-source label — never hide where a number came from */}
+                <View style={styles.sourceRow} testID={`pred-source-${it.key}`}>
+                  <MaterialCommunityIcons name="database-search" size={12} color={colors.onSurfaceSecondary} />
+                  <Text style={styles.sourceText}>Source: {SOURCE_META[it.source].label}</Text>
                 </View>
-                <View style={styles.footRow}>
-                  <Text style={styles.lifePct}>{Math.round(it.remainingLifePct * 100)}% life left</Text>
-                  <View style={styles.confRow}>
-                    <MaterialCommunityIcons name="shield-check" size={12} color={colors.onSurfaceSecondary} />
-                    <Text style={styles.conf}>{Math.round(it.confidence * 100)}% confidence</Text>
-                  </View>
-                </View>
+
                 {it.reasons.length > 0 && (
                   <View style={styles.reasons}>
                     {it.reasons.map((r, i) => (
@@ -104,7 +124,7 @@ export default function PredictionsScreen() {
               </View>
             );
           })}
-          <Text style={styles.disclaimer}>Estimates use factory service intervals adjusted by your recorded telemetry & fault codes. Log services (with mileage) in the Repair Log to improve accuracy.</Text>
+          <Text style={styles.disclaimer}>JARVIS never fabricates component condition. Interval items are manufacturer recommendations; live items use your recorded telemetry/fault codes; brake pads and battery require a physical inspection/test. Log services (with mileage) in the Repair Log to improve accuracy.</Text>
         </ScrollView>
       )}
     </View>
@@ -134,6 +154,8 @@ const styles = StyleSheet.create({
   confRow: { flexDirection: "row", alignItems: "center", gap: 4 },
   conf: { color: colors.onSurfaceSecondary, fontSize: 11 },
   reasons: { marginTop: spacing.sm, borderTopWidth: 1, borderTopColor: colors.divider, paddingTop: spacing.sm },
+  sourceRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: spacing.sm },
+  sourceText: { color: colors.onSurfaceSecondary, fontSize: 11, fontWeight: "600" },
   reasonRow: { flexDirection: "row", alignItems: "center" },
   reasonText: { color: colors.onSurfaceSecondary, fontSize: 12, flex: 1 },
   disclaimer: { color: colors.onSurfaceSecondary, fontSize: 11, lineHeight: 16, marginTop: spacing.sm, fontStyle: "italic" },

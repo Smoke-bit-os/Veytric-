@@ -1,11 +1,17 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import { Tabs, Redirect } from "expo-router";
 import { Platform } from "react-native";
 import { BlurView } from "expo-blur";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAuth } from "@/src/auth";
 import { colors } from "@/src/theme";
 
 export default function TabsLayout() {
+  const { user, loading } = useAuth();
+  // Authoritative auth guard: once the session ends (logout), the authenticated
+  // tab stack is torn down and the user is sent to the public entry point. This
+  // also blocks Back-button returns to authenticated screens.
+  if (!loading && !user) return <Redirect href="/auth" />;
   return (
     <Tabs
       screenOptions={{
