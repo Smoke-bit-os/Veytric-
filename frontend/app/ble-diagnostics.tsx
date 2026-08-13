@@ -85,7 +85,7 @@ export default function BleDiagnostics() {
               good={report.permissions === "granted" || report.permissions === "n/a"}
               bad={report.permissions === "denied"}
             />
-            <StatusRow label="Adapter" value={diag?.adapter?.name || "—"} good={!!diag?.adapter?.name} />
+            <StatusRow label="Adapter" value={diag?.adapterName || "—"} good={!!diag?.adapterName} />
             <StatusRow label="Adapter discovered" bool={report.adapterDiscovered} />
             <StatusRow label="Adapter connected" bool={report.adapterConnected} />
             <StatusRow label="Services discovered" bool={report.servicesDiscovered} />
