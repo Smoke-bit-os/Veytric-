@@ -13,7 +13,7 @@ import {
   Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useRouter, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "@/src/api";
@@ -42,6 +42,7 @@ export default function Garage() {
   const { tier, tierLabel, status, trialDaysRemaining } = useLicense();
   const shopGate = useEntitlement("fleet_management");
   const router = useRouter();
+  const params = useLocalSearchParams<{ add?: string }>();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [dash, setDash] = useState<Record<string, DashboardSummary>>({});
   const [loading, setLoading] = useState(true);
@@ -75,6 +76,11 @@ export default function Garage() {
       .catch(() => setMakesUnavailable(true))
       .finally(() => setLoadingMakes(false));
   }, [modal, makes.length]);
+
+  // Auto-open the Add Vehicle sheet when returning from the scanner's manual fallback.
+  useEffect(() => {
+    if (params?.add === "1") setModal(true);
+  }, [params?.add]);
 
   // Load models when make (and optionally year) is chosen. Never invent options.
   useEffect(() => {
@@ -289,6 +295,23 @@ export default function Garage() {
             <View style={styles.handle} />
             <Text style={styles.sheetTitle}>Add Vehicle</Text>
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ gap: spacing.md }}>
+              <Pressable
+                testID="scan-vin-button"
+                style={styles.scanBtn}
+                onPress={() => { setModal(false); router.push("/scan-vin"); }}
+              >
+                <MaterialCommunityIcons name="barcode-scan" size={20} color={colors.brand} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.scanBtnTitle}>Scan VIN with camera</Text>
+                  <Text style={styles.scanBtnSub}>Point your camera at the VIN — we'll fill in the details</Text>
+                </View>
+                <MaterialCommunityIcons name="chevron-right" size={22} color={colors.onSurfaceSecondary} />
+              </Pressable>
+              <View style={styles.orRow}>
+                <View style={styles.orLine} />
+                <Text style={styles.orText}>OR ADD MANUALLY</Text>
+                <View style={styles.orLine} />
+              </View>
               <TextInput
                 testID="vehicle-input-name"
                 style={styles.input}
@@ -548,6 +571,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   inputHint: { color: colors.onSurfaceSecondary, fontSize: 11, marginTop: 4 },
+  scanBtn: { flexDirection: "row", alignItems: "center", gap: spacing.md, borderWidth: 1, borderColor: colors.brand, backgroundColor: colors.brandTertiary, borderRadius: radius.md, padding: spacing.md },
+  scanBtnTitle: { color: colors.onSurface, fontSize: 15, fontWeight: "700" },
+  scanBtnSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 2 },
+  orRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+  orLine: { flex: 1, height: 1, backgroundColor: colors.divider },
+  orText: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 1, fontWeight: "700" },
   saveBtn: { borderRadius: radius.md, overflow: "hidden", marginTop: spacing.xs },
   saveGrad: { paddingVertical: 16, alignItems: "center" },
   saveText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1.5 },

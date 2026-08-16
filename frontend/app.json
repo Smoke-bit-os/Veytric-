@@ -24,7 +24,8 @@
       "bundleIdentifier": "com.emergent.jarvisai.gx2hdi",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "Talk to JARVIS hands-free for diagnostics",
-        "NSBluetoothAlwaysUsageDescription": "Connect to your OBD-II scanner for live vehicle data"
+        "NSBluetoothAlwaysUsageDescription": "Connect to your OBD-II scanner for live vehicle data",
+        "NSCameraUsageDescription": "Scan your VIN to add a vehicle automatically"
       }
     },
     "android": {
@@ -36,6 +37,7 @@
       "package": "com.emergent.jarvisai.gx2hdi",
       "permissions": [
         "RECORD_AUDIO",
+        "CAMERA",
         "BLUETOOTH",
         "BLUETOOTH_ADMIN",
         "BLUETOOTH_SCAN",
@@ -75,7 +77,13 @@
           "bluetoothAlwaysPermission": "Connect to your OBD-II scanner for live vehicle data"
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Scan your VIN to add a vehicle automatically"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

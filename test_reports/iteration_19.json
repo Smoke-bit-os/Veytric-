@@ -1,0 +1,30 @@
+{
+  "summary": "Phase 2 Increment 1 (Camera VIN Scanner) fully verified on web preview. Backend: 9/9 pytest passed on new suite test_iteration_19_vin_scanner.py — auth on /api/vehicles, /api/vehicles/upsert-by-vin returns {created:true} first call and {created:false} on duplicate VIN for same user (no _id leaked), /api/vin/decode rejects blank/short/forbidden-char VINs with reason and decodes 1HGCM82633A004352 (validFormat:true, source:local, confidence set). Frontend: Add Vehicle modal shows testID scan-vin-button ABOVE the 'OR ADD MANUALLY' divider (positions scan=222 / year=410), all manual-form testIDs present (vehicle-year/make/model/input-name/input-engine/input-vin/save-vehicle-button). Tapping scan-vin-button navigates to /scan-vin; web preview renders 'Camera scanning needs the app' with testID 'btn-ADD VEHICLE MANUALLY' and NO camera/video element — the app does NOT fake a scan on web (as required). Tapping the manual-fallback button deep-links to /garage?add=1 and re-opens the Add Vehicle sheet. Regression clean: /connect, /codes, /reports still load on web (new expo-camera + @react-native-ml-kit/text-recognition imports did not break web bundling — ocrEngine.ts wraps the native require in try/catch). Dependent Year→Make→Model dropdowns still work: selecting Make=Honda loaded the Honda model list (Accord, Civic families, etc.) and selecting a Make correctly reset the Model.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration_19_vin_scanner.py",
+    "/app/test_reports/pytest/iteration_19.xml"
+  ],
+  "action_items": [
+    "No fixes needed — Phase 2 Increment 1 is production-ready on web/preview. Camera OCR path can only be functionally verified in a native/dev build (expected)."
+  ],
+  "critical_code_review_comments": [
+    "ocrEngine.ts correctly gates isNativeScanSupported via Platform.OS!=='web' && Constants.appOwnership!=='expo' && !!TextRecognition — Expo Go and web preview will always fall through to the manual fallback UI, which is exactly the intended behavior.",
+    "vinOcr.extractVinCandidates never fabricates a VIN: sliding-window path requires checksum-valid AND does not apply I/O/Q correction, so unrelated label text can't be promoted to a candidate. Isolated tokens allow OCR correction but are surfaced as separate 'corrected' candidates requiring user approval.",
+    "/api/vehicles/upsert-by-vin strips _id via _clean() before returning, no MongoDB ObjectId leaks."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration_19_vin_scanner.py (new)"
+  ],
+  "success_rate": {"backend": "9/9 (100%)", "frontend": "5/5 flows verified (100%) — scan button placement, web scan-gate, manual-fallback deep-link, no-camera-on-web, dependent dropdowns"},
+  "seed_data_creation": "Registered a throwaway user TEST_ui_*@example.com via /api/auth/register and TEST_scan_*@example.com from pytest. All prefixed with TEST_.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Camera OCR + ML Kit path can only be verified in a native build (this is by design). On web preview, ScanVin.isNativeScanSupported() returns false so the screen renders the 'Camera scanning needs the app' fallback with testID btn-ADD VEHICLE MANUALLY. The manual fallback uses router.replace('/(tabs)/garage?add=1'); Garage.tsx reads useLocalSearchParams().add === '1' to auto-open the Add Vehicle sheet. Backend was not changed this increment."
+}
