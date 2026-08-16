@@ -50,7 +50,8 @@ interface Ctx {
   scan: () => Promise<AdapterInfo[]>;
   connect: (id?: string) => Promise<VehicleIdentity>;
   disconnect: () => Promise<void>;
-  clearDtcs: () => Promise<void>;
+  clearDtcs: () => Promise<Dtc[]>;
+  refreshDtcs: () => Promise<Dtc[]>;
   reconnect: () => Promise<void>;
   enrichIdentity: (partial: Partial<VehicleIdentity>) => void;
   getDiagnostics: () => import("./types").ConnectionDiagnostics | null;
@@ -127,7 +128,21 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
 
   const clearDtcs = useCallback(async () => {
     await providerRef.current.clearDtcs();
-    setDtcs([]);
+    // Re-read from the ECU so we show which codes actually remain (never assume success).
+    try {
+      const codes = await providerRef.current.readDtcs();
+      setDtcs(codes);
+      return codes;
+    } catch {
+      setDtcs([]);
+      return [];
+    }
+  }, []);
+
+  const refreshDtcs = useCallback(async () => {
+    const codes = await providerRef.current.readDtcs();
+    setDtcs(codes);
+    return codes;
   }, []);
 
   const reconnect = useCallback(async () => {
@@ -230,6 +245,7 @@ export function VehicleServiceProvider({ children }: { children: React.ReactNode
         connect,
         disconnect,
         clearDtcs,
+        refreshDtcs,
         reconnect,
         enrichIdentity,
         getDiagnostics,

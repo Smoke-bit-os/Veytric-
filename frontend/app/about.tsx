@@ -49,7 +49,7 @@ export default function AboutScreen() {
       <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: insets.bottom + spacing["2xl"] }}>
         <View style={styles.brandWrap}>
           <View style={styles.logo}><MaterialCommunityIcons name="robot" size={40} color={colors.brand} /></View>
-          <Text style={styles.brand}>JARVIS AI</Text>
+          <Text style={styles.brand}>JARVIS Auto AI</Text>
           <Text style={styles.tagline}>Automotive Command Center</Text>
         </View>
 

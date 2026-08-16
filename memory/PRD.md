@@ -148,3 +148,14 @@ Futuristic mobile app "JARVIS AI": intelligent automotive assistant, personal AI
 - Isolation: local caches were device-global (leaked across users/guest). Added storage.clearNamespace(prefix) (both native + web); src/auth.tsx now wipes veh_intel:/veh:/scan: caches + licenseCache on login, register, guest, AND logout. Backend already scopes vehicles/scans/reports/predictions by user_id (verified: User B gets 404 on User A vehicle/predictions/patch; anon 401/403).
 - Logout/navigation: (tabs)/_layout.tsx has an authoritative auth guard `<Redirect href="/auth">` when user==null — logout returns to public auth and Back cannot re-enter authenticated tabs.
 - Verified: testing_agent 13/13 backend (tests/test_predictions_and_isolation.py, iteration_16) + frontend logout/guest/cache/predictions flows; web preview still SimulationProvider (no BLE regression). Native BLE zero-sim not testable on web (by design).
+
+## V1.0 feature-completion — Phase 1 (in progress, 2026-06)
+User choices: Phase 1 first; Google Sign-In = own OAuth creds; Camera VIN = native OCR; Google Play Billing = build client+backend scaffold now; rename to "JARVIS Auto AI" = YES.
+Done this increment:
+- Codes page (app/codes.tsx): Read Codes (refreshDtcs) + Clear Codes (real Mode 04 via clearDtcs, confirmation dialog, auto re-scan, reports remaining codes; never fakes success). Gated on hasLiveData; current/pending/history grouping. Added service.tsx refreshDtcs + clearDtcs now returns remaining codes.
+- How to Connect page (app/how-to-connect.tsx): beginner 8-step guide + troubleshooting + "no data without real connection" note.
+- Branding → "JARVIS Auto AI" (app.json name, auth.tsx, about.tsx, reports PDF header). slug kept "frontend" (EAS link).
+- Nav: Garage quick actions now include Codes + How to Connect; routes registered in _layout.
+Verified: lint clean; Codes page renders (web sim). NOT yet tested via testing_agent (do next).
+Remaining Phase 1 (next): Guided Repairs (AI, /guided-repair — Codes cards will deep-link once built), dropdown-menu audit (year/make/model/engine/filters), VPIC caching/labeling hardening, business-contact (MichaelBryant@JarvisAutoAI.com) in About/Support, production security audit, consolidated testing_agent QA.
+Phase 2 (needs native build): Camera VIN (native OCR), Google Sign-In (own OAuth), Google Play Billing (client + backend receipt verification; prod-guard dev tier endpoints).

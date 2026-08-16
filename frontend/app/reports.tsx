@@ -77,7 +77,7 @@ export default function Reports() {
 
   const share = async (r: any) => {
     const body =
-      `JARVIS AI — Scan Report\n${r.vehicle}\n${new Date(r.created_at).toLocaleString()}\n` +
+      `JARVIS Auto AI — Scan Report\n${r.vehicle}\n${new Date(r.created_at).toLocaleString()}\n` +
       `Health Score: ${r.health_score}/100\n\nTrouble Codes:\n` +
       (r.dtcs.length ? r.dtcs.map((d: any) => `• ${d.code} — ${d.desc}`).join("\n") : "None") +
       `\n\n${r.ai_findings}`;

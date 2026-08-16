@@ -139,9 +139,19 @@ export default function Garage() {
             <MaterialCommunityIcons name="access-point-network" size={24} color={colors.brand} />
             <Text style={styles.quickText}>Connection Center</Text>
           </Pressable>
+          <Pressable testID="quick-codes" style={styles.quickCard} onPress={() => router.push("/codes")}>
+            <MaterialCommunityIcons name="alert-octagon" size={24} color={colors.brand} />
+            <Text style={styles.quickText}>Codes</Text>
+          </Pressable>
+        </View>
+        <View style={styles.quickRow}>
           <Pressable testID="quick-reports" style={styles.quickCard} onPress={() => router.push("/reports")}>
             <MaterialCommunityIcons name="file-chart" size={24} color={colors.brand} />
             <Text style={styles.quickText}>Scan Reports</Text>
+          </Pressable>
+          <Pressable testID="quick-howto" style={styles.quickCard} onPress={() => router.push("/how-to-connect")}>
+            <MaterialCommunityIcons name="help-circle" size={24} color={colors.brand} />
+            <Text style={styles.quickText}>How to Connect</Text>
           </Pressable>
         </View>
 
