@@ -8,6 +8,7 @@ import { useVehicle } from "@/src/vehicle/service";
 import { computeSubsystems, overallHealth } from "@/src/vehicle/health";
 import { api } from "@/src/api";
 import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
+import Dropdown from "@/src/components/Dropdown";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function Reports() {
@@ -18,6 +19,13 @@ export default function Reports() {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [filter, setFilter] = useState<string>("all");
+
+  const visibleReports = React.useMemo(() => {
+    if (filter === "with") return reports.filter((r) => (r.dtcs?.length ?? 0) > 0);
+    if (filter === "clean") return reports.filter((r) => (r.dtcs?.length ?? 0) === 0);
+    return reports;
+  }, [reports, filter]);
 
   const load = useCallback(() => {
     api
@@ -114,7 +122,28 @@ export default function Reports() {
             <Text style={styles.emptyText}>No reports yet. Generate your first scan report.</Text>
           </View>
         ) : (
-          reports.map((r) => (
+          <>
+            <View style={styles.filterWrap}>
+              <Dropdown
+                testID="reports-filter"
+                label="Filter reports"
+                searchable={false}
+                options={[
+                  { label: `All reports (${reports.length})`, value: "all" },
+                  { label: "With trouble codes", value: "with" },
+                  { label: "Clean (no codes)", value: "clean" },
+                ]}
+                value={filter}
+                onChange={setFilter}
+              />
+            </View>
+            {visibleReports.length === 0 ? (
+              <View style={styles.empty} testID="reports-filter-empty">
+                <MaterialCommunityIcons name="filter-remove-outline" size={40} color={colors.onSurfaceSecondary} />
+                <Text style={styles.emptyText}>No reports match this filter.</Text>
+              </View>
+            ) : (
+              visibleReports.map((r) => (
             <View key={r.id} style={styles.card} testID={`report-${r.id}`}>
               <Pressable style={styles.cardTop} onPress={() => setExpanded(expanded === r.id ? null : r.id)}>
                 <View style={styles.scoreBadge}>
@@ -152,6 +181,8 @@ export default function Reports() {
               )}
             </View>
           ))
+            )}
+          </>
         )}
       </ScrollView>
     </View>
@@ -182,6 +213,7 @@ const styles = StyleSheet.create({
   generateBtnDisabled: { opacity: 0.5 },
   empty: { alignItems: "center", paddingVertical: spacing["3xl"], gap: spacing.md },
   emptyText: { color: colors.onSurfaceSecondary, textAlign: "center" },
+  filterWrap: { marginBottom: spacing.lg },
   card: {
     backgroundColor: colors.surfaceSecondary,
     borderRadius: radius.md,

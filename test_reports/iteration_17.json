@@ -1,0 +1,51 @@
+{
+  "summary": "Phase 1 increment verified end-to-end. BACKEND (5/5 pytest in test_guided_repair_and_security.py + 34/34 regression in test_predictions_and_isolation.py + test_security.py): (1) SECURITY GUARD confirmed — server.py line 1814 raises HTTPException(403,'Developer mode is disabled') when APP_ENV != 'development'; static source check + runtime auth check pass. Anonymous POST /api/subscription/developer/set correctly rejected (401/403). In THIS preview APP_ENV=development so authed calls succeed as designed. (2) AUTH register/login round-trip works with password Jarvis2026!. (3) POST /api/ai/analyze returns text body ~20s for the Guided Repair prompt (JARVIS Cloud AI, EMERGENT_LLM_KEY). FRONTEND (Playwright 390x844): (A) GUIDED REPAIRS — Direct nav /guided-repair?code=P0300&desc=Misfire renders ECU DATA tag + 'P0300 — Misfire' and REAL VEHICLE DATA/UNAVAILABLE row (guest sees UNAVAILABLE — connect & decode VIN; authed user sees '2018 Jeep Wrangler JL'). Tapping gr-start invokes ai.analyze; on AUTHED session AI response arrives in ~20s with clearly labeled sections (Problem Summary, Why It Matters, Possible Causes, Diagnostic Checks, Step-by-Step Repair, Safety Warnings), 'AI ANALYSIS · GENERAL GUIDANCE' pill + JARVIS Cloud AI engine badge, full safety disclaimer ('AI-generated general guidance…verify exact procedures, torque values and part numbers against the manufacturer service manual…'), and testID='gr-recheck' → 'POST-REPAIR: OPEN CODES TO RE-SCAN' outlined button that routes to /codes. On AI failure (guest hits /api/ai/analyze without token → 401), the retry card testID='gr-retry' correctly shows 'Not authenticated — tap to retry' and NO fake content is rendered. (B) CODES PAGE — In simulation, Read Codes fetches 3 DTCs (P0300, etc.); tapping the P0300 card (testID='code-P0300') navigates to /guided-repair?code=P0300&desc=Random%2FMultiple%20Cylinder%20Misfire%20Detected — matches spec. Clear Codes confirmation dialog is wired (Alert.alert with destructive style). no-live-data gate (testID='codes-no-live') is present in code when hasLiveData=false. (C) ABOUT — SUPPORT & CONTACT card renders with testID='about-contact', MichaelBryant@JarvisAutoAI.com and JarvisAutoAI.com are both in the DOM and visible in the screenshot. (D) BRANDING — 'JARVIS Auto AI' text on auth screen (login/register) and About header. REGRESSION — Guest dashboard shows live simulated gauges (SystemNominal, RPM/SPEED/COOLANT/BATTERY etc. — SimulationProvider active on web preview). Login/Register/Guest auth flows all functional. Predictions honesty (34/34) and backend user isolation (per test_predictions_and_isolation) untouched. No red screen, no crash.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "about.tsx / Row rowValue style", "issue": "Business contact row uses the shared Row style with numberOfLines={1} + maxWidth:'60%' + textTransform:'capitalize'. This truncates 'MichaelBryant@JarvisAutoAI.com' with an ellipsis on 390px and renders the website as 'JarvisAutoAI.Com' (unwanted capital C after the dot). Suggest a dedicated ContactRow with wrapping (numberOfLines>=2) and no capitalize transform. Reference: /app/frontend/app/about.tsx:127-134 and rowValue style at 148.", "testID": "about-contact", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "About", "issues": ["Email/website truncated by shared Row style; also textTransform:'capitalize' causes 'JarvisAutoAI.Com' & 'Gr_2abd9410@Example.Com' — cosmetic but visible on the Account + Support cards."]}
+    ],
+    "react_native_issues": [
+      {"component": "Various screens (RN Web)", "issue": "Console warns 'shadow* style props are deprecated. Use boxShadow' and 'props.pointerEvents is deprecated. Use style.pointerEvents' — pre-existing across the app; cosmetic on web, does not affect native. Recommend a future pass to migrate."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_guided_repair_and_security.py",
+    "/app/test_reports/pytest/iteration_17.xml"
+  ],
+  "action_items": [
+    "Optional low-priority: in about.tsx, replace the shared Row for SUPPORT & CONTACT with a wrapping ContactRow (or drop numberOfLines={1}/maxWidth and textTransform:'capitalize' on rowValue) so the full email/website are visible without ellipsis and without odd casing.",
+    "Optional: migrate 'shadow*' style props to 'boxShadow' and 'props.pointerEvents' to 'style.pointerEvents' to silence RN Web deprecation warnings (not blocking).",
+    "Not testable in web preview (documented): real BLE DTC read/clear on a physical OBD-II adapter — requires a native build.",
+    "Pre-existing (ignore per main-agent note): tests/test_diagnostics.py TestScansCreate remains failing by design (POST /scans returns empty ai_report)."
+  ],
+  "critical_code_review_comments": [
+    "server.py:1811-1815 — Dev endpoint guard is correctly placed as the first statement inside developer_set (after Depends(get_current_user)): if APP_ENV != 'development' -> 403 BEFORE any DB write. In production the endpoint will refuse to grant Pro/Shop. Verified via static source check.",
+    "guided-repair.tsx — Prompt correctly forbids fabricated vehicle-specific specs and instructs the model to say 'Look up the exact spec … I won't guess.' The AI response is rendered as plain text only after a successful analyze; on failure ONLY the retry card is shown (no partial/fake content). Source rows are labeled ECU DATA (red) for the code and REAL VEHICLE DATA (green) or UNAVAILABLE (secondary) for the vehicle — matches the spec.",
+    "codes.tsx:114-119 — Code card wraps in Pressable with router.push('/guided-repair?code=...&desc=...') using encodeURIComponent — correct URL construction verified end-to-end.",
+    "codes.tsx:39-48 — Clear Codes uses Alert.alert with a destructive Clear Codes button and clear disclaimer that clearing does NOT repair the fault. Good UX + safety.",
+    "about.tsx:101-107 — SUPPORT & CONTACT card uses testID='about-contact' and mailto: linking; correct. See UI bug above about visual truncation only.",
+    "server.py is ~1884 lines — carry-over recommendation from iterations 15/16 to split into routers (auth/vehicles/predictions/ai/subscription/shop). Not blocking Phase 1."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_guided_repair_and_security.py (NEW — 5 tests across 3 classes)",
+    "/app/test_reports/pytest/iteration_17.xml (JUnit)",
+    "/app/test_reports/iteration_17.json"
+  ],
+  "success_rate": {
+    "backend": "100% (5/5 in test_guided_repair_and_security.py; 34/34 regression across predictions+security)",
+    "frontend": "100% (Guided Repair flow end-to-end with authed AI response + disclaimer + engine badge + recheck link; Codes → DTC → guided-repair navigation; About contact card; branding; guest dashboard live gauges)"
+  },
+  "seed_data_creation": "Ephemeral user registered via POST /api/auth/register (email gr_<uuid>@example.com, password Jarvis2026!). Token injected into localStorage['jarvis_token'] as JSON-encoded string so ai.analyze uses an authorized session. No persistent seed data left behind.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "For Guided Repair AI: MUST be authenticated (JWT token in localStorage['jarvis_token'] JSON-encoded) — as guest, /api/ai/analyze returns 401 and the screen correctly shows testID='gr-retry' ('Not authenticated — tap to retry'). This is a legitimate error path, not a bug. The dev endpoint guard is static-checked at server.py:1814 and cannot be exercised for the 403 branch in this preview (APP_ENV=development). Codes tap-through: any [data-testid^='code-'] Pressable navigates to /guided-repair?code=<code>&desc=<desc>. Regression suites to reuse: /app/backend/tests/test_guided_repair_and_security.py, test_predictions_and_isolation.py, test_security.py.",
+  "rca_of_issue": "N/A — Phase 1 increment verified. Only cosmetic issue is the shared Row style truncating the SUPPORT & CONTACT values with ellipsis + capitalize transform; the underlying data is correct and copyable via the mailto Pressable."
+}

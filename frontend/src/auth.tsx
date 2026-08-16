@@ -8,6 +8,7 @@ type User = { id: string; name: string; email: string; entitlement?: any };
 type AuthProviderKind = "email" | "guest" | "apple" | "google" | null;
 
 const GUEST_KEY = "jarvis_guest";
+const UID_KEY = "jarvis_current_uid"; // read by user-scoped caches (e.g. VIN decode)
 const GUEST_USER: User = { id: "guest", name: "Guest", email: "" };
 
 type AuthCtx = {
@@ -36,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const me = await api.me();
           setUser(me);
           setProvider("email");
+          await storage.setItem(UID_KEY, me.id);
           setLoading(false);
           return;
         } catch {
@@ -47,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (guest) {
         setUser(GUEST_USER);
         setProvider("guest");
+        await storage.setItem(UID_KEY, "guest");
       }
       setLoading(false);
     })();
@@ -57,8 +60,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const clearLocalUserData = async () => {
     await cacheClear();                 // predictions/trends/etc. (veh_intel:)
     await licenseCache.clear().catch(() => {});
-    await storage.clearNamespace("veh:");     // any vehicle-scoped local state
-    await storage.clearNamespace("scan:");    // cached scan state
+    await storage.clearNamespace("veh:");        // any vehicle-scoped local state
+    await storage.clearNamespace("scan:");       // cached scan state
+    await storage.clearNamespace("vin_decode:"); // user-scoped VIN/VPIC decode cache
   };
 
   const persist = async (res: any) => {
@@ -66,6 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await clearLocalUserData();
     await storage.secureSet(TOKEN_KEY, res.token);
     await storage.removeItem(GUEST_KEY);
+    await storage.setItem(UID_KEY, res.user.id);
     setUser(res.user);
     setProvider("email");
   };
@@ -84,6 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Guest starts from a clean slate — never inherits a prior user's cache.
     await clearLocalUserData();
     await storage.setItem(GUEST_KEY, true);
+    await storage.setItem(UID_KEY, "guest");
     setUser(GUEST_USER);
     setProvider("guest");
   };
@@ -91,6 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     await storage.secureRemove(TOKEN_KEY);
     await storage.removeItem(GUEST_KEY);
+    await storage.removeItem(UID_KEY);
     await clearLocalUserData();
     setUser(null);
     setProvider(null);

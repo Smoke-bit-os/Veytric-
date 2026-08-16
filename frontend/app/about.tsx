@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Linking } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter, useFocusEffect } from "expo-router";
 import Constants from "expo-constants";
@@ -96,6 +96,14 @@ export default function AboutScreen() {
             <Row label="Version" value={APP_VERSION} />
           </Pressable>
           <Row label="Build" value={devMode.isAvailable() ? "development" : "production"} />
+        </View>
+
+        <Text style={styles.sectionTitle}>SUPPORT & CONTACT</Text>
+        <View style={styles.card}>
+          <Pressable testID="about-contact" onPress={() => Linking.openURL("mailto:MichaelBryant@JarvisAutoAI.com").catch(() => {})}>
+            <Row label="Business contact" value="MichaelBryant@JarvisAutoAI.com" />
+          </Pressable>
+          <Row label="Website" value="JarvisAutoAI.com" />
         </View>
 
         {taps > 0 && !unlocked && taps < 7 && (

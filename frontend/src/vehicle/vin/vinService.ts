@@ -1,20 +1,30 @@
-// VIN decode service layer (separate from transports). Orchestrates multiple
-// providers with a local cache so decoding works OFFLINE after the first hit:
+// VIN decode service layer (separate from transports). Orchestrates the VPIC
+// backend with a STRICTLY USER-SCOPED local cache so decoding works OFFLINE
+// after the first hit WITHOUT ever leaking one account's data to another:
 //
-//   1) local cache  (storage)         -> instant, offline
-//   2) online provider (backend/NHTSA) -> authoritative, high confidence
-//   3) local heuristic decoder         -> offline fallback
+//   1) user-scoped cache  (storage: vin_decode:<uid>:<vin>) -> instant, offline
+//   2) online provider (backend/NHTSA vPIC)                 -> authoritative
+//   3) offline + no cache                                    -> "unavailable"
 //
-// Returns a Partial<VehicleIdentity> that is merged into the active vehicle
-// profile. Adding another provider = extend decodeRemote / the backend.
+// Data-integrity rules:
+//   - Reject invalid VINs (length/charset) BEFORE any network call.
+//   - NEVER fabricate missing fields. Missing => empty (UI shows "Unavailable").
+//   - Offline with no current-user cache => explicit unavailable state, never a
+//     guess and never another user's cached data.
 
 import { storage } from "@/src/utils/storage";
 import { api } from "@/src/api";
 import { VehicleIdentity } from "../types";
-import { localDecodeVin } from "./localDecoder";
 import { isChecksumValid, isValidVinFormat } from "./validator";
 
-const cacheKey = (vin: string) => `vin_decode_${vin.toUpperCase()}`;
+const UID_KEY = "jarvis_current_uid";
+
+async function currentUid(): Promise<string> {
+  const uid = await storage.getItem<string>(UID_KEY, "");
+  return uid || "anon";
+}
+
+const cacheKey = (uid: string, vin: string) => `vin_decode:${uid}:${vin.toUpperCase()}`;
 
 // Standard OBD-II module set surfaced as "ECU modules detected".
 function ecuModulesFor(drivetrain: string): string[] {
@@ -42,37 +52,51 @@ function toIdentity(d: any): Partial<VehicleIdentity> {
   };
 }
 
+export type VinDecodeResult = Partial<VehicleIdentity> & { reason?: string; offline?: boolean };
+
 export const vinService = {
-  async decodeVin(vin: string): Promise<Partial<VehicleIdentity>> {
+  async decodeVin(vin: string, opts: { forceRefresh?: boolean } = {}): Promise<VinDecodeResult> {
     vin = (vin || "").trim().toUpperCase();
     if (!isValidVinFormat(vin)) {
-      return { confidence: 0, decodeSource: "invalid", checksumValid: false };
+      return {
+        confidence: 0,
+        decodeSource: "invalid",
+        checksumValid: false,
+        reason: "Invalid VIN. Please check the VIN and try again.",
+      };
     }
 
-    // 1) cache
-    const cached = await storage.getItem<any>(cacheKey(vin), null);
-    if (cached) return { ...toIdentity(cached), decodeSource: "cache" };
+    const uid = await currentUid();
+    const key = cacheKey(uid, vin);
 
-    // 2) online provider (backend -> NHTSA + local fallback)
+    // 1) user-scoped cache
+    if (!opts.forceRefresh) {
+      const cached = await storage.getItem<any>(key, null);
+      if (cached) return { ...toIdentity(cached), decodeSource: "cache" };
+    }
+
+    // 2) online provider (backend -> NHTSA vPIC). Persist for offline reuse.
     try {
       const res = await api.decodeVin(vin);
+      if (res && res.validFormat === false) {
+        return { confidence: 0, decodeSource: "invalid", checksumValid: false, reason: res.reason };
+      }
       if (res && (res.make || res.validFormat)) {
-        await storage.setItem(cacheKey(vin), res); // enables offline next time
+        await storage.setItem(key, { ...res, _cachedAt: Date.now() });
         return toIdentity(res);
       }
     } catch {
-      /* offline / backend unreachable -> local fallback */
+      // offline / backend unreachable -> fall through to unavailable
     }
 
-    // 3) local heuristic fallback
-    const local = localDecodeVin(vin);
-    const result = {
-      ...local,
-      vin,
-      confidence: local.make !== "Unknown" ? (local.checksumValid ? 0.6 : 0.45) : 0.3,
-      source: "local",
+    // 3) offline with NO current-user cache -> explicit unavailable state.
+    //    We do NOT fabricate a vehicle and NEVER read another user's cache.
+    return {
+      confidence: 0,
+      decodeSource: "offline_unavailable",
+      checksumValid: isChecksumValid(vin),
+      offline: true,
+      reason: "Vehicle information unavailable offline. Connect to the internet to decode this VIN.",
     };
-    await storage.setItem(cacheKey(vin), result);
-    return toIdentity(result);
   },
 };

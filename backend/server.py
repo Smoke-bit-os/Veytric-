@@ -642,8 +642,8 @@ MAX_AUDIO_BYTES = 25 * 1024 * 1024  # 25 MB
 
 @api_router.post("/voice/transcribe")
 async def transcribe(file: UploadFile = File(...), user=Depends(get_current_user)):
-    _throttle(_rate_buckets, user["_id"], RATE_LIMIT_MAX, RATE_LIMIT_WINDOW,
-              "Too many requests. Please slow down and try again shortly.")
+    # Metered against the monthly Cloud quota (managed key spend) + per-user rate limit.
+    await enforce_cloud_quota(user)
     suffix = os.path.splitext(file.filename or "audio.m4a")[1].lower() or ".m4a"
     if suffix not in ALLOWED_AUDIO_EXT:
         raise HTTPException(status_code=415, detail="Unsupported audio format")
@@ -676,8 +676,8 @@ async def transcribe(file: UploadFile = File(...), user=Depends(get_current_user
 
 @api_router.post("/voice/speak")
 async def speak(inp: TTSInput, user=Depends(get_current_user)):
-    _throttle(_rate_buckets, user["_id"], RATE_LIMIT_MAX, RATE_LIMIT_WINDOW,
-              "Too many requests. Please slow down and try again shortly.")
+    # Metered against the monthly Cloud quota (managed key spend) + per-user rate limit.
+    await enforce_cloud_quota(user)
     try:
         tts = OpenAITextToSpeech(api_key=EMERGENT_LLM_KEY)
         text = inp.text[:4000]
@@ -810,33 +810,125 @@ def _nhtsa_decode(vin: str) -> Optional[dict]:
         return None
 
 
+def _vin_reject_reason(vin: str) -> Optional[str]:
+    """Return a user-facing rejection reason, or None if the format is acceptable."""
+    if not vin:
+        return "Enter a VIN to decode."
+    if len(vin) != 17:
+        return "Invalid VIN. A VIN must be exactly 17 characters."
+    bad = [c for c in vin if c in "IOQ"]
+    if bad:
+        return "Invalid VIN. A VIN cannot contain the letters I, O or Q."
+    if not re.fullmatch(r"[A-HJ-NPR-Z0-9]{17}", vin):
+        return "Invalid VIN. Please check the VIN and try again."
+    return None
+
+
 @api_router.post("/vin/decode")
 async def vin_decode(inp: VinInput, user=Depends(get_current_user)):
+    # Normalise: strip accidental whitespace, upper-case.
     vin = (inp.vin or "").strip().upper()
-    valid_format = len(vin) == 17 and all(c not in "IOQ" for c in vin)
-    checksum_ok = _vin_checksum_valid(vin) if valid_format else False
+    reason = _vin_reject_reason(vin)
+    if reason:
+        # Reject cleanly BEFORE any VPIC lookup — never fabricate a vehicle.
+        return {"vin": vin, "validFormat": False, "checksumValid": False,
+                "source": "invalid", "confidence": 0.0, "reason": reason}
+
+    checksum_ok = _vin_checksum_valid(vin)
 
     source = "local"
     confidence = 0.0
-    data = _local_decode(vin) if valid_format else {}
-    nh = _nhtsa_decode(vin) if valid_format else None
+    data = _local_decode(vin)
+    nh = _nhtsa_decode(vin)
     if nh:
         source = "nhtsa"
         data = {**data, **{k: v for k, v in nh.items() if v}}
         confidence = 0.95 if (nh.get("make") and nh.get("model")) else 0.8
-    elif valid_format and data.get("make") not in (None, "", "Unknown"):
+    elif data.get("make") not in (None, "", "Unknown"):
         confidence = 0.6 if checksum_ok else 0.45
-    elif valid_format:
+    else:
         confidence = 0.3
 
     return {
         "vin": vin,
-        "validFormat": valid_format,
+        "validFormat": True,
         "checksumValid": checksum_ok,
         "source": source,
         "confidence": round(confidence, 2),
         **data,
     }
+
+
+# ----------------------------- Vehicle catalog (VPIC-backed) ----------------
+# Authoritative make/model lists sourced from NHTSA vPIC for the manual
+# "Add Vehicle" dropdowns. We NEVER invent options — if vPIC is unreachable the
+# endpoint surfaces an empty list so the UI can show an "unavailable" state.
+_catalog_cache: dict = {}  # key -> (expires_epoch, value)
+_CATALOG_TTL = 60 * 60 * 24  # 24h
+
+
+def _catalog_get(key: str):
+    hit = _catalog_cache.get(key)
+    if hit and hit[0] > time.time():
+        return hit[1]
+    return None
+
+
+def _catalog_put(key: str, value):
+    _catalog_cache[key] = (time.time() + _CATALOG_TTL, value)
+    return value
+
+
+@api_router.get("/vehicles/catalog/makes")
+async def catalog_makes():
+    # Public NHTSA reference data (non-sensitive) so the manual Add Vehicle
+    # dropdowns work for guests too. Server-cached to avoid abuse of vPIC.
+    cached = _catalog_get("makes")
+    if cached is not None:
+        return {"makes": cached, "source": "vpic-cache"}
+    try:
+        import requests
+        r = requests.get(
+            "https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json",
+            timeout=8,
+        )
+        rows = r.json().get("Results", [])
+        makes = sorted({(row.get("MakeName") or "").strip().title()
+                        for row in rows if row.get("MakeName")})
+        _catalog_put("makes", makes)
+        return {"makes": makes, "source": "vpic"}
+    except Exception as e:
+        logger.warning(f"catalog makes failed: {e}")
+        # Never fabricate — signal unavailable to the client.
+        return {"makes": [], "source": "unavailable"}
+
+
+@api_router.get("/vehicles/catalog/models")
+async def catalog_models(make: str, year: Optional[int] = None):
+    make = (make or "").strip()
+    if not make:
+        return {"models": [], "source": "unavailable"}
+    key = f"models:{make.lower()}:{year or 'any'}"
+    cached = _catalog_get(key)
+    if cached is not None:
+        return {"models": cached, "source": "vpic-cache"}
+    try:
+        import requests
+        from urllib.parse import quote
+        mk = quote(make, safe="")
+        if year:
+            url = f"https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/{mk}/modelyear/{year}?format=json"
+        else:
+            url = f"https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/{mk}?format=json"
+        r = requests.get(url, timeout=8)
+        rows = r.json().get("Results", [])
+        models = sorted({(row.get("Model_Name") or "").strip()
+                         for row in rows if row.get("Model_Name")})
+        _catalog_put(key, models)
+        return {"models": models, "source": "vpic"}
+    except Exception as e:
+        logger.warning(f"catalog models failed: {e}")
+        return {"models": [], "source": "unavailable"}
 
 
 # ----------------------------- Routes: Scan Reports -------------------------

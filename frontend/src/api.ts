@@ -48,6 +48,9 @@ export const api = {
   analyzeDtc: (payload: any, prepare = false) =>
     request(`/dtc/analyze${prepare ? "?prepare=true" : ""}`, { method: "POST", body: JSON.stringify(payload) }),
   decodeVin: (vin: string) => request("/vin/decode", { method: "POST", body: JSON.stringify({ vin }) }),
+  catalogMakes: () => request("/vehicles/catalog/makes"),
+  catalogModels: (make: string, year?: number) =>
+    request(`/vehicles/catalog/models?make=${encodeURIComponent(make)}${year ? `&year=${year}` : ""}`),
 
   upsertVehicleByVin: (payload: any) => request("/vehicles/upsert-by-vin", { method: "POST", body: JSON.stringify(payload) }),
   getVehicleProfile: (id: string) => request(`/vehicles/${id}`),

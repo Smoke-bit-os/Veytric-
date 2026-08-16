@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "@/src/api";
+import Dropdown from "@/src/components/Dropdown";
 import { useAuth } from "@/src/auth";
 import { useLicense } from "@/src/licensing/LicenseProvider";
 import { useEntitlement } from "@/src/licensing/LicenseProvider";
@@ -48,6 +49,51 @@ export default function Garage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: "", make: "", model: "", year: "", engine: "", vin: "" });
 
+  // Vehicle catalog (VPIC-backed) for dependent Year -> Make -> Model dropdowns.
+  const YEAR_OPTIONS = React.useMemo(() => {
+    const now = new Date().getFullYear() + 1;
+    return Array.from({ length: now - 1980 }, (_, i) => String(now - i));
+  }, []);
+  const [makes, setMakes] = useState<string[]>([]);
+  const [models, setModels] = useState<string[]>([]);
+  const [loadingMakes, setLoadingMakes] = useState(false);
+  const [loadingModels, setLoadingModels] = useState(false);
+  const [makesUnavailable, setMakesUnavailable] = useState(false);
+  const [modelsUnavailable, setModelsUnavailable] = useState(false);
+
+  // Load authoritative makes when the Add Vehicle sheet opens.
+  useEffect(() => {
+    if (!modal || makes.length) return;
+    setLoadingMakes(true);
+    setMakesUnavailable(false);
+    api
+      .catalogMakes()
+      .then((r) => {
+        setMakes(r.makes || []);
+        if (!r.makes?.length) setMakesUnavailable(true);
+      })
+      .catch(() => setMakesUnavailable(true))
+      .finally(() => setLoadingMakes(false));
+  }, [modal, makes.length]);
+
+  // Load models when make (and optionally year) is chosen. Never invent options.
+  useEffect(() => {
+    if (!form.make) {
+      setModels([]);
+      return;
+    }
+    setLoadingModels(true);
+    setModelsUnavailable(false);
+    api
+      .catalogModels(form.make, form.year ? parseInt(form.year) : undefined)
+      .then((r) => {
+        setModels(r.models || []);
+        if (!r.models?.length) setModelsUnavailable(true);
+      })
+      .catch(() => setModelsUnavailable(true))
+      .finally(() => setLoadingModels(false));
+  }, [form.make, form.year]);
+
   const load = async () => {
     try {
       const v = await api.vehicles();
@@ -73,18 +119,21 @@ export default function Garage() {
   );
 
   const addVehicle = async () => {
-    if (!form.name || !form.make || !form.model) return;
+    if (!form.make || !form.model) return;
     setSaving(true);
     try {
+      const year = parseInt(form.year) || new Date().getFullYear();
+      const name = form.name.trim() || `${form.year || year} ${form.make} ${form.model}`.trim();
       await api.addVehicle({
-        name: form.name,
+        name,
         make: form.make,
         model: form.model,
-        year: parseInt(form.year) || new Date().getFullYear(),
+        year,
         engine: form.engine,
         vin: form.vin,
       });
       setForm({ name: "", make: "", model: "", year: "", engine: "", vin: "" });
+      setModels([]);
       setModal(false);
       await load();
     } catch {}
@@ -239,26 +288,70 @@ export default function Garage() {
           <View style={[styles.sheet, { paddingBottom: insets.bottom + spacing.lg }]}>
             <View style={styles.handle} />
             <Text style={styles.sheetTitle}>Add Vehicle</Text>
-            <ScrollView keyboardShouldPersistTaps="handled">
-              {[
-                { k: "name", p: "Nickname (e.g. My Jeep)" },
-                { k: "make", p: "Make (e.g. Jeep)" },
-                { k: "model", p: "Model (e.g. Wrangler)" },
-                { k: "year", p: "Year", num: true },
-                { k: "engine", p: "Engine (e.g. 3.6L V6)" },
-                { k: "vin", p: "VIN (optional)" },
-              ].map((f) => (
+            <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ gap: spacing.md }}>
+              <TextInput
+                testID="vehicle-input-name"
+                style={styles.input}
+                placeholder="Nickname (e.g. My Jeep)"
+                placeholderTextColor={colors.onSurfaceSecondary}
+                value={form.name}
+                onChangeText={(t) => setForm((s) => ({ ...s, name: t }))}
+              />
+              <Dropdown
+                testID="vehicle-year"
+                label="Year"
+                placeholder="Select year"
+                options={YEAR_OPTIONS}
+                value={form.year || null}
+                clearable
+                onChange={(v) => setForm((s) => ({ ...s, year: v, model: "" }))}
+                onClear={() => setForm((s) => ({ ...s, year: "", model: "" }))}
+              />
+              <Dropdown
+                testID="vehicle-make"
+                label="Make"
+                placeholder={makesUnavailable ? "Vehicle list unavailable" : "Select make"}
+                options={makes}
+                value={form.make || null}
+                loading={loadingMakes}
+                clearable
+                emptyText="Vehicle makes unavailable — check your connection"
+                onChange={(v) => setForm((s) => ({ ...s, make: v, model: "" }))}
+                onClear={() => setForm((s) => ({ ...s, make: "", model: "" }))}
+              />
+              <Dropdown
+                testID="vehicle-model"
+                label="Model"
+                placeholder={!form.make ? "Select a make first" : modelsUnavailable ? "Model list unavailable" : "Select model"}
+                options={models}
+                value={form.model || null}
+                disabled={!form.make}
+                loading={loadingModels}
+                clearable
+                emptyText="No models available for this make/year"
+                onChange={(v) => setForm((s) => ({ ...s, model: v }))}
+                onClear={() => setForm((s) => ({ ...s, model: "" }))}
+              />
+              <View>
                 <TextInput
-                  key={f.k}
-                  testID={`vehicle-input-${f.k}`}
+                  testID="vehicle-input-engine"
                   style={styles.input}
-                  placeholder={f.p}
+                  placeholder="Engine (optional, e.g. 3.6L V6)"
                   placeholderTextColor={colors.onSurfaceSecondary}
-                  value={(form as any)[f.k]}
-                  keyboardType={f.num ? "number-pad" : "default"}
-                  onChangeText={(t) => setForm((s) => ({ ...s, [f.k]: t }))}
+                  value={form.engine}
+                  onChangeText={(t) => setForm((s) => ({ ...s, engine: t }))}
                 />
-              ))}
+                <Text style={styles.inputHint}>Engine specs aren't listed by VIN database — enter manually or decode via VIN.</Text>
+              </View>
+              <TextInput
+                testID="vehicle-input-vin"
+                style={styles.input}
+                placeholder="VIN (optional)"
+                placeholderTextColor={colors.onSurfaceSecondary}
+                autoCapitalize="characters"
+                value={form.vin}
+                onChangeText={(t) => setForm((s) => ({ ...s, vin: t }))}
+              />
               <Pressable testID="save-vehicle-button" style={styles.saveBtn} onPress={addVehicle} disabled={saving}>
                 <LinearGradient colors={[colors.brand, colors.brandSecondary]} style={styles.saveGrad}>
                   {saving ? (
@@ -452,9 +545,9 @@ const styles = StyleSheet.create({
     color: colors.onSurface,
     paddingHorizontal: spacing.lg,
     paddingVertical: 14,
-    marginBottom: spacing.md,
     fontSize: 15,
   },
+  inputHint: { color: colors.onSurfaceSecondary, fontSize: 11, marginTop: 4 },
   saveBtn: { borderRadius: radius.md, overflow: "hidden", marginTop: spacing.xs },
   saveGrad: { paddingVertical: 16, alignItems: "center" },
   saveText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1.5 },

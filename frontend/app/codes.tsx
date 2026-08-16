@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
+import Dropdown from "@/src/components/Dropdown";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
@@ -18,6 +19,7 @@ export default function CodesPage() {
   const { dtcs, clearDtcs, refreshDtcs, hasLiveData, connection, identity } = useVehicle();
   const [busy, setBusy] = useState<"read" | "clear" | null>(null);
   const [lastScan, setLastScan] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   const groups = {
     current: dtcs.filter((d) => d.type === "current" || d.type === "confirmed" || !d.type),
@@ -100,13 +102,33 @@ export default function CodesPage() {
             </View>
             {lastScan ? <Text style={styles.scanCtx}>Last scan: {lastScan}{identity?.vin ? ` · VIN ${identity.vin}` : ""}</Text> : null}
 
+            {dtcs.length > 0 ? (
+              <View style={styles.filterWrap}>
+                <Dropdown
+                  testID="codes-status-filter"
+                  label="Filter by status"
+                  searchable={false}
+                  options={[
+                    { label: `All codes (${dtcs.length})`, value: "all" },
+                    { label: `Current (${groups.current.length})`, value: "current" },
+                    { label: `Pending (${groups.pending.length})`, value: "pending" },
+                    { label: `History (${groups.history.length})`, value: "history" },
+                  ]}
+                  value={statusFilter}
+                  onChange={setStatusFilter}
+                />
+              </View>
+            ) : null}
+
             {dtcs.length === 0 ? (
               <View style={styles.clean} testID="codes-none">
                 <MaterialCommunityIcons name="check-circle" size={40} color={colors.success} />
                 <Text style={styles.cleanText}>No trouble codes detected</Text>
               </View>
             ) : (
-              (["current", "pending", "history"] as const).map((g) =>
+              (["current", "pending", "history"] as const)
+                .filter((g) => statusFilter === "all" || statusFilter === g)
+                .map((g) =>
                 groups[g].length ? (
                   <View key={g} style={{ marginTop: spacing.lg }}>
                     <Text style={[styles.groupTitle, { color: STATUS_META[g].color }]}>{STATUS_META[g].label} ({groups[g].length})</Text>
@@ -115,7 +137,7 @@ export default function CodesPage() {
                         key={`${d.code}-${i}`}
                         testID={`code-${d.code}`}
                         style={styles.codeCard}
-                        onPress={() => Alert.alert(d.code, d.desc || "Manufacturer-specific code. Guided Repairs (step-by-step help) is coming next.")}
+                        onPress={() => router.push(`/guided-repair?code=${encodeURIComponent(d.code)}&desc=${encodeURIComponent(d.desc || "")}`)}
                       >
                         <View style={[styles.codeDot, { backgroundColor: STATUS_META[g].color }]} />
                         <View style={{ flex: 1 }}>
@@ -146,6 +168,7 @@ const styles = StyleSheet.create({
   clearBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, height: 48, borderRadius: radius.md, backgroundColor: colors.error },
   clearText: { color: colors.onBrandPrimary, fontWeight: "700" },
   scanCtx: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: spacing.sm },
+  filterWrap: { marginTop: spacing.lg },
   groupTitle: { fontSize: 12, letterSpacing: 1.5, fontWeight: "700", marginBottom: spacing.sm },
   codeCard: { flexDirection: "row", alignItems: "center", gap: spacing.md, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md, marginBottom: spacing.sm },
   codeDot: { width: 10, height: 10, borderRadius: 5 },
