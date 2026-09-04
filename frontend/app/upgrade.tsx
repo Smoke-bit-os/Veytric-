@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLicense } from "@/src/licensing/LicenseProvider";
 import { usePurchases } from "@/src/subscriptions/PurchasesProvider";
+import { useSubscription, rcEnabled, REVENUECAT_ENTITLEMENT_IDENTIFIER } from "@/src/revenuecat";
 import AIUsageBar from "@/src/components/AIUsageBar";
 import { FEATURES, COMPARISON_CATEGORIES } from "@/src/licensing/featureRegistry";
 import { PRICING, TIER_LABELS, TIER_ACCENT, TIER_RANK } from "@/src/licensing/licenseConstants";
@@ -29,18 +30,43 @@ export default function UpgradeScreen() {
   const router = useRouter();
   const { tier, status, trialDaysRemaining, trialUsed, inGrace, offline, startTrial, restore, refresh } = useLicense();
   const purchases = usePurchases();
+  const rc = useSubscription();
   const [busy, setBusy] = useState<string | null>(null);
   const [period, setPeriod] = useState<"monthly" | "annual">("monthly");
 
   const doUpgrade = async (target: Tier) => {
     setBusy(target);
     try {
+      // Pro subscriptions run through RevenueCat (real store / Test Store).
+      if (target === "pro" && rcEnabled) {
+        if (!rc.identityReady) {
+          Alert.alert("Almost there", "Sign in first so your purchase is tied to your account.");
+          return;
+        }
+        const pkgs = rc.offerings?.current?.availablePackages || [];
+        const wanted = period === "annual" ? "$rc_annual" : "$rc_monthly";
+        const pkg = pkgs.find((p) => p.identifier === wanted) || pkgs[0];
+        if (!pkg) {
+          Alert.alert("Unavailable", "No subscription offering is available right now. Please try again later.");
+          return;
+        }
+        const info = await rc.purchase(pkg);
+        if (info.entitlements.active[REVENUECAT_ENTITLEMENT_IDENTIFIER]) {
+          await refresh();
+          Alert.alert("You're Pro!", "Your VEYTRIC Pro subscription is active.");
+        }
+        return;
+      }
       const res = await purchases.purchasePlan(target, period);
       if (res.success) {
         await refresh();
         Alert.alert("Upgraded", `You're now on ${TIER_LABELS[target]}.`);
       } else if (!res.cancelled) {
         Alert.alert("Purchase unavailable", res.error || "Please try again later.");
+      }
+    } catch (e: any) {
+      if (!e?.userCancelled && e?.message !== "identity_not_ready") {
+        Alert.alert("Purchase unavailable", "Could not complete the purchase. Please try again.");
       }
     } finally {
       setBusy(null);
@@ -57,9 +83,21 @@ export default function UpgradeScreen() {
 
   const doRestore = async () => {
     setBusy("restore");
-    const res = await restore();
-    setBusy(null);
-    Alert.alert(res.configured ? "Restored" : "Not configured", res.message || "");
+    try {
+      if (rcEnabled) {
+        const info = await rc.restore();
+        await refresh();
+        const active = !!info.entitlements.active[REVENUECAT_ENTITLEMENT_IDENTIFIER];
+        Alert.alert(active ? "Restored" : "Nothing to restore", active ? "Your VEYTRIC Pro subscription is active again." : "No previous purchases were found for this account.");
+      } else {
+        const res = await restore();
+        Alert.alert(res.configured ? "Restored" : "Not configured", res.message || "");
+      }
+    } catch {
+      Alert.alert("Restore failed", "Could not restore purchases. Please try again.");
+    } finally {
+      setBusy(null);
+    }
   };
 
   return (

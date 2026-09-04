@@ -1,14 +1,17 @@
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { LogBox } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Purchases from "react-native-purchases";
 
 import { useIconFonts } from "@/src/hooks/use-icon-fonts";
-import { AuthProvider } from "@/src/auth";
+import { AuthProvider, useAuth } from "@/src/auth";
+import { initializeRevenueCat, SubscriptionProvider, rcEnabled } from "@/src/revenuecat";
 import { LicenseProvider } from "@/src/licensing/LicenseProvider";
 import TrialReminder from "@/src/licensing/TrialReminder";
 import { PurchasesProvider } from "@/src/subscriptions/PurchasesProvider";
@@ -18,6 +21,36 @@ import { RecordingProvider } from "@/src/vehicle/recording/recordingContext";
 
 LogBox.ignoreAllLogs(true);
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
+try {
+  initializeRevenueCat(); // module scope, once per launch, before any component mounts
+} catch (err) {
+  console.warn("RevenueCat unavailable:", err);
+}
+
+// Bind RevenueCat identity to the app's stable backend user id on every auth path.
+function RCIdentityBinder() {
+  const { user } = useAuth();
+  const bound = useRef<string | null>(null);
+  useEffect(() => {
+    if (!rcEnabled) return;
+    (async () => {
+      try {
+        if (user?.id && bound.current !== user.id) {
+          await Purchases.logIn(user.id);
+          bound.current = user.id;
+        } else if (!user?.id && bound.current) {
+          await Purchases.logOut();
+          bound.current = null;
+        }
+      } catch (e) {
+        console.warn("[RevenueCat] identity bind failed:", String(e));
+      }
+    })();
+  }, [user?.id]);
+  return null;
+}
 
 export default function RootLayout() {
   const [iconsLoaded, iconsError] = useIconFonts();
@@ -38,6 +71,9 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+          <SubscriptionProvider>
+          <RCIdentityBinder />
           <PurchasesProvider>
             <LicenseProvider>
               <AIEngineProvider>
@@ -79,6 +115,8 @@ export default function RootLayout() {
               </AIEngineProvider>
             </LicenseProvider>
           </PurchasesProvider>
+          </SubscriptionProvider>
+          </QueryClientProvider>
         </AuthProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
