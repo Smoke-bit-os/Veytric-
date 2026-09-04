@@ -160,6 +160,15 @@ Verified: lint clean; Codes page renders (web sim). NOT yet tested via testing_a
 Remaining Phase 1 (next): Guided Repairs (AI, /guided-repair — Codes cards will deep-link once built), dropdown-menu audit (year/make/model/engine/filters), VPIC caching/labeling hardening, business-contact (MichaelBryant@JarvisAutoAI.com) in About/Support, production security audit, consolidated testing_agent QA.
 Phase 2 (needs native build): Camera VIN (native OCR), Google Sign-In (own OAuth), Google Play Billing (client + backend receipt verification; prod-guard dev tier endpoints).
 
+## PROMPT 0 — Baseline Truth & Production Safety (2026, this session)
+Audit/hardening pass (NOT new features; Prompt 1 deliberately NOT started). Full report: `/app/PROMPT0_BASELINE_TRUTH.md`. Deliverables: `/app/docs/feature_inventory.json`, `data_flow_map.md`, `fake_data_audit.md`, `protected_interfaces.md`.
+- Checkpoint commit `cc98737`; ending commit `62d4e18`.
+- Verified provider safety: native production CANNOT instantiate SimulationProvider (dual guard: `service.tsx createProvider` `__DEV__`-gated + `simulationProvider.ts` ctor throws if `native && !__DEV__`). `Math.random` exists ONLY in web-only simulationProvider.
+- Fixed a real JSX syntax regression in `guided-repair.tsx` (route was un-bundleable) + invalid theme refs in `scan-vin.tsx` (`colors.background`, `font.mono`).
+- Tests: 41 passed (security+subscription) + 17 passed (phase-A integrity + cross-user isolation). Updated 2 stale prediction tests to the corrected tiered model.
+- tsc: 10 PRE-EXISTING type errors remain (codes.tsx DTC-type groups, vinHistory generics, sim `phase`); 0 new; Babel bundling unaffected.
+- **GATE: UNVERIFIED** — hard blocker: cannot create/verify a production DB backup from preview (no prod access); real-device BLE/camera also UNVERIFIED (need hardware + native build). No destructive DB/auth action taken.
+
 ## V1.0 Phase 2 — Increment 1: Camera VIN Scanner (2026-06, this session)
 Native on-device VIN scanning (ML Kit OCR) added WITHOUT touching the locked BLE/OBD stack.
 - **Deps**: `expo-camera@17.0.10` + `@react-native-ml-kit/text-recognition@2.0.0` (on-device Google ML Kit, full New-Architecture support). app.json: added iOS `NSCameraUsageDescription`, Android `CAMERA` permission, and the `expo-camera` config plugin. **Native/dev build only** — NOT Expo Go or web.
