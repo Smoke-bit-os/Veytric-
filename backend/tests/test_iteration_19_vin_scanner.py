@@ -9,6 +9,7 @@ import os
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 def _load_backend_url():
     url = os.environ.get("EXPO_PUBLIC_BACKEND_URL") or os.environ.get("EXPO_BACKEND_URL")
@@ -33,14 +34,8 @@ BASE_URL = _load_backend_url()
 
 @pytest.fixture(scope="module")
 def user_token():
-    """Register a fresh user and return the bearer token."""
-    email = f"TEST_scan_{uuid.uuid4().hex[:10]}@example.com"
-    payload = {"name": "Scan Tester", "email": email, "password": "Jarvis2026!"}
-    r = requests.post(f"{BASE_URL}/api/auth/register", json=payload, timeout=30)
-    assert r.status_code == 200, f"register failed: {r.status_code} {r.text}"
-    data = r.json()
-    assert "token" in data or "access_token" in data, data
-    token = data.get("token") or data.get("access_token")
+    """Mint a Google session directly and return (token, email)."""
+    email, token, uid = seed_session("Scan Tester")
     return token, email
 
 

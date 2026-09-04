@@ -12,6 +12,7 @@ import time
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://jarvis-ai-1486.preview.emergentagent.com").rstrip("/")
 API = f"{BASE_URL}/api"
@@ -27,13 +28,8 @@ def client():
 
 @pytest.fixture(scope="session")
 def user_token(client):
-    email = f"TEST_ai_{int(time.time())}_{uuid.uuid4().hex[:6]}@jarvis.ai"
-    pwd = "TestPass123!"
-    r = client.post(f"{API}/auth/register", json={"name": "AI Tester", "email": email, "password": pwd})
-    assert r.status_code == 200, f"register failed: {r.status_code} {r.text}"
-    body = r.json()
-    assert "token" in body and "user" in body
-    return body["token"]
+    _, token, _ = seed_session("AI Tester")
+    return token
 
 
 @pytest.fixture

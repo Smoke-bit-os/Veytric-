@@ -17,7 +17,7 @@ import { colors, font, radius, spacing } from "@/src/theme";
 export default function DeveloperScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { user, provider, isGuest } = useAuth();
+  const { user, provider } = useAuth();
   const { entitlement, offline, developerSet, clearCache } = useLicense();
   const purchases = usePurchases();
   const [busy, setBusy] = useState<string | null>(null);
@@ -86,7 +86,6 @@ export default function DeveloperScreen() {
         <View style={styles.card}>
           <KV k="Environment" v={devMode.isAvailable() ? "development" : "production"} />
           <KV k="Auth provider" v={(provider || "none").toString()} />
-          <KV k="Is guest" v={isGuest ? "yes" : "no"} />
           <KV k="User id" v={(user as any)?.id || "—"} />
           <KV k="Billing provider" v={purchases.name} />
           <KV k="Offline" v={offline ? "yes" : "no"} />

@@ -1,0 +1,108 @@
+[
+  {
+    "_id": "ff87e510-a1a6-4cbb-9da1-b22f3b378491",
+    "id": "236a6e50-391a-4d94-ae57-16b998e1e5ca",
+    "user_id": "0af29b95-aa0e-4d6f-b5c0-1a57d9b3afcf",
+    "vehicle_id": "e406ca06-563d-45b1-a6f5-12be6d9e4aad",
+    "kind": "repair",
+    "title": "Oil change",
+    "detail": "5W-30 synthetic",
+    "meta": {
+      "mileage": 60000,
+      "cost": 89,
+      "parts": "Mobil1 filter"
+    },
+    "ts": "2026-08-05T21:07:25.654758+00:00"
+  },
+  {
+    "_id": "d249a3a1-15ee-4428-b8b1-6716dd2b1b12",
+    "id": "75200a88-b77c-4b17-a648-4821ed2dbc31",
+    "user_id": "ada0c507-9db3-45e4-bc91-ba168c702bbb",
+    "vehicle_id": "463ccf43-ac28-4768-8b6e-050e9c5c5f94",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-08-13T22:13:41.144844+00:00"
+  },
+  {
+    "_id": "b5bbfb6f-86ff-420b-9f0c-ef412e27a8ee",
+    "id": "376333c7-3058-4b2e-bcbd-e1f553d678eb",
+    "user_id": "27475a72-5f2d-4055-9588-96f30bdcfb68",
+    "vehicle_id": "e9a1ee12-6445-4e4e-bf6d-10a1e46bb862",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-08-13T22:13:54.408322+00:00"
+  },
+  {
+    "_id": "0254fea0-2900-4a10-85fd-3986e3a89666",
+    "id": "61f9758a-442f-4413-a01e-fe4d6275fb76",
+    "user_id": "e5eadecc-0735-4df9-8114-9e7e78d71ffe",
+    "vehicle_id": "bf3169b3-f04a-4ac3-b35f-91e77ec1adf6",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-08-16T15:31:25.767405+00:00"
+  },
+  {
+    "_id": "16275b3d-2bab-4e3e-9a97-8379da6f8f40",
+    "id": "e4948beb-1cb6-4582-b242-cb0ce330d2ee",
+    "user_id": "6edc682c-f2a3-452d-b987-2d32b2ba56c3",
+    "vehicle_id": "da72cb29-9d9d-4209-9ba7-bf7014bb9e52",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-09-04T17:19:34.598652+00:00"
+  },
+  {
+    "_id": "f9d1e891-722e-44b0-ab24-07b411322033",
+    "id": "39efe5be-b0cd-4e97-be47-571b768db192",
+    "user_id": "394a55f4-9349-4808-9929-43b1726698f9",
+    "vehicle_id": "2ceb3797-5319-4927-b807-21f29dca5999",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-09-04T17:20:23.378716+00:00"
+  },
+  {
+    "_id": "38c180a7-7511-4d6e-ad19-92619271ea9c",
+    "id": "1807d8b3-db1a-4525-a476-f8c79940a57c",
+    "user_id": "4c593f6e-b11b-4650-97ac-209febdbaa0c",
+    "vehicle_id": "b53dd25c-d1eb-46fb-9c04-5e05f7ba8f85",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-09-04T17:53:14.194620+00:00"
+  },
+  {
+    "_id": "142aa365-955b-405e-8543-55ab2361f7c4",
+    "id": "e9b81fe6-8ae7-4df1-b051-bcd3e7435a4b",
+    "user_id": "217f7983-40c0-4574-b38b-3581e50a1ebf",
+    "vehicle_id": "ed3743ea-42e6-4e46-8020-64dbf100123b",
+    "kind": "maintenance",
+    "title": "Oil change",
+    "detail": "Full synthetic oil & filter",
+    "meta": {
+      "mileage": 80000
+    },
+    "ts": "2026-09-04T18:57:33.840589+00:00"
+  }
+]

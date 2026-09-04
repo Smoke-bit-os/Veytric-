@@ -1,0 +1,655 @@
+[
+  {
+    "_id": "0bf6aa94-c25e-4bb9-be6b-38701aa11e7e",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle": {
+      "year": 2018,
+      "make": "Jeep",
+      "model": "Wrangler",
+      "vin": "1C4HJXDG5JW123456",
+      "engine": "3.6L V6"
+    },
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire",
+        "type": "confirmed"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780,
+      "coolantTemp": 92,
+      "batteryVoltage": "14.2",
+      "engineLoad": 22
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": 68210,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2013 2018 Jeep Wrangler 3.6L V6**  \nVIN: 1C4HJXDG5JW123456  \nOverall Health Score: 78\n\n**AI Findings**\n- Confirmed **P0300** and **P0171** indicate an active **misfire condition with a lean Bank 1 fuel mixture**.\n- At idle, engine speed is **780 RPM**, coolant temp **92\u00b0C**, and charging voltage **14.2V** \u2014 engine is at normal operating temp and charging system appears stable.\n- The lean condition is likely contributing to the random misfire, especially if unmetered air, fuel delivery imbalance, or Bank 1-specific intake issues are present.\n- Current engine load at **22%** is reasonable for idle/light load, suggesting the fault is not due to an obvious charging or overheating issue.\n\n**Recommended Next Steps**\n1. Inspect for **vacuum leaks** on Bank 1 side, including intake manifold, PCV/vacuum hoses, and brake booster supply.\n2. Review **fuel trims and O2 sensor data** to confirm the extent of the Bank 1 lean condition.\n3. Check **spark plugs, coils, and misfire counters** to isolate any cylinder-specific ignition fault behind P0300.\n4. Verify **fuel pressure/injector performance**, especially if no intake leak is found.\n5. Clear codes after repair and perform a **road test with live data** to confirm misfire and lean condition are resolved.\n\n**Suggested Maintenance**\n- Inspect/replace **spark plugs** if service interval is due.\n- Check **air intake system and air filter** for restriction or leaks.\n- Consider **throttle body/intake cleaning** if carbon buildup is present.\n- Confirm all routine maintenance is current to prevent repeat fuel control and drivability issues.",
+    "created_at": "2026-08-05T17:26:30.582889+00:00"
+  },
+  {
+    "_id": "2b966375-6689-406f-bbb2-ce3ff0e510f4",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle": "2018 Jeep Wrangler VIN:1C4HJXEG9JW174532",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 82,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2013 2018 Jeep Wrangler (VIN: 1C4HJXEG9JW174532)**\n\n**AI Findings**\n- Confirmed **P0300 Random/Multiple Cylinder Misfire** is present.\n- Engine idle is currently about **780 RPM**, which is within a typical idle range, suggesting the misfire may be intermittent or mild at the time of scan.\n- Overall vehicle health score is **82/100**, indicating a drivability issue is present but not currently severe.\n- Most likely causes include **spark plug/coil wear, fuel delivery imbalance, vacuum leak, or early injector/ignition fault**.\n\n**Recommended Next Steps**\n1. Inspect misfire data by cylinder and review freeze-frame information to identify when the fault occurs.\n2. Check **spark plugs, ignition coils, and coil connections** for wear, fouling, looseness, or moisture intrusion.\n3. Inspect for **vacuum leaks** and verify air intake system integrity.\n4. If no ignition fault is found, test **injector operation** and confirm fuel quality/pressure.\n5. Clear codes after repair and perform a road test to verify the misfire does not return.\n\n**Suggested Maintenance**\n- Replace spark plugs if service interval is due or condition is questionable.\n- Perform a basic ignition system inspection/tune-up.\n- Monitor for rough idle, hesitation, or flashing MIL, and avoid prolonged driving under active misfire conditions.",
+    "created_at": "2026-08-05T17:26:41.942186+00:00"
+  },
+  {
+    "_id": "f9bdf606-003b-433e-a858-382469f66408",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle": "",
+    "vehicle_id": "cdab1884-23f0-4d26-af68-f3728a9c1689",
+    "dtcs": [
+      {
+        "code": "P0171",
+        "desc": "Lean",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 800
+    },
+    "health_score": 80,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Confirmed **P0171 (System Too Lean Bank 1)** is present. At **800 RPM**, this commonly points to a vacuum leak, unmetered air entry, or fuel delivery imbalance at idle.\n- Current **health score: 80** indicates the vehicle is generally operable, but the lean condition should be addressed promptly to prevent drivability issues or catalyst stress.\n- Most likely causes include a small intake/vacuum leak, dirty or underreporting MAF sensor, or low fuel pressure / restricted injector flow.\n\n**Recommended Next Steps**\n1. Inspect for **vacuum leaks** at intake hoses, PCV lines, intake manifold gasket areas, and brake booster hose.\n2. Check and clean/test the **MAF sensor**; verify air ducting is sealed and the air filter is properly installed.\n3. Verify **fuel trims and fuel pressure**; confirm injector performance if trims remain elevated.\n4. Clear the code after repairs and perform a **road test / idle relearn** to confirm P0171 does not return.\n\n**Suggested Maintenance**\n- Replace dirty **engine air filter** if needed.\n- Inspect/renew aged **vacuum and PCV hoses**.\n- Use quality fuel and stay current on **fuel system and intake service** intervals.",
+    "created_at": "2026-08-05T17:26:46.508200+00:00"
+  },
+  {
+    "_id": "29ac5f07-a7a4-46b0-8fc3-c672f6a18029",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle": "2018 Jeep Wrangler JL (1C4HJXEG9JW174532)",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 1023,
+      "coolantTemp": 90,
+      "batteryVoltage": "13.8",
+      "chargingVoltage": "14.2",
+      "shortFuelTrim": "0.2",
+      "longFuelTrim": "6.0",
+      "engineLoad": 9
+    },
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": 68420,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Current faults indicate an active drivability issue: **P0300 random misfire** with **P0171 Bank 1 lean condition**. At idle (~1023 rpm), fuel trims are mildly positive (**STFT +0.2%, LTFT +6.0%**), supporting a light lean correction rather than a severe fuel delivery fault.\n- **P0456 pending** points to a small EVAP leak, commonly a loose/faulty fuel cap, EVAP hose seep, or purge system leak. Not typically the primary cause of the current misfire unless purge flow is abnormal.\n- **P0128 permanent** indicates the engine previously ran below expected thermostat temperature. Current coolant temp is **90\u00b0C**, so the engine is at normal operating temperature now, but the code may remain stored until drive-cycle criteria are met after repair/verification.\n- Charging system appears normal (**13.8\u201314.2 V**). No immediate evidence of low system voltage contributing to the misfire.\n\n**Recommended Next Steps**\n1. Diagnose the **misfire/lean condition first**: inspect for vacuum leaks on Bank 1, intake duct leaks, PCV-related leaks, and check for unmetered air at the intake manifold/throttle body.\n2. Review misfire counters and inspect **spark plugs/coils**, especially if maintenance history is unknown; swap coils/plugs between cylinders if needed to isolate a cylinder-specific fault masked as P0300.\n3. Verify **fuel delivery**: confirm fuel quality, check fuel pressure/spec, and inspect injector performance if no air leak or ignition fault is found.\n4. Address **P0456** by checking fuel cap seal/tightness, then smoke-test the EVAP system if the code returns.\n5. Clear codes after repairs and complete a drive cycle to confirm whether **P0128 permanent** clears and that P0300/P0171 do not reset.\n\n**Suggested Maintenance**\n- If due by mileage, replace **spark plugs** and perform a general ignition inspection.\n- Inspect/clean the **air intake system** and replace the engine air filter if restricted.\n- Check cooling system service history; if P0128 has been recurring, verify **thermostat operation** and coolant condition/level.",
+    "created_at": "2026-08-07T22:19:11.957975+00:00"
+  },
+  {
+    "_id": "ec61c75e-e081-406c-94cb-afcfd46bebc8",
+    "user_id": "7e008bfb-9a6d-4b40-82c6-1a5cf66ab29c",
+    "vehicle": "2018 Jeep",
+    "vehicle_id": null,
+    "dtcs": [],
+    "signals_summary": {},
+    "health_score": null,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK findings",
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o-mini",
+    "created_at": "2026-08-09T14:55:46.049547+00:00"
+  },
+  {
+    "_id": "7a249768-3df6-4960-a95f-7b25d67106a7",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle": {
+      "year": 2018,
+      "make": "Jeep",
+      "model": "Wrangler",
+      "vin": "1C4HJXDG5JW123456",
+      "engine": "3.6L V6"
+    },
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire",
+        "type": "confirmed"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780,
+      "coolantTemp": 92,
+      "batteryVoltage": "14.2",
+      "engineLoad": 22
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": 68210,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary**  \n2018 Jeep Wrangler, 3.6L V6  \nVIN: 1C4HJXDG5JW123456  \nOverall Health Score: 78\n\n**Current Faults**\n- P0300 \u2014 Random/Multiple Cylinder Misfire\n- P0171 \u2014 System Too Lean (Bank 1)\n\n**Live Data Snapshot**\n- Idle speed: 780 RPM\n- Coolant temp: 92\u00b0C\n- Charging voltage: 14.2V\n- Engine load: 22%\n\n**AI Findings**\n- Engine is at normal operating temperature and charging system voltage is within spec; current faults are not consistent with a low-voltage issue.\n- P0171 and P0300 together strongly suggest a lean-running condition contributing to intermittent misfire, most likely affecting Bank 1.\n- At warm idle, likely causes include unmetered air/vacuum leak, intake sealing issue, or fuel delivery imbalance on Bank 1.\n- Misfire may also be aggravated by ignition wear or a cylinder-specific issue if lean condition is not the sole cause.\n\n**Recommended Next Steps**\n1. Inspect for vacuum leaks on Bank 1 side: intake manifold seals, PCV/vacuum hoses, brake booster hose, and air intake ducting.\n2. Review fuel trim and misfire counters with scan tool; confirm whether Bank 1 shows elevated positive trim at idle and under light load.\n3. Inspect spark plugs and ignition coils, especially Bank 1 cylinders; swap suspect coils if needed to see if misfire behavior changes.\n4. Check for intake/exhaust leaks ahead of the O2 sensor and verify proper MAF/MAP sensor readings and cleanliness.\n5. If no air leak is found, test fuel pressure/injector performance and evaluate Bank 1 injector balance.\n\n**Suggested Maintenance**\n- Inspect/replace spark plugs if service interval is due.\n- Clean throttle body and verify intake system sealing.\n- Use quality fuel and consider injector cleaning service if fuel delivery is marginal.\n- Re-scan after repairs and confirm fuel trims and misfire counters return to normal.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T14:56:42.256414+00:00"
+  },
+  {
+    "_id": "567b3050-f4ab-4a96-8cf4-f2c965302b80",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle": "2018 Jeep Wrangler VIN:1C4HJXEG9JW174532",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 82,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2013 2018 Jeep Wrangler**  \nVIN: 1C4HJXEG9JW174532  \nOverall Health Score: 82\n\n**AI Findings**\n- Confirmed **P0300 Random/Multiple Cylinder Misfire** detected.\n- Engine idle is currently **780 RPM**, which is within a typical idle range, so the misfire may be intermittent or mild at this moment.\n- No additional active fault codes were provided, which makes ignition, fuel delivery, or air/fuel imbalance the most likely primary fault areas.\n- Vehicle is still in fair overall condition, but continued driving with a misfire can increase catalyst damage risk.\n\n**Recommended Next Steps**\n1. Inspect misfire data by cylinder with a scan tool to identify whether one or multiple cylinders are affected.\n2. Check **spark plugs, ignition coils, and coil connectors** for wear, fouling, or poor connection.\n3. Inspect for **vacuum leaks** and verify fuel quality; if needed, test fuel pressure/injector performance.\n4. If misfire persists, perform a **compression test** and review freeze-frame data to rule out mechanical causes.\n\n**Suggested Maintenance**\n- Replace spark plugs if service interval is due or condition is questionable.\n- Inspect ignition coils/boots and intake system during next service.\n- Avoid extended driving until the misfire source is confirmed and corrected.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T14:56:50.009963+00:00"
+  },
+  {
+    "_id": "cf93a4eb-d300-445a-84ff-cbbcf0163020",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle": "",
+    "vehicle_id": "d6fb646b-edd0-44d9-a9c0-c8ee7e09e0f7",
+    "dtcs": [
+      {
+        "code": "P0171",
+        "desc": "Lean",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 800
+    },
+    "health_score": 80,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Confirmed **P0171 \u2013 System Too Lean (Bank 1)** present. At **idle (~800 RPM)**, this commonly points to unmetered air entering the engine or a fuel delivery issue.\n- Most likely causes are a **vacuum leak**, **dirty/faulty MAF sensor**, or **low fuel pressure / restricted injector flow**.\n- Vehicle is currently in **fair overall condition (health score: 80)**, but the lean condition should be addressed soon to prevent drivability issues or catalyst stress.\n\n**Recommended Next Steps**\n1. Inspect for **vacuum leaks** at intake hoses, PCV lines, intake manifold gasket, and brake booster hose.\n2. Check and clean/test the **MAF sensor**; verify air filter housing and ducting are sealed properly.\n3. Verify **fuel system performance**, including fuel pressure/volume and injector operation.\n4. Review fuel trims with a scan tool at idle and under load to confirm whether the lean condition is isolated to idle or present across the RPM range.\n5. Clear the code after repairs and perform a road test to confirm the fault does not return.\n\n**Suggested Maintenance**\n- Replace dirty **engine air filter** if needed.\n- Use quality fuel and consider **injector cleaning service** if maintenance history is unknown.\n- Inspect and replace aged/cracked **vacuum hoses** as preventive maintenance.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T14:56:55.355666+00:00"
+  },
+  {
+    "_id": "222e3695-cc1a-4dea-b6c6-fffb8bed9354",
+    "user_id": "03de2806-2563-4fe7-ab56-9b1706b7cb4b",
+    "vehicle": "x",
+    "vehicle_id": null,
+    "dtcs": [],
+    "signals_summary": {},
+    "health_score": 50,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK findings at 20/20",
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:01:59.535271+00:00"
+  },
+  {
+    "_id": "ed9a1780-bd07-41cb-bd66-5d292768e892",
+    "user_id": "f7d8d68d-9462-4512-9e6d-ace21e2220e4",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK-generated findings body.",
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T15:02:01.597819+00:00"
+  },
+  {
+    "_id": "1f63d582-22d3-4e1d-b6a1-630484ce6778",
+    "user_id": "1eb5d370-2a3f-48ce-9ed0-158a05a74628",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Confirmed **P0300 Random/Multiple Cylinder Misfire** is present.\n- Engine speed is **780 RPM**, consistent with idle; misfire is likely occurring or being detected at idle.\n- No additional active faults were provided, which points first toward an ignition, fuel delivery, or air/fuel imbalance issue rather than a broad system failure.\n- **Overall health score: 78** indicates the vehicle is driveable but should be diagnosed promptly to prevent catalyst damage and worsening drivability.\n\n**Recommended Next Steps**\n1. Verify misfire behavior at idle and under light load; check for rough idle, hesitation, or flashing MIL.\n2. Inspect ignition components first: spark plugs, coil packs, and related connectors/wiring.\n3. Review fuel and air causes: injector performance, vacuum leaks, intake tract integrity, and fuel quality/pressure.\n4. If available, check cylinder-specific misfire counters and scan freeze-frame data to isolate affected cylinders before parts replacement.\n5. Clear the code after repairs and road test to confirm the misfire does not return.\n\n**Suggested Maintenance**\n- Replace spark plugs if service interval is due or condition is questionable.\n- Inspect/clean throttle body and air intake system.\n- Use quality fuel and consider injector cleaning if fuel-related symptoms are present.\n- Address the misfire soon to avoid catalytic converter damage.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:02:16.041524+00:00"
+  },
+  {
+    "_id": "f72bc85b-c5db-40f8-a0c0-70caf1678e7c",
+    "user_id": "b14142a2-fae9-4d7f-82f6-dab1e1f86fd3",
+    "vehicle": "x",
+    "vehicle_id": null,
+    "dtcs": [],
+    "signals_summary": {},
+    "health_score": 50,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK findings at 20/20",
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:02:59.833842+00:00"
+  },
+  {
+    "_id": "7bb83695-7468-4256-bb1a-f4a001cde2be",
+    "user_id": "227d5864-4103-4aca-8f8c-2003080282bc",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK-generated findings body.",
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T15:03:01.472139+00:00"
+  },
+  {
+    "_id": "9a270f43-a38f-4a8a-a785-c19ab04c17eb",
+    "user_id": "0f5b709b-498f-4104-847c-6319bb18389b",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2013 2018 Jeep Wrangler**\n\n**AI Findings**\n- Confirmed **P0300 Random/Multiple Cylinder Misfire** is active.\n- Engine idle is currently about **780 RPM**, which is within a typical warm idle range, so the misfire may be intermittent or not severe at this moment.\n- Overall vehicle health score is **78/100**, indicating a drivability issue that should be addressed soon to prevent catalyst or ignition system damage.\n- Most likely fault areas are **spark plugs/coils, fuel delivery imbalance, vacuum leak, or cylinder-specific mechanical weakness**.\n\n**Recommended Next Steps**\n1. Inspect freeze-frame and misfire counters to identify whether one cylinder is contributing more than others.\n2. Check **spark plugs and ignition coils** for wear, fouling, cracking, or coil boot damage; swap coils if needed to see if the misfire follows.\n3. Inspect for **vacuum leaks** and verify intake system integrity, especially around hoses and manifold seals.\n4. If ignition checks pass, test **fuel injector performance** and confirm fuel pressure is within spec.\n5. If misfire remains, perform a **compression or leak-down test** to rule out internal engine issues.\n\n**Suggested Maintenance**\n- Replace spark plugs if service interval is due or condition is questionable.\n- Use quality fuel and consider injector cleaning if fuel-related symptoms are present.\n- Avoid extended driving with an active misfire to reduce risk of **catalytic converter damage**.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:03:15.626389+00:00"
+  },
+  {
+    "_id": "36f4832b-f3bc-4757-8fbf-256da485d6b0",
+    "user_id": "68940ea0-59ed-48e5-97b6-ed4e11735633",
+    "vehicle": "2020 Toyota Camry",
+    "vehicle_id": "78a1cc7a-0aff-43fa-93cd-9a9c5d7f3782",
+    "dtcs": [
+      {
+        "code": "P0300"
+      },
+      {
+        "code": "P0171"
+      },
+      {
+        "code": "P0420"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": null,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "seed",
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:16:51.376256+00:00"
+  },
+  {
+    "_id": "56b0aeb4-2a64-4a89-8902-552759ec7d25",
+    "user_id": "e7ea2c8b-4365-4aab-8526-5f65a963cbef",
+    "vehicle": "x",
+    "vehicle_id": null,
+    "dtcs": [],
+    "signals_summary": {},
+    "health_score": 50,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK findings at 20/20",
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:14:11.232211+00:00"
+  },
+  {
+    "_id": "8a4808e9-1c28-417b-a5f2-836aabe5c6e7",
+    "user_id": "d19b5f82-903e-4a91-a8c6-cbad5d8b9769",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK-generated findings body.",
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T16:14:21.010519+00:00"
+  },
+  {
+    "_id": "3ceb0d4a-af1f-4815-9405-a71b25aaec00",
+    "user_id": "1e4084fc-dee1-4dee-b604-5d67aab7d2af",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Confirmed **P0300 Random/Multiple Cylinder Misfire** is present.\n- Engine speed at **780 rpm** suggests the misfire may be occurring at or near **idle**.\n- Overall vehicle health score is **78**, indicating a drivability issue that should be addressed soon to prevent catalyst damage.\n- No cylinder-specific fault is listed, so root cause may involve **ignition, fuel delivery, air/vacuum leak, or mechanical condition**.\n\n**Recommended Next Steps**\n1. Verify misfire symptoms at idle and under light load; check for pending or history cylinder-specific misfire counts.\n2. Inspect **spark plugs, ignition coils, and coil connectors** for wear, fouling, or poor contact.\n3. Check for **vacuum leaks** and inspect intake ducting/PCV-related hoses.\n4. If ignition checks pass, test **fuel injector operation** and confirm proper fuel pressure.\n5. If misfire persists, perform **compression/leak-down testing** and review scan data for fuel trims.\n\n**Suggested Maintenance**\n- Replace spark plugs if service interval is due or condition is questionable.\n- Inspect/clean throttle body and confirm air induction system integrity.\n- Avoid extended driving with active misfire to reduce risk of **catalytic converter damage**.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:14:29.694114+00:00"
+  },
+  {
+    "_id": "c1ce318a-e082-4521-93d4-d369e8447662",
+    "user_id": "c3f88027-7782-40bb-bc90-74cad406a2aa",
+    "vehicle": "x",
+    "vehicle_id": null,
+    "dtcs": [],
+    "signals_summary": {},
+    "health_score": 50,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK findings at 20/20",
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:14:53.349244+00:00"
+  },
+  {
+    "_id": "1bda2a57-43cb-4aca-bd5c-ebf475a9fd33",
+    "user_id": "4bc2cb58-93ab-40b3-b52d-8a35f7cd0e20",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "BYOK-generated findings body.",
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T16:14:57.437961+00:00"
+  },
+  {
+    "_id": "947e53bf-a3ab-40f4-a2e2-28245b25a89e",
+    "user_id": "3b7cec33-ccdd-490b-b648-5263f0a7598f",
+    "vehicle": "2020 Toyota Camry",
+    "vehicle_id": "18e26138-f9a9-42ff-845b-43d986f32899",
+    "dtcs": [
+      {
+        "code": "P0300"
+      },
+      {
+        "code": "P0171"
+      },
+      {
+        "code": "P0420"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": null,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "seed",
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:14:59.538449+00:00"
+  },
+  {
+    "_id": "67c9674f-5f61-4d33-bc4d-877089fa4774",
+    "user_id": "9b8c3add-aec6-46a4-859c-281b2e8dd999",
+    "vehicle": "2018 Jeep Wrangler",
+    "vehicle_id": null,
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "misfire",
+        "type": "confirmed"
+      }
+    ],
+    "signals_summary": {
+      "rpm": 780
+    },
+    "health_score": 78,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Confirmed **P0300 Random/Multiple Cylinder Misfire** is present.\n- Engine is idling at **780 RPM**, which is within a typical warm-idle range, so the misfire may be intermittent or mild at idle.\n- Current **health score: 78/100** indicates a moderate drivability concern that should be addressed before it worsens.\n- Most likely causes include **ignition components**, **spark plugs**, **fuel delivery imbalance**, or a **vacuum/air leak**.\n\n**Recommended Next Steps**\n1. Check for misfire counters by cylinder and inspect **spark plugs and coil packs** for wear, fouling, or damage.\n2. Inspect for **vacuum leaks**, loose intake connections, and unmetered air entry.\n3. Verify **fuel system performance**, including injector operation and fuel pressure if misfire persists.\n4. Clear the code after inspection/repair and **road test** to confirm the misfire does not return.\n\n**Suggested Maintenance**\n- Replace spark plugs if service interval is due or condition is questionable.\n- Inspect ignition coils/boots and related wiring.\n- Perform routine air intake and fuel system inspection to prevent repeat misfire faults.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:15:09.864313+00:00"
+  },
+  {
+    "_id": "4d39d74b-5b62-41ec-939a-7fab5129caae",
+    "user_id": "657f0a11-a56a-4666-a416-8fb286e0ae37",
+    "vehicle": "TEST_UserA_Car",
+    "vehicle_id": "5e920ca2-63ec-4cae-8ad4-6097e07cd6c3",
+    "dtcs": [
+      {
+        "code": "P0300"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**AI Findings**\n- Active fault code **P0300** indicates a **random/multiple cylinder misfire** is currently being detected.\n- With no live sensor data provided, the most likely issue areas are **ignition components, fuel delivery, air/vacuum leaks, or engine mechanical imbalance**.\n- Overall vehicle health score is **88**, suggesting the concern may be **isolated rather than system-wide**, but misfires should be addressed promptly to prevent catalyst damage.\n\n**Recommended Next Steps**\n1. Confirm whether the misfire is present at **idle, under load, or during cold start**, and check for any drivability symptoms.\n2. Inspect **spark plugs, ignition coils, and related wiring/connectors** for wear, damage, or poor connection.\n3. Check for **vacuum leaks**, intake issues, and verify **fuel system performance** if ignition components test good.\n4. Clear the code after inspection/repair and **road test** to verify the misfire does not return.\n\n**Suggested Maintenance**\n- If spark plugs are near service interval, replace them and inspect coil condition.\n- Use quality fuel and consider basic **fuel system cleaning** if maintenance history is unknown.\n- Stay current on **air filter and intake system** maintenance to reduce misfire-related issues.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-13T22:13:59.444709+00:00"
+  },
+  {
+    "_id": "ff18fbb4-31ce-4010-b69c-66d30995fc94",
+    "user_id": "409e2c2a-9f9c-4533-8042-050bc29e031f",
+    "vehicle": "TEST_UserA_Car",
+    "vehicle_id": "dbc9dcbd-c61b-46fe-86e0-17266e4c4706",
+    "dtcs": [
+      {
+        "code": "P0300"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2014 TEST_UserA_Car**\n\n**AI Findings**\n- Active fault code **P0300** detected: **Random/Multiple Cylinder Misfire**.\n- Misfires may be intermittent at this time; no live sensor abnormalities were provided with this scan.\n- Vehicle overall health score is **88**, suggesting the issue may be isolated but should be addressed before it worsens.\n- Continued driving with a misfire can reduce fuel economy and may damage the catalytic converter.\n\n**Recommended Next Steps**\n1. Confirm whether the engine currently has a rough idle, hesitation, or flashing MIL during operation.\n2. Inspect basic ignition components first: spark plugs, ignition coils, and related connectors.\n3. Check for common causes including vacuum leaks, fuel delivery issues, or overdue tune-up items.\n4. Clear the code after inspection/repair and road test to verify the misfire does not return.\n\n**Suggested Maintenance**\n- If due, perform a basic tune-up service including spark plug replacement.\n- Inspect air intake and vacuum hoses for leaks or deterioration.\n- Maintain fuel system service intervals and use quality fuel to help prevent recurring misfires.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-16T15:31:21.833863+00:00"
+  },
+  {
+    "_id": "ae7685e1-6659-4724-a597-9ac019903a60",
+    "user_id": "a01e0f66-f6bb-415e-8912-1292b62521e2",
+    "vehicle": "TEST_UserA_Car",
+    "vehicle_id": "e90e9976-6e5d-4578-b5fe-580bdf141e4b",
+    "dtcs": [
+      {
+        "code": "P0300"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2014 TEST_UserA_Car**\n\n**AI Findings**\n- Active fault detected: **P0300 \u2014 Random/Multiple Cylinder Misfire**.\n- Engine has a combustion irregularity affecting one or more cylinders; this may cause rough idle, hesitation, or reduced fuel efficiency.\n- No live sensor data was available to isolate fuel, ignition, or air-related contribution.\n- **Overall health score: 88/100** \u2014 vehicle condition appears generally good, with one active drivability/emissions concern needing follow-up.\n\n**Recommended Next Steps**\n1. Confirm the misfire complaint during idle and light acceleration; check for rough running or flashing MIL.\n2. Inspect ignition components first: spark plugs, coil packs/wires, and plug condition/wear.\n3. Check for common causes such as vacuum leaks, fuel delivery imbalance, or injector issues.\n4. Clear the code after inspection/repair and road test to verify the misfire does not return.\n\n**Suggested Maintenance**\n- If spark plugs are near service interval, replace them.\n- Ensure air filter and intake system are in good condition.\n- Use quality fuel and stay current on routine ignition/fuel-system maintenance.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-09-04T17:19:38.396505+00:00"
+  },
+  {
+    "_id": "828bfebc-24af-4eea-9fda-44172056fef2",
+    "user_id": "d63b9fe3-dc0b-4af7-89a6-ebd3984b99ef",
+    "vehicle": "TEST_UserA_Car",
+    "vehicle_id": "02334b10-4d48-4866-9ac6-7a57bb1516d1",
+    "dtcs": [
+      {
+        "code": "P0300"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2014 TEST_UserA_Car**\n\n**Overall Assessment:** Health score is **88/100**. Vehicle shows an active **P0300 (Random/Multiple Cylinder Misfire Detected)**, indicating an intermittent or active combustion imbalance that should be addressed before it worsens.\n\n**AI Findings**\n- Active fault **P0300** points to random/multiple cylinder misfire activity rather than a single confirmed cylinder fault.\n- No live sensor data was provided, so root cause cannot be isolated from this scan alone.\n- Common causes include ignition weakness, fuel delivery imbalance, vacuum leaks, or airflow-related issues.\n- Current health score suggests the vehicle is still generally serviceable, but continued driving with a misfire can increase catalyst damage risk.\n\n**Recommended Next Steps**\n1. Confirm symptom severity: check for rough idle, hesitation, flashing MIL, or load-related misfire.\n2. Inspect ignition components first: spark plugs, coils, and plug condition/wear.\n3. Check for intake/vacuum leaks and verify air induction integrity.\n4. Review fuel system performance: injector operation, fuel quality, and fuel pressure if symptoms persist.\n5. Clear codes after repairs and road test to verify P0300 does not return.\n\n**Suggested Maintenance**\n- If plugs are near service interval, replace spark plugs and inspect coils/boots.\n- Perform routine intake and fuel-system inspection if maintenance history is unknown.\n- Avoid prolonged driving under misfire conditions to protect the catalytic converter.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-09-04T17:20:28.820402+00:00"
+  },
+  {
+    "_id": "4739176c-14d0-4fb9-bf80-419b8adc1425",
+    "user_id": "e1829565-b712-47e3-895e-98144070f641",
+    "vehicle": "TEST_UserA_Car",
+    "vehicle_id": "cee03f36-9442-42a0-9b59-540aba35db6b",
+    "dtcs": [
+      {
+        "code": "P0300"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2014 TEST_UserA_Car**\n\n**AI Findings**\n- Active fault detected: **P0300 \u2014 Random/Multiple Cylinder Misfire**.\n- Misfire is currently the primary issue affecting engine performance and emissions.\n- No live sensor details were provided, so root cause cannot be narrowed further from this scan alone.\n- Overall vehicle health score is **88**, suggesting the concern may be isolated rather than system-wide.\n\n**Recommended Next Steps**\n1. Confirm symptom severity: check for rough idle, hesitation, flashing MIL, or loss of power.\n2. Inspect common misfire causes: spark plugs, ignition coils, coil/connectors, and obvious vacuum leaks.\n3. Check fuel delivery basics: injector operation, fuel quality, and fuel pressure if symptoms persist.\n4. If available, review freeze-frame/misfire counters and rescan after repairs to confirm resolution.\n\n**Suggested Maintenance**\n- If due, perform basic tune-up service: spark plugs and ignition component inspection.\n- Inspect air intake system and replace engine air filter if restricted.\n- Stay current on fuel system and induction maintenance to help prevent repeat misfire events.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-09-04T17:53:10.989405+00:00"
+  },
+  {
+    "_id": "f179e4c0-c23a-4ac9-8750-a803e7821df1",
+    "user_id": "6db82846-d996-4207-9924-1215028eb698",
+    "vehicle": "TEST_UserA_Car",
+    "vehicle_id": "d243dac3-a984-4897-9591-37a308d42f21",
+    "dtcs": [
+      {
+        "code": "P0300"
+      }
+    ],
+    "signals_summary": {},
+    "health_score": 88,
+    "customer_name": "",
+    "mileage": null,
+    "notes": "",
+    "ai_findings": "**Scan Report Summary \u2014 TEST_UserA_Car**\n\n**Overall Assessment:** Health score is **88/100**. Vehicle shows an active **P0300 \u2013 Random/Multiple Cylinder Misfire Detected**. No live sensor data was available with this scan, so fault isolation is not yet confirmed.\n\n**AI Findings**\n- Active **P0300** indicates intermittent or multiple-cylinder combustion instability.\n- With no supporting live data, the issue could be ignition, fuel delivery, air/fuel imbalance, or a vacuum-related condition.\n- Current score suggests the vehicle is generally in fair condition, but the misfire should be addressed promptly to prevent catalyst damage.\n- If drivability symptoms are present under load or at idle, prioritize diagnosis before extended driving.\n\n**Recommended Next Steps**\n1. Confirm symptom pattern: idle, cold start, acceleration, or cruise.\n2. Inspect ignition components first: spark plugs, coil packs, and related wiring/connectors.\n3. Check for vacuum leaks, intake air leaks, and obvious PCV issues.\n4. Verify fuel system condition, including injector operation and fuel pressure if misfire persists.\n5. Rescan with live data and misfire counters to identify affected cylinders and operating conditions.\n\n**Suggested Maintenance**\n- Replace overdue spark plugs if service history is unknown.\n- Perform a basic air induction inspection and ensure air filter condition is good.\n- Use quality fuel and consider injector cleaning if fuel-related hesitation is suspected.\n- Follow up with a complete scan including freeze-frame and live sensor data for precise diagnosis.",
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-09-04T18:57:30.282944+00:00"
+  }
+]

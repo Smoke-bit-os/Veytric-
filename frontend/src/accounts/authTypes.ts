@@ -1,4 +1,4 @@
-export type AuthProviderKind = "email" | "guest" | "apple" | "google" | null;
+export type AuthProviderKind = "google" | null;
 
 export type Account = {
   id: string;

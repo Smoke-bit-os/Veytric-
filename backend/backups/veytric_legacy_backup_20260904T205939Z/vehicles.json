@@ -1,0 +1,2570 @@
+[
+  {
+    "_id": "750c3f55-d761-4833-a689-c9a118bebb43",
+    "id": "e406ca06-563d-45b1-a6f5-12be6d9e4aad",
+    "user_id": "0af29b95-aa0e-4d6f-b5c0-1a57d9b3afcf",
+    "vin": "1C4HJXEG5JW123456",
+    "name": "2018 Jeep Wrangler",
+    "mileage": 72000,
+    "is_active": true,
+    "health_history": [
+      {
+        "ts": "2026-08-05T21:07:25.643274+00:00",
+        "score": 78
+      }
+    ],
+    "created_at": "2026-08-05T21:07:25.622140+00:00",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "Sahara",
+    "engine": "3.6L V6",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-05T21:07:25.621575+00:00"
+  },
+  {
+    "_id": "2eed36f6-6732-4efe-8c4b-ed7420c0cefd",
+    "id": "fd4c0233-8661-495d-a8f0-a0a474c9a57a",
+    "user_id": "d39f320a-daab-48d0-89ee-a4f1b47af9cb",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 JEEP Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [
+      {
+        "ts": "2026-08-05T21:09:06.522670+00:00",
+        "score": 88
+      }
+    ],
+    "created_at": "2026-08-05T21:09:06.456348+00:00",
+    "make": "JEEP",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "Unlimited Sahara",
+    "engine": "3.6L 6-cyl",
+    "transmission": "Manual/Standard",
+    "drivetrain": "4WD/4-Wheel Drive/4x4",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "TOLEDO",
+    "decode_confidence": 0.95,
+    "decode_source": "nhtsa",
+    "last_scan_at": "2026-08-05T21:09:06.455947+00:00"
+  },
+  {
+    "_id": "d4e34310-631b-4adb-816f-dcb78cb2d7b5",
+    "id": "131da6dd-2cec-44e0-81ca-fabbce304b67",
+    "user_id": "c54fbe7f-48f3-4b38-9dc7-a14b047195cc",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 JEEP Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [
+      {
+        "ts": "2026-08-05T21:10:14.319112+00:00",
+        "score": 88
+      }
+    ],
+    "created_at": "2026-08-05T21:10:14.240082+00:00",
+    "make": "JEEP",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "Unlimited Sahara",
+    "engine": "3.6L 6-cyl",
+    "transmission": "Manual/Standard",
+    "drivetrain": "4WD/4-Wheel Drive/4x4",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "TOLEDO",
+    "decode_confidence": 0.95,
+    "decode_source": "nhtsa",
+    "last_scan_at": "2026-08-05T21:10:14.239685+00:00"
+  },
+  {
+    "_id": "50610db5-6f62-442b-97a6-7598699239d4",
+    "id": "0ef9aa4d-13be-4afd-b74a-c6cae17de6cc",
+    "user_id": "922aa2f9-ad55-4401-bc7a-f58496ef1ddf",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 JEEP Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [
+      {
+        "ts": "2026-08-05T21:11:28.206172+00:00",
+        "score": 88
+      }
+    ],
+    "created_at": "2026-08-05T21:11:28.128585+00:00",
+    "make": "JEEP",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "Unlimited Sahara",
+    "engine": "3.6L 6-cyl",
+    "transmission": "Manual/Standard",
+    "drivetrain": "4WD/4-Wheel Drive/4x4",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "TOLEDO",
+    "decode_confidence": 0.95,
+    "decode_source": "nhtsa",
+    "last_scan_at": "2026-08-05T21:11:28.128194+00:00"
+  },
+  {
+    "_id": "d9f647f4-2f9f-45b0-9322-b01e7004c5ea",
+    "id": "af7bb275-5604-4107-b965-266368fe5cc1",
+    "user_id": "f8946af2-0149-48d5-b405-742520cc403f",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 JEEP Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [
+      {
+        "ts": "2026-08-05T21:13:20.371261+00:00",
+        "score": 88
+      }
+    ],
+    "created_at": "2026-08-05T21:13:20.308360+00:00",
+    "make": "JEEP",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "Unlimited Sahara",
+    "engine": "3.6L 6-cyl",
+    "transmission": "Manual/Standard",
+    "drivetrain": "4WD/4-Wheel Drive/4x4",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "TOLEDO",
+    "decode_confidence": 0.95,
+    "decode_source": "nhtsa",
+    "last_scan_at": "2026-08-05T21:13:20.307852+00:00"
+  },
+  {
+    "_id": "02dc1c62-ab69-4a0c-a5ca-42d21266d743",
+    "id": "b0a2511f-81aa-417f-9490-a49f48603c6f",
+    "user_id": "2e720451-01fa-491b-9b4a-51776a5a0c0c",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 Jeep Wrangler JL",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-06T00:19:13.360697+00:00",
+    "make": "Jeep",
+    "model": "Wrangler JL",
+    "year": 2018,
+    "trim": "Sahara",
+    "engine": "3.6L V6 Pentastar",
+    "transmission": "8-Speed Automatic (850RE)",
+    "drivetrain": "4WD",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-06T00:19:13.360226+00:00"
+  },
+  {
+    "_id": "a173a661-593e-4aef-81a3-3261e884480e",
+    "id": "04285e26-8789-4253-9e09-ffb8b93ba533",
+    "user_id": "d76d0146-99bd-4fac-b690-8d0a3e5e6c35",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-07T22:11:24.425764+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-07T22:11:24.425327+00:00"
+  },
+  {
+    "_id": "5c208e1e-5036-422a-8ef2-214674842874",
+    "id": "7bd6fc82-6a42-4d9b-951e-8625b63f8ab6",
+    "user_id": "593de093-47b4-4cd1-8b96-a676506f43a8",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-07T22:12:58.546034+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-07T22:12:58.545689+00:00"
+  },
+  {
+    "_id": "bae2eefc-a12e-4155-8de4-16722d0ef0ca",
+    "id": "18029eb9-ce17-41c8-99f3-7746c8797831",
+    "user_id": "b8d8a133-90ea-438e-b539-41d5f7f3d5d0",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-09T14:06:55.928781+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-09T14:06:55.928311+00:00"
+  },
+  {
+    "_id": "0bae437d-2902-490c-be48-04e75c1bad3d",
+    "id": "5830238e-f8dd-4b6c-b2b2-1abae15525be",
+    "user_id": "4a459efe-eff7-4378-b70a-8f625ba2e27f",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-09T14:56:20.065498+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-09T14:56:20.065009+00:00"
+  },
+  {
+    "_id": {
+      "$oid": "6a7896666331e1f829f8f6e5"
+    },
+    "id": "298b9660-1ac0-4418-a86f-a55c261a894d",
+    "name": "TEST_HR_13a0d1",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:01:58.301962+00:00",
+    "user_id": "03de2806-2563-4fe7-ab56-9b1706b7cb4b",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:01:58.352028+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896676331e1f829f8f6e6"
+    },
+    "id": "9faa263d-33bb-445e-b7b5-dbe7b240013b",
+    "name": "TEST_HR_622768",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:01:59.051061+00:00",
+    "user_id": "1a92b92c-5dbe-48f4-96f1-842d1190cc67",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:01:59.098492+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896676331e1f829f8f6e7"
+    },
+    "id": "50f01cf2-f635-432d-9556-80d0d8fc7509",
+    "name": "TEST_HR_ccdd61",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:01:59.924138+00:00",
+    "user_id": "1eb5d370-2a3f-48ce-9ed0-158a05a74628",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:02:00.011543+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896686331e1f829f8f6e8"
+    },
+    "id": "215e0cf6-bfa8-4b22-87a3-6cd186d395b6",
+    "name": "TEST_HR_71927b",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:02:00.947004+00:00",
+    "user_id": "f7d8d68d-9462-4512-9e6d-ace21e2220e4",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:02:00.992621+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896a285bf1f574167679e"
+    },
+    "id": "08459525-5a4a-4864-af11-f0cb30e41caa",
+    "name": "TEST_HR_6442d1",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:02:58.290641+00:00",
+    "user_id": "b14142a2-fae9-4d7f-82f6-dab1e1f86fd3",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:02:58.389997+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896a285bf1f574167679f"
+    },
+    "id": "321fd207-6f52-494e-963b-3729a1f92a29",
+    "name": "TEST_HR_467369",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:02:58.911905+00:00",
+    "user_id": "685ad06a-9e2e-4303-aa0e-2eb759dee26b",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:02:58.957545+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896a485bf1f57416767a0"
+    },
+    "id": "d5c3e3c3-289e-4cf4-94a9-d47c2e176d52",
+    "name": "TEST_HR_7bde7f",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:03:00.255670+00:00",
+    "user_id": "0f5b709b-498f-4104-847c-6319bb18389b",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:03:00.310238+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7896a485bf1f57416767a1"
+    },
+    "id": "badbcd1a-6f8c-4ccb-b29b-a44ffe9eb8bb",
+    "name": "TEST_HR_84865f",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T15:03:00.719853+00:00",
+    "user_id": "227d5864-4103-4aca-8f8c-2003080282bc",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:03:00.827725+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": "571088b7-b91d-4cbf-932d-25d11be6be96",
+    "id": "e3f232ca-4076-4413-99f7-15e71565a237",
+    "user_id": "8de50ef7-93ef-4572-bfa7-e31f1b79ddc1",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 Jeep Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-09T15:12:21.488117+00:00",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-09T15:12:21.487405+00:00",
+    "customerName": "John Doe",
+    "customerNotes": "Brake noise complaint"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cb048c69739dde625d"
+    },
+    "id": "ef9dcddc-08ff-4cbd-b5ce-a1bc776e9bbd",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN92E5F0BBDC",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:27.784190+00:00",
+    "user_id": "b2a2b746-5049-475a-b638-f929b7d1c80e"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cc048c69739dde625e"
+    },
+    "id": "d35a016b-2c35-4c12-aac6-82418c174e9d",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN182F56793D",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:28.428993+00:00",
+    "user_id": "183ea288-89b8-4b8e-9fc7-c14f482e358c"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cd048c69739dde625f"
+    },
+    "id": "37796d18-f9a3-4e00-9b18-743a0fa17540",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN208AC964B6",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:29.086087+00:00",
+    "user_id": "0bc39cd2-d737-4956-bcb0-1f8a32d83d44",
+    "customerName": "Bob Smith",
+    "customerNotes": "Prefers full synthetic oil"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cd048c69739dde6260"
+    },
+    "id": "4646c415-b87c-424c-88dd-3a5bce2cab17",
+    "name": "TEST_Honda_Civic",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2020,
+    "vin": "TESTVIN0C5C6E0632",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:29.734180+00:00",
+    "user_id": "d41fb7aa-05c3-48bc-a651-8b05f0b5a705",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:16:29.783078+00:00",
+        "score": 90
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cd048c69739dde6261"
+    },
+    "id": "af896ee3-f7b2-4b7f-b868-c76ec5e72d40",
+    "name": "My Truck",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN596F6CF677",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:29.828558+00:00",
+    "user_id": "4a8657ef-3682-4425-a4ba-fd572175c065",
+    "mileage": 60000
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cd048c69739dde6262"
+    },
+    "id": "40d7b2d3-9258-4730-9843-51832624e0ef",
+    "name": "TEST_Toyota_Camry",
+    "make": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "vin": "TESTVINFF33BD9B17",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:29.869071+00:00",
+    "user_id": "d41fb7aa-05c3-48bc-a651-8b05f0b5a705",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:16:29.916213+00:00",
+        "score": 70
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cd048c69739dde6263"
+    },
+    "id": "eb6035b8-32a6-4adc-9360-29099421a74d",
+    "name": "TEST_Chevy_Malibu",
+    "make": "Chevy",
+    "model": "Malibu",
+    "year": 2020,
+    "vin": "TESTVIN7C47A23996",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:29.962328+00:00",
+    "user_id": "d41fb7aa-05c3-48bc-a651-8b05f0b5a705",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:16:30.011164+00:00",
+        "score": 40
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7899ce048c69739dde6264"
+    },
+    "id": "61445867-35a4-4464-aac4-327177eec97b",
+    "name": "TEST_Nissan_Altima",
+    "make": "Nissan",
+    "model": "Altima",
+    "year": 2020,
+    "vin": "TESTVIN2A16A5F1BB",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:30.059981+00:00",
+    "user_id": "d41fb7aa-05c3-48bc-a651-8b05f0b5a705"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899ce048c69739dde6265"
+    },
+    "id": "44e6628a-e2ce-4c52-8f47-27b507467db0",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN41DC87ACA9",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:30.429217+00:00",
+    "user_id": "0d437c04-0f35-4170-9f2d-ab8c870fb111",
+    "mileage": 77777
+  },
+  {
+    "_id": {
+      "$oid": "6a7899ce048c69739dde6266"
+    },
+    "id": "a4728eff-fb41-4c6c-b00b-db81ac169994",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN12D9D670F5",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:30.766617+00:00",
+    "user_id": "f3964f06-7b15-48d9-8790-edad5c9070e7"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899ce048c69739dde6267"
+    },
+    "id": "9b4465bd-4c5d-46c5-b45d-95701a34fd2a",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVINCACA764300",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:30.808631+00:00",
+    "user_id": "f3964f06-7b15-48d9-8790-edad5c9070e7"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cf048c69739dde6268"
+    },
+    "id": "cc9c5aeb-e15e-4ee0-af19-33433d6eb83a",
+    "name": "TEST_AAA_One",
+    "make": "AAA",
+    "model": "One",
+    "year": 2020,
+    "vin": "TESTVINBD39D32016",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:31.584116+00:00",
+    "user_id": "d29b49f4-3167-43f1-a2f9-c1eac7eab1de",
+    "customerName": "Alpha Corp"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899cf048c69739dde6269"
+    },
+    "id": "099630ac-1e65-4588-870a-4242fc992e70",
+    "name": "TEST_BBB_Two",
+    "make": "BBB",
+    "model": "Two",
+    "year": 2020,
+    "vin": "TESTVIN39D5E7FC81",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:31.671783+00:00",
+    "user_id": "8074dbd5-8f44-4c23-a64a-a7da71ff48e5"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899d0048c69739dde626a"
+    },
+    "id": "3bd8daf9-4df2-4310-98e1-de48721c0746",
+    "name": "TEST_Mazda_3",
+    "make": "Mazda",
+    "model": "3",
+    "year": 2020,
+    "vin": "TESTVIN8C2C0F6EC6",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:32.178904+00:00",
+    "user_id": "7991df87-1411-49b2-bf3f-b4eaedf606dc",
+    "customerName": "Cust 2",
+    "customerNotes": "n2"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e0ca884fa1e9105c3e"
+    },
+    "id": "69738514-68ef-4700-8207-0e645f285ce5",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN4AA19F060F",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:48.951104+00:00",
+    "user_id": "0e542411-af6e-4fee-a4da-ae01c9627aed"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e1ca884fa1e9105c3f"
+    },
+    "id": "6754aedc-5d79-42a3-a2df-44624dc650f8",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVINCA384B7533",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:49.602550+00:00",
+    "user_id": "ef996931-4a58-4a99-9f3d-bf10af00a598"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e2ca884fa1e9105c40"
+    },
+    "id": "2b0f6255-1348-4ed2-b78a-ccf3dd236a5e",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN040CC91379",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:50.197016+00:00",
+    "user_id": "aee76e62-39ea-440e-82db-0eec9dfdbf24",
+    "customerName": "Bob Smith",
+    "customerNotes": "Prefers full synthetic oil"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e2ca884fa1e9105c41"
+    },
+    "id": "67ef62ca-fcbc-4e0e-9b1c-f798a51018a2",
+    "name": "TEST_Honda_Civic",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2020,
+    "vin": "TESTVINE7D0A7BFDB",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:50.792330+00:00",
+    "user_id": "68940ea0-59ed-48e5-97b6-ed4e11735633",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:16:50.836408+00:00",
+        "score": 90
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e2ca884fa1e9105c42"
+    },
+    "id": "40b940eb-de06-4a0b-9685-1e6e3615a285",
+    "name": "My Truck",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN6BB92E5038",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:50.918666+00:00",
+    "user_id": "425b075e-280f-4be0-b559-55c71265d2b7",
+    "mileage": 60000
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e2ca884fa1e9105c43"
+    },
+    "id": "78a1cc7a-0aff-43fa-93cd-9a9c5d7f3782",
+    "name": "TEST_Toyota_Camry",
+    "make": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "vin": "TESTVIND77192B9F1",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:50.918921+00:00",
+    "user_id": "68940ea0-59ed-48e5-97b6-ed4e11735633",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:16:50.962974+00:00",
+        "score": 70
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e3ca884fa1e9105c44"
+    },
+    "id": "95a0f78b-01ec-4f4c-a5ff-013c6aed716b",
+    "name": "TEST_Chevy_Malibu",
+    "make": "Chevy",
+    "model": "Malibu",
+    "year": 2020,
+    "vin": "TESTVIN35CAEABB7D",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:51.005957+00:00",
+    "user_id": "68940ea0-59ed-48e5-97b6-ed4e11735633",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:16:51.049884+00:00",
+        "score": 40
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e3ca884fa1e9105c45"
+    },
+    "id": "140251ab-52b2-4146-bba6-c38e7f96370c",
+    "name": "TEST_Nissan_Altima",
+    "make": "Nissan",
+    "model": "Altima",
+    "year": 2020,
+    "vin": "TESTVIN4189E61DCE",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:51.133963+00:00",
+    "user_id": "68940ea0-59ed-48e5-97b6-ed4e11735633"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e3ca884fa1e9105c46"
+    },
+    "id": "0a477d33-619d-4a75-91ec-c3b17a1be425",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVINC4BDA2B03D",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:51.737727+00:00",
+    "user_id": "4f22c353-b5dd-4584-97a1-e94c9b8a7a10",
+    "mileage": 77777
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e3ca884fa1e9105c47"
+    },
+    "id": "f5a685d2-34eb-4f38-aa00-b471fe178b15",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVINBD58BAB538",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:51.821503+00:00",
+    "user_id": "8ff38c9b-f53a-4c27-9b5b-b39d8a2006cc"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e3ca884fa1e9105c48"
+    },
+    "id": "1348aae5-71b4-4939-9aee-4c0b73d849b0",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN685C5CDE8C",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T15:16:51.861749+00:00",
+    "user_id": "8ff38c9b-f53a-4c27-9b5b-b39d8a2006cc"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e4ca884fa1e9105c49"
+    },
+    "id": "8b72adff-3b4c-45ee-8d4b-b1aa8bc783c0",
+    "name": "TEST_AAA_One",
+    "make": "AAA",
+    "model": "One",
+    "year": 2020,
+    "vin": "TESTVINF8994E167F",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:52.682877+00:00",
+    "user_id": "88392226-69ad-4ac5-85c5-c8d749331a6f",
+    "customerName": "Alpha Corp"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e4ca884fa1e9105c4a"
+    },
+    "id": "0a8d25bd-c575-4dd5-96ce-5b542e0af63c",
+    "name": "TEST_BBB_Two",
+    "make": "BBB",
+    "model": "Two",
+    "year": 2020,
+    "vin": "TESTVIN09E00D7D66",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:52.778020+00:00",
+    "user_id": "18404851-2806-4ede-9576-6df8ca77c835"
+  },
+  {
+    "_id": {
+      "$oid": "6a7899e5ca884fa1e9105c4b"
+    },
+    "id": "de2e3df2-7950-41be-82cd-2bbca2dcc6b7",
+    "name": "TEST_Mazda_3",
+    "make": "Mazda",
+    "model": "3",
+    "year": 2020,
+    "vin": "TESTVINE4D196CF6B",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:16:53.345501+00:00",
+    "user_id": "830d666e-896b-4ecc-873e-0e566ee24750",
+    "customerName": "Cust 2",
+    "customerNotes": "n2"
+  },
+  {
+    "_id": {
+      "$oid": "6a789a0aca884fa1e9105c4c"
+    },
+    "id": "0fcec40a-482a-47cd-84e4-63e8ac98e361",
+    "name": "Test Truck",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "UITESTB6E3726A64",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:17:30.235729+00:00",
+    "user_id": "f13cf509-c043-4d0a-9f74-d436305371f1",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:17:30.297457+00:00",
+        "score": 85
+      }
+    ],
+    "customerName": "Jane Doe",
+    "customerNotes": "UI test note"
+  },
+  {
+    "_id": {
+      "$oid": "6a789a52ca884fa1e9105c4d"
+    },
+    "id": "45de611c-8ea0-43ed-927c-bbfc180be44b",
+    "name": "Test Truck",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "UITEST20A76A838B",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:18:42.906112+00:00",
+    "user_id": "05abec97-b7a8-466b-a08b-17f749a58af3",
+    "health_history": [
+      {
+        "ts": "2026-08-09T15:18:42.960466+00:00",
+        "score": 85
+      }
+    ],
+    "customerName": "UI Customer Inc",
+    "customerNotes": "Handles A/C service"
+  },
+  {
+    "_id": {
+      "$oid": "6a789a8aca884fa1e9105c4e"
+    },
+    "id": "5405c1bb-da80-4453-b21f-7c6920c2dff3",
+    "name": "Free Car",
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2019,
+    "vin": "FREEUI52D7B990F2",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T15:19:38.501106+00:00",
+    "user_id": "67132d42-0e5d-4541-ab64-0ec696421e89"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a751ca884fa1e9105c4f"
+    },
+    "id": "a1931dcb-867a-44ff-ad11-89e8f8d2ad36",
+    "name": "TEST_HR_26c04e",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:09.360372+00:00",
+    "user_id": "e7ea2c8b-4365-4aab-8526-5f65a963cbef",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:09.615495+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a754ca884fa1e9105c50"
+    },
+    "id": "7433869e-b827-4d42-9ba1-26de77e61a50",
+    "name": "TEST_HR_661684",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:12.784203+00:00",
+    "user_id": "2219e104-a6a8-48a0-a2a6-bff679902c22",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:13.013705+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a756ca884fa1e9105c51"
+    },
+    "id": "e33f7cd5-9518-48dd-a8e7-4ce2f396c192",
+    "name": "TEST_HR_c66c49",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:14.704835+00:00",
+    "user_id": "1e4084fc-dee1-4dee-b604-5d67aab7d2af",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:14.790941+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": "b27dc4c9-a424-43b3-9ebe-3a28d3b7b539",
+    "id": "fd2926f5-4a6f-4169-bf74-01636238c2d1",
+    "user_id": "7c8c8a50-280a-473e-9cc2-28c365e3d2ed",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-09T16:14:19.768994+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-09T16:14:19.768582+00:00"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a75cca884fa1e9105c52"
+    },
+    "id": "27702e03-daf8-4c43-a4bc-a87b4a3e8576",
+    "name": "TEST_HR_e90f90",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:20.215501+00:00",
+    "user_id": "d19b5f82-903e-4a91-a8c6-cbad5d8b9769",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:20.271654+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77cca884fa1e9105c53"
+    },
+    "id": "a1165cd4-1c3d-48b2-a412-742b0578bd2d",
+    "name": "TEST_HR_bda12f",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:52.220536+00:00",
+    "user_id": "c3f88027-7782-40bb-bc90-74cad406a2aa",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:52.289252+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77cca884fa1e9105c54"
+    },
+    "id": "3d0d3e8c-9a92-4a00-b58e-3f84927c4846",
+    "name": "TEST_HR_0ef13e",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:52.919419+00:00",
+    "user_id": "1fbc1fdf-fc93-4758-a600-9842d53db5bf",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:52.963517+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77dca884fa1e9105c55"
+    },
+    "id": "e4dd4f17-79ad-4659-a1e0-9684294c1d99",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVINE81B34D201",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:53.891088+00:00",
+    "user_id": "e1743a92-e503-4cf6-b366-d5ea2f2cbca7"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77eca884fa1e9105c56"
+    },
+    "id": "51ef0888-c2b8-40d5-9649-0284bf1e6a76",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN2450A8B9E2",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:54.433390+00:00",
+    "user_id": "c2617cfe-2e38-4eac-a8a1-d56533f31665"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77fca884fa1e9105c57"
+    },
+    "id": "efa5e3fc-e065-4d14-b22b-b62cbc494c7e",
+    "name": "TEST_HR_25da9c",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:55.007480+00:00",
+    "user_id": "9b8c3add-aec6-46a4-859c-281b2e8dd999",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:55.049360+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77fca884fa1e9105c58"
+    },
+    "id": "ff87fb77-64fb-4430-8958-397f4623c2b2",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN22926E78CF",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:55.130203+00:00",
+    "user_id": "11e88f59-2932-4470-bb59-88cf5d1d22ea",
+    "customerName": "Bob Smith",
+    "customerNotes": "Prefers full synthetic oil"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77fca884fa1e9105c59"
+    },
+    "id": "6327a775-071e-4ce9-a107-090e287fd9fc",
+    "name": "My Truck",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN0F985E87BC",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:55.735735+00:00",
+    "user_id": "5b293634-4cb6-4949-a3be-b0ceccd5f1cb",
+    "mileage": 60000
+  },
+  {
+    "_id": {
+      "$oid": "6a78a780ca884fa1e9105c5a"
+    },
+    "id": "53f1da23-98d7-41a6-b0e1-3061c6d9b803",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN87EABADACA",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:56.269029+00:00",
+    "user_id": "00ea93c1-72bf-4687-9d65-45b859c13d25",
+    "mileage": 77777
+  },
+  {
+    "_id": {
+      "$oid": "6a78a780ca884fa1e9105c5b"
+    },
+    "id": "6a90817e-0fd3-4cc0-9b93-744a73eea710",
+    "name": "TEST_HR_1753d6",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "vin": "1C4HJXEG9JW174532",
+    "engine": "3.6L V6",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:56.763733+00:00",
+    "user_id": "4bc2cb58-93ab-40b3-b52d-8a35f7cd0e20",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:56.807563+00:00",
+        "score": 78
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a783ca884fa1e9105c5c"
+    },
+    "id": "8ae369f7-4004-44fb-910b-e526b6066deb",
+    "name": "TEST_Honda_Civic",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2020,
+    "vin": "TESTVIN281304A1C4",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:14:59.225677+00:00",
+    "user_id": "3b7cec33-ccdd-490b-b648-5263f0a7598f",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:59.270791+00:00",
+        "score": 90
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a783ca884fa1e9105c5d"
+    },
+    "id": "18e26138-f9a9-42ff-845b-43d986f32899",
+    "name": "TEST_Toyota_Camry",
+    "make": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "vin": "TESTVINDB19D4AEB0",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T16:14:59.316406+00:00",
+    "user_id": "3b7cec33-ccdd-490b-b648-5263f0a7598f",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:59.362675+00:00",
+        "score": 70
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a783ca884fa1e9105c5e"
+    },
+    "id": "30b0569d-6107-4a4b-a3cb-fa44b7973c5a",
+    "name": "TEST_Chevy_Malibu",
+    "make": "Chevy",
+    "model": "Malibu",
+    "year": 2020,
+    "vin": "TESTVINC31590F437",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T16:14:59.405670+00:00",
+    "user_id": "3b7cec33-ccdd-490b-b648-5263f0a7598f",
+    "health_history": [
+      {
+        "ts": "2026-08-09T16:14:59.453512+00:00",
+        "score": 40
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6a78a783ca884fa1e9105c5f"
+    },
+    "id": "5b9c9612-026e-43f5-9d53-dab52f512951",
+    "name": "TEST_Nissan_Altima",
+    "make": "Nissan",
+    "model": "Altima",
+    "year": 2020,
+    "vin": "TESTVIN47B8722363",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T16:14:59.496543+00:00",
+    "user_id": "3b7cec33-ccdd-490b-b648-5263f0a7598f"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a784ca884fa1e9105c60"
+    },
+    "id": "8afb7850-b5b6-41cc-8ce8-c97a78af7f92",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVIN7CF92465A7",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:15:00.001488+00:00",
+    "user_id": "62e94361-1090-41cf-84d9-f884e31338d5"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a784ca884fa1e9105c61"
+    },
+    "id": "55c23896-ef2e-4b5c-b634-0ec1479ba320",
+    "name": "TEST_Ford_F-150",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2020,
+    "vin": "TESTVINE448B90567",
+    "engine": "",
+    "is_active": false,
+    "created_at": "2026-08-09T16:15:00.046059+00:00",
+    "user_id": "62e94361-1090-41cf-84d9-f884e31338d5"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a785ca884fa1e9105c62"
+    },
+    "id": "9341ab7b-5f4b-4de2-bdd2-17d6877f5c5e",
+    "name": "TEST_AAA_One",
+    "make": "AAA",
+    "model": "One",
+    "year": 2020,
+    "vin": "TESTVIN72FFFED687",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:15:01.184195+00:00",
+    "user_id": "7ae5d72b-f943-4d17-91d8-8917689d7df3",
+    "customerName": "Alpha Corp"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a785ca884fa1e9105c63"
+    },
+    "id": "112113c1-a39e-4d81-9bbb-66631948d810",
+    "name": "TEST_BBB_Two",
+    "make": "BBB",
+    "model": "Two",
+    "year": 2020,
+    "vin": "TESTVINCF8B093F38",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:15:01.277689+00:00",
+    "user_id": "2cceb407-1f73-4b88-b51b-c67e67ed04f5"
+  },
+  {
+    "_id": {
+      "$oid": "6a78a785ca884fa1e9105c64"
+    },
+    "id": "23c6c2ed-f30e-4da1-85e9-ec07e57ca101",
+    "name": "TEST_Mazda_3",
+    "make": "Mazda",
+    "model": "3",
+    "year": 2020,
+    "vin": "TESTVINADCCB035DD",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-09T16:15:01.773239+00:00",
+    "user_id": "40be62a3-46ba-4597-bc42-6e8799070cdd",
+    "customerName": "Cust 2",
+    "customerNotes": "n2"
+  },
+  {
+    "_id": "a27c48ee-ddf1-4dad-908a-a4ac85b5fb56",
+    "id": "195faf43-4779-4bd4-9402-c34c000d0066",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 JEEP Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [
+      {
+        "ts": "2026-08-12T00:03:13.873168+00:00",
+        "score": 88
+      }
+    ],
+    "created_at": "2026-08-12T00:03:13.762846+00:00",
+    "make": "JEEP",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "Unlimited Sahara",
+    "engine": "3.6L 6-cyl",
+    "transmission": "Manual/Standard",
+    "drivetrain": "4WD/4-Wheel Drive/4x4",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "TOLEDO",
+    "decode_confidence": 0.95,
+    "decode_source": "nhtsa",
+    "last_scan_at": "2026-08-12T00:03:13.762366+00:00"
+  },
+  {
+    "_id": "84cd68f6-561b-4640-a711-a475df43e8e4",
+    "id": "bda05930-c1b9-4185-a26d-f82054508670",
+    "user_id": "22440ee1-229c-403f-b8f8-6399e63b0770",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 Jeep Wrangler",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-13T22:09:44.093629+00:00",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-13T22:09:44.093037+00:00"
+  },
+  {
+    "_id": "0713977c-556c-49e6-ad57-8635e3a83546",
+    "id": "ca6e71e8-0985-4f74-8470-65ae4b41678b",
+    "user_id": "8ce8aff4-1722-4043-b27c-55c524bc4ce9",
+    "vin": "1C4HJXEG9JW174532",
+    "name": "2018 Jeep Wrangler",
+    "mileage": 95000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-13T22:10:00.580782+00:00",
+    "make": "Jeep",
+    "model": "Wrangler",
+    "year": 2018,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-13T22:10:00.580372+00:00"
+  },
+  {
+    "_id": {
+      "$oid": "6a7e41946a3b8c5578dbb60a"
+    },
+    "id": "463ccf43-ac28-4768-8b6e-050e9c5c5f94",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-13T22:13:40.708111+00:00",
+    "user_id": "ada0c507-9db3-45e4-bc91-ba168c702bbb",
+    "mileage": 95000
+  },
+  {
+    "_id": {
+      "$oid": "6a7e41946a3b8c5578dbb60b"
+    },
+    "id": "041631b6-d4c0-4272-b405-598660a858f5",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-13T22:13:40.852706+00:00",
+    "user_id": "ae2844d7-18c6-40b0-827f-8190de437ed5"
+  },
+  {
+    "_id": {
+      "$oid": "6a7e41a17d18b4fc80432ba9"
+    },
+    "id": "e9a1ee12-6445-4e4e-bf6d-10a1e46bb862",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-13T22:13:53.736722+00:00",
+    "user_id": "27475a72-5f2d-4055-9588-96f30bdcfb68",
+    "mileage": 95000
+  },
+  {
+    "_id": {
+      "$oid": "6a7e41a17d18b4fc80432baa"
+    },
+    "id": "5e920ca2-63ec-4cae-8ad4-6097e07cd6c3",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-13T22:13:53.872610+00:00",
+    "user_id": "657f0a11-a56a-4666-a416-8fb286e0ae37"
+  },
+  {
+    "_id": {
+      "$oid": "6a7e42177d18b4fc80432bab"
+    },
+    "id": "5a034e72-45e2-4a2d-a8a5-8deab5cdcdee",
+    "name": "TestCar",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-13T22:15:51.762119+00:00",
+    "user_id": "cdb20dec-5d7a-43a0-a72d-a5bd08216ec5",
+    "mileage": 95000
+  },
+  {
+    "_id": {
+      "$oid": "6a7e42487d18b4fc80432bac"
+    },
+    "id": "b41b4ba8-37e8-41e0-a5a2-12919962cf0d",
+    "name": "TestCar",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-13T22:16:40.192767+00:00",
+    "user_id": "082f6422-8fb0-45e7-a85d-f1e302e2dad5",
+    "mileage": 95000
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c2854d0d97eca8f6f6"
+    },
+    "id": "dbc9dcbd-c61b-46fe-86e0-17266e4c4706",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-16T15:31:14.654112+00:00",
+    "user_id": "409e2c2a-9f9c-4533-8042-050bc29e031f"
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7cc854d0d97eca8f6f7"
+    },
+    "id": "bf3169b3-f04a-4ac3-b35f-91e77ec1adf6",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-16T15:31:24.541629+00:00",
+    "user_id": "e5eadecc-0735-4df9-8114-9e7e78d71ffe",
+    "mileage": 95000
+  },
+  {
+    "_id": "99147c55-00b5-4468-95df-5bf587fd0ed8",
+    "id": "85946075-af56-44da-b2f6-59a1894dbdb2",
+    "user_id": "a7888614-cd84-41ec-b018-62b4f1a73644",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T15:31:25.676557+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-16T15:31:25.676142+00:00"
+  },
+  {
+    "_id": "f5aeaebb-0cb8-4bff-8341-56cc463028f0",
+    "id": "96d0ab87-f992-40e4-8c68-2b4ac4c347e3",
+    "user_id": "154d0649-dead-46dd-81cf-78c8ddd54554",
+    "vin": "1HGCM82633A004352",
+    "name": "A-car",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T15:57:11.553279+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-16T15:57:11.552827+00:00"
+  },
+  {
+    "_id": "e3c305bd-8b10-498d-9442-c2a58f521261",
+    "id": "86aace75-6be7-4e9c-92db-8b550961d726",
+    "user_id": "91847a43-cea0-43c0-8b1c-7b9fccdfb725",
+    "vin": "1HGCM82633A004352",
+    "name": "2003 Honda Accord",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T16:20:05.711842+00:00",
+    "make": "Honda",
+    "model": "Accord",
+    "year": 2003,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": "",
+    "last_scan_at": "2026-08-16T16:20:05.898156+00:00"
+  },
+  {
+    "_id": {
+      "$oid": "6a8207f5c3b0829d88f5ce47"
+    },
+    "id": "daa08338-2e27-480a-ac17-1d4be41fa56c",
+    "name": "Test",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-16T18:56:53.312875+00:00",
+    "user_id": "2edd52bd-4846-49c3-a338-34dee420d3e0"
+  },
+  {
+    "_id": {
+      "$oid": "6a820802c3b0829d88f5ce48"
+    },
+    "id": "590078aa-2785-4d77-a586-a00ac6abcd4a",
+    "name": "Test",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-16T18:57:06.610418+00:00",
+    "user_id": "b0276591-b283-464b-a25d-3ff2a6d345f6",
+    "mileage": 82000
+  },
+  {
+    "_id": {
+      "$oid": "6a82084078db1b8b4f06466a"
+    },
+    "id": "4500aa32-5456-4fb9-95bd-0aa4fb80eb52",
+    "name": "T",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-08-16T18:58:08.068435+00:00",
+    "user_id": "be0287b1-2e5e-48c6-a0dc-9228b9cf8175",
+    "mileage": 82000
+  },
+  {
+    "_id": "452077c6-fc0e-418a-8157-87a6b1ef7923",
+    "id": "57b6b441-5a01-4e7f-b2c2-7db594a8494f",
+    "user_id": "70d9b533-e72b-4598-afca-0fcade26be68",
+    "vin": "1TESTC6A7BEE2E5AE",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:00:51.896361+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "5cd22c72-e12f-474a-87f9-7ebd18fc1eea",
+    "id": "f86359ee-aa1a-49c5-a6f2-724cb8d62a5a",
+    "user_id": "f883b644-3d23-4dea-a431-df7bec51ac31",
+    "vin": "1TEST641C8584EAE9",
+    "name": "2020 TEST Sample",
+    "mileage": 1000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:00:52.016017+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "b947b138-31da-42b2-b7d7-14e9afccccf5",
+    "id": "2b7d2226-dd8a-4a80-a2b8-3bb13639c739",
+    "user_id": "5f39e3f4-fd21-409b-9983-6ebad57f4c65",
+    "vin": "1TEST4115A62E825E",
+    "name": "2020 TEST Sample",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:00:52.563712+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "95e6f0b7-f097-4649-87ec-e04d5e730567",
+    "id": "b4a99f89-1a08-4c47-979b-c2e09f137972",
+    "user_id": "112686d8-11ec-422f-92a7-5a9aaff16058",
+    "vin": "1TEST947B9FFA631A",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:00:53.636670+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "e9c28dbc-5419-4401-9386-559b57ddf390",
+    "id": "a2524684-8daa-4c26-87ca-32dc5aa99801",
+    "user_id": "ebb4e6d9-9a6a-4b06-aee4-22d38e20ab38",
+    "vin": "1TEST3E30CAC177D2",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:21.216101+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "40679eea-075b-4480-8987-38405e8df544",
+    "id": "b5cd83eb-08ac-4a26-9825-d0f5867f569b",
+    "user_id": "f806f29d-04eb-45ad-9c9b-3d2c524492c8",
+    "vin": "1TEST194441691501",
+    "name": "2020 TEST Sample",
+    "mileage": 1000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:21.396182+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "eda31f16-6421-49f6-bbd4-f864345f3c64",
+    "id": "d32e9522-54aa-49e4-8fbf-e72adcacf183",
+    "user_id": "dcafe294-a3fc-4158-8e92-4d01e87362c5",
+    "vin": "1TESTAABD2FEB256B",
+    "name": "2020 TEST Sample",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:21.858453+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "f31551b1-0c2c-4266-b697-123d67a79681",
+    "id": "1923d84e-4123-4403-ae55-81978bd38b38",
+    "user_id": "67286ec2-4e40-4d82-992c-30d68038c633",
+    "vin": "1TEST3A4C3815C1B7",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:22.958407+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "654bbc09-c868-4b42-8c01-529d458d1629",
+    "id": "52826447-307b-44a0-810c-9e02ce3dd956",
+    "user_id": "4247e29d-7a02-41c6-a786-4cce40b3ea8a",
+    "vin": "1TEST9576F0DDD196",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:32.055269+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "406d67d9-ecb7-422d-bb1b-a6d2f91c616a",
+    "id": "7894e7c8-47b1-4e96-a898-f2ddc3236f51",
+    "user_id": "497c13d8-9649-405b-97bf-288824fdd1ac",
+    "vin": "1TESTD8EF428F47B5",
+    "name": "2020 TEST Sample",
+    "mileage": 1000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:32.152481+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "b4716575-5753-4b93-9347-89d7dd6b8fc0",
+    "id": "306d61fd-fce7-415d-a144-c150f25ad945",
+    "user_id": "24394c38-2f5d-493d-ab6c-711d14ee2270",
+    "vin": "1TEST79BE8F581F1E",
+    "name": "2020 TEST Sample",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:32.695295+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "7528d019-e63a-481c-8d6f-279ce65deb0a",
+    "id": "3b70c1cd-2ab1-464f-9f32-af82493cdaea",
+    "user_id": "11acb125-dd83-4406-a84a-8fb059cfda4c",
+    "vin": "1TEST9C1BA8B04D71",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:01:33.800945+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "aef417a1-3f15-4ef9-a6b6-3719e0846901",
+    "id": "17119431-9485-49c9-bb66-4d7fb63e2f4e",
+    "user_id": "3604de96-eab7-4dfe-a910-d3fac0246680",
+    "vin": "1TEST29EB1334DE05",
+    "name": "2019 BMW 3 Series",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:03:04.724683+00:00",
+    "make": "BMW",
+    "model": "3 Series",
+    "year": 2019,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "4438adb8-44e5-456c-ae3d-88f95230774e",
+    "id": "4c73faae-2e09-4f95-b866-9d64d00610e6",
+    "user_id": "c8d3b610-1b38-4264-b2a8-279bcc535f39",
+    "vin": "1TESTPHA2DA6F15AC",
+    "name": "2019 BMW 3 Series",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:05:25.391770+00:00",
+    "make": "BMW",
+    "model": "3 Series",
+    "year": 2019,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "907a6b48-99de-44c8-9f34-f3246764806b",
+    "id": "de5b68d0-14b9-4de5-843b-75b301e4a16f",
+    "user_id": "27d3e237-09ed-4e0d-921d-12a2ad3a8af4",
+    "vin": "1TESTPHADE7795CDC",
+    "name": "2020 Toyota Camry",
+    "mileage": 45000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-08-16T19:06:38.127015+00:00",
+    "make": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "a7411d65-d92b-4705-8afa-4f1528d2e37d",
+    "id": "a032fd09-9e08-46d3-858c-8d3ddf440b60",
+    "user_id": "37d8b064-3689-4d89-847d-90223163f994",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:19:18.222991+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": {
+      "$oid": "6a9afda6647e720db6181ea8"
+    },
+    "id": "e90e9976-6e5d-4578-b5fe-580bdf141e4b",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T17:19:34.001145+00:00",
+    "user_id": "a01e0f66-f6bb-415e-8912-1292b62521e2"
+  },
+  {
+    "_id": {
+      "$oid": "6a9afda6647e720db6181ea9"
+    },
+    "id": "da72cb29-9d9d-4209-9ba7-bf7014bb9e52",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T17:19:34.153732+00:00",
+    "user_id": "6edc682c-f2a3-452d-b987-2d32b2ba56c3",
+    "mileage": 95000
+  },
+  {
+    "_id": "d1cf44a1-1a01-4904-bb9e-6a87187a0846",
+    "id": "e186844b-0253-423c-8649-65e64d465ca7",
+    "user_id": "0c1fa564-5b85-4f21-9c85-3186c4753a2a",
+    "vin": "1TESTD82548D74CA9",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:19:35.259203+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "f699784a-7dd2-4fc5-94bc-e53bd53e88db",
+    "id": "86299d43-ab2f-4e2f-8f8a-5d0e71c6c658",
+    "user_id": "e8b63e28-c1bb-4c75-bd46-d3cf4a932d3d",
+    "vin": "1TEST14BE8C9FF9DB",
+    "name": "2020 TEST Sample",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:19:35.965611+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "0d7ee338-84c5-45c0-83c0-bcd635abbf6e",
+    "id": "b08068b9-5bb6-41a8-8cc4-ead94f8ff239",
+    "user_id": "85fa5af1-ec61-419f-b23b-9ffb42e8979b",
+    "vin": "1TEST2C0ECF58C22D",
+    "name": "2020 TEST Sample",
+    "mileage": 1000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:19:37.208357+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "06c03b5e-e050-47ad-b189-52568728e811",
+    "id": "e55329b0-12d0-4929-84b8-77b7f149a1c1",
+    "user_id": "6210e519-9ace-40af-97f9-f6195b31869d",
+    "vin": "1TEST74EAE97AA6B8",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:19:38.451859+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": {
+      "$oid": "6a9afdd6908a52c1dcb0b744"
+    },
+    "id": "02334b10-4d48-4866-9ac6-7a57bb1516d1",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T17:20:22.875283+00:00",
+    "user_id": "d63b9fe3-dc0b-4af7-89a6-ebd3984b99ef"
+  },
+  {
+    "_id": {
+      "$oid": "6a9afdd6908a52c1dcb0b745"
+    },
+    "id": "2ceb3797-5319-4927-b807-21f29dca5999",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T17:20:22.914737+00:00",
+    "user_id": "394a55f4-9349-4808-9929-43b1726698f9",
+    "mileage": 95000
+  },
+  {
+    "_id": "4156718f-a015-4f9b-84a1-ade4899018cb",
+    "id": "63a43417-70bc-4dec-ad16-72174b52eca7",
+    "user_id": "ca69e725-666b-4df7-a62d-b8fa2638bc78",
+    "vin": "1TESTD96040D68F3B",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:20:24.107589+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "7ea62353-3b53-47d2-bd85-ddb6355e645e",
+    "id": "7678e849-7a72-4f65-bf9c-3a9a4c71e638",
+    "user_id": "661909e1-36b7-4604-a313-16a5c007b2d2",
+    "vin": "1TESTB21F4A344CA7",
+    "name": "2020 TEST Sample",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:20:24.816209+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "b8344f4c-9f1d-4f15-9808-9ba8a91b9342",
+    "id": "73bff8e5-87a5-4235-9ac7-55926870101b",
+    "user_id": "01388a06-bfcd-4fca-99e0-5cd7e7c68828",
+    "vin": "1TEST2FBC3F173FD7",
+    "name": "2020 TEST Sample",
+    "mileage": 1000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:20:26.185917+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "ccbc7d31-70ab-4070-9598-7d8702631764",
+    "id": "69db50ce-73b3-4098-bfe7-82c928ec7d4c",
+    "user_id": "0a52c9b3-2432-4600-b4bf-14e593250f74",
+    "vin": "1TEST9DF5C2D1CDE1",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:20:27.336853+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": {
+      "$oid": "6a9b058283a328817e7cb406"
+    },
+    "id": "cee03f36-9442-42a0-9b59-540aba35db6b",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T17:53:06.700075+00:00",
+    "user_id": "e1829565-b712-47e3-895e-98144070f641"
+  },
+  {
+    "_id": "83be7c8d-2b73-49b0-9311-051ebb0ca9b8",
+    "id": "273c1ad7-6524-4930-8683-28560503f92e",
+    "user_id": "0a3d940b-d0ae-440a-ae9e-3d423cd0fe85",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:53:12.798224+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": {
+      "$oid": "6a9b058983a328817e7cb407"
+    },
+    "id": "b53dd25c-d1eb-46fb-9c04-5e05f7ba8f85",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T17:53:13.405382+00:00",
+    "user_id": "4c593f6e-b11b-4650-97ac-209febdbaa0c",
+    "mileage": 95000
+  },
+  {
+    "_id": "ccc8136a-9380-47fb-b34f-e24248264954",
+    "id": "15455301-f497-4f56-8715-34c0868edab5",
+    "user_id": "e41e770d-6899-4c41-88c1-916ba5e51d6f",
+    "vin": "1TESTDE1E56C73EEC",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:53:15.133388+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "bd9890ef-c3bb-4bf0-9297-db9185977e5e",
+    "id": "cb35af56-854e-46bd-a9af-1bca80691a12",
+    "user_id": "00f3aaed-7847-46d5-b212-5f3bf13a0da8",
+    "vin": "1TEST72E309180C37",
+    "name": "2020 TEST Sample",
+    "mileage": 82000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:53:15.911961+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "21bbb6b2-691c-4be4-9f1a-e591ce8573b2",
+    "id": "569b75f9-680b-4934-bd22-154b15dafdab",
+    "user_id": "2c03ec23-0504-4d79-abaa-d241be6f28b2",
+    "vin": "1TESTFBEEEF32F33C",
+    "name": "2020 TEST Sample",
+    "mileage": 1000,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:53:17.065615+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": "115cbf2e-89b7-4eaa-8bfa-1e8627eef8fc",
+    "id": "b6f7ce58-98fb-48f0-a0d2-e95b5beb8cec",
+    "user_id": "8ade0aa9-2cd6-4aa2-bb3d-71e778153fb7",
+    "vin": "1TEST8D03C2CFBBB6",
+    "name": "2020 TEST Sample",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T17:53:18.308459+00:00",
+    "make": "TEST",
+    "model": "Sample",
+    "year": 2020,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14926f6381d561b10771"
+    },
+    "id": "d243dac3-a984-4897-9591-37a308d42f21",
+    "name": "TEST_UserA_Car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T18:57:22.439762+00:00",
+    "user_id": "6db82846-d996-4207-9924-1215028eb698"
+  },
+  {
+    "_id": "f52258b9-fd11-43e7-8328-b4c330fc2181",
+    "id": "c7d8b40d-ca88-4b3a-861e-124f9f01b6f0",
+    "user_id": "e0ddc9fa-6a44-4acf-b10a-576850dd5699",
+    "vin": "1C4(((|||.*",
+    "name": "Test",
+    "mileage": null,
+    "is_active": true,
+    "health_history": [],
+    "created_at": "2026-09-04T18:57:32.538156+00:00",
+    "make": "",
+    "model": "",
+    "year": 0,
+    "trim": "",
+    "engine": "",
+    "transmission": "",
+    "drivetrain": "",
+    "bodyStyle": "",
+    "manufacturer": "",
+    "plant": "",
+    "decode_confidence": 0,
+    "decode_source": ""
+  },
+  {
+    "_id": {
+      "$oid": "6a9b149d6f6381d561b10772"
+    },
+    "id": "ed3743ea-42e6-4e46-8020-64dbf100123b",
+    "name": "TEST_honesty_car",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2018,
+    "vin": "",
+    "engine": "",
+    "is_active": true,
+    "created_at": "2026-09-04T18:57:33.160748+00:00",
+    "user_id": "217f7983-40c0-4574-b38b-3581e50a1ebf",
+    "mileage": 95000
+  },
+  {
+    "_id": {
+      "$oid": "6a9b313a3547534d48cf9f3f"
+    },
+    "id": "v_legacy",
+    "make": "Ford",
+    "user_id": "legacy_test_1"
+  },
+  {
+    "_id": {
+      "$oid": "6a9b313a3547534d48cf9f41"
+    },
+    "id": "v_google",
+    "make": "Tesla",
+    "user_id": "user_google_1"
+  }
+]

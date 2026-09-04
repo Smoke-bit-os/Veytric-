@@ -57,8 +57,8 @@ export default function AboutScreen() {
         <Text style={styles.sectionTitle}>ACCOUNT</Text>
         <View style={styles.card}>
           <Row label="Name" value={user?.name || "—"} />
-          <Row label="Email" value={user?.email || (provider === "guest" ? "Guest session" : "—")} />
-          <Row label="Sign-in" value={(provider || "—").toString()} />
+          <Row label="Email" value={user?.email || "—"} />
+          <Row label="Sign-in" value={provider === "google" ? "Google" : "—"} />
         </View>
 
         {/* Membership */}

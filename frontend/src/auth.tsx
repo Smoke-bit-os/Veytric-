@@ -5,23 +5,18 @@ import { storage } from "@/src/utils/storage";
 import { api, TOKEN_KEY } from "@/src/api";
 import { cacheClear } from "@/src/vehicle/intelligence/cache";
 import { licenseCache } from "@/src/licensing/licenseCache";
+import { runLegacyMigration } from "@/src/legacyMigration";
 import { startGoogleLogin, readWebCallback, cleanWebUrl, extractSessionId } from "@/src/googleAuth";
 
 type User = { id: string; name: string; email: string; entitlement?: any };
-type AuthProviderKind = "email" | "guest" | "apple" | "google" | null;
+type AuthProviderKind = "google" | null;
 
-const GUEST_KEY = "jarvis_guest";
 const UID_KEY = "jarvis_current_uid"; // read by user-scoped caches (e.g. VIN decode)
-const GUEST_USER: User = { id: "guest", name: "Guest", email: "" };
 
 type AuthCtx = {
   user: User | null;
   loading: boolean;
-  isGuest: boolean;
   provider: AuthProviderKind;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  loginAsGuest: () => Promise<void>;
   loginWithGoogle: () => Promise<boolean>;
   logout: () => Promise<void>;
 };
@@ -39,7 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const persistGoogle = async (res: any) => {
     await clearLocalUserData();
     await storage.secureSet(TOKEN_KEY, res.session_token);
-    await storage.removeItem(GUEST_KEY);
     await storage.setItem(UID_KEY, res.user.id);
     setUser(res.user);
     setProvider("google");
@@ -54,6 +48,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     (async () => {
+      // 0) One-time, versioned cleanup of any legacy (email/password/guest)
+      //    identity + unattributed caches. Runs BEFORE session restoration and
+      //    exactly once per install of this corrected version. Never touches a
+      //    freshly-minted Google session (we run it before any restore).
+      try {
+        await runLegacyMigration();
+      } catch {
+        // migration is best-effort; never block sign-in on it
+      }
+
       // 1) OAuth callback takes priority (Critical Rule 3). Web: URL on mount.
       try {
         const webSid = readWebCallback();
@@ -74,28 +78,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         }
       } catch {
-        // fall through to normal session/guest restore
+        // fall through to normal session restore
       }
 
+      // 2) Restore an existing Google session_token.
       const token = await storage.secureGet<string>(TOKEN_KEY, "");
       if (token) {
         try {
           const me = await api.me();
           setUser(me);
-          setProvider("email");
+          setProvider("google");
           await storage.setItem(UID_KEY, me.id);
           setLoading(false);
           return;
         } catch {
           await storage.secureRemove(TOKEN_KEY);
         }
-      }
-      // No valid session — restore guest mode if it was active.
-      const guest = await storage.getItem<boolean>(GUEST_KEY, false);
-      if (guest) {
-        setUser(GUEST_USER);
-        setProvider("guest");
-        await storage.setItem(UID_KEY, "guest");
       }
       setLoading(false);
     })();
@@ -111,42 +109,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Wipe every device-local, user-scoped cache so no data leaks across
-  // accounts or into Guest mode on the same device.
+  // accounts on the same device.
   const clearLocalUserData = async () => {
     await cacheClear();                 // predictions/trends/etc. (veh_intel:)
     await licenseCache.clear().catch(() => {});
     await storage.clearNamespace("veh:");        // any vehicle-scoped local state
     await storage.clearNamespace("scan:");       // cached scan state
     await storage.clearNamespace("vin_decode:"); // user-scoped VIN/VPIC decode cache
-  };
-
-  const persist = async (res: any) => {
-    // New session → clear anything the previous user/guest left behind first.
-    await clearLocalUserData();
-    await storage.secureSet(TOKEN_KEY, res.token);
-    await storage.removeItem(GUEST_KEY);
-    await storage.setItem(UID_KEY, res.user.id);
-    setUser(res.user);
-    setProvider("email");
-  };
-
-  const login = async (email: string, password: string) => {
-    const res = await api.login(email, password);
-    await persist(res);
-  };
-
-  const register = async (name: string, email: string, password: string) => {
-    const res = await api.register(name, email, password);
-    await persist(res);
-  };
-
-  const loginAsGuest = async () => {
-    // Guest starts from a clean slate — never inherits a prior user's cache.
-    await clearLocalUserData();
-    await storage.setItem(GUEST_KEY, true);
-    await storage.setItem(UID_KEY, "guest");
-    setUser(GUEST_USER);
-    setProvider("guest");
   };
 
   const loginWithGoogle = async (): Promise<boolean> => {
@@ -161,7 +130,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     await storage.secureRemove(TOKEN_KEY);
-    await storage.removeItem(GUEST_KEY);
     await storage.removeItem(UID_KEY);
     await clearLocalUserData();
     setUser(null);
@@ -173,11 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         loading,
-        isGuest: provider === "guest",
         provider,
-        login,
-        register,
-        loginAsGuest,
         loginWithGoogle,
         logout,
       }}

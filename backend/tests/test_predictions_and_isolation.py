@@ -9,6 +9,7 @@ import os
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "").rstrip("/")
 assert BASE_URL, "EXPO_PUBLIC_BACKEND_URL must be set in frontend/.env"
@@ -18,15 +19,9 @@ TIMEOUT = 20
 
 # --------------------------------------------------------------------------- helpers
 def _register(session: requests.Session, name: str = "T"):
-    email = f"test_{uuid.uuid4().hex[:10]}@example.com"
-    r = session.post(
-        f"{BASE_URL}/api/auth/register",
-        json={"name": name, "email": email, "password": "Jarvis2026!"},
-        timeout=TIMEOUT,
-    )
-    assert r.status_code == 200, f"register failed: {r.status_code} {r.text}"
-    data = r.json()
-    return data["token"], data["user"], email
+    # Google-only: mint a session directly (no HTTP register path anymore).
+    email, token, uid = seed_session(name)
+    return token, {"id": uid, "email": email}, email
 
 
 def _client(token: str | None = None) -> requests.Session:

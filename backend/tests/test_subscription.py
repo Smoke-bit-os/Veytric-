@@ -11,6 +11,7 @@ import os
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://jarvis-ai-1486.preview.emergentagent.com").rstrip("/")
 API = f"{BASE_URL}/api"
@@ -19,17 +20,12 @@ API = f"{BASE_URL}/api"
 # --------------------------- fixtures ---------------------------------------
 @pytest.fixture(scope="module")
 def user_session():
-    """Fresh registered user for the whole module."""
+    """Fresh Google-session user for the whole module."""
     s = requests.Session()
     s.headers.update({"Content-Type": "application/json"})
-    email = f"TEST_lic_{uuid.uuid4().hex[:10]}@jarvis.ai"
-    r = s.post(f"{API}/auth/register",
-               json={"name": "TEST Licensing", "email": email, "password": "TestPass123!"})
-    assert r.status_code == 200, f"register failed: {r.status_code} {r.text}"
-    body = r.json()
-    token = body["token"]
+    email, token, uid = seed_session("TEST Licensing")
     s.headers.update({"Authorization": f"Bearer {token}"})
-    return {"session": s, "email": email, "user": body["user"], "token": token}
+    return {"session": s, "email": email, "user": {"id": uid, "email": email}, "token": token}
 
 
 @pytest.fixture(scope="module")
@@ -44,29 +40,27 @@ def dev_reset(user_session):
 
 # --------------------------- auth regression --------------------------------
 class TestAuthEntitlementRegression:
-    def test_register_returns_entitlement(self):
-        email = f"TEST_reg_{uuid.uuid4().hex[:10]}@jarvis.ai"
+    def test_register_endpoint_retired(self):
+        # Google-only: legacy register is retired (410) and creates no account.
         r = requests.post(f"{API}/auth/register",
-                          json={"name": "TEST Reg", "email": email, "password": "TestPass123!"})
-        assert r.status_code == 200, r.text
-        u = r.json()["user"]
-        assert "entitlement" in u, "user object must include entitlement"
+                          json={"name": "TEST Reg", "email": "x@y.com", "password": "TestPass123!"})
+        assert r.status_code == 410
+
+    def test_login_endpoint_retired(self):
+        r = requests.post(f"{API}/auth/login", json={"email": "x@y.com", "password": "TestPass123!"})
+        assert r.status_code == 410
+
+    def test_new_session_user_is_free(self):
+        # A freshly-minted Google session user computes to a Free entitlement.
+        _, token, _ = seed_session("TEST Reg")
+        u = requests.get(f"{API}/auth/me", headers={"Authorization": f"Bearer {token}"}).json()
+        assert "entitlement" in u
         e = u["entitlement"]
         assert e["tier"] == "free"
         assert e["status"] == "none"
         assert e["trialUsed"] is False
         assert e["trialDaysRemaining"] == 0
         assert e["inGrace"] is False
-
-    def test_login_returns_entitlement(self):
-        email = f"TEST_login_{uuid.uuid4().hex[:10]}@jarvis.ai"
-        password = "TestPass123!"
-        requests.post(f"{API}/auth/register",
-                      json={"name": "TEST L", "email": email, "password": password})
-        r = requests.post(f"{API}/auth/login", json={"email": email, "password": password})
-        assert r.status_code == 200
-        assert "entitlement" in r.json()["user"]
-        assert r.json()["user"]["entitlement"]["tier"] == "free"
 
     def test_me_returns_entitlement(self, user_session):
         r = user_session["session"].get(f"{API}/auth/me")
@@ -82,10 +76,7 @@ class TestGetSubscription:
 
     def test_default_free_entitlement(self):
         # Fresh user
-        email = f"TEST_sub_{uuid.uuid4().hex[:10]}@jarvis.ai"
-        reg = requests.post(f"{API}/auth/register",
-                            json={"name": "TEST", "email": email, "password": "TestPass123!"})
-        tok = reg.json()["token"]
+        _, tok, _ = seed_session("TEST")
         r = requests.get(f"{API}/subscription", headers={"Authorization": f"Bearer {tok}"})
         assert r.status_code == 200
         body = r.json()
@@ -100,10 +91,7 @@ class TestGetSubscription:
 # --------------------------- /start-trial -----------------------------------
 class TestStartTrial:
     def test_start_trial_and_duplicate(self):
-        email = f"TEST_trial_{uuid.uuid4().hex[:10]}@jarvis.ai"
-        reg = requests.post(f"{API}/auth/register",
-                            json={"name": "TEST", "email": email, "password": "TestPass123!"})
-        tok = reg.json()["token"]
+        _, tok, _ = seed_session("TEST")
         H = {"Authorization": f"Bearer {tok}"}
 
         r = requests.post(f"{API}/subscription/start-trial", headers=H)
@@ -153,10 +141,8 @@ class TestDeveloperSet:
     """Verify computed entitlement per action + persistence via GET."""
 
     def _new_user(self):
-        email = f"TEST_dev_{uuid.uuid4().hex[:10]}@jarvis.ai"
-        reg = requests.post(f"{API}/auth/register",
-                            json={"name": "TEST DEV", "email": email, "password": "TestPass123!"})
-        return {"Authorization": f"Bearer {reg.json()['token']}"}, email
+        email, tok, _ = seed_session("TEST DEV")
+        return {"Authorization": f"Bearer {tok}"}, email
 
     def _set(self, H, action):
         r = requests.post(f"{API}/subscription/developer/set",

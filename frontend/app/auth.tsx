@@ -3,9 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   Pressable,
-  KeyboardAvoidingView,
   Platform,
   ScrollView,
   ActivityIndicator,
@@ -20,27 +18,22 @@ import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function AuthScreen() {
   const router = useRouter();
-  const { login, register, loginAsGuest, loginWithGoogle } = useAuth();
-  const [mode, setMode] = useState<"login" | "register">("login");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { loginWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const submit = async () => {
+  const signIn = async () => {
     setError("");
-    if (!email || !password || (mode === "register" && !name)) {
-      setError("Please fill in all fields");
-      return;
-    }
     setLoading(true);
     try {
-      if (mode === "login") await login(email.trim(), password);
-      else await register(name.trim(), email.trim(), password);
-      router.replace("/(tabs)");
-    } catch (e: any) {
-      setError(e.message || "Authentication failed");
+      const ok = await loginWithGoogle();
+      // Web redirects away and returns via the root gate; mobile returns here.
+      if (ok) router.replace("/(tabs)");
+    } catch {
+      setError("Could not sign in with Google. Please try again.");
+      if (Platform.OS !== "web") {
+        Alert.alert("Sign-in failed", "Could not sign in with Google. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -48,139 +41,47 @@ export default function AuthScreen() {
 
   return (
     <LinearGradient colors={[colors.surface, "#0A1020", colors.surface]} style={styles.flex}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.flex}
-      >
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <View style={styles.orbWrap}>
-            <AIOrb size={130} active />
-          </View>
-          <Text style={styles.brand}>VEYTRIC</Text>
-          <Text style={styles.tagline}>NEXT-GEN AUTOMOTIVE COMMAND CENTER</Text>
+      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+        <View style={styles.orbWrap}>
+          <AIOrb size={140} active />
+        </View>
+        <Text style={styles.brand}>VEYTRIC</Text>
+        <Text style={styles.tagline}>AI VEHICLE INTELLIGENCE</Text>
 
-          <View style={styles.card}>
-            <View style={styles.tabs}>
-              {(["login", "register"] as const).map((m) => (
-                <Pressable
-                  key={m}
-                  testID={`auth-tab-${m}`}
-                  style={[styles.tab, mode === m && styles.tabActive]}
-                  onPress={() => setMode(m)}
-                >
-                  <Text style={[styles.tabText, mode === m && styles.tabTextActive]}>
-                    {m === "login" ? "Sign In" : "Register"}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Sign in to continue</Text>
+          <Text style={styles.cardSub}>
+            VEYTRIC uses Google to keep your garage, scans and reports private to you.
+          </Text>
 
-            {mode === "register" && (
-              <Input
-                icon="account"
-                placeholder="Full name"
-                value={name}
-                onChangeText={setName}
-                testID="auth-name-input"
-              />
-            )}
-            <Input
-              icon="email"
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              testID="auth-email-input"
-            />
-            <Input
-              icon="lock"
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              testID="auth-password-input"
-            />
-
-            {error ? (
-              <Text style={styles.error} testID="auth-error">
-                {error}
-              </Text>
-            ) : null}
-
-            <Pressable
-              testID="auth-submit-button"
-              style={styles.button}
-              onPress={submit}
-              disabled={loading}
-            >
-              <LinearGradient
-                colors={[colors.brand, colors.brandSecondary]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.buttonGrad}
-              >
-                {loading ? (
-                  <ActivityIndicator color={colors.onBrandPrimary} />
-                ) : (
-                  <Text style={styles.buttonText}>
-                    {mode === "login" ? "INITIALIZE SYSTEM" : "CREATE ACCOUNT"}
-                  </Text>
-                )}
-              </LinearGradient>
-            </Pressable>
-          </View>
-
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>OR</Text>
-            <View style={styles.dividerLine} />
-          </View>
+          {error ? (
+            <Text style={styles.error} testID="auth-error">
+              {error}
+            </Text>
+          ) : null}
 
           <Pressable
             testID="auth-google-button"
             style={styles.googleBtn}
-            onPress={async () => {
-              try {
-                const ok = await loginWithGoogle();
-                if (ok) router.replace("/(tabs)"); // web redirects away & returns via root gate
-              } catch {
-                Alert.alert("Sign-in failed", "Could not sign in with Google. Please try again.");
-              }
-            }}
+            onPress={signIn}
+            disabled={loading}
           >
-            <MaterialCommunityIcons name="google" size={18} color={colors.onSurface} />
-            <Text style={styles.googleText}>Continue with Google</Text>
+            {loading ? (
+              <ActivityIndicator color={colors.onSurface} />
+            ) : (
+              <>
+                <MaterialCommunityIcons name="google" size={20} color={colors.onSurface} />
+                <Text style={styles.googleText}>Continue with Google</Text>
+              </>
+            )}
           </Pressable>
+        </View>
 
-          <Pressable
-            testID="auth-guest-button"
-            style={styles.guestBtn}
-            onPress={async () => {
-              await loginAsGuest();
-              router.replace("/(tabs)");
-            }}
-          >
-            <MaterialCommunityIcons name="incognito" size={16} color={colors.onSurfaceSecondary} />
-            <Text style={styles.guestText}>Continue as Guest</Text>
-          </Pressable>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <Text style={styles.legal}>
+          By continuing you agree to VEYTRIC's Terms and acknowledge the Privacy Policy.
+        </Text>
+      </ScrollView>
     </LinearGradient>
-  );
-}
-
-function Input(props: any) {
-  const { icon, ...rest } = props;
-  return (
-    <View style={styles.inputWrap}>
-      <MaterialCommunityIcons name={icon} size={18} color={colors.onSurfaceSecondary} />
-      <TextInput
-        placeholderTextColor={colors.onSurfaceSecondary}
-        style={styles.input}
-        autoCapitalize="none"
-        {...rest}
-      />
-    </View>
   );
 }
 
@@ -190,17 +91,17 @@ const styles = StyleSheet.create({
   orbWrap: { alignItems: "center", marginBottom: spacing.md },
   brand: {
     fontFamily: font.display,
-    fontSize: 42,
+    fontSize: 46,
     color: colors.onSurface,
     textAlign: "center",
     letterSpacing: 4,
   },
   tagline: {
     color: colors.brand,
-    fontSize: 10,
-    letterSpacing: 2,
+    fontSize: 11,
+    letterSpacing: 3,
     textAlign: "center",
-    marginTop: 2,
+    marginTop: 4,
     marginBottom: spacing.xl,
   },
   card: {
@@ -210,37 +111,39 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: spacing.lg,
   },
-  tabs: {
-    flexDirection: "row",
-    backgroundColor: colors.surface,
-    borderRadius: radius.pill,
-    padding: 4,
+  cardTitle: {
+    color: colors.onSurface,
+    fontSize: 18,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  cardSub: {
+    color: colors.onSurfaceSecondary,
+    fontSize: 13,
+    lineHeight: 19,
+    textAlign: "center",
+    marginTop: spacing.sm,
     marginBottom: spacing.lg,
   },
-  tab: { flex: 1, paddingVertical: 10, alignItems: "center", borderRadius: radius.pill },
-  tabActive: { backgroundColor: colors.surfaceTertiary },
-  tabText: { color: colors.onSurfaceSecondary, fontWeight: "600" },
-  tabTextActive: { color: colors.brand },
-  inputWrap: {
+  error: { color: colors.error, marginBottom: spacing.md, fontSize: 13, textAlign: "center" },
+  googleBtn: {
     flexDirection: "row",
+    gap: 10,
     alignItems: "center",
-    backgroundColor: colors.surface,
+    justifyContent: "center",
+    paddingVertical: 16,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    marginBottom: spacing.md,
+    borderColor: colors.borderStrong,
+    backgroundColor: colors.surfaceTertiary,
   },
-  input: { flex: 1, color: colors.onSurface, paddingVertical: 14, marginLeft: 8, fontSize: 15 },
-  error: { color: colors.error, marginBottom: spacing.sm, fontSize: 13 },
-  button: { borderRadius: radius.md, overflow: "hidden", marginTop: spacing.xs },
-  buttonGrad: { paddingVertical: 16, alignItems: "center" },
-  buttonText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1.5, fontSize: 14 },
-  guestBtn: { flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", marginTop: spacing.xl, padding: spacing.md },
-  divider: { flexDirection: "row", alignItems: "center", gap: spacing.md, marginTop: spacing.xl },
-  dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
-  dividerText: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 1, fontWeight: "700" },
-  googleBtn: { flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "center", marginTop: spacing.lg, paddingVertical: 14, borderRadius: radius.md, borderWidth: 1, borderColor: colors.borderStrong, backgroundColor: colors.surfaceSecondary },
-  googleText: { color: colors.onSurface, fontSize: 15, fontWeight: "700" },
-  guestText: { color: colors.onSurfaceSecondary, fontSize: 14, fontWeight: "600" },
+  googleText: { color: colors.onSurface, fontSize: 16, fontWeight: "700" },
+  legal: {
+    color: colors.onSurfaceSecondary,
+    fontSize: 11,
+    lineHeight: 16,
+    textAlign: "center",
+    marginTop: spacing.xl,
+    paddingHorizontal: spacing.md,
+  },
 });

@@ -10,6 +10,7 @@ import os
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://jarvis-ai-1486.preview.emergentagent.com").rstrip("/")
 API = f"{BASE_URL}/api"
@@ -19,12 +20,7 @@ API = f"{BASE_URL}/api"
 def user_session():
     s = requests.Session()
     s.headers.update({"Content-Type": "application/json"})
-    email = f"gr_{uuid.uuid4().hex[:10]}@example.com"
-    r = s.post(f"{API}/auth/register", json={"name": "GR Tester", "email": email, "password": "Jarvis2026!"})
-    assert r.status_code == 200, f"register failed: {r.status_code} {r.text}"
-    body = r.json()
-    tok = body.get("token") or body.get("access_token")
-    assert tok, f"No token in register response: {body}"
+    email, tok, uid = seed_session("GR Tester")
     s.headers.update({"Authorization": f"Bearer {tok}"})
     return s, email
 
@@ -52,15 +48,18 @@ class TestDevEndpointGuard:
         assert '/subscription/developer/set' in src
 
 
-# ---- Auth (used by Guided Repair via useAI/session token) ----
+# ---- Auth (Google-only session token) ----
 class TestAuthBasics:
-    def test_register_login_roundtrip(self):
-        email = f"gr2_{uuid.uuid4().hex[:10]}@example.com"
-        r = requests.post(f"{API}/auth/register", json={"name": "X", "email": email, "password": "Jarvis2026!"})
-        assert r.status_code == 200, r.text
-        r2 = requests.post(f"{API}/auth/login", json={"email": email, "password": "Jarvis2026!"})
-        assert r2.status_code == 200, r2.text
-        assert (r2.json().get("token") or r2.json().get("access_token"))
+    def test_legacy_endpoints_retired(self):
+        r = requests.post(f"{API}/auth/register", json={"name": "X", "email": "x@y.com", "password": "Jarvis2026!"})
+        assert r.status_code == 410, r.text
+        r2 = requests.post(f"{API}/auth/login", json={"email": "x@y.com", "password": "Jarvis2026!"})
+        assert r2.status_code == 410, r2.text
+
+    def test_session_token_works(self):
+        _, tok, _ = seed_session("GR Auth")
+        r = requests.get(f"{API}/auth/me", headers={"Authorization": f"Bearer {tok}"})
+        assert r.status_code == 200
 
 
 # ---- AI Analyze used by Guided Repair ----

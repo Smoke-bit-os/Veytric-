@@ -42,7 +42,6 @@ export function LicenseProvider({ children }: { children: React.ReactNode }) {
   const [entitlement, setEntitlement] = useState<Entitlement>(DEFAULT_ENTITLEMENT);
   const [loading, setLoading] = useState(true);
   const [offline, setOffline] = useState(false);
-  const isGuest = (user as any)?.id === "guest";
 
   const apply = useCallback(async (ent: Entitlement, cache = true) => {
     const reconciled = reconcile(ent);
@@ -51,8 +50,8 @@ export function LicenseProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const refresh = useCallback(async () => {
-    // Guests / logged-out users are always Free (local only).
-    if (!user || isGuest) {
+    // Logged-out users are always Free (local only).
+    if (!user) {
       setEntitlement(DEFAULT_ENTITLEMENT);
       setOffline(false);
       setLoading(false);
@@ -70,7 +69,7 @@ export function LicenseProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [user, isGuest, apply]);
+  }, [user, apply]);
 
   // Initial + reactive load. Load cache immediately for a fast paint, then
   // revalidate against the backend whenever the auth user changes.
@@ -83,10 +82,10 @@ export function LicenseProvider({ children }: { children: React.ReactNode }) {
     (async () => {
       setLoading(true);
       const cached = await licenseCache.load();
-      if (cached && user && !isGuest) setEntitlement(reconcile(cached));
+      if (cached && user) setEntitlement(reconcile(cached));
       await refresh();
     })();
-  }, [authLoading, user, isGuest, refresh]);
+  }, [authLoading, user, refresh]);
 
   const startTrial = useCallback(async () => {
     try {

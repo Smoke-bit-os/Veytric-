@@ -16,6 +16,7 @@ import uuid
 import asyncio
 import pytest
 import requests
+from _helpers import seed_session
 from motor.motor_asyncio import AsyncIOMotorClient
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://jarvis-ai-1486.preview.emergentagent.com").rstrip("/")
@@ -37,11 +38,8 @@ def client():
 
 
 def _register(client, tag: str):
-    email = _fresh_email(tag)
-    r = client.post(f"{API}/auth/register", json={"name": tag, "email": email, "password": "Jarvis2026!"})
-    assert r.status_code == 200, f"register: {r.status_code} {r.text}"
-    body = r.json()
-    return body["token"], body["user"]["id"], email
+    email, token, uid = seed_session(tag)
+    return token, uid, email
 
 
 def _auth(token):

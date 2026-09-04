@@ -1,0 +1,2522 @@
+[
+  {
+    "_id": "7648e407-9837-4a3c-ba38-bffe799bd39d",
+    "user_id": "35d1ab71-eb1e-4259-bbb0-b8a9532349ab",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG5JW123456",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "type": "current"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "dataQuality": 82,
+      "commQuality": "good",
+      "supportedPidCount": 40,
+      "retryRate": 0.02
+    },
+    "overall_score": 74,
+    "ai_report": "**Summary**  \n2018 Jeep Wrangler quick scan completed. Overall scan score: **74/100**. Communication quality was **good** with **82% data quality**, **40 supported PIDs**, and **2% retry rate**, indicating a generally reliable scan session.\n\nA **current P0300 \u2013 Random Misfire** fault is present. No module inventory, readiness monitor data, or system health details were returned in this scan set.\n\n**Modules Scanned**  \n- No modules reported in scan results\n- Module discovery may be incomplete or not supported in this session\n\n**Fault Codes**  \n- **P0300 \u2013 Random Misfire**\n  - Status: **Current**\n  - Interpretation: Misfire detected across multiple cylinders or without consistent cylinder identification\n  - Typical impact: rough idle, hesitation, reduced fuel economy, catalyst stress, possible MIL illumination\n\n**Readiness**  \n- No readiness monitor data available\n- Inspection/maintenance readiness status cannot be confirmed from this scan\n\n**System Health**  \n- No system health details reported\n- Network communication quality: **Good**\n- Data quality: **82%**\n- Supported PID count: **40**\n- Retry rate: **0.02**\n\n**Concerns**  \n- Active **P0300** indicates a combustion instability condition requiring follow-up diagnosis\n- Continued operation with an active misfire can overheat and damage catalytic converters\n- Absence of module and readiness data limits completeness of this quick scan\n\n**Recommended Actions**  \n- Confirm customer symptoms: rough idle, stumble, cold-start misfire, load-related hesitation\n- Review freeze-frame and Mode $06 misfire counters if available\n- Inspect ignition system first:\n  - spark plugs for wear/fouling\n  - coil condition and connector fit\n  - signs of moisture or oil intrusion\n- Check fuel and air-related causes:\n  - injector balance/contribution\n  - vacuum leaks / unmetered air\n  - intake sealing\n  - fuel quality and fuel pressure\n- Evaluate engine mechanical integrity if misfire persists:\n  - compression / leakdown\n  - valve train concerns\n- If applicable, perform a full module scan with enhanced data to recover:\n  - module list\n  - readiness monitors\n  - system health status\n  - pending/history faults\n\nIf desired, I can also convert this into a customer-facing service report or a technician worksheet.",
+    "created_at": "2026-08-05T21:37:44.490825+00:00"
+  },
+  {
+    "_id": "e632f6fd-865b-41f9-96b0-79f49c78ea00",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 39,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**  \nQuick Scan completed for 2018 Jeep Wrangler JL Sahara. Overall vehicle scan score: **51/100**. Communication reliability was **excellent** with high data integrity, so DTC results are considered trustworthy. Active powertrain faults indicate a drivability/emissions issue centered on **misfire and lean operation**, with additional **EVAP small leak** and **thermostat performance** faults present.\n\n**Modules Scanned**  \n- No individual modules reported in this scan dataset\n- Scan communication quality: **Excellent**\n- Communication score: **96**\n- Average latency: **39 ms**\n- Supported PIDs: **43**\n- Unsupported PIDs: **0**\n- Retry rate: **0%**\n- Average PID confidence: **0.99**\n- Sensor data quality: **98%**\n- Sensor checks passed: **5/5**\n\n**Fault Codes**  \n- **P0300** \u2014 Random/Multiple Cylinder Misfire Detected \u2014 **Current**\n- **P0171** \u2014 System Too Lean (Bank 1) \u2014 **Current**\n- **P0456** \u2014 EVAP System Small Leak Detected \u2014 **Pending**\n- **P0128** \u2014 Coolant Thermostat Below Regulating Temp \u2014 **Permanent**\n\n**Readiness**  \n- Readiness monitor data not reported in this scan\n\n**System Health**  \n- No module-level health status data reported in this scan\n- Diagnostic session quality supports confidence in stored and current DTCs\n\n**Concerns**  \n- **Primary concern:** P0171 and P0300 together strongly suggest a lean-running condition contributing to random misfire\n- **Likely root causes, ranked:**\n  1. Unmetered air/vacuum leak on Bank 1 or intake tract leak\n  2. Fuel delivery issue causing lean mixture under current operating conditions\n  3. Bank 1 air/fuel measurement bias, including upstream O2 sensor performance concerns\n  4. Ignition-related misfire that is aggravating fuel trim response\n- **Secondary concern:** P0456 indicates a small EVAP leak, commonly associated with fuel cap, EVAP hose, purge/vent sealing, or leak detection hardware\n- **Additional concern:** P0128 permanent code indicates engine coolant temperature is not reaching expected regulation threshold; thermostat likely weak/stuck open or coolant temp rationality issue\n- P0128 may worsen fuel control during warm-up and contribute to emissions faults, but is less likely to be the sole cause of P0171/P0300\n\n**Recommended Actions**  \n- Address **lean/misfire faults first**\n  - Inspect intake system for loose ducting, cracked hoses, PCV-related leaks, and manifold sealing issues\n  - Review live fuel trims at idle and under light load; elevated positive trims would support vacuum/intake leak diagnosis\n  - Check for misfire counters by cylinder to determine whether P0300 is truly random or concentrated\n  - Verify fuel pressure/volume and injector performance if no air leak is found\n  - Inspect spark plugs, coils, and ignition connections, especially if mileage is higher or maintenance history is unknown\n  - Evaluate Bank 1 upstream O2 sensor response if trims remain abnormal without obvious mechanical cause\n\n- Address **EVAP pending fault**\n  - Confirm fuel cap condition and seal integrity\n  - Inspect EVAP lines/connectors for minor leakage or damage\n  - Smoke-test EVAP system if P0456 returns after cap and hose inspection\n\n- Address **thermostat fault**\n  - Verify engine reaches proper operating temperature with scan data\n  - Inspect coolant level and cooling system condition\n  - Replace thermostat if engine warms slowly or runs below regulated temperature\n  - Clear codes and complete drive cycle after repair; permanent P0128 may require successful monitor completion before removal\n\n- After repairs\n  - Clear DTCs\n  - Road test with live data\n  - Recheck pending/current faults and readiness completion status",
+    "created_at": "2026-08-05T21:53:18.260245+00:00"
+  },
+  {
+    "_id": "82a58caa-d9b1-49f2-a4aa-4e7b42591720",
+    "user_id": "169ee008-6853-41b7-8f4b-f8d4dfa06144",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 41,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.98,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**  \nVehicle: 2018 Jeep Wrangler JL Sahara  \nQuick Scan Result: Faults present. Overall vehicle health score is **51/100**.\n\nPrimary issues detected:\n- **P0300** \u2014 Random/multiple cylinder misfire **(current)**\n- **P0171** \u2014 System too lean, Bank 1 **(current)**\n- **P0456** \u2014 EVAP system small leak **(pending)**\n- **P0128** \u2014 Coolant thermostat below regulating temperature **(permanent)**\n\nData acquisition quality was **excellent** with high confidence. Communication integrity was strong, so scan reliability is high.\n\n**Modules Scanned**  \n- No module list reported by the scan tool session.\n\n**Fault Codes**  \n- **P0300 \u2014 Random/Multiple Cylinder Misfire Detected**  \n  Status: **Current**  \n  Interpretation: Active combustion instability is present. This can be caused by lean operation, ignition faults, vacuum leaks, fuel delivery issues, or mechanical imbalance.\n\n- **P0171 \u2014 System Too Lean (Bank 1)**  \n  Status: **Current**  \n  Interpretation: Bank 1 air-fuel mixture is running lean. Common causes include unmetered air entry, intake/vacuum leaks, PCV-related leaks, low fuel pressure, injector flow issues, or biased airflow/load calculation.\n\n- **P0456 \u2014 EVAP System Small Leak Detected**  \n  Status: **Pending**  \n  Interpretation: Small evaporative emissions leak detected. Most commonly associated with fuel cap sealing, EVAP hose seepage, purge/vent valve sealing issues, or leak detection pump faults.\n\n- **P0128 \u2014 Coolant Thermostat Below Regulating Temp**  \n  Status: **Permanent**  \n  Interpretation: Engine coolant temperature previously failed to reach or maintain target regulating temperature. Most often caused by a thermostat stuck open or cooling system temperature regulation fault.\n\n**Readiness**  \n- No readiness monitor status data reported in this session.\n\n**System Health**  \n- No detailed system health dataset reported in this session.\n\nScan reliability metrics:\n- Communication quality: **Excellent**\n- Communication score: **96**\n- Latency: **41 ms**\n- Supported PID count: **43**\n- Unsupported PID count: **0**\n- Retry rate: **0%**\n- Average PID confidence: **0.98**\n- Sensor checks passed: **5/5**\n- Data quality: **98%**\n\n**Concerns**  \n- **Highest priority:** The combination of **P0300** and **P0171** suggests an active lean-related drivability fault. A vacuum leak or fuel delivery issue is likely and may be contributing directly to the misfire condition.\n- **Secondary concern:** **P0128** indicates thermostat performance below specification. This can affect fuel strategy, warm-up, heater performance, and long-term efficiency.\n- **Lower priority at present:** **P0456** is pending and typically non-drivability related, but should be addressed after the lean/misfire fault is corrected.\n\nLikely cause ranking:\n1. Intake/vacuum leak on Bank 1 or common intake tract leak  \n2. Fuel delivery issue causing lean operation and misfire  \n3. Ignition fault contributing to random misfire  \n4. Thermostat stuck open or cooling system regulation fault  \n5. Minor EVAP leak at cap, hose, purge, or vent components\n\n**Recommended Actions**  \n- Diagnose **P0300/P0171 together first**.\n  - Inspect for intake air leaks, loose ducting, vacuum hose faults, PCV leaks, and intake manifold leakage.\n  - Check fuel trim behavior and misfire counters with live data.\n  - Verify fuel pressure and injector performance.\n  - Inspect spark plugs and ignition coils, especially if misfire is load- or idle-sensitive.\n\n- Address **P0128** next.\n  - Confirm engine coolant temperature rise from cold start.\n  - Verify thermostat operation; replace thermostat if opening early or failing to maintain regulating temperature.\n  - Check coolant level and confirm ECT sensor plausibility if needed.\n\n- Diagnose **P0456** after primary drivability faults are resolved.\n  - Inspect fuel cap seal and cap installation.\n  - Check EVAP lines/connectors for small leaks.\n  - Run smoke test of EVAP system if code returns confirmed.\n\n- After repairs:\n  - Clear fault memory.\n  - Complete drive cycle.\n  - Recheck pending/current/permanent code status and readiness monitor completion.\n\nProfessional assessment: **Vehicle is presently showing an active lean/misfire condition that should be treated as the main repair priority.** The thermostat fault is also likely valid and should be corrected to restore proper thermal management.",
+    "created_at": "2026-08-05T22:33:23.626717+00:00"
+  },
+  {
+    "_id": "ec9f7cb1-f359-4b34-8782-bec12d892014",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 27,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.98,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\nQuick Scan completed for **2018 Jeep Wrangler JL Sahara**.  \nOverall vehicle scan score: **51/100**.\n\nScan quality was **excellent** with high-confidence communication:\n- Communication quality: **Excellent**\n- Communication score: **96**\n- Data quality: **98**\n- Average PID confidence: **0.98**\n- Latency: **27 ms**\n- Supported PIDs: **43**\n- Unsupported PIDs: **0**\n- Retry rate: **0%**\n- Sensor checks passed: **5/5**\n\nPrimary issues identified are a **current misfire condition**, a **current Bank 1 lean condition**, a **pending small EVAP leak**, and a **permanent thermostat performance fault**.\n\n**Modules Scanned**\n\n- No module list was reported by the scan tool dataset.\n- OBD communication integrity was strong; code retrieval reliability is considered high.\n\n**Fault Codes**\n\n- **P0300** \u2014 Random/Multiple Cylinder Misfire Detected \u2014 **Current**\n  - Active combustion instability is present.\n  - Commonly associated with ignition faults, unmetered air/vacuum leaks, fuel delivery imbalance, or lean operation.\n\n- **P0171** \u2014 System Too Lean (Bank 1) \u2014 **Current**\n  - Bank 1 air/fuel mixture is operating lean beyond correction limits.\n  - Strongly relevant to the active misfire fault.\n\n- **P0456** \u2014 EVAP System Small Leak Detected \u2014 **Pending**\n  - Small evaporative emissions leak detected.\n  - Often caused by fuel cap sealing issues, EVAP hose leaks, purge/vent valve leakage, or canister system seepage.\n\n- **P0128** \u2014 Coolant Thermostat Below Regulating Temp \u2014 **Permanent**\n  - Engine coolant temperature regulation has previously failed to meet expected threshold.\n  - Typically indicates a thermostat stuck open or skewed coolant temperature reporting.\n  - As a permanent code, it may remain stored until the fault is corrected and monitor criteria are satisfied.\n\n**Readiness**\n\n- No readiness monitor data was reported in this scan dataset.\n\n**System Health**\n\n- No system health detail was reported in this scan dataset.\n- Based on active faults alone, engine performance/emissions health is **degraded**.\n\n**Concerns**\n\n- **Highest priority:** **P0300 + P0171 together**\n  - This combination commonly indicates a **lean-induced misfire** rather than an isolated ignition failure.\n  - Most likely causes, ranked:\n    1. **Vacuum leak / unmetered air leak** on Bank 1 or common intake plumbing\n    2. **PCV/intake tract leak** or manifold sealing issue\n    3. **Fuel delivery issue** affecting mixture control\n    4. **Ignition component weakness** causing secondary misfire contribution\n\n- **Moderate priority:** **P0128**\n  - Engine may be running below intended operating temperature.\n  - Can affect fuel control, warm-up strategy, heater performance, and emissions readiness.\n\n- **Lower priority:** **P0456 pending**\n  - Usually not a drivability concern unless accompanied by purge system faults or fuel odor.\n\n**Recommended Actions**\n\n- **1. Diagnose lean condition and misfire first**\n  - Inspect intake system for vacuum leaks, loose ducts, damaged hoses, PCV routing faults, and intake manifold leakage.\n  - Review fuel trims and misfire counters with live data if available.\n  - Verify ignition system condition: plugs, coils, and coil connections.\n  - Confirm fuel pressure/injector performance if no air leak is found.\n\n- **2. Address thermostat fault**\n  - Verify actual coolant warm-up behavior from cold start.\n  - If operating temperature is slow to rise or remains low, replace thermostat with OE-spec unit.\n  - Confirm coolant level and coolant temperature sensor plausibility.\n\n- **3. Diagnose EVAP small leak**\n  - Inspect fuel cap seal and cap seating first.\n  - Inspect EVAP hoses and purge/vent circuit for minor leakage.\n  - Perform smoke test if fault returns after basic inspection.\n\n- **4. Clear codes and verify**\n  - After repairs, clear DTCs.\n  - Complete drive cycle and confirm:\n    - No return of **P0300** or **P0171**\n    - **P0456** does not reset\n    - **P0128** monitor passes and permanent code clears after successful monitor completion\n\n- **5. Drivability recommendation**\n  - Vehicle should **not be considered fully healthy for continued operation** until the active **misfire** and **lean** faults are resolved, due to catalyst damage risk and reduced engine performance.",
+    "created_at": "2026-08-05T22:35:40.374838+00:00"
+  },
+  {
+    "_id": "0aabd99b-74f3-47ee-bd1b-c5cf9ffdead0",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "full",
+    "title": "Full Vehicle Scan",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "Powertrain Control Module",
+        "short": "PCM/ECM",
+        "address": "0x7E0",
+        "icon": "engine",
+        "status": "online",
+        "calibrationId": "68410000AA",
+        "softwareVersion": "A1B2C3D4",
+        "functions": [
+          "Live Data (Mode 01)",
+          "Freeze Frame (Mode 02)",
+          "Stored DTCs (Mode 03)",
+          "Clear DTCs (Mode 04)",
+          "O2 Monitors (Mode 05)",
+          "On-board Monitors (Mode 06)",
+          "Pending DTCs (Mode 07)",
+          "VIN/CalID (Mode 09)"
+        ],
+        "dtcCount": 4
+      },
+      {
+        "key": "steering",
+        "name": "Steering Control Module",
+        "short": "EPS",
+        "address": "0x730",
+        "icon": "steering",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Torque Sensor Data",
+          "Stored DTCs",
+          "Calibration"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "hvac",
+        "name": "HVAC Module",
+        "short": "HVAC",
+        "address": "0x744",
+        "icon": "air-conditioner",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Temperature Data",
+          "Blower Control",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "tpms",
+        "name": "TPMS Module",
+        "short": "TPMS",
+        "address": "0x751",
+        "icon": "car-tire-alert",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Tire Pressure Data",
+          "Sensor IDs",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "key": "misfire",
+        "name": "Misfire Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "ccm",
+        "name": "Comprehensive Components",
+        "status": "ready"
+      },
+      {
+        "key": "catalyst",
+        "name": "Catalyst Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "hcat",
+        "name": "Heated Catalyst",
+        "status": "not_supported"
+      },
+      {
+        "key": "evap",
+        "name": "Evaporative System",
+        "status": "not_ready"
+      },
+      {
+        "key": "air",
+        "name": "Secondary Air System",
+        "status": "not_supported"
+      },
+      {
+        "key": "o2",
+        "name": "Oxygen Sensor Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "o2h",
+        "name": "O2 Sensor Heater",
+        "status": "ready"
+      },
+      {
+        "key": "egr",
+        "name": "EGR / VVT System",
+        "status": "ready"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "level": "bad",
+        "note": "Misfire / knock activity detected"
+      },
+      {
+        "key": "transmission",
+        "name": "Transmission",
+        "level": "good",
+        "note": "Shift behaviour nominal"
+      },
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      },
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System",
+        "level": "warn",
+        "note": "Fuel trims outside normal band"
+      },
+      {
+        "key": "emissions",
+        "name": "Emissions",
+        "level": "warn",
+        "note": "Emissions-related fault present"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 33,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\nVehicle: 2018 Jeep Wrangler JL Sahara\n\nFull vehicle scan completed successfully. Network communication quality was excellent, with 96/100 comm score, 33 ms average latency, 0% retry rate, and 98% overall data quality.\n\nOverall vehicle scan score: 51/100\n\nPrimary findings indicate an active engine performance/emissions issue centered on a lean-running condition with random/multiple cylinder misfire activity. Additional emissions-related faults include a pending EVAP small leak and a permanent thermostat performance fault. Other scanned body/chassis modules responded normally with no stored faults.\n\n**Modules Scanned**\n\n- **PCM/ECM**  \n  Address: 0x7E0  \n  Status: Online  \n  Calibration ID: 68410000AA  \n  Software Version: A1B2C3D4  \n  Functions available: Live Data, Freeze Frame, Stored/Pending DTCs, Clear DTCs, O2 Monitors, On-board Monitors, VIN/CalID  \n  DTC count: 4\n\n- **EPS / Steering Control Module**  \n  Address: 0x730  \n  Status: Online  \n  DTC count: 0\n\n- **HVAC Module**  \n  Address: 0x744  \n  Status: Online  \n  DTC count: 0\n\n- **TPMS Module**  \n  Address: 0x751  \n  Status: Online  \n  DTC count: 0\n\n**Fault Codes**\n\n- **P0300 \u2014 Random/Multiple Cylinder Misfire Detected**  \n  Status: Current  \n  Assessment: Active drivability fault. Consistent with combustion instability, commonly caused by lean operation, vacuum leak, ignition weakness, fuel delivery imbalance, or unmetered air entry.\n\n- **P0171 \u2014 System Too Lean (Bank 1)**  \n  Status: Current  \n  Assessment: Active fuel control fault. Strongly suggests the engine is compensating for excess air or insufficient fuel delivery. This is the most likely root fault linked to the misfire condition.\n\n- **P0456 \u2014 EVAP System Small Leak Detected**  \n  Status: Pending  \n  Assessment: Minor evaporative leak detected. Common causes include loose/faulty fuel cap, EVAP hose seepage, purge/vent valve leakage, or leak detection pump fault.\n\n- **P0128 \u2014 Coolant Thermostat Below Regulating Temp**  \n  Status: Permanent  \n  Assessment: Engine previously failed thermostat rationality criteria. Even if cooling system currently appears nominal, this code remains stored until the monitor passes. Most common cause is a thermostat stuck partially open or slow warm-up condition.\n\n**Readiness**\n\nMonitor status at time of scan:\n\n- Misfire Monitor: Not Ready\n- Fuel System Monitor: Not Ready\n- Comprehensive Components: Ready\n- Catalyst Monitor: Ready\n- Heated Catalyst: Not Supported\n- Evaporative System: Not Ready\n- Secondary Air System: Not Supported\n- Oxygen Sensor Monitor: Ready\n- O2 Sensor Heater: Ready\n- EGR / VVT System: Ready\n\nAssessment:\n- Readiness is incomplete due to active/current faults.\n- Misfire, fuel system, and EVAP monitors have not completed.\n- Vehicle is not in an ideal state for emissions inspection until faults are corrected and monitors reset/run.\n\n**System Health**\n\n- **Engine: Bad**  \n  Note: Misfire / knock activity detected\n\n- **Transmission: Good**  \n  Note: Shift behaviour nominal\n\n- **Charging System: Good**  \n  Note: Alternator output healthy\n\n- **Cooling System: Good**  \n  Note: Thermal management nominal\n\n- **Fuel System: Warn**  \n  Note: Fuel trims outside normal band\n\n- **Emissions: Warn**  \n  Note: Emissions-related fault present\n\n**Concerns**\n\nShort direct assessment: The main issue is an active lean condition causing misfire. P0171 and P0300 should be treated as the primary repair path. P0456 and P0128 are secondary but still require follow-up.\n\nLikely causes, ranked:\n1. Unmetered air / intake vacuum leak\n2. Fuel delivery weakness or injector imbalance\n3. Ignition-related misfire under lean load\n4. EVAP purge valve leaking or introducing uncommanded vapor/air\n5. Thermostat degraded or slow to reach regulating temperature\n\nTechnical notes:\n- P0171 with P0300 commonly points to a vacuum leak, intake tract leak, PCV-related air leak, purge valve stuck open, or low fuel delivery.\n- The pending P0456 may be separate, but an EVAP purge fault can contribute to mixture control issues if the purge valve does not seal properly.\n- P0128 being permanent means the PCM has not yet seen enough successful warm-up cycles to self-clear the fault.\n\n**Recommended Actions**\n\n1. **Address lean/misfire faults first: P0171 and P0300**\n   - Inspect intake system for vacuum leaks, split hoses, loose clamps, intake manifold leakage, and PCV circuit faults.\n   - Check EVAP purge valve sealing; a purge valve stuck slightly open can create a lean condition and misfire.\n   - Review fuel trims and misfire counters with live data.\n   - Verify fuel pressure/volume and injector performance.\n   - Inspect spark plugs, coils, and ignition components for wear or cylinder-specific weakness.\n\n2. **Diagnose pending EVAP leak: P0456**\n   - Confirm fuel cap condition and seal integrity.\n   - Inspect EVAP lines, canister connections, purge and vent components.\n   - Perform smoke test if leak is not visually obvious.\n\n3. **Follow up on thermostat fault: P0128**\n   - Confirm cold-start warm-up time and coolant temperature rise.\n   - Verify thermostat operation and coolant level.\n   - Replace thermostat if operating temperature is slow to reach or below specification.\n\n4. **After repairs**\n   - Clear DTCs.\n   - Complete drive cycle to reset monitors.\n   - Recheck readiness for Misfire, Fuel System, and EVAP.\n   - Confirm fuel trims return to normal and misfire activity is eliminated.\n\n5. **Priority order**\n   - High: P0171 / P0300\n   - Medium: P0456\n   - Medium-Low: P0128 permanent monitor follow-up\n\nIf you want, I can also convert this into a customer-facing service report or a technician work-order version with probable labor steps and parts suspects.",
+    "created_at": "2026-08-05T22:35:52.701918+00:00"
+  },
+  {
+    "_id": "f490349d-01c2-4764-9b81-85b3d2ad6c6d",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "health",
+    "title": "Health Check",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "level": "bad",
+        "note": "Misfire / knock activity detected"
+      },
+      {
+        "key": "transmission",
+        "name": "Transmission",
+        "level": "good",
+        "note": "Shift behaviour nominal"
+      },
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      },
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System",
+        "level": "warn",
+        "note": "Fuel trims outside normal band"
+      },
+      {
+        "key": "emissions",
+        "name": "Emissions",
+        "level": "warn",
+        "note": "Emissions-related fault present"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 33,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\n2018 Jeep Wrangler JL Sahara health check indicates **overall condition: Fair / Attention Required** with an **overall score of 51**.\n\nPrimary concern is **engine misfire / knock activity**, with supporting indicators of **fuel control deviation** and an **emissions-related issue**. Transmission, charging, and cooling systems appear to be operating normally at the time of scan.\n\nScan data quality was **excellent**, so confidence in the reported health status is high.\n\n**Modules Scanned**\n\n- Detected modules: **None reported by scan session**\n- Communication quality: **Excellent**\n- Communication score: **96/100**\n- Average latency: **33 ms**\n- Supported PIDs: **43**\n- Unsupported PIDs: **0**\n- Retry rate: **0%**\n- Average PID confidence: **0.99**\n- Sensor validation: **5/5 checks passed**\n- Data quality score: **98/100**\n\n**Fault Codes**\n\n- **No diagnostic trouble codes (DTCs) reported**\n- Despite no stored fault codes, the health model detected:\n  - **Misfire / knock activity**\n  - **Fuel trims outside normal band**\n  - **Emissions-related fault condition**\n\nThis can occur with:\n- Intermittent faults not yet matured into stored DTCs\n- Pending or recently cleared faults\n- Drive-cycle-dependent monitor failures\n- Combustion irregularities visible in live data before code setting thresholds are met\n\n**Readiness**\n\n- **Readiness monitor data not reported**\n\nReadiness status should be verified on a follow-up scan, especially if emissions inspection compliance is required.\n\n**System Health**\n\n- **Engine: Bad**\n  - Misfire / knock activity detected\n\n- **Transmission: Good**\n  - Shift behaviour nominal\n\n- **Charging System: Good**\n  - Alternator output healthy\n\n- **Cooling System: Good**\n  - Thermal management nominal\n\n- **Fuel System: Warning**\n  - Fuel trims outside normal band\n\n- **Emissions: Warning**\n  - Emissions-related fault present\n\n**Concerns**\n\nMost likely issues, ranked:\n\n1. **Combustion quality problem in one or more cylinders**\n   - Spark plugs worn or fouled\n   - Ignition coil weakness\n   - Injector imbalance\n   - Early-stage cylinder-specific misfire not yet setting a confirmed DTC\n\n2. **Fuel control error**\n   - Vacuum leak / unmetered air\n   - Fuel pressure deviation\n   - Injector flow inconsistency\n   - Upstream air/fuel sensing bias causing abnormal trims\n\n3. **Knock activity under load**\n   - Low-quality fuel or incorrect octane\n   - Lean operation\n   - Carbon buildup / hot spots\n   - Sensor-detected spark knock without a hard fault code\n\n4. **Emissions system performance issue**\n   - Catalyst efficiency beginning to degrade\n   - O2 sensor response issue\n   - EVAP / combustion-related emissions deviation not yet stored as a confirmed DTC\n\n**Recommended Actions**\n\n- **Perform a full enhanced scan**\n  - Check for **pending, permanent, and manufacturer-specific codes**\n  - Confirm all available modules are being queried\n\n- **Review live data at idle and under light load**\n  - Short-term and long-term fuel trims\n  - Misfire counters by cylinder\n  - Knock retard / spark correction\n  - Upstream and downstream O2 sensor behavior\n  - MAP, intake air temp, coolant temp, and calculated load\n\n- **Inspect ignition components first**\n  - Check spark plug condition, gap, and age\n  - Inspect coil boots and coils for tracking or breakdown\n  - Prioritize any cylinder showing elevated misfire counts\n\n- **Verify intake and fuel delivery integrity**\n  - Smoke test for vacuum leaks\n  - Check fuel pressure and injector balance if trims remain abnormal\n  - Inspect for intake tract leaks downstream of the air metering path\n\n- **Evaluate fuel quality / operating history**\n  - Confirm correct fuel grade\n  - Ask about recent refueling, long storage, or aftermarket additives\n\n- **Confirm emissions monitor status after repair**\n  - Re-scan after corrective action\n  - Verify readiness completion and stabilization of fuel trims / misfire activity\n\n**Assessment**\n\nVehicle is **driveable but should be scheduled for diagnostic follow-up soon**, particularly due to the **engine misfire/knock indication**. Continued operation without diagnosis may lead to reduced performance, catalyst stress, and worsening drivability.",
+    "created_at": "2026-08-05T22:36:01.968585+00:00"
+  },
+  {
+    "_id": "4af1d41a-44fa-4514-9e24-7325fdf837df",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "full",
+    "title": "Full Vehicle Scan",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "Powertrain Control Module",
+        "short": "PCM/ECM",
+        "address": "0x7E0",
+        "icon": "engine",
+        "status": "online",
+        "calibrationId": "68410000AA",
+        "softwareVersion": "A1B2C3D4",
+        "functions": [
+          "Live Data (Mode 01)",
+          "Freeze Frame (Mode 02)",
+          "Stored DTCs (Mode 03)",
+          "Clear DTCs (Mode 04)",
+          "O2 Monitors (Mode 05)",
+          "On-board Monitors (Mode 06)",
+          "Pending DTCs (Mode 07)",
+          "VIN/CalID (Mode 09)"
+        ],
+        "dtcCount": 4
+      },
+      {
+        "key": "steering",
+        "name": "Steering Control Module",
+        "short": "EPS",
+        "address": "0x730",
+        "icon": "steering",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Torque Sensor Data",
+          "Stored DTCs",
+          "Calibration"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "hvac",
+        "name": "HVAC Module",
+        "short": "HVAC",
+        "address": "0x744",
+        "icon": "air-conditioner",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Temperature Data",
+          "Blower Control",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "tpms",
+        "name": "TPMS Module",
+        "short": "TPMS",
+        "address": "0x751",
+        "icon": "car-tire-alert",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Tire Pressure Data",
+          "Sensor IDs",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "key": "misfire",
+        "name": "Misfire Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "ccm",
+        "name": "Comprehensive Components",
+        "status": "ready"
+      },
+      {
+        "key": "catalyst",
+        "name": "Catalyst Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "hcat",
+        "name": "Heated Catalyst",
+        "status": "not_supported"
+      },
+      {
+        "key": "evap",
+        "name": "Evaporative System",
+        "status": "not_ready"
+      },
+      {
+        "key": "air",
+        "name": "Secondary Air System",
+        "status": "not_supported"
+      },
+      {
+        "key": "o2",
+        "name": "Oxygen Sensor Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "o2h",
+        "name": "O2 Sensor Heater",
+        "status": "ready"
+      },
+      {
+        "key": "egr",
+        "name": "EGR / VVT System",
+        "status": "ready"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "level": "bad",
+        "note": "Misfire / knock activity detected"
+      },
+      {
+        "key": "transmission",
+        "name": "Transmission",
+        "level": "good",
+        "note": "Shift behaviour nominal"
+      },
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      },
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System",
+        "level": "warn",
+        "note": "Fuel trims outside normal band"
+      },
+      {
+        "key": "emissions",
+        "name": "Emissions",
+        "level": "warn",
+        "note": "Emissions-related fault present"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 37,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\n2018 Jeep Wrangler JL Sahara full vehicle scan completed successfully. Network communication quality was excellent, with high data confidence and no PID support gaps.\n\nOverall vehicle health score: **51/100**.\n\nPrimary issues are concentrated in the **powertrain/emissions system**:\n- **Current:** P0300 Random/Multiple Cylinder Misfire\n- **Current:** P0171 Bank 1 Lean Condition\n- **Pending:** P0456 Small EVAP Leak\n- **Permanent:** P0128 Thermostat Below Regulating Temperature\n\nAt this time, the most significant drivability concern is the **active misfire combined with a lean fuel condition**, which can increase catalyst stress and should be addressed first.\n\n**Modules Scanned**\n\n- **PCM/ECM** \u2014 Online  \n  Address: **0x7E0**  \n  Calibration ID: **68410000AA**  \n  Software Version: **A1B2C3D4**  \n  Functions available: Live Data, Freeze Frame, Stored/Pending DTCs, O2 Monitors, On-board Monitors, VIN/CalID  \n  DTC count: **4**\n\n- **EPS / Steering Control Module** \u2014 Online  \n  Address: **0x730**  \n  DTC count: **0**\n\n- **HVAC Module** \u2014 Online  \n  Address: **0x744**  \n  DTC count: **0**\n\n- **TPMS Module** \u2014 Online  \n  Address: **0x751**  \n  DTC count: **0**\n\nScan coverage indicates **4 of 4 detected modules online** with no communication faults observed.\n\n**Fault Codes**\n\n- **P0300 \u2014 Random/Multiple Cylinder Misfire Detected**  \n  Status: **Current**  \n  Assessment: Active combustion instability present. Commonly associated with ignition faults, unmetered air entry, fuel delivery imbalance, or mixture control issues.\n\n- **P0171 \u2014 System Too Lean (Bank 1)**  \n  Status: **Current**  \n  Assessment: Fuel trims are compensating beyond normal range on Bank 1. This is consistent with the reported fuel system warning and may be contributing directly to the misfire.\n\n- **P0456 \u2014 EVAP System Small Leak Detected**  \n  Status: **Pending**  \n  Assessment: Small evaporative emissions leak detected. Typical causes include fuel cap sealing issues, EVAP hose seepage, purge/vent valve leakage, or canister-related leaks.\n\n- **P0128 \u2014 Coolant Thermostat Below Regulating Temp**  \n  Status: **Permanent**  \n  Assessment: Engine coolant temperature previously failed to reach expected regulating range within calibrated time. This typically indicates a thermostat stuck open or slow warm-up condition. Code remains stored until monitor passes.\n\n**Readiness**\n\nMonitor status at time of scan:\n- **Not Ready**\n  - Misfire Monitor\n  - Fuel System Monitor\n  - Evaporative System Monitor\n\n- **Ready**\n  - Comprehensive Components\n  - Catalyst Monitor\n  - Oxygen Sensor Monitor\n  - O2 Sensor Heater Monitor\n  - EGR / VVT System Monitor\n\n- **Not Supported**\n  - Heated Catalyst\n  - Secondary Air System\n\nReadiness pattern is consistent with current/pending emissions faults and incomplete drive-cycle validation following recent fault activity.\n\n**System Health**\n\n- **Engine:** **Bad**  \n  Note: Misfire / knock activity detected\n\n- **Transmission:** **Good**  \n  Note: Shift behaviour nominal\n\n- **Charging System:** **Good**  \n  Note: Alternator output healthy\n\n- **Cooling System:** **Good**  \n  Note: Thermal management nominal\n\n- **Fuel System:** **Warn**  \n  Note: Fuel trims outside normal band\n\n- **Emissions:** **Warn**  \n  Note: Emissions-related fault present\n\n**Concerns**\n\nRanked by priority:\n\n1. **Active misfire with lean condition**\n   - P0300 and P0171 are likely related.\n   - Most probable causes:\n     - Intake/vacuum leak downstream of the MAF/MAP calculation point\n     - PCV or intake duct leak\n     - Low fuel pressure / restricted fuel delivery\n     - Ignition weakness under lean load condition\n     - Exhaust leak ahead of O2 sensing on Bank 1\n\n2. **Small EVAP leak**\n   - Pending P0456 is lower immediate drivability priority.\n   - Common on cap seal, purge line, vent hose, or canister plumbing.\n\n3. **Thermostat performance issue**\n   - Permanent P0128 suggests prior under-temperature operation.\n   - If still present in live operation, fuel control and warm-up efficiency can be affected.\n\n**Recommended Actions**\n\n1. **Address P0300 and P0171 first**\n   - Inspect intake tract, vacuum lines, PCV routing, and manifold sealing for leaks.\n   - Review short-term and long-term fuel trims at idle and at 2500 rpm.\n     - High positive trims at idle that improve with rpm strongly suggest vacuum leak.\n   - Check for cylinder-specific misfire data to isolate whether P0300 is truly random or concentrated.\n   - Inspect spark plugs, coils, and plug condition for lean burn or ignition breakdown.\n   - Verify fuel pressure and fuel delivery volume under load.\n   - Inspect upstream exhaust for leaks that could skew O2 feedback.\n\n2. **Resolve EVAP pending fault**\n   - Inspect and test fuel cap seal and cap seating.\n   - Smoke-test EVAP system if fault returns.\n   - Check purge valve sealing and vent line integrity.\n\n3. **Verify thermostat operation**\n   - Confirm cold-start warm-up rate and stabilized coolant temperature with live data.\n   - If operating temperature remains below specification, replace thermostat and recheck.\n\n4. **After repairs**\n   - Clear codes.\n   - Complete drive cycle to reset monitors.\n   - Confirm:\n     - No return of P0300/P0171\n     - EVAP monitor completes\n     - P0128 permanent code clears after successful monitor execution\n     - Fuel trims return to normal operating range\n\n5. **Operational caution**\n   - Avoid extended driving under active misfire conditions to reduce risk of catalytic converter damage.\n\nIf you want, I can also turn this into a customer-facing shop report format or a technician worksheet with diagnostic priority and estimated labor flow.",
+    "created_at": "2026-08-05T22:36:51.879643+00:00"
+  },
+  {
+    "_id": "6f9a32f8-b198-4c9f-9805-f2cd161ea85c",
+    "user_id": "2e720451-01fa-491b-9b4a-51776a5a0c0c",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "health",
+    "title": "Health Check",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "level": "bad",
+        "note": "Misfire / knock activity detected"
+      },
+      {
+        "key": "transmission",
+        "name": "Transmission",
+        "level": "good",
+        "note": "Shift behaviour nominal"
+      },
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      },
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System",
+        "level": "warn",
+        "note": "Fuel trims outside normal band"
+      },
+      {
+        "key": "emissions",
+        "name": "Emissions",
+        "level": "warn",
+        "note": "Emissions-related fault present"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 30,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 1,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\nVehicle: 2018 Jeep Wrangler JL Sahara  \nOverall Health Score: 51/100\n\nPrimary concern is engine health. Current data indicates misfire and/or knock activity, with fuel control also outside the normal operating band and an emissions-related issue flagged. Transmission, charging, and cooling systems appear to be operating normally.\n\nScan/data reliability was strong, with excellent communication quality and high data confidence:\n- Communication score: 96\n- Latency: 30 ms\n- Supported PID count: 43\n- Retry rate: 0%\n- Data quality: 98%\n\n**Modules Scanned**\n\nNo individual module list was reported by the scan tool.\n\n**Fault Codes**\n\nNo fault codes were returned in the provided data set.\n\nNote: despite no DTCs listed, system analysis still flagged:\n- Engine misfire / knock activity detected\n- Emissions-related fault present\n- Fuel trims outside normal band\n\nThis can occur with pending faults, intermittent events, mode-specific detections, or scan data captured before code maturation.\n\n**Readiness**\n\nNo readiness monitor status was reported in the provided data set.\n\n**System Health**\n\n- Engine: Bad  \n  Misfire / knock activity detected\n\n- Transmission: Good  \n  Shift behaviour nominal\n\n- Charging System: Good  \n  Alternator output healthy\n\n- Cooling System: Good  \n  Thermal management nominal\n\n- Fuel System: Warn  \n  Fuel trims outside normal band\n\n- Emissions: Warn  \n  Emissions-related fault present\n\n**Concerns**\n\nRanked by priority:\n\n1. Engine misfire / knock activity  \n   Most significant issue. Can be caused by ignition faults, fuel delivery imbalance, vacuum/air leaks, low-quality fuel, carbon accumulation, injector issues, or mechanical cylinder-related problems.\n\n2. Fuel trims out of range  \n   Indicates the ECM is making abnormal correction to maintain air-fuel ratio. Common causes include intake leaks, MAF/MAP plausibility issues, injector imbalance, fuel pressure deviation, or upstream exhaust leakage.\n\n3. Emissions system fault indication without listed DTCs  \n   Suggests a pending, intermittent, or recently detected emissions fault. This should be verified with a full scan including pending and permanent codes.\n\n**Recommended Actions**\n\n- Perform a full module scan with stored, pending, and permanent DTC retrieval.\n- Review live misfire counters by cylinder and confirm whether knock retard is active.\n- Inspect spark plugs and ignition coils; swap coils if needed to isolate a cylinder-specific misfire.\n- Check fuel trim data at idle and at 2500 rpm:\n  - If trims are high positive, suspect vacuum leak, unmetered air, or fuel delivery issue.\n  - If trims are high negative, suspect rich condition, injector leakage, or sensor bias.\n- Verify fuel quality and confirm correct octane.\n- Check for intake tract leaks, PCV-related leaks, and exhaust leaks upstream of the oxygen sensors.\n- Evaluate injector performance and fuel pressure if trim imbalance persists.\n- If knock activity is confirmed, inspect for combustion chamber deposits, incorrect spark plugs, lean operation, or mechanical noise being interpreted as knock.\n- Confirm OBD readiness status after repairs and recheck for code maturation.\n\nCurrent operating risk is moderate. Vehicle may remain drivable if symptoms are mild, but continued operation with active misfire or knock can damage the catalytic converter and degrade engine performance.",
+    "created_at": "2026-08-06T00:26:42.209739+00:00"
+  },
+  {
+    "_id": "f2ab74cf-58c3-477b-b40d-65c77231858a",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "cooling",
+    "title": "Cooling System Evaluation",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 41,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 67,
+    "ai_report": "**Summary**\n\nCooling system evaluation for the 2018 Jeep Wrangler JL Sahara indicates normal operation at this time. No diagnostic trouble codes were reported, no module faults were detected, and cooling system status is rated **good** with **thermal management nominal**. Data reliability was high, with excellent communication quality and strong sensor confidence.\n\n**Modules Scanned**\n\n- Detected modules: none reported in this scan set\n- Communication quality: **Excellent**\n- Communication score: **96/100**\n- Average latency: **41 ms**\n- Supported PIDs: **43**\n- Unsupported PIDs: **0**\n- Retry rate: **0%**\n- Average PID confidence: **0.99**\n\n**Fault Codes**\n\n- No fault codes present\n- No cooling-system-related DTCs detected in the provided scan data\n\n**Readiness**\n\n- No readiness monitor data reported in this scan set\n\n**System Health**\n\n- Cooling System status: **Good**\n- Assessment note: **Thermal management nominal**\n- Sensor validation: **5/5 checks passed**\n- Data quality: **98%**\n- Overall scan score: **67**\n\n**Concerns**\n\n- No active cooling system faults identified\n- No evidence in the provided data of thermostat, radiator fan, coolant temperature sensor, or circulation performance issues\n- Readiness monitor status and module enumeration were not populated, so this report is limited to the available scan dataset\n\n**Recommended Actions**\n\n- No immediate cooling system repair indicated\n- Confirm coolant level and condition during routine under-hood inspection\n- Inspect for early signs of seepage at radiator end tanks, hose connections, water pump area, and thermostat housing\n- Verify proper radiator fan operation during warm-up or commanded A/C operation if a functional check is desired\n- Continue normal service intervals and rescan if overheating symptoms, coolant loss, or temperature fluctuation develops",
+    "created_at": "2026-08-07T17:04:41.645214+00:00"
+  },
+  {
+    "_id": "dda5efc9-c4d3-4eef-ac3e-0efb1eb12adf",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "charging",
+    "title": "Charging System Test",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 37,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 67,
+    "ai_report": "**Summary**  \nCharging system test completed for a **2018 Jeep Wrangler JL Sahara**.  \nResult: **Charging system operating normally** at time of test. Alternator output is reported **healthy**, with no detected charging-related faults or communication issues during the scan.\n\n**Modules Scanned**  \n- Detected modules: **None reported in this scan result**\n- Scan communication quality: **Excellent**\n- Communication score: **96/100**\n- Average PID confidence: **0.99**\n- Data quality: **98%**\n- Latency: **37 ms**\n- Supported PIDs: **43**\n- Unsupported PIDs: **0**\n- Retry rate: **0%**\n\n**Fault Codes**  \n- **No fault codes present**\n- No charging system DTCs detected at time of evaluation\n\n**Readiness**  \n- **No readiness monitor data reported** in this scan result\n\n**System Health**  \n- Charging System: **Good**\n- Assessment: **Alternator output healthy**\n- Sensor validation: **5/5 checks passed**\n\n**Concerns**  \n- No active charging system faults identified\n- No communication reliability concerns affecting test validity\n- Overall vehicle scan score: **67**  \n  - Note: overall score does not indicate a charging fault based on the available charging-system data\n\n**Recommended Actions**  \n- **No repair action required** for the charging system at this time\n- If battery or starting concerns exist, perform a **battery state-of-health and load test** to complement this result\n- Recheck charging performance if symptoms occur, especially:\n  - Battery warning lamp illumination\n  - Slow cranking or no-start\n  - Voltage fluctuation\n  - Accessory power instability\n- Maintain normal inspection intervals for:\n  - Battery terminal condition\n  - Ground connections\n  - Serpentine belt condition and tension",
+    "created_at": "2026-08-07T17:05:51.989693+00:00"
+  },
+  {
+    "_id": "43cf0d49-1f1a-442f-a52c-819d8c592df0",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 39,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\n2018 Jeep Wrangler JL Sahara quick scan completed successfully. Scan communication and data integrity were excellent, indicating high confidence in the reported results.\n\nOverall vehicle scan score: **51/100**\n\nPrimary issues detected:\n- **P0300** \u2014 Random/Multiple Cylinder Misfire Detected (**current**)\n- **P0171** \u2014 System Too Lean, Bank 1 (**current**)\n- **P0456** \u2014 EVAP System Small Leak Detected (**pending**)\n- **P0128** \u2014 Coolant Thermostat Below Regulating Temp (**permanent**)\n\nPattern suggests an active **air/fuel control issue** contributing to misfire, with separate **EVAP small leak** and **coolant thermostat performance** concerns.\n\n**Modules Scanned**\n\n- Detected modules: **0 reported in scan data**\n- Network communication quality: **Excellent**\n- Communication score: **96/100**\n- Average latency: **39 ms**\n- Retry rate: **0%**\n\n**Fault Codes**\n\n- **P0300** \u2014 Random/Multiple Cylinder Misfire Detected  \n  Status: **Current**  \n  Significance: Active combustion instability. Commonly associated with lean operation, vacuum leaks, ignition faults, fuel delivery issues, or unmetered air.\n\n- **P0171** \u2014 System Too Lean (Bank 1)  \n  Status: **Current**  \n  Significance: Active lean condition on Bank 1. Strongly relevant to the misfire complaint and should be prioritized with P0300.\n\n- **P0456** \u2014 EVAP System Small Leak Detected  \n  Status: **Pending**  \n  Significance: Small leak in EVAP system, often due to fuel cap seal, EVAP hose seepage, purge/vent valve leakage, or leak detection pump-related fault.\n\n- **P0128** \u2014 Coolant Thermostat Below Regulating Temp  \n  Status: **Permanent**  \n  Significance: Engine coolant temperature is not reaching expected regulation threshold. Most often caused by a thermostat stuck open or biased ECT input. Permanent status indicates fault history remains stored until monitor passes.\n\n**Readiness**\n\n- Readiness monitor data: **Not reported in scan data**\n\n**System Health**\n\n- System health data: **Not reported in scan data**\n- Supported PID count: **43**\n- Unsupported PID count: **0**\n- Sensor check pass rate: **5/5**\n- Average PID confidence: **0.99**\n- Data quality: **98/100**\n\n**Concerns**\n\nRanked by priority:\n\n1. **Active lean condition with concurrent misfire**\n   - P0171 and P0300 together strongly suggest unmetered air, intake/vacuum leakage, PCV-related leak, fuel delivery weakness, or less commonly MAF/MAP load calculation error depending on engine configuration.\n   - Continued operation may increase catalyst stress and drivability complaints.\n\n2. **Cooling system regulation fault**\n   - P0128 can reduce fuel control accuracy during warm-up, impact heater performance, and extend enrichment strategy.\n   - Usually not the root cause of P0171/P0300, but should be corrected.\n\n3. **Small EVAP leak**\n   - P0456 pending is lower immediate severity.\n   - If purge valve is leaking when commanded closed, it can contribute to lean operation in some cases.\n\n**Recommended Actions**\n\n1. **Address P0171/P0300 first**\n   - Inspect for intake/vacuum leaks, especially PCV plumbing, intake ducting, manifold seals, brake booster hose, and evap purge routing.\n   - Review fuel trims at idle and 2500 rpm.\n   - Check misfire counters by cylinder if enhanced data is available.\n   - Verify ignition component condition and fuel delivery performance.\n\n2. **Test EVAP purge system during lean diagnosis**\n   - Confirm purge valve is fully sealing when not commanded on.\n   - Inspect fuel cap seal and EVAP lines for small leak source.\n\n3. **Correct P0128**\n   - Verify engine reaches normal operating temperature.\n   - Check thermostat operation and ECT sensor plausibility.\n   - Replace thermostat if opening early or stuck partially open.\n\n4. **Post-repair verification**\n   - Clear faults after repairs.\n   - Complete warm-up and drive cycle.\n   - Confirm P0300/P0171 do not reset and verify EVAP/cooling monitors pass.\n\nIf you want, I can also convert this into a **customer-facing service report** or a **technician work-order version with diagnostic priorities and labor steps**.",
+    "created_at": "2026-08-07T17:06:10.201877+00:00"
+  },
+  {
+    "_id": "ca731653-d2c3-4065-ad07-b98e3e8b509e",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 47,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.98,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\n2018 Jeep Wrangler JL Sahara quick scan completed successfully. Data link quality was excellent and scan reliability was high, so results are considered dependable.\n\nOverall vehicle scan score: **51/100**\n\nPrimary faults indicate:\n- **Active drivability issue:** random/multiple cylinder misfire\n- **Active fuel control issue:** Bank 1 running lean\n- **Secondary emissions issue:** small EVAP leak pending\n- **Historical/uncleared fault:** thermostat below regulating temperature permanent\n\nThese faults suggest the misfire and lean condition may be related and should be prioritized first.\n\n**Modules Scanned**\n\n- Detected modules: **No module list returned**\n- Communication quality: **Excellent**\n- Communication score: **96**\n- Latency: **47 ms**\n- Supported PID count: **43**\n- Unsupported PID count: **0**\n- Retry rate: **0%**\n- Average PID confidence: **0.98**\n- Sensor checks passed: **5/5**\n- Data quality: **98%**\n\n**Fault Codes**\n\n- **P0300** \u2014 Random/Multiple Cylinder Misfire Detected \u2014 **Current**\n  - Indicates active combustion instability affecting multiple cylinders or changing cylinder contribution.\n\n- **P0171** \u2014 System Too Lean (Bank 1) \u2014 **Current**\n  - PCM is adding fuel to compensate for a lean air/fuel condition on Bank 1.\n\n- **P0456** \u2014 EVAP System Small Leak Detected \u2014 **Pending**\n  - Small leak detected in the evaporative emissions system; often associated with fuel cap sealing, EVAP hoses, purge/vent sealing, or leak detection hardware.\n\n- **P0128** \u2014 Coolant Thermostat Below Regulating Temp \u2014 **Permanent**\n  - Engine coolant temperature did not reach expected operating threshold within calibrated time. Permanent status indicates the fault remains stored until monitor criteria pass.\n\n**Readiness**\n\n- Readiness monitor data: **Not available from this scan**\n- Monitor completion status cannot be verified from returned data.\n\n**System Health**\n\n- System health data: **Not available from this scan**\n- Scan session integrity was strong; absence of health detail appears to be a data availability limitation, not a communication issue.\n\n**Concerns**\n\n1. **P0300 and P0171 are the highest priority**\n   - A lean condition can directly induce random misfire.\n   - Most likely common causes include:\n     - Intake/vacuum leak on Bank 1 or shared intake tract\n     - Unmetered air downstream of the MAF/MAP calculation strategy\n     - Low fuel delivery or pressure issue\n     - Injector flow issue on Bank 1\n     - Ignition weakness exposed under lean load conditions\n\n2. **P0456 is lower priority unless fuel odor is present**\n   - Typically non-drivability related.\n   - Often simple but requires leak isolation if cap/visible hose faults are not found.\n\n3. **P0128 should be addressed after drivability faults**\n   - A stuck-open thermostat can affect warm-up, fuel strategy, and emissions readiness.\n   - It is unlikely the sole cause of P0300/P0171, but it can contribute to poor fuel control during warm-up.\n\n**Recommended Actions**\n\n- **Address P0300 and P0171 together first**\n  - Inspect intake system for vacuum leaks, disconnected PCV/vacuum lines, intake duct leaks, and manifold sealing issues.\n  - Review fuel trims and misfire counters with live data if available.\n  - Verify fuel pressure and fuel delivery volume.\n  - Inspect spark plugs, ignition coils, and coil connections.\n  - Check Bank 1 injector operation/balance.\n\n- **If lean condition is confirmed**\n  - Perform smoke test of intake and EVAP-related vacuum paths.\n  - Inspect purge valve for leaking/stuck-open condition, as it can contribute to lean running and EVAP faults.\n\n- **Address P0456**\n  - Inspect/tighten fuel cap and verify seal condition.\n  - Inspect EVAP lines, purge valve, vent valve, and canister connections.\n  - Smoke test EVAP system if fault returns after basic inspection.\n\n- **Address P0128**\n  - Verify engine reaches proper operating temperature.\n  - Check coolant level and thermostat operation.\n  - Replace thermostat if warm-up is slow or operating temp remains below specification.\n  - Clear codes and complete drive cycle to allow permanent code to self-erase after successful monitor completion.\n\n- **Post-repair**\n  - Clear faults.\n  - Road test under cold start, idle, cruise, and load.\n  - Recheck for pending/current misfire and lean codes.\n  - Confirm readiness monitor progression if emissions inspection is pending.\n\nIf you want, I can also convert this into a **customer-facing repair order note** or a **technician worksheet with diagnostic sequence and labor recommendations**.",
+    "created_at": "2026-08-07T18:57:32.506532+00:00"
+  },
+  {
+    "_id": "5adc0f24-c8a6-4fd1-9911-c4a35a243e9c",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "full",
+    "title": "Full Vehicle Scan",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "Powertrain Control Module",
+        "short": "PCM/ECM",
+        "address": "0x7E0",
+        "icon": "engine",
+        "status": "online",
+        "calibrationId": "68410000AA",
+        "softwareVersion": "A1B2C3D4",
+        "functions": [
+          "Live Data (Mode 01)",
+          "Freeze Frame (Mode 02)",
+          "Stored DTCs (Mode 03)",
+          "Clear DTCs (Mode 04)",
+          "O2 Monitors (Mode 05)",
+          "On-board Monitors (Mode 06)",
+          "Pending DTCs (Mode 07)",
+          "VIN/CalID (Mode 09)"
+        ],
+        "dtcCount": 4
+      },
+      {
+        "key": "steering",
+        "name": "Steering Control Module",
+        "short": "EPS",
+        "address": "0x730",
+        "icon": "steering",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Torque Sensor Data",
+          "Stored DTCs",
+          "Calibration"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "hvac",
+        "name": "HVAC Module",
+        "short": "HVAC",
+        "address": "0x744",
+        "icon": "air-conditioner",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Temperature Data",
+          "Blower Control",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "tpms",
+        "name": "TPMS Module",
+        "short": "TPMS",
+        "address": "0x751",
+        "icon": "car-tire-alert",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Tire Pressure Data",
+          "Sensor IDs",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "key": "misfire",
+        "name": "Misfire Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "ccm",
+        "name": "Comprehensive Components",
+        "status": "ready"
+      },
+      {
+        "key": "catalyst",
+        "name": "Catalyst Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "hcat",
+        "name": "Heated Catalyst",
+        "status": "not_supported"
+      },
+      {
+        "key": "evap",
+        "name": "Evaporative System",
+        "status": "not_ready"
+      },
+      {
+        "key": "air",
+        "name": "Secondary Air System",
+        "status": "not_supported"
+      },
+      {
+        "key": "o2",
+        "name": "Oxygen Sensor Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "o2h",
+        "name": "O2 Sensor Heater",
+        "status": "ready"
+      },
+      {
+        "key": "egr",
+        "name": "EGR / VVT System",
+        "status": "ready"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "level": "bad",
+        "note": "Misfire / knock activity detected"
+      },
+      {
+        "key": "transmission",
+        "name": "Transmission",
+        "level": "good",
+        "note": "Shift behaviour nominal"
+      },
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      },
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System",
+        "level": "warn",
+        "note": "Fuel trims outside normal band"
+      },
+      {
+        "key": "emissions",
+        "name": "Emissions",
+        "level": "warn",
+        "note": "Emissions-related fault present"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 32,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "",
+    "created_at": "2026-08-07T18:57:53.672053+00:00"
+  },
+  {
+    "_id": "374a0b7d-5365-45c1-bbcd-f9a7203aba7f",
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler JL Sahara",
+    "workflow": "full",
+    "title": "Full Vehicle Scan",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "Powertrain Control Module",
+        "short": "PCM/ECM",
+        "address": "0x7E0",
+        "icon": "engine",
+        "status": "online",
+        "calibrationId": "68410000AA",
+        "softwareVersion": "A1B2C3D4",
+        "functions": [
+          "Live Data (Mode 01)",
+          "Freeze Frame (Mode 02)",
+          "Stored DTCs (Mode 03)",
+          "Clear DTCs (Mode 04)",
+          "O2 Monitors (Mode 05)",
+          "On-board Monitors (Mode 06)",
+          "Pending DTCs (Mode 07)",
+          "VIN/CalID (Mode 09)"
+        ],
+        "dtcCount": 4
+      },
+      {
+        "key": "steering",
+        "name": "Steering Control Module",
+        "short": "EPS",
+        "address": "0x730",
+        "icon": "steering",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Torque Sensor Data",
+          "Stored DTCs",
+          "Calibration"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "hvac",
+        "name": "HVAC Module",
+        "short": "HVAC",
+        "address": "0x744",
+        "icon": "air-conditioner",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Temperature Data",
+          "Blower Control",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      },
+      {
+        "key": "tpms",
+        "name": "TPMS Module",
+        "short": "TPMS",
+        "address": "0x751",
+        "icon": "car-tire-alert",
+        "status": "online",
+        "calibrationId": null,
+        "softwareVersion": null,
+        "functions": [
+          "Tire Pressure Data",
+          "Sensor IDs",
+          "Stored DTCs"
+        ],
+        "dtcCount": 0
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random/Multiple Cylinder Misfire Detected",
+        "type": "current"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean (Bank 1)",
+        "type": "current"
+      },
+      {
+        "code": "P0456",
+        "desc": "EVAP System Small Leak Detected",
+        "type": "pending"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Thermostat Below Regulating Temp",
+        "type": "permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "key": "misfire",
+        "name": "Misfire Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System Monitor",
+        "status": "not_ready"
+      },
+      {
+        "key": "ccm",
+        "name": "Comprehensive Components",
+        "status": "ready"
+      },
+      {
+        "key": "catalyst",
+        "name": "Catalyst Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "hcat",
+        "name": "Heated Catalyst",
+        "status": "not_supported"
+      },
+      {
+        "key": "evap",
+        "name": "Evaporative System",
+        "status": "not_ready"
+      },
+      {
+        "key": "air",
+        "name": "Secondary Air System",
+        "status": "not_supported"
+      },
+      {
+        "key": "o2",
+        "name": "Oxygen Sensor Monitor",
+        "status": "ready"
+      },
+      {
+        "key": "o2h",
+        "name": "O2 Sensor Heater",
+        "status": "ready"
+      },
+      {
+        "key": "egr",
+        "name": "EGR / VVT System",
+        "status": "ready"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "level": "bad",
+        "note": "Misfire / knock activity detected"
+      },
+      {
+        "key": "transmission",
+        "name": "Transmission",
+        "level": "good",
+        "note": "Shift behaviour nominal"
+      },
+      {
+        "key": "charging",
+        "name": "Charging System",
+        "level": "good",
+        "note": "Alternator output healthy"
+      },
+      {
+        "key": "cooling",
+        "name": "Cooling System",
+        "level": "good",
+        "note": "Thermal management nominal"
+      },
+      {
+        "key": "fuel",
+        "name": "Fuel System",
+        "level": "warn",
+        "note": "Fuel trims outside normal band"
+      },
+      {
+        "key": "emissions",
+        "name": "Emissions",
+        "level": "warn",
+        "note": "Emissions-related fault present"
+      }
+    ],
+    "metrics": {
+      "commQuality": "excellent",
+      "commScore": 96,
+      "latencyMs": 41,
+      "supportedPidCount": 43,
+      "unsupportedPidCount": 0,
+      "retryRate": 0,
+      "avgPidConfidence": 0.99,
+      "sensorChecksPassed": 5,
+      "sensorChecksTotal": 5,
+      "dataQuality": 98
+    },
+    "overall_score": 51,
+    "ai_report": "**Summary**\n\nVehicle: 2018 Jeep Wrangler JL Sahara  \nOverall scan score: 51/100\n\nPrimary faults are engine-related and emissions-related. The dominant issue set is a current random misfire with a concurrent lean condition on Bank 1, which strongly suggests an air/fuel imbalance rather than an isolated EVAP fault. A pending small EVAP leak and a permanent thermostat performance code are also present.\n\nScan data quality was high: communication quality excellent, comm score 96, latency 41 ms, retry rate 0%, average PID confidence 0.99, data quality 98%.\n\n**Modules Scanned**\n\n- PCM/ECM | Address 0x7E0 | Online\n  - Calibration ID: 68410000AA\n  - Software Version: A1B2C3D4\n  - Functions available: Mode 01/02/03/04/05/06/07/09\n  - DTC count: 4\n\n- EPS Steering Control Module | Address 0x730 | Online\n  - DTC count: 0\n\n- HVAC Module | Address 0x744 | Online\n  - DTC count: 0\n\n- TPMS Module | Address 0x751 | Online\n  - DTC count: 0\n\nNo communication faults detected in scanned non-powertrain modules.\n\n**Fault Codes**\n\nPCM/ECM stored faults:\n\n- P0300 \u2014 Random/Multiple Cylinder Misfire Detected \u2014 Current\n- P0171 \u2014 System Too Lean (Bank 1) \u2014 Current\n- P0456 \u2014 EVAP System Small Leak Detected \u2014 Pending\n- P0128 \u2014 Coolant Thermostat Below Regulating Temp \u2014 Permanent\n\nInterpretation:\n\n- P0300 and P0171 are likely related and should be diagnosed together first.\n- P0456 is a secondary emissions fault and is not the primary cause of the current drivability concern.\n- P0128 permanent indicates the ECM has not yet seen sufficient drive-cycle evidence to clear the thermostat-related fault memory.\n\n**Readiness**\n\nMonitor status:\n\n- Not Ready:\n  - Misfire Monitor\n  - Fuel System Monitor\n  - Evaporative System\n\n- Ready:\n  - Comprehensive Components\n  - Catalyst Monitor\n  - Oxygen Sensor Monitor\n  - O2 Sensor Heater\n  - EGR / VVT System\n\n- Not Supported:\n  - Heated Catalyst\n  - Secondary Air System\n\nReadiness pattern is consistent with active engine/fuel control faults and incomplete monitor completion.\n\n**System Health**\n\n- Engine: Bad\n  - Misfire / knock activity detected\n\n- Transmission: Good\n  - Shift behaviour nominal\n\n- Charging System: Good\n  - Alternator output healthy\n\n- Cooling System: Good\n  - Thermal management nominal\n\n- Fuel System: Warn\n  - Fuel trims outside normal band\n\n- Emissions: Warn\n  - Emissions-related fault present\n\n**Concerns**\n\n1. Primary concern: active misfire with lean condition\n- P0300 + P0171 indicates the engine is running lean enough to destabilize combustion.\n- Most likely causes:\n  - Unmetered air / vacuum leak on Bank 1 side or intake tract\n  - PCV/intake hose leak or manifold sealing issue\n  - Low fuel delivery or injector flow imbalance\n  - Exhaust leak ahead of upstream O2 causing false lean reporting\n  - Ignition weakness contributing to random misfire\n\n2. Secondary concern: EVAP small leak\n- P0456 typically points to:\n  - Loose/incorrect fuel cap\n  - Minor leak in EVAP hose, purge line, or ESIM/NVLD-related sealing component\n- Usually low immediate drivability impact.\n\n3. Tertiary concern: thermostat rationality fault\n- P0128 suggests engine warm-up below expected regulating temperature.\n- Typical causes:\n  - Thermostat stuck partially open\n  - Low coolant level or inaccurate ECT signal\n- Even if cooling currently appears nominal, the permanent code indicates the fault history remains unresolved in ECM memory.\n\n**Recommended Actions**\n\n1. Diagnose P0171 and P0300 first\n- Inspect intake system for leaks:\n  - Intake tube, manifold seals, brake booster hose, PCV lines, vacuum fittings\n- Perform smoke test of intake tract.\n- Review live fuel trims at idle and 2500 rpm:\n  - High positive trims at idle that improve with rpm strongly support vacuum leak.\n- Check ignition components:\n  - Spark plugs condition/gap\n  - Coil connections and coil performance\n- Verify fuel delivery:\n  - Fuel pressure/volume under load\n  - Injector balance if misfire persists\n- Inspect for upstream exhaust leak before/near Bank 1 O2 sensor.\n\n2. Address P0456 after engine air/fuel issue is corrected\n- Confirm fuel cap seal and cap installation.\n- Smoke test EVAP system if code returns.\n- Inspect purge hose connections and leak-prone EVAP lines/components.\n\n3. Resolve P0128\n- Verify actual coolant temperature rise from cold start.\n- Confirm thermostat operation and coolant level.\n- Replace thermostat if warm-up is slow or operating temperature remains below specification.\n- After repair, complete drive cycle to allow permanent code to clear.\n\n4. Post-repair verification\n- Clear codes only after repairs.\n- Road test through full warm-up and steady cruise.\n- Recheck:\n  - Misfire counters\n  - Short- and long-term fuel trims\n  - Readiness completion\n  - Pending code status\n\nBottom line: prioritize the lean-condition/misfire diagnosis. On this scan, that is the fault set most likely driving the poor engine health score and incomplete fuel/misfire monitor status.",
+    "created_at": "2026-08-07T22:17:59.905875+00:00"
+  },
+  {
+    "_id": "08d9eb63-ee2e-4476-b4ba-037e180aec7e",
+    "user_id": "78116dd8-63ae-483f-9e1e-eac4261365f4",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Misfire",
+        "type": "current"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "BYOK generated report",
+    "created_at": "2026-08-09T14:55:29.169653+00:00",
+    "ai_model": "gpt-4o-mini",
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "9e1a197b-4a7f-4712-9aea-48d237ec11c3",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "full",
+    "title": "Full Vehicle Scan",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "PCM",
+        "status": "ONLINE",
+        "score": 82,
+        "commRate": 98,
+        "dtcs": [
+          "P0300",
+          "P0171"
+        ],
+        "functions": [
+          "Fuel Trim",
+          "Ignition"
+        ],
+        "issues": {
+          "active": [
+            "P0300"
+          ],
+          "historical": []
+        }
+      },
+      {
+        "key": "tcm",
+        "name": "TCM",
+        "status": "NO-RESP",
+        "score": 0,
+        "commRate": 0,
+        "dtcs": [],
+        "functions": [
+          "Shift"
+        ],
+        "issues": {
+          "active": [],
+          "historical": [
+            "P0700"
+          ]
+        }
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "class": "Stored"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean B1",
+        "class": "Stored"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Temp Below Thermostat",
+        "class": "Pending"
+      },
+      {
+        "code": "P0456",
+        "desc": "Small Evap Leak",
+        "class": "Permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "monitor": "Misfire",
+        "state": "READY"
+      },
+      {
+        "monitor": "Catalyst",
+        "state": "NOT_READY"
+      },
+      {
+        "monitor": "EVAP",
+        "state": "READY"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "score": 78,
+        "status": "WARN"
+      },
+      {
+        "key": "charging",
+        "name": "Charging",
+        "score": 92,
+        "status": "OK"
+      }
+    ],
+    "metrics": {
+      "commReliability": 96,
+      "avgResp": 42,
+      "bus": "CAN-C"
+    },
+    "overall_score": 79,
+    "ai_report": "",
+    "created_at": "2026-08-09T14:57:42.374546+00:00"
+  },
+  {
+    "_id": "a4b5de33-cb2a-4096-9491-432f510cdf1d",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "PCM",
+        "status": "ONLINE",
+        "score": 82,
+        "commRate": 98,
+        "dtcs": [
+          "P0300",
+          "P0171"
+        ],
+        "functions": [
+          "Fuel Trim",
+          "Ignition"
+        ],
+        "issues": {
+          "active": [
+            "P0300"
+          ],
+          "historical": []
+        }
+      },
+      {
+        "key": "tcm",
+        "name": "TCM",
+        "status": "NO-RESP",
+        "score": 0,
+        "commRate": 0,
+        "dtcs": [],
+        "functions": [
+          "Shift"
+        ],
+        "issues": {
+          "active": [],
+          "historical": [
+            "P0700"
+          ]
+        }
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "class": "Stored"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean B1",
+        "class": "Stored"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Temp Below Thermostat",
+        "class": "Pending"
+      },
+      {
+        "code": "P0456",
+        "desc": "Small Evap Leak",
+        "class": "Permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "monitor": "Misfire",
+        "state": "READY"
+      },
+      {
+        "monitor": "Catalyst",
+        "state": "NOT_READY"
+      },
+      {
+        "monitor": "EVAP",
+        "state": "READY"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "score": 78,
+        "status": "WARN"
+      },
+      {
+        "key": "charging",
+        "name": "Charging",
+        "score": 92,
+        "status": "OK"
+      }
+    ],
+    "metrics": {
+      "commReliability": 96,
+      "avgResp": 42,
+      "bus": "CAN-C"
+    },
+    "overall_score": 79,
+    "ai_report": "",
+    "created_at": "2026-08-09T14:57:42.437913+00:00"
+  },
+  {
+    "_id": "7159f09a-4f18-4b65-a4cf-f87385472254",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "health",
+    "title": "Health Check",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "PCM",
+        "status": "ONLINE",
+        "score": 82,
+        "commRate": 98,
+        "dtcs": [
+          "P0300",
+          "P0171"
+        ],
+        "functions": [
+          "Fuel Trim",
+          "Ignition"
+        ],
+        "issues": {
+          "active": [
+            "P0300"
+          ],
+          "historical": []
+        }
+      },
+      {
+        "key": "tcm",
+        "name": "TCM",
+        "status": "NO-RESP",
+        "score": 0,
+        "commRate": 0,
+        "dtcs": [],
+        "functions": [
+          "Shift"
+        ],
+        "issues": {
+          "active": [],
+          "historical": [
+            "P0700"
+          ]
+        }
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "class": "Stored"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean B1",
+        "class": "Stored"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Temp Below Thermostat",
+        "class": "Pending"
+      },
+      {
+        "code": "P0456",
+        "desc": "Small Evap Leak",
+        "class": "Permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "monitor": "Misfire",
+        "state": "READY"
+      },
+      {
+        "monitor": "Catalyst",
+        "state": "NOT_READY"
+      },
+      {
+        "monitor": "EVAP",
+        "state": "READY"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "score": 78,
+        "status": "WARN"
+      },
+      {
+        "key": "charging",
+        "name": "Charging",
+        "score": 92,
+        "status": "OK"
+      }
+    ],
+    "metrics": {
+      "commReliability": 96,
+      "avgResp": 42,
+      "bus": "CAN-C"
+    },
+    "overall_score": 79,
+    "ai_report": "",
+    "created_at": "2026-08-09T14:57:42.526769+00:00"
+  },
+  {
+    "_id": "b15031f9-fe1e-40ce-a4bd-60899d15f684",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "prepurchase",
+    "title": "Pre-Purchase Inspection",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "PCM",
+        "status": "ONLINE",
+        "score": 82,
+        "commRate": 98,
+        "dtcs": [
+          "P0300",
+          "P0171"
+        ],
+        "functions": [
+          "Fuel Trim",
+          "Ignition"
+        ],
+        "issues": {
+          "active": [
+            "P0300"
+          ],
+          "historical": []
+        }
+      },
+      {
+        "key": "tcm",
+        "name": "TCM",
+        "status": "NO-RESP",
+        "score": 0,
+        "commRate": 0,
+        "dtcs": [],
+        "functions": [
+          "Shift"
+        ],
+        "issues": {
+          "active": [],
+          "historical": [
+            "P0700"
+          ]
+        }
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "class": "Stored"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean B1",
+        "class": "Stored"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Temp Below Thermostat",
+        "class": "Pending"
+      },
+      {
+        "code": "P0456",
+        "desc": "Small Evap Leak",
+        "class": "Permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "monitor": "Misfire",
+        "state": "READY"
+      },
+      {
+        "monitor": "Catalyst",
+        "state": "NOT_READY"
+      },
+      {
+        "monitor": "EVAP",
+        "state": "READY"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "score": 78,
+        "status": "WARN"
+      },
+      {
+        "key": "charging",
+        "name": "Charging",
+        "score": 92,
+        "status": "OK"
+      }
+    ],
+    "metrics": {
+      "commReliability": 96,
+      "avgResp": 42,
+      "bus": "CAN-C"
+    },
+    "overall_score": 79,
+    "ai_report": "",
+    "created_at": "2026-08-09T14:57:42.580922+00:00"
+  },
+  {
+    "_id": "25c041b9-7d96-4dec-9a43-cb0822466635",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "charging",
+    "title": "Charging System Test",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "PCM",
+        "status": "ONLINE",
+        "score": 82,
+        "commRate": 98,
+        "dtcs": [
+          "P0300",
+          "P0171"
+        ],
+        "functions": [
+          "Fuel Trim",
+          "Ignition"
+        ],
+        "issues": {
+          "active": [
+            "P0300"
+          ],
+          "historical": []
+        }
+      },
+      {
+        "key": "tcm",
+        "name": "TCM",
+        "status": "NO-RESP",
+        "score": 0,
+        "commRate": 0,
+        "dtcs": [],
+        "functions": [
+          "Shift"
+        ],
+        "issues": {
+          "active": [],
+          "historical": [
+            "P0700"
+          ]
+        }
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "class": "Stored"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean B1",
+        "class": "Stored"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Temp Below Thermostat",
+        "class": "Pending"
+      },
+      {
+        "code": "P0456",
+        "desc": "Small Evap Leak",
+        "class": "Permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "monitor": "Misfire",
+        "state": "READY"
+      },
+      {
+        "monitor": "Catalyst",
+        "state": "NOT_READY"
+      },
+      {
+        "monitor": "EVAP",
+        "state": "READY"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "score": 78,
+        "status": "WARN"
+      },
+      {
+        "key": "charging",
+        "name": "Charging",
+        "score": 92,
+        "status": "OK"
+      }
+    ],
+    "metrics": {
+      "commReliability": 96,
+      "avgResp": 42,
+      "bus": "CAN-C"
+    },
+    "overall_score": 79,
+    "ai_report": "",
+    "created_at": "2026-08-09T14:57:42.628569+00:00"
+  },
+  {
+    "_id": "9f758b0f-3004-4c2d-9e1e-a95d9c505188",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": null,
+    "vin": "1C4HJXEG9JW174532",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "cooling",
+    "title": "Cooling System Evaluation",
+    "modules": [
+      {
+        "key": "pcm",
+        "name": "PCM",
+        "status": "ONLINE",
+        "score": 82,
+        "commRate": 98,
+        "dtcs": [
+          "P0300",
+          "P0171"
+        ],
+        "functions": [
+          "Fuel Trim",
+          "Ignition"
+        ],
+        "issues": {
+          "active": [
+            "P0300"
+          ],
+          "historical": []
+        }
+      },
+      {
+        "key": "tcm",
+        "name": "TCM",
+        "status": "NO-RESP",
+        "score": 0,
+        "commRate": 0,
+        "dtcs": [],
+        "functions": [
+          "Shift"
+        ],
+        "issues": {
+          "active": [],
+          "historical": [
+            "P0700"
+          ]
+        }
+      }
+    ],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random Misfire",
+        "class": "Stored"
+      },
+      {
+        "code": "P0171",
+        "desc": "System Too Lean B1",
+        "class": "Stored"
+      },
+      {
+        "code": "P0128",
+        "desc": "Coolant Temp Below Thermostat",
+        "class": "Pending"
+      },
+      {
+        "code": "P0456",
+        "desc": "Small Evap Leak",
+        "class": "Permanent"
+      }
+    ],
+    "readiness": [
+      {
+        "monitor": "Misfire",
+        "state": "READY"
+      },
+      {
+        "monitor": "Catalyst",
+        "state": "NOT_READY"
+      },
+      {
+        "monitor": "EVAP",
+        "state": "READY"
+      }
+    ],
+    "systems": [
+      {
+        "key": "engine",
+        "name": "Engine",
+        "score": 78,
+        "status": "WARN"
+      },
+      {
+        "key": "charging",
+        "name": "Charging",
+        "score": 92,
+        "status": "OK"
+      }
+    ],
+    "metrics": {
+      "commReliability": 96,
+      "avgResp": 42,
+      "bus": "CAN-C"
+    },
+    "overall_score": 79,
+    "ai_report": "",
+    "created_at": "2026-08-09T14:57:42.676416+00:00"
+  },
+  {
+    "_id": "a5443c54-0aa1-4184-b666-1a11c487e98f",
+    "user_id": "03de2806-2563-4fe7-ab56-9b1706b7cb4b",
+    "vehicle_id": "298b9660-1ac0-4418-a86f-a55c261a894d",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK save at 20/20",
+    "created_at": "2026-08-09T15:01:58.436639+00:00",
+    "ai_model": null,
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "e071165f-a271-4d39-9b50-1e13219e2c85",
+    "user_id": "1a92b92c-5dbe-48f4-96f1-842d1190cc67",
+    "vehicle_id": "9faa263d-33bb-445e-b7b5-dbe7b240013b",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "",
+    "created_at": "2026-08-09T15:01:59.141907+00:00"
+  },
+  {
+    "_id": "8d8cc751-58f8-4d2e-95e2-0ed4b27dbada",
+    "user_id": "1eb5d370-2a3f-48ce-9ed0-158a05a74628",
+    "vehicle_id": "50f01cf2-f635-432d-9556-80d0d8fc7509",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "**Summary**  \nQuick Scan completed for 2018 Jeep Wrangler. One confirmed powertrain fault is present: **P0300 \u2013 Random/Multiple Cylinder Misfire Detected**. Engine idle speed reported at **780 rpm**, which is within a typical warm idle range. Overall vehicle scan score: **78/100**. Further diagnosis is recommended to isolate the misfire source.\n\n**Modules Scanned**  \n- No module list reported by the scan tool\n- Scan data may be limited to powertrain fault retrieval only\n\n**Fault Codes**  \n- **P0300** \u2014 Random misfire \u2014 **Confirmed**\n\n**Readiness**  \n- No readiness monitor data reported\n\n**System Health**  \n- No system health detail reported\n- Available live data:\n  - Engine speed: **780 rpm**\n\n**Concerns**  \n- Confirmed random misfire can cause:\n  - Rough idle or intermittent hesitation\n  - Increased emissions\n  - Reduced fuel economy\n  - Possible catalytic converter damage if misfire is sustained\n- Incomplete module and readiness data limits assessment of overall vehicle status\n\n**Recommended Actions**  \n- Verify complaint and check for active misfire at idle and under light load\n- Review Mode $06 / misfire counters, if available, to identify affected cylinder(s)\n- Inspect ignition components:\n  - Spark plugs for wear, fouling, incorrect gap\n  - Coil packs and coil connectors\n- Check for common misfire contributors:\n  - Vacuum leaks\n  - Injector performance / injector balance\n  - Fuel quality and fuel pressure\n  - Air induction issues\n- If no ignition or fuel fault is found, perform mechanical checks:\n  - Compression test\n  - Leak-down test\n- After repair, clear DTCs and complete a drive cycle to confirm no repeat misfire and readiness completion",
+    "created_at": "2026-08-09T15:02:00.054377+00:00",
+    "ai_provider": "cloud"
+  },
+  {
+    "_id": "1902fe0a-2fed-4e33-9163-1c05d6fae9f2",
+    "user_id": "f7d8d68d-9462-4512-9e6d-ace21e2220e4",
+    "vehicle_id": "215e0cf6-bfa8-4b22-87a3-6cd186d395b6",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK generated scan report body.",
+    "created_at": "2026-08-09T15:02:01.037619+00:00",
+    "ai_model": "gpt-4o",
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "6bee16ac-19a3-426a-bc89-6cb69b53cb94",
+    "user_id": "b14142a2-fae9-4d7f-82f6-dab1e1f86fd3",
+    "vehicle_id": "08459525-5a4a-4864-af11-f0cb30e41caa",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK save at 20/20",
+    "created_at": "2026-08-09T15:02:58.487393+00:00",
+    "ai_model": null,
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "d255f50c-e953-4832-bf26-9e2eb66c223e",
+    "user_id": "685ad06a-9e2e-4303-aa0e-2eb759dee26b",
+    "vehicle_id": "321fd207-6f52-494e-963b-3729a1f92a29",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "",
+    "created_at": "2026-08-09T15:02:59.000891+00:00"
+  },
+  {
+    "_id": "34f0ca53-2093-4161-b5f9-db57ad1b6686",
+    "user_id": "0f5b709b-498f-4104-847c-6319bb18389b",
+    "vehicle_id": "d5c3e3c3-289e-4cf4-94a9-d47c2e176d52",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "**Summary**  \nQuick Scan completed for 2018 Jeep Wrangler. One confirmed powertrain fault is present: **P0300 \u2013 Random/Multiple Cylinder Misfire Detected**. Engine speed at capture was **780 RPM**, indicating the fault may be occurring or being monitored at idle. Overall scan score: **78/100**.\n\n**Modules Scanned**  \n- No module list reported by the scan tool  \n- Network/module coverage cannot be verified from this scan result\n\n**Fault Codes**  \n- **P0300** \u2014 Random misfire \u2014 **Confirmed**\n\n**Readiness**  \n- No readiness monitor data reported  \n- Emissions monitor completion status could not be verified\n\n**System Health**  \n- No system health details reported  \n- Available live metric:\n  - Engine speed: **780 RPM**\n\n**Concerns**  \n- Confirmed random misfire condition can cause:\n  - Rough idle or intermittent stumble\n  - Reduced performance\n  - Increased emissions\n  - Potential catalytic converter damage if misfire persists\n- With only P0300 present and no cylinder-specific misfire codes reported, likely fault areas include:\n  - Ignition components\n  - Fuel delivery imbalance\n  - Vacuum leak / unmetered air\n  - Low compression or valve train issue\n  - Sensor input affecting mixture control\n\n**Recommended Actions**  \n- Verify customer complaint:\n  - Check for rough idle, hesitation, flashing MIL, and load-related symptoms\n- Review misfire data with enhanced scan tool:\n  - Cylinder misfire counters\n  - Short/long-term fuel trims\n  - Mode $06 misfire results\n- Inspect ignition system first:\n  - Spark plugs condition/gap\n  - Coil packs/connectors\n  - Signs of oil intrusion or arcing\n- Check air/fuel causes:\n  - Vacuum leaks\n  - Injector operation/balance\n  - Fuel pressure and fuel quality\n- If no fault found in ignition/fuel:\n  - Perform compression or relative compression test\n  - Inspect for valve train or sealing issues\n- After repairs:\n  - Clear DTCs\n  - Road test and confirm no misfire return at idle, cruise, and acceleration\n  - Recheck readiness monitor completion if emissions compliance is required",
+    "created_at": "2026-08-09T15:03:00.361028+00:00",
+    "ai_provider": "cloud"
+  },
+  {
+    "_id": "674d3d1b-ddd4-4fba-afba-79ac156a8a32",
+    "user_id": "227d5864-4103-4aca-8f8c-2003080282bc",
+    "vehicle_id": "badbcd1a-6f8c-4ccb-b29b-a44ffe9eb8bb",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK generated scan report body.",
+    "created_at": "2026-08-09T15:03:00.872689+00:00",
+    "ai_model": "gpt-4o",
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "c99ea98d-4249-426a-aafd-db90ac4bccfe",
+    "user_id": "e7ea2c8b-4365-4aab-8526-5f65a963cbef",
+    "vehicle_id": "a1931dcb-867a-44ff-ad11-89e8f8d2ad36",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK save at 20/20",
+    "created_at": "2026-08-09T16:14:09.902704+00:00",
+    "ai_model": null,
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "b9367097-20ed-4923-b6b6-1222687a340e",
+    "user_id": "2219e104-a6a8-48a0-a2a6-bff679902c22",
+    "vehicle_id": "7433869e-b827-4d42-9ba1-26de77e61a50",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "",
+    "created_at": "2026-08-09T16:14:13.062754+00:00"
+  },
+  {
+    "_id": "bda73fb8-c2b2-42c0-af65-01ad0abad6be",
+    "user_id": "1e4084fc-dee1-4dee-b604-5d67aab7d2af",
+    "vehicle_id": "e33f7cd5-9518-48dd-a8e7-4ce2f396c192",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "**Summary**  \n2018 Jeep Wrangler quick scan completed. One confirmed powertrain fault is present: **P0300 Random/Multiple Cylinder Misfire Detected**. Engine speed at capture was **780 RPM**, indicating the fault may be occurring or detectable at idle. Overall scan score: **78/100**.\n\n**Modules Scanned**  \n- No module list reported by the scan tool\n\n**Fault Codes**  \n- **P0300** \u2014 Random misfire \u2014 **Confirmed**\n\n**Readiness**  \n- No readiness monitor data reported\n\n**System Health**  \n- No system health detail reported\n- Available live metric:\n  - **Engine speed:** 780 RPM\n\n**Concerns**  \n- Confirmed random misfire can cause rough idle, reduced performance, increased emissions, and possible catalytic converter damage if continued\n- With RPM captured at **780**, idle-related misfire is a primary concern\n- Limited scan metadata: no module inventory, readiness status, or supporting system health values were available\n\n**Recommended Actions**  \n- Verify current symptom presence at idle and under light load\n- Check for pending or companion DTCs, especially fuel trim, crank/cam correlation, injector, or ignition-related faults\n- Inspect likely misfire causes in priority order:\n  - Ignition components: spark plugs, coils, coil connections\n  - Air/fuel issues: vacuum leaks, injector imbalance, fuel pressure\n  - Mechanical causes: low compression, valvetrain issues\n- Review live data during misfire:\n  - Short- and long-term fuel trims\n  - Misfire counters by cylinder\n  - O2 sensor activity\n  - MAP/MAF, coolant temperature\n- If maintenance history is unknown, inspect/replace spark plugs per service interval and check coil condition\n- After repairs, clear codes and perform a road test with a warm idle verification to confirm P0300 does not return",
+    "created_at": "2026-08-09T16:14:14.840918+00:00",
+    "ai_provider": "cloud"
+  },
+  {
+    "_id": "a4ba2f4e-49a2-41d8-a008-3d2ec28badf1",
+    "user_id": "d19b5f82-903e-4a91-a8c6-cbad5d8b9769",
+    "vehicle_id": "27702e03-daf8-4c43-a4bc-a87b4a3e8576",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK generated scan report body.",
+    "created_at": "2026-08-09T16:14:20.321544+00:00",
+    "ai_model": "gpt-4o",
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "284c3895-ed1e-47e4-992a-760a635654de",
+    "user_id": "c3f88027-7782-40bb-bc90-74cad406a2aa",
+    "vehicle_id": "a1165cd4-1c3d-48b2-a412-742b0578bd2d",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK save at 20/20",
+    "created_at": "2026-08-09T16:14:52.332509+00:00",
+    "ai_model": null,
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "c5cbebea-c638-4121-8d1c-8806940310b0",
+    "user_id": "1fbc1fdf-fc93-4758-a600-9842d53db5bf",
+    "vehicle_id": "3d0d3e8c-9a92-4a00-b58e-3f84927c4846",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "",
+    "created_at": "2026-08-09T16:14:53.005876+00:00"
+  },
+  {
+    "_id": "2e08b69e-0774-4d92-952e-188f739aba6c",
+    "user_id": "9b8c3add-aec6-46a4-859c-281b2e8dd999",
+    "vehicle_id": "efa5e3fc-e065-4d14-b22b-b62cbc494c7e",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "**Summary**  \nQuick Scan completed for 2018 Jeep Wrangler. One confirmed powertrain fault is present: **P0300 Random/Multiple Cylinder Misfire Detected**. Engine speed at scan time was **780 RPM**, consistent with idle. Overall vehicle scan score: **78/100**. Current result indicates an active combustion quality issue requiring follow-up diagnosis.\n\n**Modules Scanned**  \n- No module list was reported by the scan data set provided.\n\n**Fault Codes**  \n- **P0300** \u2014 Random misfire  \n  - Status: **Confirmed**  \n  - Interpretation: Misfire is affecting multiple cylinders or is not isolated to one cylinder based on current PCM detection logic.\n\n**Readiness**  \n- No readiness monitor data was reported.\n\n**System Health**  \n- Available live metric:\n  - **Engine speed:** 780 RPM  \n- No additional system health parameters were provided.\n\n**Concerns**  \n- Confirmed random misfire may cause:\n  - Rough idle\n  - Reduced power\n  - Increased fuel consumption\n  - Catalyst overheating risk if driven extensively with active misfire\n- With only P0300 present and limited supporting data, likely fault paths include:\n  - Ignition fault\n  - Fuel delivery imbalance\n  - Vacuum leak / unmetered air\n  - Mechanical cylinder sealing issue\n  - Sensor input error affecting mixture control\n\n**Recommended Actions**  \n- Verify customer symptoms: rough idle, hesitation, flashing MIL, cold-start behavior.\n- Check for pending and manufacturer-specific codes with a full module scan.\n- Review misfire counters by cylinder at idle and under light load.\n- Inspect ignition components:\n  - Spark plugs for wear/fouling\n  - Coil packs/connectors\n  - Harness damage or poor terminal fit\n- Evaluate air/fuel causes:\n  - Vacuum leaks\n  - Intake tract leaks\n  - Fuel pressure/injector performance\n- Review supporting live data if available:\n  - STFT/LTFT\n  - O2 sensor activity\n  - MAP/MAF values\n  - Coolant temperature\n- If misfire remains unresolved, perform:\n  - Compression test\n  - Cylinder leak-down test\n- Minimize vehicle operation until diagnosis is completed if misfire is active or MIL is flashing.",
+    "created_at": "2026-08-09T16:14:55.090400+00:00",
+    "ai_provider": "cloud"
+  },
+  {
+    "_id": "c9801230-cb8b-4060-8d10-b5b795203389",
+    "user_id": "4bc2cb58-93ab-40b3-b52d-8a35f7cd0e20",
+    "vehicle_id": "6a90817e-0fd3-4cc0-9b93-744a73eea710",
+    "vin": "",
+    "vehicle": "2018 Jeep Wrangler",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0300",
+        "desc": "Random misfire",
+        "type": "confirmed"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {
+      "rpm": 780
+    },
+    "overall_score": 78,
+    "ai_report": "BYOK generated scan report body.",
+    "created_at": "2026-08-09T16:14:56.851539+00:00",
+    "ai_model": "gpt-4o",
+    "ai_provider": "byok"
+  },
+  {
+    "_id": "e26c28fa-c800-4818-930b-d55227c13f83",
+    "user_id": "657f0a11-a56a-4666-a416-8fb286e0ae37",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "TEST_UserA_Car",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "",
+    "created_at": "2026-08-13T22:13:53.951254+00:00"
+  },
+  {
+    "_id": "f191ea10-dc38-4626-a0e7-7141049f0f72",
+    "user_id": "409e2c2a-9f9c-4533-8042-050bc29e031f",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "TEST_UserA_Car",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "",
+    "created_at": "2026-08-16T15:31:14.881338+00:00"
+  },
+  {
+    "_id": "c38710ed-6b22-48bc-9086-6189e5b8a4f9",
+    "user_id": "27d3e237-09ed-4e0d-921d-12a2ad3a8af4",
+    "vehicle_id": "de5b68d0-14b9-4de5-843b-75b301e4a16f",
+    "vin": "1TESTPHADE7795CDC",
+    "vehicle": "2020 Toyota Camry",
+    "workflow": "full",
+    "title": "Full Vehicle Scan",
+    "modules": [],
+    "dtcs": [
+      {
+        "code": "P0301",
+        "description": "Cyl1 misfire"
+      }
+    ],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": 72,
+    "ai_report": "",
+    "created_at": "2026-08-16T19:06:38.183542+00:00"
+  },
+  {
+    "_id": "0f26fcee-559a-436d-9f34-76c662e687f9",
+    "user_id": "a01e0f66-f6bb-415e-8912-1292b62521e2",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "TEST_UserA_Car",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "",
+    "created_at": "2026-09-04T17:19:34.077507+00:00"
+  },
+  {
+    "_id": "2672c43c-9d28-41dc-a08f-534c687f996d",
+    "user_id": "d63b9fe3-dc0b-4af7-89a6-ebd3984b99ef",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "TEST_UserA_Car",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "",
+    "created_at": "2026-09-04T17:20:22.947284+00:00"
+  },
+  {
+    "_id": "fa54b4c3-59ed-4915-8fc7-69e9c98495d4",
+    "user_id": "e1829565-b712-47e3-895e-98144070f641",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "TEST_UserA_Car",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "",
+    "created_at": "2026-09-04T17:53:06.768291+00:00"
+  },
+  {
+    "_id": "90e4e92b-6f6f-454c-8645-6e0cb5a9adf6",
+    "user_id": "6db82846-d996-4207-9924-1215028eb698",
+    "vehicle_id": null,
+    "vin": "",
+    "vehicle": "TEST_UserA_Car",
+    "workflow": "quick",
+    "title": "Quick Scan",
+    "modules": [],
+    "dtcs": [],
+    "readiness": [],
+    "systems": [],
+    "metrics": {},
+    "overall_score": null,
+    "ai_report": "",
+    "created_at": "2026-09-04T18:57:22.667260+00:00"
+  },
+  {
+    "_id": "s_legacy",
+    "user_id": "legacy_test_1"
+  },
+  {
+    "_id": "s_google",
+    "user_id": "user_google_1"
+  }
+]

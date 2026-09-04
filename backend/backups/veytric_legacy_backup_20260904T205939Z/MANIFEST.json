@@ -1,0 +1,68 @@
+{
+  "created_at": "2026-09-04T20:59:39.488370+00:00",
+  "db_name": "test_database",
+  "collections": {
+    "users": {
+      "count": 412,
+      "file": "users.json",
+      "sha256": "e02292ee5af5f803fc3299e0c28821cbede40e67dd7209b2dad679896a092952",
+      "bytes": 147395
+    },
+    "user_sessions": {
+      "count": 1,
+      "file": "user_sessions.json",
+      "sha256": "3b7b17144467032d26cc8d62d65fb91514bc530d94cbd1f5bb59daed0ac7345f",
+      "bytes": 138
+    },
+    "vehicles": {
+      "count": 130,
+      "file": "vehicles.json",
+      "sha256": "7438516dbcc4f79c81a37c06b25675d5a15ca2ca27de29a263a3408e90482a9e",
+      "bytes": 66638
+    },
+    "vehicle_history": {
+      "count": 8,
+      "file": "vehicle_history.json",
+      "sha256": "d662b69cbf49972bdd7412ec52f4fe93a9d73822de73299a4ccf85ceae538e82",
+      "bytes": 3323
+    },
+    "vehicle_reports": {
+      "count": 10,
+      "file": "vehicle_reports.json",
+      "sha256": "c435336ef4e4cef34b815bc35cea9f8f3a89525de8073bf4fe47278f8b299b57",
+      "bytes": 68183
+    },
+    "scans": {
+      "count": 46,
+      "file": "scans.json",
+      "sha256": "f099841219da665d83c8519d6e1d4fefb24b85fa851bae27b485c59350c9a352",
+      "bytes": 118896
+    },
+    "reports": {
+      "count": 28,
+      "file": "reports.json",
+      "sha256": "8b4cf0ffe29f9957f2291ef26d9e857376314b62ba42b2a3af131ecac509ca83",
+      "bytes": 40078
+    },
+    "recordings": {
+      "count": 14,
+      "file": "recordings.json",
+      "sha256": "f92ef23bd7b171b4c0481b53428700bfc834528b0a5f1414efdb967020e2e0b0",
+      "bytes": 45094
+    },
+    "messages": {
+      "count": 66,
+      "file": "messages.json",
+      "sha256": "95883d5f7cf2141ec1d488744a302b8afc6d1eec45e69c212d543371957ab99e",
+      "bytes": 84647
+    },
+    "ai_usage": {
+      "count": 93,
+      "file": "ai_usage.json",
+      "sha256": "1eb8469a0c07b0f9f55f8327c70a805becfbd13fab092fa77c99b5eff07e4915",
+      "bytes": 18374
+    }
+  },
+  "total_documents": 808,
+  "backup_checksum": "322de30bc0b84ff8415b33b1f1cf392fa6f10bf3920e1c0ef1a703e9204137b3"
+}

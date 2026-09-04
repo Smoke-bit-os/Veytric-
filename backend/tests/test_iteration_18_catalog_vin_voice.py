@@ -13,6 +13,7 @@ import os
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 from datetime import datetime, timezone
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -35,12 +36,7 @@ def _month():
 
 
 def _register(prefix="it18"):
-    email = f"{prefix}_{uuid.uuid4().hex[:10]}@example.com"
-    r = requests.post(f"{LOCAL}/auth/register",
-                      json={"name": "T18", "email": email, "password": "Jarvis2026!"})
-    r.raise_for_status()
-    d = r.json()
-    return email, d["token"], d["user"]["id"]
+    return seed_session(prefix)
 
 
 def _auth(token):

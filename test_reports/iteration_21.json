@@ -1,0 +1,42 @@
+{
+  "summary": "Google-Only Authentication Correction Gate — verified end-to-end. Backend: 73/74 pytest cases pass (10/10 in test_google_only_auth.py serially). /auth/register and /auth/login both return 410 with generic 'This authentication method has been retired. Use Google Sign-In.' — no DB writes, no token issued, no email enumeration. /auth/me correctly returns 401 for missing token, unknown token, legacy JWT-shaped token, and expired sessions; returns 200 for the seeded stable QA session_token. /auth/session rejects garbage session_id with 401 and creates no user (Emergent upstream 401 pass-through). Strict per-user isolation verified: user B cannot list/GET/PATCH user A's vehicle (list omission + 403/404), user A still owns its data. Regression via seeded sessions passed for subscription (default free), dev tier promotion to shop, AI Cloud quota gating, shop/fleet gating (free/pro forbidden, shop allowed), no-duplicate patches, and prediction honesty. Frontend: /auth screen has ZERO input elements — only 'Continue with Google' Pressable (testID=auth-google-button). No 'guest', 'password', 'email', 'sign up', or 'register' text in the DOM. Root gate correctly redirects unauthenticated users from '/' to '/auth'. Note: one flake in xdist parallel run (test_register_is_retired_410_no_db_write) is a race where a parallel test seeds a user between the before/after count — it passes 100% when run serially and the endpoint behavior is correct (real assertion is 410 + no write, which holds).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "tests/test_google_only_auth.py::test_register_is_retired_410_no_db_write",
+        "issue": "Flaky under pytest-xdist parallel execution because it counts db.users before/after while other test workers seed Google users via _helpers.seed_session. The endpoint contract itself is correct (returns 410, does not write). Suggest either (a) scoping the count to users with a synthetic marker inserted by /auth/register (impossible since it must not write — so keep it) OR (b) filter by a payload-derived unique email: `db.users.count_documents({'email': payload['email']})` before and after to isolate from parallel seeding."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/pytest/iteration_21.xml",
+    "/app/backend/tests/test_google_only_auth.py",
+    "/app/backend/tests/test_security.py",
+    "/app/backend/tests/test_predictions_and_isolation.py",
+    "/app/backend/tests/test_shop_fleet.py",
+    "/app/backend/tests/test_subscription.py"
+  ],
+  "action_items": [
+    "(Optional / low priority) Tighten test_register_is_retired_410_no_db_write to filter by payload email so it is race-free under pytest-xdist. Contract itself is verified correct."
+  ],
+  "critical_code_review_comments": [
+    "get_current_user cleanly enforces Google-only: only trusts session_token rows in user_sessions; legacy JWTs are silently rejected (no branch that decodes them). Good.",
+    "/auth/register and /auth/login are pure `raise HTTPException(status_code=410, ...)` — no code path that could touch the DB or mint a token. Good.",
+    "/auth/session correctly (1) rate-limits per session_id prefix, (2) blocks in-process replay via _used_session_ids, (3) exchanges upstream exactly once, (4) upserts by email so re-signing keeps the same user_id, (5) unsets any residual legacy password field. Good.",
+    "auth.tsx has zero TextInput components — only the Google Pressable. No dead imports for email/password remain. Good."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "98.6% (73/74; 1 parallel-race flake)", "frontend": "100% (auth screen + root gate)"},
+  "seed_data_creation": "Ran /app/backend/scripts/seed_test_session.py once to (re)seed the stable QA session token test_session_token_veytric_qa_001 for user_test_google01 / veytric.tester@gmail.com (30-day expiry). Pytest also seeds fresh per-call Google sessions via tests/_helpers.py::seed_session.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend tests must be invoked with EXPO_PUBLIC_BACKEND_URL exported (it lives in /app/frontend/.env, NOT backend/.env). Example: `cd /app/backend && EXPO_PUBLIC_BACKEND_URL=https://jarvis-ai-1486.preview.emergentagent.com python -m pytest tests/ -v`. Use header `Authorization: Bearer test_session_token_veytric_qa_001` after running scripts/seed_test_session.py, or call seed_session() inside pytest. Do NOT attempt real Google OAuth end-to-end from the browser — only that the button and root gate exist.",
+  "rca_of_issue": "No blocking issues. The single flaky assertion is caused by pytest-xdist parallel workers concurrently creating Google users via _helpers.seed_session between the two count_documents() calls in test_register_is_retired_410_no_db_write. It is a test-isolation artifact, not a product bug — the endpoint returns 410 and never writes, as verified by the serial run (10/10) and the surrounding assertions."
+}

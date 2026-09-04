@@ -15,10 +15,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel, Field, EmailStr, BeforeValidator
+from pydantic import BaseModel, Field, BeforeValidator
 from bson import ObjectId
-import jwt
-import bcrypt
 
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from emergentintegrations.llm.openai.speech_to_text import OpenAISpeechToText
@@ -32,8 +30,6 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 EMERGENT_LLM_KEY = os.environ['EMERGENT_LLM_KEY']
-JWT_SECRET = os.environ['JWT_SECRET']
-JWT_ALGO = "HS256"
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -55,17 +51,6 @@ PyObjectId = Annotated[str, BeforeValidator(_oid)]
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
-
-
-class RegisterInput(BaseModel):
-    name: str
-    email: EmailStr
-    password: str
-
-
-class LoginInput(BaseModel):
-    email: EmailStr
-    password: str
 
 
 class Vehicle(BaseModel):
@@ -102,34 +87,17 @@ class TTSInput(BaseModel):
 
 
 # ----------------------------- Auth helpers ---------------------------------
-def hash_pw(pw: str) -> str:
-    return bcrypt.hashpw(pw.encode(), bcrypt.gensalt()).decode()
-
-
-def verify_pw(pw: str, hashed: str) -> bool:
-    return bcrypt.checkpw(pw.encode(), hashed.encode())
-
-
-def make_token(user_id: str) -> str:
-    now = datetime.now(timezone.utc)
-    payload = {"sub": user_id, "iat": now, "exp": now + timedelta(days=7)}
-    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGO)
-
-
+# VEYTRIC is GOOGLE-ONLY. There is no password hashing and no app-minted JWT.
+# The single credential is the `session_token` minted by POST /auth/session
+# (backed by Emergent Google OAuth) and stored in `user_sessions`.
 async def get_current_user(cred: Optional[HTTPAuthorizationCredentials] = Depends(security)):
     if not cred:
         raise HTTPException(status_code=401, detail="Not authenticated")
     token = cred.credentials
-    # 1) Email/password users carry a signed JWT (sub = user _id).
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGO])
-        user = await db.users.find_one({"_id": payload["sub"]})
-        if user:
-            return user
-    except Exception:
-        pass
-    # 2) Emergent Google sign-in users carry a session_token minted by
-    #    POST /auth/session and stored in user_sessions (never re-verified upstream).
+    # Google sign-in users carry a session_token minted by POST /auth/session
+    # and stored in user_sessions (trusted because our backend minted the row;
+    # never re-verified upstream). Legacy email/password JWTs are NO LONGER
+    # accepted — those users must re-authenticate with Google.
     sess = await db.user_sessions.find_one({"session_token": token})
     if sess:
         exp = sess.get("expires_at")
@@ -146,8 +114,22 @@ class SessionInput(BaseModel):
     session_id: str
 
 
+# Best-effort in-process replay guard: a session_id may never be exchanged
+# twice. Emergent also rejects reused ids upstream (non-200 -> 401); this is a
+# second layer that also blocks concurrent double-exchange.
+_used_session_ids: set = set()
+SESSION_EXCHANGE_WINDOW = 300
+SESSION_EXCHANGE_MAX = 30
+_session_buckets: dict = {}
+
+
 @api_router.post("/auth/session")
 async def auth_session(inp: SessionInput):
+    # Rate-limit the exchange (per one-time id) to blunt brute-force/replay.
+    _throttle(_session_buckets, f"sess:{inp.session_id[:24]}", SESSION_EXCHANGE_MAX,
+              SESSION_EXCHANGE_WINDOW, "Too many attempts. Please try signing in again shortly.")
+    if inp.session_id in _used_session_ids:
+        raise HTTPException(status_code=401, detail="Invalid or expired session")
     # Exchange the one-time session_id with Emergent exactly once (backend only).
     import httpx
     try:
@@ -160,13 +142,15 @@ async def auth_session(inp: SessionInput):
         raise HTTPException(status_code=401, detail="Could not verify session")
     if r.status_code != 200:
         raise HTTPException(status_code=401, detail="Invalid or expired session")
+    _used_session_ids.add(inp.session_id)
     d = r.json()
     email = (d.get("email") or "").strip().lower()
     session_token = d.get("session_token")
     name = d.get("name") or (email.split("@")[0] if email else "Driver")
     if not email or not session_token:
         raise HTTPException(status_code=401, detail="Invalid session data")
-    # Upsert by email — reuse existing user_id, never duplicate accounts.
+    # Upsert by email — reuse existing user_id, never duplicate accounts. A
+    # stable internal id (user_xxxx) owns all of this Google user's data.
     user = await db.users.find_one({"email": email})
     if not user:
         uid = f"user_{uuid.uuid4().hex[:12]}"
@@ -174,6 +158,17 @@ async def auth_session(inp: SessionInput):
                 "picture": d.get("picture"), "auth_provider": "google",
                 "created_at": now_iso()}
         await db.users.insert_one(user)
+    elif user.get("auth_provider") != "google":
+        # A pre-existing record for this email is upgraded IN PLACE to Google
+        # ownership (same id keeps any data already attributed to it). Legacy
+        # password material is scrubbed so it can never be used again.
+        await db.users.update_one(
+            {"_id": user["_id"]},
+            {"$set": {"auth_provider": "google", "name": name,
+                      "picture": d.get("picture")},
+             "$unset": {"password": ""}},
+        )
+        user = await db.users.find_one({"_id": user["_id"]})
     await db.user_sessions.update_one(
         {"session_token": session_token},
         {"$set": {"session_token": session_token, "user_id": user["_id"],
@@ -257,11 +252,8 @@ AI_TIER_LIMITS = {"free": AI_FREE_MONTHLY_LIMIT, "pro": None, "shop": None}  # N
 MAX_PROMPT_CHARS = 12000
 RATE_LIMIT_WINDOW = 60
 RATE_LIMIT_MAX = 20
-LOGIN_WINDOW = 300
-LOGIN_MAX = 10
 
 _rate_buckets: dict = {}
-_login_buckets: dict = {}
 
 
 def _throttle(store: dict, key: str, max_n: int, window: int, msg: str):
@@ -331,34 +323,17 @@ async def root():
 
 
 @api_router.post("/auth/register")
-async def register(inp: RegisterInput):
-    _throttle(_login_buckets, f"reg:{inp.email.lower()}", LOGIN_MAX, LOGIN_WINDOW,
-              "Too many attempts. Please wait a few minutes and try again.")
-    if len(inp.password or "") < 8:
-        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
-    existing = await db.users.find_one({"email": inp.email.lower()})
-    if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    uid = str(uuid.uuid4())
-    doc = {
-        "_id": uid,
-        "name": inp.name,
-        "email": inp.email.lower(),
-        "password": hash_pw(inp.password),
-        "created_at": now_iso(),
-    }
-    await db.users.insert_one(doc)
-    return {"token": make_token(uid), "user": public_user(doc)}
+async def register():
+    # RETIRED: VEYTRIC is Google-only. Never validates, creates a user, issues a
+    # token, or touches the database. Generic message — no account enumeration.
+    raise HTTPException(status_code=410, detail="This authentication method has been retired. Use Google Sign-In.")
 
 
 @api_router.post("/auth/login")
-async def login(inp: LoginInput):
-    _throttle(_login_buckets, f"login:{inp.email.lower()}", LOGIN_MAX, LOGIN_WINDOW,
-              "Too many login attempts. Please wait a few minutes and try again.")
-    user = await db.users.find_one({"email": inp.email.lower()})
-    if not user or not verify_pw(inp.password, user["password"]):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-    return {"token": make_token(user["_id"]), "user": public_user(user)}
+async def login():
+    # RETIRED: VEYTRIC is Google-only. Never validates a password, issues a
+    # token, or touches the database. Generic message — no account enumeration.
+    raise HTTPException(status_code=410, detail="This authentication method has been retired. Use Google Sign-In.")
 
 
 @api_router.get("/auth/me")

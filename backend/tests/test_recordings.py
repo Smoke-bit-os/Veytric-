@@ -4,6 +4,7 @@ import time
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://jarvis-ai-1486.preview.emergentagent.com").rstrip("/")
 API = f"{BASE_URL}/api"
@@ -21,12 +22,8 @@ def client():
 
 @pytest.fixture(scope="module")
 def token(client):
-    r = client.post(f"{API}/auth/login", json={"email": TEST_EMAIL, "password": TEST_PASSWORD})
-    if r.status_code == 200:
-        return r.json()["token"]
-    r = client.post(f"{API}/auth/register", json={"name": "Mechanic", "email": TEST_EMAIL, "password": TEST_PASSWORD})
-    assert r.status_code == 200, r.text
-    return r.json()["token"]
+    _, tok, _ = seed_session("Mechanic")
+    return tok
 
 
 @pytest.fixture(scope="module")

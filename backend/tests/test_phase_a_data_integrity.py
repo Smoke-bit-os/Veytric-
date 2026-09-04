@@ -11,6 +11,7 @@ import time
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "").rstrip("/")
 if not BASE_URL:
@@ -20,12 +21,7 @@ API = f"{BASE_URL}/api"
 
 
 def _register(prefix: str):
-    email = f"TEST_{prefix}_{uuid.uuid4().hex[:8]}@example.com"
-    payload = {"name": "Phase A Tester", "email": email, "password": "Jarvis2026!"}
-    r = requests.post(f"{API}/auth/register", json=payload, timeout=20)
-    assert r.status_code == 200, f"register failed {r.status_code} {r.text}"
-    tok = r.json().get("token") or r.json().get("access_token")
-    assert tok, f"no token in register response: {r.json()}"
+    email, tok, uid = seed_session(prefix)
     return tok, email
 
 

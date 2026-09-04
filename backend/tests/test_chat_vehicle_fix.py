@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 
 import pytest
 import requests
+from _helpers import seed_session
 from pymongo import MongoClient
 
 BASE_URL = os.environ["EXPO_PUBLIC_BACKEND_URL"].rstrip("/") \
@@ -34,15 +35,8 @@ def api():
 
 
 def _register(api):
-    email = f"TEST_chat_{uuid.uuid4().hex[:10]}@jarvis.ai"
-    pw = "Jarvis2026!"
-    r = api.post(f"{BASE_URL}/api/auth/register",
-                 json={"email": email, "password": pw, "name": "T"})
-    assert r.status_code == 200, r.text
-    data = r.json()
-    token = data.get("access_token") or data.get("token")
-    user = data.get("user") or {}
-    return token, user.get("id") or user.get("_id") or user.get("user_id"), email
+    email, token, uid = seed_session("T")
+    return token, uid, email
 
 
 @pytest.fixture(scope="module")

@@ -1,0 +1,1822 @@
+[
+  {
+    "_id": "192819c0-0e54-498e-a7f0-127426beaa30",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": "bde50df9-3709-4bb0-aa78-f14c7f6cdb3f",
+    "vehicle": "2018 JEEP Wrangler",
+    "mileage": 72000,
+    "health_score": 85,
+    "report": "**Current Condition**\n\nOverall assessment: this 2018 Jeep Wrangler Sahara 3.6L V6 currently presents as **generally healthy with a health score of 85/100**. Based on the available maintenance history and heuristic service modeling, the vehicle appears mechanically stable, with no repeated fault-code history provided and no scan-recorded diagnostic events on file.\n\nKey interpretation:\n- **Health trend is positive**, improving from 78 to 85 across 4 sessions.\n- **No repeated DTC patterns** are recorded.\n- **No live scan/recording data** is available in this report, so this assessment is weighted more heavily toward maintenance status than active fault diagnosis.\n- Main concerns are **service interval exposure**, especially where no prior service record exists.\n\nLikely current condition ranking:\n1. **Good operating condition overall**\n2. **Moderate preventive maintenance backlog**\n3. **Higher uncertainty on wear items due to incomplete service history**\n\n**Recent Repairs & Maintenance**\n\nConfirmed recent service entries:\n- **Engine oil and filter service** at **65,000 km**\n- **Brake service / brake job** at **68,000 km**\n\nImplications:\n- **Engine oil service status** is currently acceptable. Estimated next oil service due around **77,000 km**, leaving roughly **5,000 km remaining**.\n- **Brake pad service status** is favorable. Based on the logged service at 68,000 km, brake pad maintenance is **not an immediate concern** unless symptoms are present.\n\nProfessional note:\n- The recent oil and brake work supports the improving health trend.\n- Because several other maintenance categories have **no recorded prior service**, interval-based predictions are conservative but important.\n\n**Performance Changes**\n\nObserved long-term trend:\n- **Health score rising over 4 sessions: 78 \u2192 85**\n- Net improvement: **+7 points**\n- Trend classification: **positive / good**\n\nAssessment:\n- This suggests the vehicle\u2019s overall maintenance condition has improved recently, likely influenced by the recent oil service and brake work.\n- No negative performance trend data is present for drivetrain, charging, emissions, cooling, or fuel control.\n- Since there are **0 scans and 0 recordings**, there is **no sensor-based trend validation** for items like fuel trims, coolant temperature behavior, misfire activity, charging voltage, or transmission adaptation.\n\n**Diagnostic History**\n\nDiagnostic summary:\n- **Repeated fault codes: none**\n- **Total scans: 0**\n- **Recordings: 0**\n\nInterpretation:\n- There is **no evidence of chronic electronic or emissions faults** in the provided history.\n- However, the absence of scans means there is also **no confirmed OBD validation** of current engine, transmission, catalyst, EVAP, or charging-system performance.\n- This should be treated as a **clean but incomplete diagnostic record**, not proof that all monitored systems are fault-free.\n\nLikely diagnostic status ranking:\n1. **No known recurring faults**\n2. **No scan-confirmed abnormalities**\n3. **Insufficient scan data to verify live-system health**\n\n**Predicted Maintenance**\n\nService forecast based on available records and assumed factory-style intervals:\n\n- **Tire Rotation**\n  - Status: **Overdue**\n  - Interval: **10,000 km**\n  - Estimated due at: **10,000 km**\n  - Estimated overdue by: **62,000 km**\n  - Confidence: **0.55**\n  - Reason: **No prior service record \u2014 using factory interval**\n\n- **Air Filter**\n  - Status: **Overdue**\n  - Interval: **25,000 km**\n  - Estimated due at: **25,000 km**\n  - Estimated overdue by: **47,000 km**\n  - Confidence: **0.55**\n  - Reason: **No prior service record \u2014 using factory interval**\n\n- **Spark Plugs**\n  - Status: **Overdue**\n  - Interval: **50,000 km**\n  - Estimated due at: **50,000 km**\n  - Estimated overdue by: **22,000 km**\n  - Confidence: **0.55**\n  - Reason: **No prior service record \u2014 using factory interval**\n\n- **Battery**\n  - Status: **Overdue for inspection/testing**\n  - Interval reference: **60,000 km**\n  - Estimated overdue by: **12,000 km**\n  - Confidence: **0.55**\n  - Reason: **No prior service record \u2014 using factory interval**\n\n- **Transmission Service**\n  - Status: **Overdue**\n  - Interval reference: **60,000 km**\n  - Estimated overdue by: **12,000 km**\n  - Confidence: **0.55**\n  - Reason: **No prior service record \u2014 using factory interval**\n\n- **Coolant Flush**\n  - Status: **Due soon**\n  - Interval: **80,000 km**\n  - Remaining distance: **8,000 km**\n  - Remaining life estimate: **10%**\n  - Confidence: **0.55**\n  - Reason: **No prior service record \u2014 using factory interval**\n\n- **Serpentine / Belt Inspection**\n  - Status: **Upcoming**\n  - Interval: **90,000 km**\n  - Remaining distance: **18,000 km**\n  - Confidence: **0.55**\n\n- **Alternator Inspection**\n  - Status: **OK / not immediate**\n  - Interval: **120,000 km**\n  - Remaining distance: **48,000 km**\n  - Confidence: **0.55**\n\n- **Engine Oil & Filter**\n  - Status: **OK**\n  - Last service: **65,000 km**\n  - Distance since service: **7,000 km**\n  - Remaining distance: **5,000 km**\n  - Due around: **77,000 km**\n  - Confidence: **0.85**\n\n- **Brake Pads**\n  - Status: **OK**\n  - Last service: **68,000 km**\n  - Distance since service: **4,000 km**\n  - Remaining distance estimate: **36,000 km**\n  - Due around: **108,000 km**\n  - Confidence: **0.85**\n\n**Highest-Priority Concerns**\n\nDirect assessment: the most important issues are **maintenance items overdue by interval, not active failure evidence**.\n\nRanked priorities:\n1. **Transmission service overdue**\n   - Most important from a drivetrain longevity standpoint.\n   - Old fluid can accelerate clutch wear, shift quality degradation, and thermal stress.\n   - Strongly recommended if service history cannot confirm it was already done.\n\n2. **Spark plugs overdue**\n   - On the 3.6L Pentastar, neglected plugs can contribute to reduced efficiency, roughness under load, coil stress, and eventual misfire development.\n   - Especially relevant near and beyond the modeled 50,000 km interval.\n\n3. **Battery age/condition check overdue**\n   - Even if starting performance seems normal, battery reserve capacity can decline before obvious symptoms.\n   - Important because charging-system and battery health are not scan-verified here.\n\n4. **Air filter overdue**\n   - Lower severity than transmission or ignition service, but overdue enough to justify immediate inspection/replacement.\n   - Can affect intake restriction, fuel economy, and throttle response.\n\n5. **Tire rotation / tire condition history absent**\n   - The interval model flags this as heavily overdue.\n   - Main risk is irregular tread wear, road noise, pull, and shortened tire life.\n   - Also verify alignment and suspension wear if uneven tread is found.\n\n6. **Coolant service approaching**\n   - Not yet the most urgent, but close enough to schedule now if other deferred work is being completed together.\n\n**Recommended Next Inspections**\n\nConcrete next steps:\n- **1) Perform a full baseline inspection immediately**\n  - Pull a complete OBD-II scan, including pending and stored codes.\n  - Check Mode $06 if available for early misfire/catalyst indicators.\n  - Record fuel trims, coolant temp, intake air temp, charging voltage, and monitor readiness.\n  - This converts the report from interval-based to condition-based.\n\n- **2) Service the transmission**\n  - Confirm transmission type and OE fluid specification.\n  - Inspect fluid condition for discoloration or burnt odor.\n  - Perform the correct service procedure per Jeep spec; avoid incorrect fluid use.\n  - If shift quality complaints exist, road test before and after service.\n\n- **3) Replace spark plugs**\n  - Inspect removed plugs for:\n    - oil fouling\n    - lean whitening\n    - uneven cylinder coloration\n    - excessive gap growth\n  - If any cylinder-specific abnormalities are found, follow with coil and injector checks.\n\n- **4) Battery and charging-system test**\n  - Perform:\n    - static voltage check\n    - cranking voltage drop test\n    - conductance/load test\n    - charging voltage and ripple test\n  - Clean and torque terminals; inspect grounds.\n\n- **5) Inspect and likely replace engine air filter**\n  - Check for dirt loading, rodent debris, moisture intrusion, and airbox seal condition.\n  - Replace if contamination or restriction is evident.\n\n- **6) Inspect tires thoroughly**\n  - Measure tread depth across all four tires.\n  - Check for inner-edge wear, cupping, heel-toe wear, and age cracking.\n  - Rotate if wear pattern permits.\n  - Set pressures to spec and verify alignment if wear is uneven.\n\n- **7) Plan coolant service within the next 8,000 km**\n  - Inspect coolant condition, freeze protection, and reservoir level.\n  - Check for seepage at hoses, water pump, thermostat housing, and radiator seams.\n\n- **8) Inspect belt drive system**\n  - Check serpentine belt for cracking, glazing, rib separation, and contamination.\n  - Inspect tensioner and idler pulley noise/play.\n\n- **9) Confirm oil service scheduling**\n  - Recheck engine oil condition and level.\n  - Plan next oil/filter service at approximately **77,000 km**, sooner if severe-duty use applies.\n\nProfessional summary:\n- **Vehicle status is above average overall and trending positively.**\n- The main issue is **not evidence of present mechanical failure**, but **multiple overdue maintenance items caused by missing service history**.\n- Priority focus should be **transmission service, spark plugs, battery testing, air filter, and tire inspection/rotation**, followed by **coolant service planning**.\n- A **full diagnostic scan and baseline live-data capture** is the next best step to validate powertrain health and reduce uncertainty.",
+    "predictions": {
+      "mileage": 72000,
+      "items": [
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -62000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 10000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -47000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 25000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -22000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 50000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -12000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 60000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -12000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 60000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": 8000,
+          "remainingLifePct": 0.1,
+          "dueMileage": 80000,
+          "urgency": "soon",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": 18000,
+          "remainingLifePct": 0.2,
+          "dueMileage": 90000,
+          "urgency": "upcoming",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": 48000,
+          "remainingLifePct": 0.4,
+          "dueMileage": 120000,
+          "urgency": "ok",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": 65000,
+          "kmSince": 7000,
+          "remainingKm": 5000,
+          "remainingLifePct": 0.42,
+          "dueMileage": 77000,
+          "urgency": "ok",
+          "confidence": 0.85,
+          "reasons": [
+            "Last service logged at 65,000 km"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": 68000,
+          "kmSince": 4000,
+          "remainingKm": 36000,
+          "remainingLifePct": 0.9,
+          "dueMileage": 108000,
+          "urgency": "ok",
+          "confidence": 0.85,
+          "reasons": [
+            "Last service logged at 68,000 km"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0,
+          80.0,
+          82.0,
+          85.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": [
+        {
+          "key": "health",
+          "label": "Health score",
+          "direction": "rising",
+          "severity": "good",
+          "slope": 2.3,
+          "delta": 7.0,
+          "unit": "",
+          "first": 78.0,
+          "last": 85.0,
+          "summary": "Health score rising over 4 sessions (+7.0)."
+        }
+      ]
+    },
+    "created_at": "2026-08-05T21:16:16.359046+00:00"
+  },
+  {
+    "_id": "8602806b-31e5-42be-a0cd-47f8a06566a8",
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "vehicle_id": "eb361eb2-54af-4a4c-a2cd-38d0b2ad9dd5",
+    "vehicle": "2018 JEEP Wrangler",
+    "mileage": 72000,
+    "health_score": 85,
+    "report": "**Current Condition**\n\n2018 JEEP Wrangler Sahara, 3.6L V6  \nVIN: TEST2CA203C054484  \nOdometer: 72,000 km  \nCurrent Health Score: 85/100\n\nDirect assessment: overall vehicle condition appears good, with a positive health trend and no repeated fault-code history on file. The main concern is not an active drivability fault, but multiple maintenance items showing overdue status because prior service records are incomplete.\n\nKey condition summary:\n- Overall health is good at 85.\n- Health trend is improving, not declining.\n- No repeated DTCs recorded.\n- No scan or sensor recording history available, so this report is maintenance-focused rather than live-fault diagnostic.\n- Several routine services are flagged overdue based on factory-style intervals and missing historical records.\n\nOperational risk level:\n- Low immediate failure risk based on available data.\n- Moderate maintenance risk due to unknown service history for several major items.\n- Best next action is to confirm actual past service before replacing parts unnecessarily.\n\n**Recent Repairs & Maintenance**\n\nRecorded recent service:\n- Engine oil and filter changed at 65,000 km\n- Brake service performed at 68,000 km\n\nAssessment of recent work:\n- Oil service is current enough for now, with approximately 5,000 km remaining to the projected next interval.\n- Brake pad maintenance appears recent and should not be an immediate concern assuming rotor condition and fluid condition are acceptable.\n\nService record quality:\n- Confirmed records exist for oil and brakes only.\n- Most other maintenance alerts are being generated from mileage-based heuristics because no prior logged service exists.\n\n**Performance Changes**\n\nLong-term trend detected:\n- Health score rising over 4 sessions: 78 to 85\n- Net improvement: +7 points\n- Trend slope: positive\n\nInterpretation:\n- The vehicle\u2019s overall condition profile is improving rather than showing degradation.\n- This is consistent with the recent oil change and brake work.\n- No evidence in the provided data of worsening engine, transmission, or emissions performance.\n\nLimitation:\n- No live OBD-II scan values, fuel trims, misfire counters, coolant temperature, charging voltage, or transmission temperature were provided. That prevents confirmation of current system performance under load.\n\n**Diagnostic History**\n\nFault-code history:\n- Repeated fault codes: none reported\n\nScan history:\n- Total scans: 0\n- Total sensor recordings: 0\n\nDiagnostic interpretation:\n- No documented chronic fault pattern.\n- Absence of scan history does not confirm absence of issues; it only means there is no electronic trend data to support or rule out developing faults.\n- Recommend a baseline full-system scan so future changes can be compared against known-good data.\n\n**Predicted Maintenance**\n\nMileage-based forecast with current status:\n\n- Tire Rotation\n  - Status: Overdue\n  - Interval: 10,000 km\n  - Last service: not recorded\n  - Confidence: 0.55\n  - Note: flagged due to no prior service record\n\n- Air Filter\n  - Status: Overdue\n  - Interval: 25,000 km\n  - Last service: not recorded\n  - Confidence: 0.55\n\n- Spark Plugs\n  - Status: Overdue\n  - Interval: 50,000 km\n  - Last service: not recorded\n  - Confidence: 0.55\n\n- Battery\n  - Status: Overdue / inspection strongly advised\n  - Interval: 60,000 km heuristic\n  - Last service: not recorded\n  - Confidence: 0.55\n\n- Transmission Service\n  - Status: Overdue\n  - Interval: 60,000 km\n  - Last service: not recorded\n  - Confidence: 0.55\n\n- Coolant Flush\n  - Status: Due soon\n  - Interval: 80,000 km\n  - Remaining: ~8,000 km\n  - Confidence: 0.55\n\n- Serpentine / Belt Inspection\n  - Status: Upcoming\n  - Interval: 90,000 km\n  - Remaining: ~18,000 km\n  - Confidence: 0.55\n\n- Alternator Inspection\n  - Status: OK for now\n  - Interval: 120,000 km\n  - Remaining: ~48,000 km\n  - Confidence: 0.55\n\n- Engine Oil & Filter\n  - Status: OK\n  - Last service: 65,000 km\n  - Distance since service: 7,000 km\n  - Estimated remaining: ~5,000 km\n  - Confidence: 0.85\n\n- Brake Pads\n  - Status: OK\n  - Last service: 68,000 km\n  - Distance since service: 4,000 km\n  - Estimated remaining interval: ~36,000 km\n  - Confidence: 0.85\n\n**Highest-Priority Concerns**\n\n1. Transmission service overdue by heuristic\n- Likely highest-value preventive item at this mileage if never performed.\n- Old fluid can affect shift quality, clutch life, and thermal stability.\n- Priority is higher if vehicle tows, sees off-road use, or operates in heat.\n\n2. Battery age/state unknown\n- At 72,000 km on a 2018 vehicle, battery age is more important than mileage.\n- If original, replacement or at least formal testing is strongly recommended.\n- Wrangler electrical systems are sensitive to low-voltage conditions; weak batteries can create intermittent warning lights and module communication issues.\n\n3. Spark plugs likely due\n- The 3.6L Pentastar is sensitive to ignition condition as mileage accumulates.\n- Worn plugs can reduce fuel efficiency, increase coil stress, and eventually produce misfires under load.\n\n4. Air filter overdue by record gap\n- Lower risk than transmission or battery, but easy and worthwhile.\n- A restricted filter can affect intake airflow and long-term fuel economy.\n\n5. Tire rotation history missing\n- Especially important on a Wrangler due to tire wear patterns, steering feel, and suspension geometry sensitivity.\n- Uneven wear can lead to vibration, noise, and shortened tire life.\n\n6. Coolant service approaching\n- Not yet overdue, but should be planned soon.\n- Important for water pump, radiator, and heater-core longevity.\n\n**Recommended Next Inspections**\n\nRecommended order of action:\n\n- Verify maintenance history first\n  - Check dealer or independent shop records.\n  - If any of the overdue items were already completed, update the service log to avoid unnecessary replacement.\n\n- Perform a full baseline scan\n  - Scan all modules, not engine only.\n  - Save current DTC, pending code, and monitor status.\n  - Record freeze-frame and readiness data.\n  - This is important because there are currently zero scans on file.\n\n- Battery and charging system test\n  - Load-test battery\n  - Check resting voltage and cranking voltage\n  - Verify alternator output and ripple\n  - Replace battery if original or marginal\n\n- Transmission inspection/service\n  - Inspect for leaks at pan, cooler lines, and connectors\n  - Assess fluid condition\n  - Perform correct transmission service per OEM procedure and fluid spec\n  - Avoid generic fluid use\n\n- Ignition system service\n  - Inspect/replace spark plugs if no record confirms prior service\n  - Check coils and boots for heat wear or oil contamination\n  - Clear and document misfire history if found during scan\n\n- Intake service\n  - Inspect and likely replace engine air filter\n  - Check air box seal and intake duct integrity\n\n- Tire and chassis inspection\n  - Rotate tires if wear pattern allows\n  - Measure tread depth across all positions\n  - Check for feathering/cupping\n  - Verify alignment if uneven wear is present\n  - Inspect steering and suspension components, especially if off-road use is common\n\n- Cooling system planning\n  - Schedule coolant flush within the next ~8,000 km\n  - Pressure-test system if any seepage or coolant odor is noted\n  - Inspect radiator, hoses, and water pump area\n\n- General Wrangler-specific underbody review\n  - Check front suspension and steering joints\n  - Inspect driveshaft boots/U-joints\n  - Inspect differential and transfer-case leaks if applicable\n  - Check brake hose routing and underbody corrosion exposure\n\nProfessional recommendation:\n- This Jeep currently presents as a solid 85/100 vehicle with no documented fault-code pattern, but it is carrying a moderate preventive-maintenance backlog created mainly by missing historical records.\n- Priority should go to confirming service history, then battery testing, transmission service verification, spark plug service, and tire rotation/wear inspection.\n- If you want, I can also convert this into a customer-facing shop report format with service priority levels, estimated risk, and a visit plan for the next 10,000 km.",
+    "predictions": {
+      "mileage": 72000,
+      "items": [
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -62000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 10000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -47000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 25000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -22000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 50000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -12000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 60000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": -12000,
+          "remainingLifePct": 0.0,
+          "dueMileage": 60000,
+          "urgency": "overdue",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": 8000,
+          "remainingLifePct": 0.1,
+          "dueMileage": 80000,
+          "urgency": "soon",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": 18000,
+          "remainingLifePct": 0.2,
+          "dueMileage": 90000,
+          "urgency": "upcoming",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 72000,
+          "remainingKm": 48000,
+          "remainingLifePct": 0.4,
+          "dueMileage": 120000,
+          "urgency": "ok",
+          "confidence": 0.55,
+          "reasons": [
+            "No prior service record \u2014 using factory interval"
+          ]
+        },
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": 65000,
+          "kmSince": 7000,
+          "remainingKm": 5000,
+          "remainingLifePct": 0.42,
+          "dueMileage": 77000,
+          "urgency": "ok",
+          "confidence": 0.85,
+          "reasons": [
+            "Last service logged at 65,000 km"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": 68000,
+          "kmSince": 4000,
+          "remainingKm": 36000,
+          "remainingLifePct": 0.9,
+          "dueMileage": 108000,
+          "urgency": "ok",
+          "confidence": 0.85,
+          "reasons": [
+            "Last service logged at 68,000 km"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0,
+          80.0,
+          82.0,
+          85.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": [
+        {
+          "key": "health",
+          "label": "Health score",
+          "direction": "rising",
+          "severity": "good",
+          "slope": 2.3,
+          "delta": 7.0,
+          "unit": "",
+          "first": 78.0,
+          "last": 85.0,
+          "summary": "Health score rising over 4 sessions (+7.0)."
+        }
+      ]
+    },
+    "ai_provider": "cloud",
+    "ai_model": null,
+    "created_at": "2026-08-09T14:56:51.573229+00:00"
+  },
+  {
+    "_id": "487a667e-abde-44e4-ad21-df52ad05fb9e",
+    "user_id": "03de2806-2563-4fe7-ab56-9b1706b7cb4b",
+    "vehicle_id": "298b9660-1ac0-4418-a86f-a55c261a894d",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK HR at 20/20",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:01:59.446912+00:00"
+  },
+  {
+    "_id": "ea7765eb-1a1e-4d5e-8f71-6aea69337caa",
+    "user_id": "f7d8d68d-9462-4512-9e6d-ace21e2220e4",
+    "vehicle_id": "215e0cf6-bfa8-4b22-87a3-6cd186d395b6",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK generated health report full text.",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T15:02:01.416571+00:00"
+  },
+  {
+    "_id": "c7186f01-493f-4358-b40e-6e20cfa41976",
+    "user_id": "b14142a2-fae9-4d7f-82f6-dab1e1f86fd3",
+    "vehicle_id": "08459525-5a4a-4864-af11-f0cb30e41caa",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK HR at 20/20",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T15:02:59.732422+00:00"
+  },
+  {
+    "_id": "3ecf38a1-75c6-4eac-a789-d27d8c959ed4",
+    "user_id": "227d5864-4103-4aca-8f8c-2003080282bc",
+    "vehicle_id": "badbcd1a-6f8c-4ccb-b29b-a44ffe9eb8bb",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK generated health report full text.",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T15:03:01.280501+00:00"
+  },
+  {
+    "_id": "47c60d0e-5dfa-402c-93da-c5503fd60ce9",
+    "user_id": "e7ea2c8b-4365-4aab-8526-5f65a963cbef",
+    "vehicle_id": "a1931dcb-867a-44ff-ad11-89e8f8d2ad36",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK HR at 20/20",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:14:11.142242+00:00"
+  },
+  {
+    "_id": "db37d6bf-334f-43bd-b170-ab7ce99d26b2",
+    "user_id": "d19b5f82-903e-4a91-a8c6-cbad5d8b9769",
+    "vehicle_id": "27702e03-daf8-4c43-a4bc-a87b4a3e8576",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK generated health report full text.",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T16:14:20.812745+00:00"
+  },
+  {
+    "_id": "3101583e-e0a9-47c2-a8c3-6751874655ed",
+    "user_id": "c3f88027-7782-40bb-bc90-74cad406a2aa",
+    "vehicle_id": "a1165cd4-1c3d-48b2-a412-742b0578bd2d",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK HR at 20/20",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": null,
+    "created_at": "2026-08-09T16:14:53.261802+00:00"
+  },
+  {
+    "_id": "762af6b3-795e-4406-8e04-c26199161cbd",
+    "user_id": "4bc2cb58-93ab-40b3-b52d-8a35f7cd0e20",
+    "vehicle_id": "6a90817e-0fd3-4cc0-9b93-744a73eea710",
+    "vehicle": "2018 Jeep Wrangler",
+    "mileage": null,
+    "health_score": 78,
+    "report": "BYOK generated health report full text.",
+    "predictions": {
+      "mileage": 0,
+      "items": [
+        {
+          "key": "oil",
+          "name": "Engine Oil & Filter",
+          "intervalKm": 12000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 12000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "tires",
+          "name": "Tire Rotation",
+          "intervalKm": 10000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 10000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "airfilter",
+          "name": "Air Filter",
+          "intervalKm": 25000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 25000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "brakes",
+          "name": "Brake Pads",
+          "intervalKm": 40000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 40000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "plugs",
+          "name": "Spark Plugs",
+          "intervalKm": 50000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 50000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "battery",
+          "name": "Battery",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "trans",
+          "name": "Transmission Service",
+          "intervalKm": 60000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 60000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "coolant",
+          "name": "Coolant Flush",
+          "intervalKm": 80000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 80000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "belts",
+          "name": "Serpentine / Timing Belt",
+          "intervalKm": 90000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 90000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        },
+        {
+          "key": "alternator",
+          "name": "Alternator Inspection",
+          "intervalKm": 120000,
+          "lastServiceKm": null,
+          "kmSince": 0,
+          "remainingKm": 120000,
+          "remainingLifePct": 1.0,
+          "dueMileage": null,
+          "urgency": "ok",
+          "confidence": 0.35,
+          "reasons": [
+            "Set current mileage for accurate predictions"
+          ]
+        }
+      ]
+    },
+    "trends": {
+      "series": {
+        "battery": [],
+        "coolant": [],
+        "health": [
+          78.0
+        ],
+        "maxSpeed": []
+      },
+      "repeatedDtcs": [],
+      "findings": []
+    },
+    "ai_provider": "byok",
+    "ai_model": "gpt-4o",
+    "created_at": "2026-08-09T16:14:57.260799+00:00"
+  }
+]

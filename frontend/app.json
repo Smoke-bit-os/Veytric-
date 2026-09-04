@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
+    "scheme": "veytric",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "runtimeVersion": {
@@ -35,6 +35,8 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.emergent.jarvisai.gx2hdi",
+      "allowBackup": false,
+      "usesCleartextTraffic": false,
       "permissions": [
         "RECORD_AUDIO",
         "CAMERA",
@@ -44,6 +46,11 @@
         "BLUETOOTH_CONNECT",
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
+      ],
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
       ]
     },
     "web": {

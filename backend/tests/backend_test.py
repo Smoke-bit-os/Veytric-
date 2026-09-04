@@ -4,6 +4,7 @@ import uuid
 import base64
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://jarvis-ai-1486.preview.emergentagent.com").rstrip("/")
 API = f"{BASE_URL}/api"
@@ -21,14 +22,9 @@ def client():
 
 @pytest.fixture(scope="session")
 def token(client):
-    # Try login first
-    r = client.post(f"{API}/auth/login", json={"email": TEST_EMAIL, "password": TEST_PASSWORD})
-    if r.status_code == 200:
-        return r.json()["token"]
-    # Register if not existing
-    r = client.post(f"{API}/auth/register", json={"name": "Mechanic", "email": TEST_EMAIL, "password": TEST_PASSWORD})
-    assert r.status_code == 200, f"register failed: {r.status_code} {r.text}"
-    return r.json()["token"]
+    # Google-only: mint a session directly (no HTTP register/login path).
+    _, tok, _ = seed_session("Mechanic")
+    return tok
 
 
 @pytest.fixture
@@ -43,22 +39,21 @@ def test_root(client):
     assert "VEYTRIC" in r.json()["message"]
 
 
-# ---- Auth ----
-def test_register_duplicate_returns_400(client):
+# ---- Auth (Google-only: legacy endpoints retired) ----
+def test_register_retired_410(client):
     r = client.post(f"{API}/auth/register", json={"name": "Dup", "email": TEST_EMAIL, "password": TEST_PASSWORD})
-    assert r.status_code == 400
+    assert r.status_code == 410
 
 
-def test_login_wrong_password(client):
+def test_login_retired_410(client):
     r = client.post(f"{API}/auth/login", json={"email": TEST_EMAIL, "password": "wrongpass"})
-    assert r.status_code == 401
+    assert r.status_code == 410
 
 
-def test_login_success(client):
-    r = client.post(f"{API}/auth/login", json={"email": TEST_EMAIL, "password": TEST_PASSWORD})
+def test_session_token_success(client, token):
+    r = client.get(f"{API}/auth/me", headers={"Authorization": f"Bearer {token}"})
     assert r.status_code == 200
-    body = r.json()
-    assert "token" in body and body["user"]["email"] == TEST_EMAIL
+    assert "email" in r.json()
 
 
 def test_me_requires_auth(client):

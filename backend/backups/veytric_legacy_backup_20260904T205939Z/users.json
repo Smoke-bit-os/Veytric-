@@ -1,0 +1,3953 @@
+[
+  {
+    "_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "name": "Mechanic",
+    "email": "mechanic@jarvis.ai",
+    "password": "$2b$12$b4ua8tcSYV3x4./.u0/aqOdX3pJPwuNAQsrDNpam7nx1NKHeol2SC",
+    "created_at": "2026-08-03T20:13:35.426926+00:00"
+  },
+  {
+    "_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "name": "michael bryant",
+    "email": "mikebryant111887@gmail.com",
+    "password": "$2b$12$NeJghFwUIw6zYgQddJcZsOoAr3sdUBfldCfqo21XPR9wcMq4TcYG2",
+    "created_at": "2026-08-03T20:14:34.431957+00:00",
+    "last_validation": "2026-08-07T22:17:31.355825+00:00",
+    "provider": "developer",
+    "subscription_status": "active",
+    "trial_end": "2026-09-06T22:17:20.747560+00:00",
+    "trial_start": "2026-08-07T22:17:20.747560+00:00",
+    "trial_used": true,
+    "auto_renew": true,
+    "grace_period_end": null,
+    "subscription_end": "2026-09-06T22:17:31.355825+00:00",
+    "subscription_start": "2026-08-07T22:17:31.355825+00:00",
+    "tier": "shop"
+  },
+  {
+    "_id": "242ec352-4036-4a2a-bf4c-dc1586a64032",
+    "name": "Coty Johnson",
+    "email": "666psionic@gmail.com",
+    "password": "$2b$12$G5G0HRNdtYOM9rP7U2dDRe.q2c4o8v9vUaK.KuczB/dSBYRctyFdW",
+    "created_at": "2026-08-04T19:34:41.551491+00:00"
+  },
+  {
+    "_id": "b695b0c6-8a8e-48ee-add4-09fb51c7b573",
+    "name": "Perf Tester",
+    "email": "perf1785950626@jarvis.ai",
+    "password": "$2b$12$.EpzEcm4OGk9vdPTSfZvgejGKr7ubKmuZizmfjyJPok/Wo3NVp4su",
+    "created_at": "2026-08-05T17:23:46.917449+00:00"
+  },
+  {
+    "_id": "0af29b95-aa0e-4d6f-b5c0-1a57d9b3afcf",
+    "name": "Intel",
+    "email": "intel1785964045@jarvis.ai",
+    "password": "$2b$12$dMzvF/fg/hsqayNyFS9SXOHXw8Xpz1qfrhzLrpbl2XCrJ8GU4LSnO",
+    "created_at": "2026-08-05T21:07:25.592560+00:00"
+  },
+  {
+    "_id": "8ad35bd1-367a-4812-9099-9cfb1d8a67bb",
+    "name": "Intel Tester",
+    "email": "intel1785964076@jarvis.ai",
+    "password": "$2b$12$..Y602vw2joHMjT3ADnmweBwLHxWHlJAQoz5enYVBw2WEtbNvXEse",
+    "created_at": "2026-08-05T21:07:57.866545+00:00"
+  },
+  {
+    "_id": "d39f320a-daab-48d0-89ee-a4f1b47af9cb",
+    "name": "Intel Tester",
+    "email": "intel1785964134@jarvis.ai",
+    "password": "$2b$12$6ESpHDra5lTPWCdyURWlIeCAYd8ZKWShVIYileShiqJfDi0O/CuvO",
+    "created_at": "2026-08-05T21:08:55.181015+00:00"
+  },
+  {
+    "_id": "c54fbe7f-48f3-4b38-9dc7-a14b047195cc",
+    "name": "Intel Tester",
+    "email": "intel1785964202@jarvis.ai",
+    "password": "$2b$12$W90IKsCvJGkjx2docoQRSu4fZflMikR4Cs9VS4ioKh7DQIjbYOVbC",
+    "created_at": "2026-08-05T21:10:03.460817+00:00"
+  },
+  {
+    "_id": "922aa2f9-ad55-4401-bc7a-f58496ef1ddf",
+    "name": "Intel Tester",
+    "email": "intel1785964276@jarvis.ai",
+    "password": "$2b$12$HxfS6tFZQhqqIpe5rUFNIOE4/KDtdlXq765xAFwp1gjMLTNg6daDy",
+    "created_at": "2026-08-05T21:11:17.373493+00:00"
+  },
+  {
+    "_id": "f8946af2-0149-48d5-b405-742520cc403f",
+    "name": "Intel Tester",
+    "email": "intel1785964387@jarvis.ai",
+    "password": "$2b$12$vfkeWQswCyXAPbsmToehv.SMXvYJfMJC0w7tUarDNc0FcralRoec6",
+    "created_at": "2026-08-05T21:13:08.691010+00:00"
+  },
+  {
+    "_id": "35d1ab71-eb1e-4259-bbb0-b8a9532349ab",
+    "name": "Ecu",
+    "email": "ecu1785965856@jarvis.ai",
+    "password": "$2b$12$Lo6kkwKKnL.qgESIeMFo3OjAZtBsW3F1QlEfuOXsej2qcIDY5aPXu",
+    "created_at": "2026-08-05T21:37:37.124171+00:00"
+  },
+  {
+    "_id": "5e73a157-a739-49d6-bd46-49bb761f3028",
+    "name": "Ecu Tester",
+    "email": "ecu1785966056@jarvis.ai",
+    "password": "$2b$12$2sraTttLhES8ykOYHaefsu92c1eh9t.alcmAyLy4FvVVeoupSGYXa",
+    "created_at": "2026-08-05T21:40:57.235912+00:00"
+  },
+  {
+    "_id": "c223b990-3f2c-4c71-9abc-26d761889bfa",
+    "name": "Ecu Tester",
+    "email": "ecu1785966118@jarvis.ai",
+    "password": "$2b$12$1WvQjY2TnQxY8vIVv0rzkuKYNh0VhnHgePPpDDhkMPLSb5PNdsCEe",
+    "created_at": "2026-08-05T21:41:59.805693+00:00"
+  },
+  {
+    "_id": "169ee008-6853-41b7-8f4b-f8d4dfa06144",
+    "name": "Scan Tester",
+    "email": "scan1785969186@jarvis.ai",
+    "password": "$2b$12$0tL9bDDOPKG/SFwu4//pg.NX6hnGexS00D0xn4TveApbagswHpRFm",
+    "created_at": "2026-08-05T22:33:07.432435+00:00"
+  },
+  {
+    "_id": "2e720451-01fa-491b-9b4a-51776a5a0c0c",
+    "name": "brando",
+    "email": "easyas1234me@yahoo.com",
+    "password": "$2b$12$p/oN.oeljpDIEvaweZTyN.20yUdWrWiBOvJ7J4//f.leJwgiF37ry",
+    "created_at": "2026-08-06T00:18:29.687799+00:00"
+  },
+  {
+    "_id": "7a34c3c9-3da1-4503-8069-af4caab2acb6",
+    "name": "Lic Test",
+    "email": "lic_test_15472@jarvis.ai",
+    "password": "$2b$12$6QwnItQiReAD2PC1eIHoZuCFyLtiPhYLePNrRS/9QcLY2dEUFo7Qy",
+    "created_at": "2026-08-07T19:23:34.702819+00:00"
+  },
+  {
+    "_id": "88d094b6-0558-453b-958a-0ed60136dbbc",
+    "name": "T2",
+    "email": "lic2_8359@jarvis.ai",
+    "password": "$2b$12$/0XSSonl3mW6Gu3tukSdq.akS5gPN2a/9Jv9E9.wDex7kebWcBmCW",
+    "created_at": "2026-08-07T19:23:45.422555+00:00",
+    "last_validation": "2026-08-07T19:23:45.472153+00:00",
+    "provider": "developer",
+    "subscription_status": "active",
+    "trial_end": "2026-09-06T19:23:45.438954+00:00",
+    "trial_start": "2026-08-07T19:23:45.438954+00:00",
+    "trial_used": true,
+    "auto_renew": false,
+    "grace_period_end": "2026-08-06T19:23:45.514801+00:00",
+    "subscription_end": "2026-08-06T19:23:45.514801+00:00",
+    "subscription_start": "2026-07-07T19:23:45.514801+00:00",
+    "tier": "pro"
+  },
+  {
+    "_id": "8bc41d2e-e2bd-4e84-91bc-4c59d2fdcf3b",
+    "name": "TEST DEV",
+    "email": "test_dev_9e1c4f6dad@jarvis.ai",
+    "password": "$2b$12$vGtZSgY8Z1wdAK4zB4O.4e4z8OGlhWBEhycb7yPOO/hyCgxVL0vw.",
+    "created_at": "2026-08-07T19:37:06.918123+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T19:37:07.278124+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T19:37:07.278124+00:00",
+    "subscription_start": "2026-08-07T19:37:07.278124+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "39750812-c540-4bef-9c67-a72c125e3e66",
+    "name": "TEST Reg",
+    "email": "test_reg_c84f3a31e2@jarvis.ai",
+    "password": "$2b$12$/NLalt5VV8kpu9AJvc9ByuHcsiu1ZrKLGsIB70CsmE3CdXZfSyHvC",
+    "created_at": "2026-08-07T19:37:07.139917+00:00"
+  },
+  {
+    "_id": "3daf367a-b171-40e2-9191-2ce33554e0be",
+    "name": "TEST L",
+    "email": "test_login_61d22cd437@jarvis.ai",
+    "password": "$2b$12$vM3nkktJfoEykRkodi1mluiXFrKQv19rsszOiK2m1/Gja5TaEXDYu",
+    "created_at": "2026-08-07T19:37:07.510752+00:00"
+  },
+  {
+    "_id": "8a3df9dd-af57-48f9-b710-394c5f804155",
+    "name": "TEST DEV",
+    "email": "test_dev_9f1d307263@jarvis.ai",
+    "password": "$2b$12$LBW/yQl4S9bKbhn164MYMOhIGouvbZnIB93Ebc3AnchO.yD/wASSK",
+    "created_at": "2026-08-07T19:37:07.733990+00:00",
+    "auto_renew": true,
+    "grace_period_end": "2026-08-10T19:37:07.958739+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-08-06T19:37:07.958739+00:00",
+    "subscription_start": "2026-07-07T19:37:07.958739+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "a5b4aaf0-c5a4-4661-a748-087af67bce16",
+    "name": "TEST Licensing",
+    "email": "test_lic_ef5c358b02@jarvis.ai",
+    "password": "$2b$12$Dx8CnH0GKk1RW/KG4/8fXeqSV0VYzR3McCuuVpq.HkpXzo13PWK7m",
+    "created_at": "2026-08-07T19:37:08.294375+00:00"
+  },
+  {
+    "_id": "65ba4f2e-bf3e-42c8-a51a-19677e9ab1c9",
+    "name": "TEST DEV",
+    "email": "test_dev_e90f86e4d9@jarvis.ai",
+    "password": "$2b$12$nqACcQQmrJxmaVsiiGel4eNCkbOKtFXpCX6UESoxJx3oynyptkBI2",
+    "created_at": "2026-08-07T19:37:08.517536+00:00",
+    "auto_renew": false,
+    "grace_period_end": "2026-08-06T19:37:08.619686+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-08-06T19:37:08.619686+00:00",
+    "subscription_start": "2026-07-07T19:37:08.619686+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "3c27559d-758f-4dcf-a402-1df74d7394f5",
+    "name": "TEST DEV",
+    "email": "test_dev_65ff132706@jarvis.ai",
+    "password": "$2b$12$GKcNe8Ji/tyTbbKYwoaRyuYsa3rbm0QmYVIRnKJrHMhz0yF6hGRP6",
+    "created_at": "2026-08-07T19:37:08.950749+00:00",
+    "last_validation": "2026-08-07T19:37:09.175543+00:00",
+    "provider": "developer",
+    "subscription_status": "trial",
+    "tier": "pro",
+    "trial_end": "2026-09-06T19:37:09.175543+00:00",
+    "trial_start": "2026-08-07T19:37:09.175543+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "3e8a158f-d6d0-41ed-ab54-d584420ce7b3",
+    "name": "TEST",
+    "email": "test_sub_fe7a818e77@jarvis.ai",
+    "password": "$2b$12$okg3oRBXIRgzM8UTcFZx4O.mpVtc7dBAoXKri1rfe.mDmkw2cNkam",
+    "created_at": "2026-08-07T19:37:09.173843+00:00"
+  },
+  {
+    "_id": "a9a72df9-6b8d-4ac9-a5ae-a1418f359d0a",
+    "name": "TEST DEV",
+    "email": "test_dev_bac1f78f42@jarvis.ai",
+    "password": "$2b$12$oRj1z3L8pvw0UHP6VbcUguRVLLAlY04fhsVzOjFtkNU5nBeRVTaoi",
+    "created_at": "2026-08-07T19:37:09.534659+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T19:37:09.759018+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T19:37:09.759018+00:00",
+    "subscription_start": "2026-08-07T19:37:09.759018+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "c36e0d6c-99a2-4303-bc59-68637a1aac8b",
+    "name": "TEST",
+    "email": "test_trial_de03b8d181@jarvis.ai",
+    "password": "$2b$12$4hrpno/aT8hyeJNvbW8gzeHwuZNFWx97N09QcpHG/xDB9vRSWUvcq",
+    "created_at": "2026-08-07T19:37:09.757422+00:00",
+    "last_validation": "2026-08-07T19:37:09.854307+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-09-06T19:37:09.854307+00:00",
+    "trial_start": "2026-08-07T19:37:09.854307+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "405caf6f-f949-4bb9-912c-7fa3963f4b9b",
+    "name": "TEST DEV",
+    "email": "test_dev_cc31e43af9@jarvis.ai",
+    "password": "$2b$12$J2zcNSJOOpeY2KlI/ug6t.vStt56W3as0940jXfvfmK8X0mBWe8Yu",
+    "created_at": "2026-08-07T19:37:10.106503+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T19:37:10.206380+00:00",
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "0c560455-fa48-4165-9bde-4ec8cb239d68",
+    "name": "TEST DEV",
+    "email": "test_dev_95afc780f1@jarvis.ai",
+    "password": "$2b$12$TZ4QOGGo0nFLPX7MNJH/1eP7CwsZ6CPfjrbUuU980TBGCcDUxiVTS",
+    "created_at": "2026-08-07T19:37:10.639934+00:00",
+    "last_validation": "2026-08-07T19:37:10.741502+00:00",
+    "provider": "developer",
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null,
+    "trial_used": false,
+    "auto_renew": false,
+    "grace_period_end": null,
+    "subscription_end": null,
+    "subscription_start": null
+  },
+  {
+    "_id": "4a04d688-fa31-4387-9df9-33f82a335773",
+    "name": "TEST DEV",
+    "email": "test_dev_cb96be9ba3@jarvis.ai",
+    "password": "$2b$12$ZjrMta1SG/bwxXqnayT84.sQdin3xq48XbyM.KwljJ6KHECAuAo9i",
+    "created_at": "2026-08-07T19:37:11.211867+00:00",
+    "last_validation": "2026-08-07T19:37:11.575231+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-09-06T19:37:11.575231+00:00",
+    "trial_start": "2026-08-07T19:37:11.575231+00:00",
+    "trial_used": true,
+    "tier": "free"
+  },
+  {
+    "_id": "94f29c9a-ff2e-429a-a704-92cdc030e0e2",
+    "name": "TEST Licensing",
+    "email": "test_lic_8f6b6f8fb8@jarvis.ai",
+    "password": "$2b$12$J/.pXgSB4f1VkvxhF7EqN.TKcSIlNHOKURWdRlZkMz7.wR/krPGnq",
+    "created_at": "2026-08-07T19:37:11.937927+00:00"
+  },
+  {
+    "_id": "ec1ceede-bd1e-4283-aa60-53fbc9bf13c3",
+    "name": "TEST DEV",
+    "email": "test_dev_2bced7146f@jarvis.ai",
+    "password": "$2b$12$X/xzikyrNSS/0OJRYs./dOE4ImKoT1oGU7kjK2P9Z7.hT1Ar3qVvG",
+    "created_at": "2026-08-07T19:37:12.310771+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T19:37:12.419432+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T19:37:12.419432+00:00",
+    "subscription_start": "2026-08-07T19:37:12.419432+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "33ec6503-f409-45bc-a180-2e3e712725c9",
+    "name": "Test Lic",
+    "email": "testlic_1786131477@jarvis.ai",
+    "password": "$2b$12$A1xaXQm362WHS0qkYUXlP.CBfbX..qpu060lqv9rBF0njr.YNhC/K",
+    "created_at": "2026-08-07T19:37:58.015372+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T19:38:50.295847+00:00",
+    "provider": "trial",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "trial",
+    "tier": "free",
+    "trial_end": "2026-09-06T19:38:50.295847+00:00",
+    "trial_start": "2026-08-07T19:38:50.295847+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "7164f8e6-6834-4b8d-bbaf-340f087c6377",
+    "name": "AI",
+    "email": "ai_32065@jarvis.ai",
+    "password": "$2b$12$Qw9NupI16CIQKFwPw7K1rOL8DsjIjYZO/d51vNz8jQ1Zwz147Yxye",
+    "created_at": "2026-08-07T21:41:38.062219+00:00"
+  },
+  {
+    "_id": "82b146b9-6b6f-471f-8c8e-69d76235653b",
+    "name": "AI Tester",
+    "email": "test_ai_1786139065_26649f@jarvis.ai",
+    "password": "$2b$12$mvyHK7Lvqn3XDOCBZKnkgORmoy21rJYCkmmG21bnCOZHpitidKVba",
+    "created_at": "2026-08-07T21:44:26.174856+00:00"
+  },
+  {
+    "_id": "f79a2076-34de-4676-a20a-b2cf13f047cd",
+    "name": "AI Tester",
+    "email": "test_ai_1786139065_5fb2c8@jarvis.ai",
+    "password": "$2b$12$ppcWUflo06vUFtoe9iHwV.Aqa4ZC6ERzUxzcV4ah4DXFO/ARfPJBS",
+    "created_at": "2026-08-07T21:44:26.398703+00:00"
+  },
+  {
+    "_id": "b2b40564-b350-43c6-a9c6-5c8380515c04",
+    "name": "AI Tester",
+    "email": "test_ai_1786139092_5e5385@jarvis.ai",
+    "password": "$2b$12$UgsTrHvEqe5mJT5H2EDcoOhLqFvSMOAgPq5R1ophALb5otsorkKTa",
+    "created_at": "2026-08-07T21:44:53.151551+00:00"
+  },
+  {
+    "_id": "b4c896c5-7462-47e3-8e72-4b03ed544f92",
+    "name": "AI Tester",
+    "email": "test_ai_1786139092_4152c2@jarvis.ai",
+    "password": "$2b$12$zcXj4MpmvnNcvuntn68yxOz83G0w/creRVsUDW7Wlf1d7NlnLViDu",
+    "created_at": "2026-08-07T21:44:53.376078+00:00"
+  },
+  {
+    "_id": "d932db1c-3b73-4afa-9de7-50a9bec76b55",
+    "name": "AI Tester",
+    "email": "test_aisettings_1786139165@jarvis.ai",
+    "password": "$2b$12$s6i0wrhkH1tJPh4Nc6Qpv.uLxXmf2tFHRJCfq3RDoetGj5jabqawC",
+    "created_at": "2026-08-07T21:46:06.221166+00:00"
+  },
+  {
+    "_id": "2767147a-cba1-426c-b385-4d9436abeeff",
+    "name": "AI Tester",
+    "email": "test_aisettings_1786139223@jarvis.ai",
+    "password": "$2b$12$hEBXAr.u35zDKtkCeNMcmubXIdcJBYUDOFw4jrey092qR00iw.CsW",
+    "created_at": "2026-08-07T21:47:04.497708+00:00"
+  },
+  {
+    "_id": "294c1227-879b-4046-9fa7-c192272d1847",
+    "name": "AI Persist",
+    "email": "test_aip_1786139302@jarvis.ai",
+    "password": "$2b$12$S/eQ2DVDgfw5mWchl75gJulDTGVGMglHz5rVgrZPGcHEzCO43ukfq",
+    "created_at": "2026-08-07T21:48:22.651848+00:00"
+  },
+  {
+    "_id": "2a869d48-9952-4a5f-afed-3e31bdb8c8a4",
+    "name": "Chat Tester",
+    "email": "test_chat_1786139397@jarvis.ai",
+    "password": "$2b$12$0s6wLCmaks4S.zESLl3BOe/E/bvIgXEh3gT5klBW03OoL2GbTBPt2",
+    "created_at": "2026-08-07T21:49:58.446226+00:00"
+  },
+  {
+    "_id": "421b1348-64d2-4eb3-a14a-d6841ed8ef18",
+    "name": "ChatReg",
+    "email": "test_chatreg_1786139436@jarvis.ai",
+    "password": "$2b$12$1hPTA4dR60HeschX8CvPYexrGHPMxKvrgu0gm2r5QZpFfdeI0xQsa",
+    "created_at": "2026-08-07T21:50:36.959905+00:00"
+  },
+  {
+    "_id": "adf21054-1941-4c50-8480-74814f2d4965",
+    "name": "Sec",
+    "email": "sec_380@jarvis.ai",
+    "password": "$2b$12$uZnfPD4/Oh2acr3lqTp7peZ0/OIw2j7aLnHdID2PYnAKU8SLL7C7G",
+    "created_at": "2026-08-07T22:09:23.146355+00:00"
+  },
+  {
+    "_id": "f6192971-ee4c-4146-ac6d-9fd62d6d6b13",
+    "name": "Q",
+    "email": "quota_11184@jarvis.ai",
+    "password": "$2b$12$XHMKgoVOOI3yRYj/WI3M3uYURc/En1H.LdLt7Op.VFZ7b/pD5K1OC",
+    "created_at": "2026-08-07T22:09:35.969166+00:00"
+  },
+  {
+    "_id": "b0f1d157-24ea-4e72-a6e3-6a065b183541",
+    "name": "Q",
+    "email": "quota2_31943@jarvis.ai",
+    "password": "$2b$12$0EQZKXbBbjnFSJ0ChWQTLOSarSC47btJVGqddnY3Jf64ZeRAwHzla",
+    "created_at": "2026-08-07T22:09:57.881947+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T22:09:58.625945+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T22:09:58.625945+00:00",
+    "subscription_start": "2026-08-07T22:09:58.625945+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "82a68890-1769-470c-8c2a-f86941caa8b5",
+    "name": "Sec",
+    "email": "sectest_69494c2475@jarvis.ai",
+    "password": "$2b$12$4JX5myavWm8dJidY93IWUuTJMuKk/StN4y7n2hdTTY3citAg5Xzpi",
+    "created_at": "2026-08-07T22:11:17.695849+00:00"
+  },
+  {
+    "_id": "d22bf891-4371-4e05-b059-0b858dc145e0",
+    "name": "Sec",
+    "email": "sectest_217737c404@jarvis.ai",
+    "password": "$2b$12$WbpqxQd5MFhTRJI4J.OF/usqIj1bVBRROu9XFurzb00t3LBWndzbK",
+    "created_at": "2026-08-07T22:11:17.926334+00:00"
+  },
+  {
+    "_id": "5edb5a55-d27f-44d6-9f43-39cc56b11669",
+    "name": "Sec",
+    "email": "sectest_97c8853dfd@jarvis.ai",
+    "password": "$2b$12$wfVBTJMiYTlC0Tn3KaTKqeix3f48Wcd7uBdpraYIPmyqh5m6dqJkC",
+    "created_at": "2026-08-07T22:11:18.156112+00:00"
+  },
+  {
+    "_id": "4f03a904-c9b2-42ce-9865-83efbced5078",
+    "name": "Sec",
+    "email": "sectest_edb316ff61@jarvis.ai",
+    "password": "$2b$12$ql7Y0nObZJUgJU.B2nmV0O3p5IUxl9wnLrhP60nDB9kSxPfJ7Ntf6",
+    "created_at": "2026-08-07T22:11:18.383586+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T22:11:18.386996+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T22:11:18.386996+00:00",
+    "subscription_start": "2026-08-07T22:11:18.386996+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "4f718687-0164-4109-8fab-cf48a01a7f35",
+    "name": "Sec",
+    "email": "sectest_03c224008a@jarvis.ai",
+    "password": "$2b$12$ruK4Zi4nn2rsvThymDZXIOx2w3tl/.ii1npTjGUCPLUxQiqKQj.um",
+    "created_at": "2026-08-07T22:11:18.611476+00:00"
+  },
+  {
+    "_id": "93fe473a-d0e9-4aec-9a48-2795b6463acd",
+    "name": "Sec",
+    "email": "sectest_b103bb87ad@jarvis.ai",
+    "password": "$2b$12$tqXcdCj0ySJClfNLzNoaKePi3uCuEd2PPkc/90Ckk1QpxGXqpzjp.",
+    "created_at": "2026-08-07T22:11:18.840616+00:00"
+  },
+  {
+    "_id": "6fbd582a-9fa8-474c-8c3d-22c707c37baf",
+    "name": "Sec",
+    "email": "sectest_6a49e134cd@jarvis.ai",
+    "password": "$2b$12$Skt1s5oObKadJzYsp3W0N.uDr/4cIZFXrDCGo99h30ptjVYruogRG",
+    "created_at": "2026-08-07T22:11:19.069469+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T22:11:19.073418+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T22:11:19.073418+00:00",
+    "subscription_start": "2026-08-07T22:11:19.073418+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "826ec893-409c-4d23-b485-20439b1899d0",
+    "name": "Sec",
+    "email": "sectest_7d2691f6d5@jarvis.ai",
+    "password": "$2b$12$.pbokAvbhqqC5sytc7CMjep1mhS5zn0eMizxmRHS3cE0DYdwUhNXm",
+    "created_at": "2026-08-07T22:11:20.506876+00:00"
+  },
+  {
+    "_id": "ab13dfda-baa4-4a77-bfcf-4fd08f997ca3",
+    "name": "Sec",
+    "email": "sectest_22f29f747a@jarvis.ai",
+    "password": "$2b$12$N9slCn5G6Ce7V47FG/lnsuLgZjmJzT7YraEvSgmsyAM/bC01wblvS",
+    "created_at": "2026-08-07T22:11:20.734446+00:00"
+  },
+  {
+    "_id": "f2f65a0c-ab95-415c-b517-66e217631455",
+    "name": "Sec",
+    "email": "sectest_f32ff623fc@jarvis.ai",
+    "password": "$2b$12$5HZ7yTxiRgkle3bdEoARr.FohjW/7vqwZvIpdawiFKR7V.s/.gSga",
+    "created_at": "2026-08-07T22:11:20.964508+00:00"
+  },
+  {
+    "_id": "8f42f982-d197-482e-a376-a6d338cdd9a8",
+    "name": "T",
+    "email": "throttle_6c10851b@j.ai",
+    "password": "$2b$12$UCbxPJLrFTar/zDBatrS0u.M7/HmSAGRE3ZunrAznQuQ7SXNv9XKO",
+    "created_at": "2026-08-07T22:11:21.416280+00:00"
+  },
+  {
+    "_id": "011150a6-7004-4f86-b77d-5a488bfa128d",
+    "name": "Sec",
+    "email": "sectest_73ef0e0cae@jarvis.ai",
+    "password": "$2b$12$b.fw52xsVIm44BZIGtMGp.29gLv/7mSKI2oqz6Bqn0ne7dPpant62",
+    "created_at": "2026-08-07T22:11:24.189208+00:00"
+  },
+  {
+    "_id": "d76d0146-99bd-4fac-b690-8d0a3e5e6c35",
+    "name": "Sec",
+    "email": "sectest_9171d8b3aa@jarvis.ai",
+    "password": "$2b$12$w8RrGIK9E.Yxua1iftdoy..F3Y2usm.8uXjPLObUA3H77.aJX8tCe",
+    "created_at": "2026-08-07T22:11:24.418034+00:00"
+  },
+  {
+    "_id": "2af7a6ad-7c93-49aa-9e79-90ce8eae91f4",
+    "name": "Sec",
+    "email": "sectest_e8f60aed69@jarvis.ai",
+    "password": "$2b$12$/xBUP0J0LFqOwrVNAnY.fuoboVl6Na27XCTDDWQ6ExNkH6g8AKA02",
+    "created_at": "2026-08-07T22:12:51.378431+00:00"
+  },
+  {
+    "_id": "520a5fd8-8ca8-4b94-b369-46686c1fb5c3",
+    "name": "Sec",
+    "email": "sectest_74912b8a75@jarvis.ai",
+    "password": "$2b$12$3uAg6mhBYSNbXUpBu2kf.OJe.ubSDfrECshgHFp1/pTOGhNnefwJG",
+    "created_at": "2026-08-07T22:12:51.608250+00:00"
+  },
+  {
+    "_id": "fb3f0373-c310-4815-b270-2c8b14e87361",
+    "name": "Sec",
+    "email": "sectest_3e6c6343e3@jarvis.ai",
+    "password": "$2b$12$NknwjSPxDRNioFRLL/81p.2sv3pMFXKAxWIAfpEGKC8KPnjpM3SaG",
+    "created_at": "2026-08-07T22:12:51.835636+00:00"
+  },
+  {
+    "_id": "21cca134-507a-41e3-8682-fdee40dec64d",
+    "name": "Sec",
+    "email": "sectest_31322e51d9@jarvis.ai",
+    "password": "$2b$12$Woij4apoaoUpm6Ozuoiyzuo73lLD20nDwQvZ2kfjhtUHwbDggeOHq",
+    "created_at": "2026-08-07T22:12:52.063068+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T22:12:52.066659+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T22:12:52.066659+00:00",
+    "subscription_start": "2026-08-07T22:12:52.066659+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "ddc28a0d-9e5c-4fd9-a96e-b7b2a5be2f1e",
+    "name": "Sec",
+    "email": "sectest_0375268f35@jarvis.ai",
+    "password": "$2b$12$e8rIpO57GQPbZpub0BziWeIJ/udPtl.A.p.isflzi0KL3rLK007ay",
+    "created_at": "2026-08-07T22:12:52.291409+00:00"
+  },
+  {
+    "_id": "100f4904-760a-4301-93a0-a1bb2af18b50",
+    "name": "Sec",
+    "email": "sectest_2dd58e9a1b@jarvis.ai",
+    "password": "$2b$12$v8g29euS.QYSSkWdp4OZTO6h14u7wPCnscDrmP1OEp6d4uGaE3uLO",
+    "created_at": "2026-08-07T22:12:52.521101+00:00"
+  },
+  {
+    "_id": "783630f7-fbc6-4114-b53e-a06ea86237f3",
+    "name": "Sec",
+    "email": "sectest_60f0139093@jarvis.ai",
+    "password": "$2b$12$/T7Zp.Z/koDDZp7RgU80je8QEyqi5tcVFzl0MPvz6sGHENToqswdS",
+    "created_at": "2026-08-07T22:12:52.750865+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-07T22:12:52.754933+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-06T22:12:52.754933+00:00",
+    "subscription_start": "2026-08-07T22:12:52.754933+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "75fb8c01-b724-487c-902f-cbee3411ac67",
+    "name": "Sec",
+    "email": "sectest_63be813251@jarvis.ai",
+    "password": "$2b$12$JqcdyKqVvXN0DmpzdvOGk.EgaI0bvWk4zb7zSO40m8BMolDPp9guO",
+    "created_at": "2026-08-07T22:12:54.932223+00:00"
+  },
+  {
+    "_id": "f5b80b63-63a2-48db-b8e5-a0067320e862",
+    "name": "Sec",
+    "email": "sectest_1868da1a4e@jarvis.ai",
+    "password": "$2b$12$myPTeLngAmlYAPtWjEtQZ.EzG9kXuEEglKS9qiE0Z0jyQtG3qbtNy",
+    "created_at": "2026-08-07T22:12:55.160487+00:00"
+  },
+  {
+    "_id": "2741ca2b-f129-4863-92c6-5a1468208e95",
+    "name": "Sec",
+    "email": "sectest_88beef8a28@jarvis.ai",
+    "password": "$2b$12$gu5WhyGP6h3FgA0MT4Hwc.8zfMZG394JNJL0A4ZI8fghVcabo0Uui",
+    "created_at": "2026-08-07T22:12:55.391385+00:00"
+  },
+  {
+    "_id": "3b0ed2e4-7bba-45fb-bfbb-7ed602713af4",
+    "name": "T",
+    "email": "throttle_81801800@j.ai",
+    "password": "$2b$12$qg.SFLO/m58y0fjmIeB7ZuLaof08W84S6RnrQniI0hxR/STMq8UIy",
+    "created_at": "2026-08-07T22:12:55.843263+00:00"
+  },
+  {
+    "_id": "78ab689e-76f6-4b7c-9cb9-066966e15069",
+    "name": "Sec",
+    "email": "sectest_4208ef53d4@jarvis.ai",
+    "password": "$2b$12$98VTdf5Lwtk.oXMJ0WMWGu8SynhH3x7Qh19jZJwDYRefon1IR4eXm",
+    "created_at": "2026-08-07T22:12:58.314733+00:00"
+  },
+  {
+    "_id": "593de093-47b4-4cd1-8b96-a676506f43a8",
+    "name": "Sec",
+    "email": "sectest_2f3b28d9fb@jarvis.ai",
+    "password": "$2b$12$5CuDvZWwd0wocgzSvWHZ..QIF4byFFKRjgBKkXzIp8ioq0Zvz2jTm",
+    "created_at": "2026-08-07T22:12:58.542174+00:00"
+  },
+  {
+    "_id": "a51ead03-153c-4261-bdd2-b84204843094",
+    "name": "E2E",
+    "email": "e2e_814917b0@jarvis.ai",
+    "password": "$2b$12$ZXM2mcrD0X92S.G/LXQPl.FfyZpGN8iVRrVwfJu6r198cJOKtB6W.",
+    "created_at": "2026-08-07T22:13:55.200221+00:00"
+  },
+  {
+    "_id": "dd9b18e1-3e5c-46d8-8a09-1902024544cf",
+    "name": "E2E",
+    "email": "e2e_93d80fef@jarvis.ai",
+    "password": "$2b$12$PHnh8rYErpKcy6AY.sWDJOBs2OxaEtNftEMvF9yvRhfSL9rDP8rFO",
+    "created_at": "2026-08-07T22:14:11.792905+00:00"
+  },
+  {
+    "_id": "3dbaeef4-1832-4f33-acb7-f59b715e4aa6",
+    "name": "E2E Regger",
+    "email": "reg_68ef619d@jarvis.ai",
+    "password": "$2b$12$Ow2eX4poYLKU9IbGpywPP.OMzl4HEkozhpOoNWyMnHC5m2ipRljVG",
+    "created_at": "2026-08-07T22:15:12.821316+00:00"
+  },
+  {
+    "_id": "77338d1c-e99c-4ac0-b4d7-0caf190f899f",
+    "name": "X",
+    "email": "ct_4bcd70@j.ai",
+    "password": "$2b$12$/Mx/qUhkjvJJx5NyMh53qeB1OvwoE30nXVKziww9JnKqdxl9.Hrn.",
+    "created_at": "2026-08-07T22:15:51.636780+00:00"
+  },
+  {
+    "_id": "c11324d0-e4d1-426b-8a4f-8a56d55ca73c",
+    "name": "C",
+    "email": "chatfix_14611@jarvis.ai",
+    "password": "$2b$12$dKN6qzG6u6Q.QSXDmJjWfe5lbktP4b8DqK1IUkEDjwwqX1f66zeU6",
+    "created_at": "2026-08-09T13:53:39.667068+00:00"
+  },
+  {
+    "_id": "6a3e7bb7-e891-4760-ba6d-f6614b239000",
+    "name": "T",
+    "email": "test_chat_9f30c7ceb2@jarvis.ai",
+    "password": "$2b$12$nSNQkpDfkt5GbIgRkvTdQemQ0PlWCFpbYHHw1RQG4X4ZwIuMOG5zq",
+    "created_at": "2026-08-09T13:55:07.519740+00:00"
+  },
+  {
+    "_id": "e4c36d8b-c9b8-4b40-ac90-7e06f66b244c",
+    "name": "T",
+    "email": "test_chat_a2c79eb359@jarvis.ai",
+    "password": "$2b$12$BnGDOhvF68JJUB7PLOpr/OybXHIEFWZsDlInGhBxXvcXKx5pVstpu",
+    "created_at": "2026-08-09T13:55:07.741118+00:00"
+  },
+  {
+    "_id": "885544b9-efe7-4c5c-8d8d-09ee1a8941f2",
+    "name": "T",
+    "email": "test_chat_7313dd89a2@jarvis.ai",
+    "password": "$2b$12$yjkWy2qVMZjvKNJMXo1lE.d3BhtWP.cSlTHfsFoFZ/ScnKGjJD6He",
+    "created_at": "2026-08-09T13:55:08.157047+00:00"
+  },
+  {
+    "_id": "3f9b298f-9660-465f-bf84-0d0e6216508c",
+    "name": "T",
+    "email": "test_chat_b95a6271ae@jarvis.ai",
+    "password": "$2b$12$cbH91ytY1ZfiOaOIjkdd2.qvWjbIgQXIw1jg3vXZPhzfxPpZOrRhy",
+    "created_at": "2026-08-09T13:55:45.753283+00:00"
+  },
+  {
+    "_id": "12a8eb1c-edf2-4c95-9c8d-97bb5abd3c52",
+    "name": "T",
+    "email": "test_chat_05bc377f67@jarvis.ai",
+    "password": "$2b$12$CZLOX11cX6dfZlZjqy2WC.mydQuw64I4JQnezFvDyTTlp/CC3a7we",
+    "created_at": "2026-08-09T13:55:45.978173+00:00"
+  },
+  {
+    "_id": "bd0c6926-4be0-4d6e-a558-53ad87071490",
+    "name": "T",
+    "email": "test_chat_6df816739c@jarvis.ai",
+    "password": "$2b$12$kUYXeLCaYb9GLLsZ1lRqwuN570CLGgGewM4X.GszP56VjSQ9fCvMG",
+    "created_at": "2026-08-09T13:56:00.799038+00:00"
+  },
+  {
+    "_id": "9e44207f-53e7-446d-925c-9f12bb52bb54",
+    "name": "Test UI",
+    "email": "test_ui_b6887454@jarvis.ai",
+    "password": "$2b$12$15ZZgl60Fscfxk.lMD11zuSpEphPTJbDnKCQ7h/GWsN6xCwgsxdae",
+    "created_at": "2026-08-09T13:56:57.228626+00:00"
+  },
+  {
+    "_id": "1e6fbc27-604f-4794-9a54-91d39887efe6",
+    "name": "Test UI",
+    "email": "test_ui_d1a597a4@jarvis.ai",
+    "password": "$2b$12$6tOrqX2IjzCHfKTSEKTAl.FM5IzYKA5vU6/F3Pc3ARr5UtnTKLTdO",
+    "created_at": "2026-08-09T13:57:43.713143+00:00"
+  },
+  {
+    "_id": "12a48666-05be-4a83-aeee-855ebdac3d91",
+    "name": "QuotaUI",
+    "email": "test_quota_9b8f09c2@jarvis.ai",
+    "password": "$2b$12$qL.I3s6M/d7iXebPfm7.vOxMeNWkW6lAts/3zlDtQcdTPaYrA8prS",
+    "created_at": "2026-08-09T13:58:26.060731+00:00"
+  },
+  {
+    "_id": "fd7a98b4-30e1-4c25-88b4-5a042a764274",
+    "name": "G",
+    "email": "guard_1255@jarvis.ai",
+    "password": "$2b$12$dJr7II6P4IAq20bcpX4aB.y7r8uUmkDd30ftltDms3AyFL0yvd6tC",
+    "created_at": "2026-08-09T14:06:07.769400+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:06:08.491463+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:06:08.491463+00:00",
+    "subscription_start": "2026-08-09T14:06:08.491463+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "4f58c859-3934-40bb-bd29-8242353fead2",
+    "name": "Sec",
+    "email": "sectest_637cf7c887@jarvis.ai",
+    "password": "$2b$12$HR.uqO0rmbSzyM64b.l9puGxjJGtBZtIzQKxm7uJ4W1dwuQVuO.WW",
+    "created_at": "2026-08-09T14:06:45.457175+00:00"
+  },
+  {
+    "_id": "43d58828-003b-4808-9f72-170fcb59377c",
+    "name": "Sec",
+    "email": "sectest_e5c7ca697e@jarvis.ai",
+    "password": "$2b$12$udZajExpIFvXeYkXb9CU/u6TWRCffKNff503K552zYW8iWoe8.OwC",
+    "created_at": "2026-08-09T14:06:45.687925+00:00"
+  },
+  {
+    "_id": "107a53b2-795f-4cc0-b7b7-ea38a2b00051",
+    "name": "Sec",
+    "email": "sectest_b55a1855d2@jarvis.ai",
+    "password": "$2b$12$uvclJ8NTTvkiCiV15X5zCuvb26aVoV0o1yCuPV6RXACY2b7e1UaBe",
+    "created_at": "2026-08-09T14:06:45.915652+00:00"
+  },
+  {
+    "_id": "51bc0be3-56cd-42c9-bd9f-65e5d9177c67",
+    "name": "Sec",
+    "email": "sectest_9448bee4ad@jarvis.ai",
+    "password": "$2b$12$Z2FFDj7supRiw1Q7bCDIoubM1yUazuQuaecriXyzr3KLaRv9njYK2",
+    "created_at": "2026-08-09T14:06:46.142930+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:06:46.146350+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:06:46.146350+00:00",
+    "subscription_start": "2026-08-09T14:06:46.146350+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "696f3f8d-5c43-439a-9748-634c7e9db58c",
+    "name": "Sec",
+    "email": "sectest_a986e6b5f2@jarvis.ai",
+    "password": "$2b$12$RibbhlPOMK6zJOhe2Ub68uXO0u6ap60I0iORKbjJgwBymemS6lHsq",
+    "created_at": "2026-08-09T14:06:46.370662+00:00"
+  },
+  {
+    "_id": "55d4c819-49a0-4c6a-9fa7-a87a45c8313c",
+    "name": "Sec",
+    "email": "sectest_842ccf3eb6@jarvis.ai",
+    "password": "$2b$12$3cj/bh9dHxfOL7ZHR37KMOqwCZ3lEpDtHV9873XRpTJGniP11kVi.",
+    "created_at": "2026-08-09T14:06:46.599699+00:00"
+  },
+  {
+    "_id": "55549993-c678-4f5a-af65-1273b21e4ff1",
+    "name": "Sec",
+    "email": "sectest_7e33258171@jarvis.ai",
+    "password": "$2b$12$od3hbjmDhwBwehPpYXBsfuXwLLas5P00VxOiOKLtKs7C7lrpwo4Em",
+    "created_at": "2026-08-09T14:06:46.828567+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:06:46.832539+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:06:46.832539+00:00",
+    "subscription_start": "2026-08-09T14:06:46.832539+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "dc426e8e-aeda-4c2a-9a3f-81322979bdde",
+    "name": "Sec",
+    "email": "sectest_7f7d9f802e@jarvis.ai",
+    "password": "$2b$12$b2ndTlTkJ8dicQOaLMXQu.F0xysiSP59hHxHrlYc6Svuk9Z9QkFC2",
+    "created_at": "2026-08-09T14:06:47.934985+00:00"
+  },
+  {
+    "_id": "cb590ec9-26d9-4500-8bd3-a49988783d0b",
+    "name": "Sec",
+    "email": "sectest_6084d863a7@jarvis.ai",
+    "password": "$2b$12$FcCXBEy0PD.izBsCX.3Z.u.0fZOsQk.fpoIZ.TYJqWVaKJv.D6XQK",
+    "created_at": "2026-08-09T14:06:48.162420+00:00"
+  },
+  {
+    "_id": "2dba5fd5-3914-484f-a1bf-f97cd5eecbd1",
+    "name": "Sec",
+    "email": "sectest_05b3acbaa8@jarvis.ai",
+    "password": "$2b$12$cOwU3pXPrwKaYRtVQqPxWOaqZKAib/lJaUsf0eg998ZuL180HbV9u",
+    "created_at": "2026-08-09T14:06:48.390894+00:00"
+  },
+  {
+    "_id": "9fd59bf0-fdac-4ccb-a09c-e7149bbd9c9d",
+    "name": "Sec",
+    "email": "sectest_6c9f96cc79@jarvis.ai",
+    "password": "$2b$12$Kdip.T1jNzwRS0YTt6tjw.YMwqM6uh6BhZDzpHa0H87vJrEbRFqTi",
+    "created_at": "2026-08-09T14:06:48.619259+00:00"
+  },
+  {
+    "_id": "251ca4ac-cea8-40d3-a051-911434670521",
+    "name": "Sec",
+    "email": "sectest_ab9e6d50d0@jarvis.ai",
+    "password": "$2b$12$EiCVQHsP9KZH26K207P4du9iucqKJbwTquqLi5JPrBA94WflybDfC",
+    "created_at": "2026-08-09T14:06:48.847481+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:06:48.851406+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:06:48.851406+00:00",
+    "subscription_start": "2026-08-09T14:06:48.851406+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "85c4e048-1902-43af-8710-1266ce80ecbd",
+    "name": "Sec",
+    "email": "sectest_af6e65d07a@jarvis.ai",
+    "password": "$2b$12$LqVAdmEQw7u8KNNiBio2MuTOezgz6nF8qgql3uIu9mypooCJk5sRq",
+    "created_at": "2026-08-09T14:06:52.775420+00:00"
+  },
+  {
+    "_id": "870c03c7-a5c3-49c3-b636-46b9250a7d68",
+    "name": "T",
+    "email": "throttle_3841a93d@j.ai",
+    "password": "$2b$12$P.VljNUI56sEiMVOpS/QH.FJYkjZAM1M0qULYl.PtEUotSWx33peK",
+    "created_at": "2026-08-09T14:06:53.226735+00:00"
+  },
+  {
+    "_id": "0a47079a-4fb2-4ef0-b4bb-7f359ce3906f",
+    "name": "Sec",
+    "email": "sectest_ec8b713a9c@jarvis.ai",
+    "password": "$2b$12$daqL8VJYUUqmOtiQivuG0.ACRbipkOkTP6WkRlTZFkB2qsgExvCsC",
+    "created_at": "2026-08-09T14:06:55.696557+00:00"
+  },
+  {
+    "_id": "b8d8a133-90ea-438e-b539-41d5f7f3d5d0",
+    "name": "Sec",
+    "email": "sectest_18bc1bfdfb@jarvis.ai",
+    "password": "$2b$12$iHFP4y.whGxJT5dlV1WcvObNeyjInMbY8YXUNF1PODAx.vE0XDkky",
+    "created_at": "2026-08-09T14:06:55.924031+00:00"
+  },
+  {
+    "_id": "78116dd8-63ae-483f-9e1e-eac4261365f4",
+    "name": "R",
+    "email": "route_1786287328@jarvis.ai",
+    "password": "$2b$12$xZCOXXe4BuPLO9CeJwN89eg2Tuzuj0McxA/aE4OJeCrP9lLBvPbqC",
+    "created_at": "2026-08-09T14:55:29.000046+00:00"
+  },
+  {
+    "_id": "7e008bfb-9a6d-4b40-82c6-1a5cf66ab29c",
+    "name": "R",
+    "email": "route2_1786287345@jarvis.ai",
+    "password": "$2b$12$2cLY8YxC1iR44vWumvMam.iMv5ZqgFHPHJSGYmvKgeUumrDr3B2OC",
+    "created_at": "2026-08-09T14:55:45.717715+00:00"
+  },
+  {
+    "_id": "529d8b96-e0aa-43c2-a450-248f898acb87",
+    "name": "Sec",
+    "email": "sectest_8c453c6cb5@jarvis.ai",
+    "password": "$2b$12$rpcrHKnefB6D95Dm90QaX.c/pXyZJYZi.nWgaVRL1nOWFX0HMg5wC",
+    "created_at": "2026-08-09T14:56:08.495354+00:00"
+  },
+  {
+    "_id": "06ff3327-0af6-47b6-9e3e-a2a4e7a75699",
+    "name": "Sec",
+    "email": "sectest_54ac486717@jarvis.ai",
+    "password": "$2b$12$d4FOpRR0rdmUI0q7rbJ3JOdFkoHnVkt39T2S8oZmVLqnTm.Tlw8OO",
+    "created_at": "2026-08-09T14:56:08.725175+00:00"
+  },
+  {
+    "_id": "b1bccfb0-b125-427b-8e01-aaff02477ea0",
+    "name": "Sec",
+    "email": "sectest_585f8dd5b5@jarvis.ai",
+    "password": "$2b$12$G.fScaqi/lEdjivY2BJS5ObJs7gJXxhlU/yXaiLBQrE/j25oEO4v2",
+    "created_at": "2026-08-09T14:56:08.952984+00:00"
+  },
+  {
+    "_id": "6ccafbd5-a157-4c6a-86d2-2b3947e7fff4",
+    "name": "Sec",
+    "email": "sectest_6becc05c54@jarvis.ai",
+    "password": "$2b$12$6WqDmzOnve3oN.xEMjVYXOarqXJTKDxVNcsT8zStvTnaaHp5Bazm.",
+    "created_at": "2026-08-09T14:56:09.401946+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:09.626639+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:56:09.626639+00:00",
+    "subscription_start": "2026-08-09T14:56:09.626639+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "21c170e5-9442-4083-ab20-a910322a933f",
+    "name": "Sec",
+    "email": "sectest_8425c077e4@jarvis.ai",
+    "password": "$2b$12$GyhA6ltpWCxFTmIYADPbAeQy430YGyHGhkg43ZpLjiSoZodlXFAJq",
+    "created_at": "2026-08-09T14:56:09.851593+00:00"
+  },
+  {
+    "_id": "bf70a515-668c-4a97-8e14-69f8fce82559",
+    "name": "Sec",
+    "email": "sectest_694782a03e@jarvis.ai",
+    "password": "$2b$12$e6OikXlXKH.6NQMloIWxpeIuK7HrudlEv5QWRPZ1EwKCzoCcRAJpa",
+    "created_at": "2026-08-09T14:56:10.081091+00:00"
+  },
+  {
+    "_id": "4a626140-4cc1-484f-8198-89d83667c518",
+    "name": "Sec",
+    "email": "sectest_0387990966@jarvis.ai",
+    "password": "$2b$12$2PCb2Y4JL4dAyq6NGfjzA.cWcedflgh7owKZuTrdIy54.KJCd7swi",
+    "created_at": "2026-08-09T14:56:10.531545+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:10.535743+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:56:10.535743+00:00",
+    "subscription_start": "2026-08-09T14:56:10.535743+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "1c74aafc-2420-41b9-bad1-1be8d51ed47f",
+    "name": "Sec",
+    "email": "sectest_cb9b4b6706@jarvis.ai",
+    "password": "$2b$12$irDswdN6nnI.12wFE6IyleAlWVaRloJQPsIIY0HHVcV1cCwbKupx6",
+    "created_at": "2026-08-09T14:56:11.550438+00:00"
+  },
+  {
+    "_id": "7dc77bce-01ec-4f87-8042-e485f31de29b",
+    "name": "Sec",
+    "email": "sectest_9610a28cd9@jarvis.ai",
+    "password": "$2b$12$06.yVUpBHY92vLA03yXcE.ouPWkTo8NEKGIqyy5d6VQC5yBL7AeKW",
+    "created_at": "2026-08-09T14:56:11.777867+00:00"
+  },
+  {
+    "_id": "65a0b32d-3c8d-45ef-84a1-dc41ea0325fa",
+    "name": "Sec",
+    "email": "sectest_607fbee654@jarvis.ai",
+    "password": "$2b$12$AgWTz75ALvYjKRT96rJOHuKhW86smCsaNbRbXVM434mRqu9Gmm9Tq",
+    "created_at": "2026-08-09T14:56:12.006335+00:00"
+  },
+  {
+    "_id": "c19b72d7-73bb-4870-8248-ee06daaa0737",
+    "name": "Sec",
+    "email": "sectest_e656852a3f@jarvis.ai",
+    "password": "$2b$12$.HgCAsd.F8VZ19M4vN3/2eMnMHpSSGXlIpj9E.8ljlh3T7PT/MFke",
+    "created_at": "2026-08-09T14:56:12.235004+00:00"
+  },
+  {
+    "_id": "834d5737-6359-43cc-8834-d29221a8ff43",
+    "name": "Sec",
+    "email": "sectest_75aaf19e6a@jarvis.ai",
+    "password": "$2b$12$9Q7/007uK1FbuCfjWiQjlugF0Mmg9FByu523HAPjRm.hgEQ9HooDa",
+    "created_at": "2026-08-09T14:56:12.463325+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:12.467158+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:56:12.467158+00:00",
+    "subscription_start": "2026-08-09T14:56:12.467158+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "751d95de-a3b9-4be3-afc0-e8df2d652d7b",
+    "name": "Sec",
+    "email": "sectest_a8a7e1a985@jarvis.ai",
+    "password": "$2b$12$M.fDBNppTJzK6zov.4t74.Usc5UpMy1cZ3fhz1iQ9gYaMzmmjROvS",
+    "created_at": "2026-08-09T14:56:16.910207+00:00"
+  },
+  {
+    "_id": "c0483e99-793d-4a96-87b1-a9ed0526a3d7",
+    "name": "T",
+    "email": "throttle_12c3b8e3@j.ai",
+    "password": "$2b$12$bAPJGZOXT3LtQ05dyoLrqOh3OkeJPdK/9py6TskZTE73DsRkkt09y",
+    "created_at": "2026-08-09T14:56:17.361547+00:00"
+  },
+  {
+    "_id": "a1814c94-1398-4e46-b28f-00e186a38ba6",
+    "name": "Sec",
+    "email": "sectest_2a1d499fb6@jarvis.ai",
+    "password": "$2b$12$AkXahPhN8/4/u6786IS8e.zS5TrFMOfGZkpMIl4FxC/zAXeV5ZAOG",
+    "created_at": "2026-08-09T14:56:19.833398+00:00"
+  },
+  {
+    "_id": "4a459efe-eff7-4378-b70a-8f625ba2e27f",
+    "name": "Sec",
+    "email": "sectest_d5db7e5fe0@jarvis.ai",
+    "password": "$2b$12$xZxTkwGSdZeTfDC9n2Ko9.Z7Xw41JYXiPu9CjZdmirlHU0mYKCPBS",
+    "created_at": "2026-08-09T14:56:20.061092+00:00"
+  },
+  {
+    "_id": "cb53a0b7-160a-457f-ac9f-e038820a928b",
+    "name": "TEST DEV",
+    "email": "test_dev_3ea566b926@jarvis.ai",
+    "password": "$2b$12$wxuOOyx9IuHs1k3K.4l0pOx81bi5CRT1Tu1FnJ1LBbkpbJPJ8hq3W",
+    "created_at": "2026-08-09T14:56:52.055126+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:52.212312+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:56:52.212312+00:00",
+    "subscription_start": "2026-08-09T14:56:52.212312+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "a9db5e98-a8ea-4ce0-a2ac-afe0052e838c",
+    "name": "TEST DEV",
+    "email": "test_dev_d328b21a67@jarvis.ai",
+    "password": "$2b$12$XuYP6DEb8k67nPZ.jZndwuZ/x.Z1jtVCOFpR42J7xl3dSOomLWpdC",
+    "created_at": "2026-08-09T14:56:52.574781+00:00",
+    "auto_renew": true,
+    "grace_period_end": "2026-08-12T14:56:52.680315+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-08-08T14:56:52.680315+00:00",
+    "subscription_start": "2026-07-09T14:56:52.680315+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "7f5e9750-a82c-4f8f-bab8-0b911065d6fc",
+    "name": "TEST DEV",
+    "email": "test_dev_299a7d744e@jarvis.ai",
+    "password": "$2b$12$QWF/qYyhQDR.3Tzp05S4zO4jA3Lvd8hA219yGs25SiKXxJpTdCDUe",
+    "created_at": "2026-08-09T14:56:53.001747+00:00",
+    "auto_renew": false,
+    "grace_period_end": "2026-08-08T14:56:53.099446+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-08-08T14:56:53.099446+00:00",
+    "subscription_start": "2026-07-09T14:56:53.099446+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "7a7bb765-4474-4586-893e-cee87ca44e34",
+    "name": "TEST DEV",
+    "email": "test_dev_171b8114d4@jarvis.ai",
+    "password": "$2b$12$OuC5KXVWsgJq5Zpv0YV3Q.k7pOnI5k/O4WwDyihqWVzbsGNsBzW2O",
+    "created_at": "2026-08-09T14:56:53.414467+00:00",
+    "last_validation": "2026-08-09T14:56:53.515830+00:00",
+    "provider": "developer",
+    "subscription_status": "trial",
+    "tier": "pro",
+    "trial_end": "2026-09-08T14:56:53.515830+00:00",
+    "trial_start": "2026-08-09T14:56:53.515830+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "b3af9c53-3172-4462-b526-bbf41a2e203c",
+    "name": "TEST DEV",
+    "email": "test_dev_c1537149a4@jarvis.ai",
+    "password": "$2b$12$jB.0wRxfSiiiyQm2imY3IOn8/7CQvKsYF7a1GRUEYpXmp3yRAyhG.",
+    "created_at": "2026-08-09T14:56:53.865380+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:53.968610+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:56:53.968610+00:00",
+    "subscription_start": "2026-08-09T14:56:53.968610+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "e7c1d7df-498c-4365-a8b7-f30c88e7eaec",
+    "name": "TEST DEV",
+    "email": "test_dev_a3bb843433@jarvis.ai",
+    "password": "$2b$12$Z2J8iZBmZM7.TUzYVV25Qew5FJ./fSKQZvcuUhFivfDO5jUiquSMS",
+    "created_at": "2026-08-09T14:56:54.308453+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:54.409129+00:00",
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "cce43120-210b-483c-a998-c8ace239a9ed",
+    "name": "TEST DEV",
+    "email": "test_dev_a44496b3d1@jarvis.ai",
+    "password": "$2b$12$8.rQ7hbOYpala6J5Z8VjjeEjbo1crQjJOdaJFqY6f0yEld/hFBOMq",
+    "created_at": "2026-08-09T14:56:54.830049+00:00",
+    "last_validation": "2026-08-09T14:56:54.935796+00:00",
+    "provider": "developer",
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null,
+    "trial_used": false,
+    "auto_renew": false,
+    "grace_period_end": null,
+    "subscription_end": null,
+    "subscription_start": null
+  },
+  {
+    "_id": "f90b5471-f72f-478c-bda9-d97cf7dc0b57",
+    "name": "TEST DEV",
+    "email": "test_dev_24432c44d9@jarvis.ai",
+    "password": "$2b$12$95FKZtwnjc21TXci7G6m3u0zahQ8GoHSu7gDHeYmFW5uSrbhpRzMe",
+    "created_at": "2026-08-09T14:56:55.353473+00:00",
+    "last_validation": "2026-08-09T14:56:55.811174+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-09-08T14:56:55.811174+00:00",
+    "trial_start": "2026-08-09T14:56:55.811174+00:00",
+    "trial_used": true,
+    "tier": "free"
+  },
+  {
+    "_id": "0d8ba2f7-a90e-4c47-9a1e-693e8652fbe4",
+    "name": "AI Tester",
+    "email": "test_ai_1786287415_2e4c5b@jarvis.ai",
+    "password": "$2b$12$E/79vXNrIH3YD2diPIM7BedyA/AN5aOE7YTckeZlbausH3VRKRRCi",
+    "created_at": "2026-08-09T14:56:55.809445+00:00"
+  },
+  {
+    "_id": "72dae6ea-d5ec-4a0d-93fb-f9caf6e70897",
+    "name": "TEST Licensing",
+    "email": "test_lic_77f65644f7@jarvis.ai",
+    "password": "$2b$12$z/tYL6rjOw9.8xjL1DXOEOCOr0Rc/2iR5zV4BSEi4KovNuQS45Rqe",
+    "created_at": "2026-08-09T14:56:56.128512+00:00"
+  },
+  {
+    "_id": "7f1a3310-3297-4028-8b3e-2aa5793a87a4",
+    "name": "TEST DEV",
+    "email": "test_dev_abe0418d8a@jarvis.ai",
+    "password": "$2b$12$IipvYSU9VSYEwDroaQA.GuiQgTp/PhtnMdMubps8zldkWzNosGPw2",
+    "created_at": "2026-08-09T14:56:56.511224+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T14:56:56.618211+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T14:56:56.618211+00:00",
+    "subscription_start": "2026-08-09T14:56:56.618211+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "dd9382ad-bbb7-4907-9d6c-397a19f45db6",
+    "name": "TEST Reg",
+    "email": "test_reg_c5bf0a269e@jarvis.ai",
+    "password": "$2b$12$y6c0/FH3vJWoHG6HLLCIWeiHQ2/Q5uRP86u8pL0/KYBMlb.9wvktW",
+    "created_at": "2026-08-09T14:57:00.158255+00:00"
+  },
+  {
+    "_id": "54b6b5b1-773e-4e3a-a032-b89a52487e74",
+    "name": "TEST L",
+    "email": "test_login_ef022118ad@jarvis.ai",
+    "password": "$2b$12$ubelDSJeIOe6OvEl5BtEU.zJj5ys2tuAgbhkJbyHEuidkIiGrKRLa",
+    "created_at": "2026-08-09T14:57:00.481361+00:00"
+  },
+  {
+    "_id": "20d9e21b-c101-45f6-9c50-9e226cce4668",
+    "name": "TEST Licensing",
+    "email": "test_lic_ac27afe54b@jarvis.ai",
+    "password": "$2b$12$AHsNK5ZclIuTw9Z7zDXSFusj2fH5jEdQab/CpCX514rXcNXGMhniK",
+    "created_at": "2026-08-09T14:57:01.124860+00:00"
+  },
+  {
+    "_id": "98827aa2-3f7b-4d64-9418-66f0f1142af9",
+    "name": "T",
+    "email": "test_chat_cdf43a2a5f@jarvis.ai",
+    "password": "$2b$12$w8KzO.35RlecSOpGppb2fONAmhrPC2diX51jbo4dTuGd0BB47K0e6",
+    "created_at": "2026-08-09T14:57:10.656776+00:00"
+  },
+  {
+    "_id": "a7ddd7fb-e4ce-4366-8c6a-8cd8e2862e14",
+    "name": "T",
+    "email": "test_chat_aa945fd3c4@jarvis.ai",
+    "password": "$2b$12$YlIIHhoEGMa35mQ8.cbTxe4ilqQItrZR6rnVhdP959F/apIMTNJ/a",
+    "created_at": "2026-08-09T14:57:15.822888+00:00"
+  },
+  {
+    "_id": "2201a741-92c6-4d7e-9725-94b0458d86ab",
+    "name": "TEST",
+    "email": "test_trial_adf690369e@jarvis.ai",
+    "password": "$2b$12$RmyYgwpRg5b3uFHGFp1EGu6aj5IAtMDK7/L13X5EMIvI6qWa/80Le",
+    "created_at": "2026-08-09T14:57:27.773630+00:00",
+    "last_validation": "2026-08-09T14:57:27.875120+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-09-08T14:57:27.875120+00:00",
+    "trial_start": "2026-08-09T14:57:27.875120+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "efc056a7-3206-4bf4-9368-70e4201ca579",
+    "name": "TEST Licensing",
+    "email": "test_lic_9badc737e7@jarvis.ai",
+    "password": "$2b$12$ePZFDN8FZQbOwqNMVKtwy.bj2MG5dCJL8qFL8U5iukIP5/bcUDyv2",
+    "created_at": "2026-08-09T14:57:28.523939+00:00"
+  },
+  {
+    "_id": "92d3f7b6-7528-4830-a032-da0a53886854",
+    "name": "T",
+    "email": "test_chat_a8cf3999e0@jarvis.ai",
+    "password": "$2b$12$tRKB3PP1mrUZCh3ed.bQquAPnpxTNc4/fN91dAb15YfX/mkYYbXKW",
+    "created_at": "2026-08-09T14:57:28.929679+00:00"
+  },
+  {
+    "_id": "ddbe6842-2a86-47fd-a487-4ddc1b967796",
+    "name": "TEST Licensing",
+    "email": "test_lic_6a5e8a0466@jarvis.ai",
+    "password": "$2b$12$CI4Ndvt.Ovw97LwOSe7In.Zf7hcBjeSWLhFau1V5vw2v..wc6TGl2",
+    "created_at": "2026-08-09T14:57:29.600121+00:00"
+  },
+  {
+    "_id": "31ac2adc-ab18-4891-90ef-bbe74b984637",
+    "name": "TEST",
+    "email": "test_sub_75dcff3bb5@jarvis.ai",
+    "password": "$2b$12$YqW61EjI0/xcndbtBThAT.C1FTAPEs12xmUjtZ9JN2t3KqIq/nLJi",
+    "created_at": "2026-08-09T14:57:30.243005+00:00"
+  },
+  {
+    "_id": "03de2806-2563-4fe7-ab56-9b1706b7cb4b",
+    "name": "cap",
+    "email": "test_cap_2ca6ca17@jarvis.ai",
+    "password": "$2b$12$R.fxL9uAQ0rKgj05ITZcC.tUFOpQCQfWjv0.hRhEen84bOl2qCBSq",
+    "created_at": "2026-08-09T15:01:58.254614+00:00"
+  },
+  {
+    "_id": "1a92b92c-5dbe-48f4-96f1-842d1190cc67",
+    "name": "prep",
+    "email": "test_prep_914b87f8@jarvis.ai",
+    "password": "$2b$12$125s4xmCQHK6QSqz.1NUouoAvpftZrkvJSz.EW4iNg34h9cl/JK8u",
+    "created_at": "2026-08-09T15:01:59.002289+00:00"
+  },
+  {
+    "_id": "1eb5d370-2a3f-48ce-9ed0-158a05a74628",
+    "name": "cloud",
+    "email": "test_cloud_27783ab1@jarvis.ai",
+    "password": "$2b$12$YNzfs/R/Ir0Uo.c8Ld1v7u5liKxKJpNFQwnX.MyK6/m7.uJF.dm0q",
+    "created_at": "2026-08-09T15:01:59.881908+00:00"
+  },
+  {
+    "_id": "f7d8d68d-9462-4512-9e6d-ace21e2220e4",
+    "name": "save",
+    "email": "test_save_90b05cb8@jarvis.ai",
+    "password": "$2b$12$eH8khdreRKt7zbH3BYV5eubC03fmebE2DQttbKzUVsebS1G8N2Uri",
+    "created_at": "2026-08-09T15:02:00.898264+00:00"
+  },
+  {
+    "_id": "b14142a2-fae9-4d7f-82f6-dab1e1f86fd3",
+    "name": "cap",
+    "email": "test_cap_ddd4e093@jarvis.ai",
+    "password": "$2b$12$7Cev3dRWxvxcV3ROQr45vuPfmjNp0271VtWC4lW63yEgFkachbGY2",
+    "created_at": "2026-08-09T15:02:58.189229+00:00"
+  },
+  {
+    "_id": "685ad06a-9e2e-4303-aa0e-2eb759dee26b",
+    "name": "prep",
+    "email": "test_prep_6cbdac6b@jarvis.ai",
+    "password": "$2b$12$4/X6lFCvsjcgHb4.fcVz9.Isv0EM5DL4K/ef1UzzYWsbq3QMgGN2u",
+    "created_at": "2026-08-09T15:02:58.862513+00:00"
+  },
+  {
+    "_id": "0f5b709b-498f-4104-847c-6319bb18389b",
+    "name": "cloud",
+    "email": "test_cloud_5d8c66c5@jarvis.ai",
+    "password": "$2b$12$McwFTR4A0V3jySaJCUYyzOGPOvNPmgnWOtBr8QApTBz.o8/PuPgM.",
+    "created_at": "2026-08-09T15:03:00.159243+00:00"
+  },
+  {
+    "_id": "227d5864-4103-4aca-8f8c-2003080282bc",
+    "name": "save",
+    "email": "test_save_5ab62556@jarvis.ai",
+    "password": "$2b$12$kPh0NbmirjyhpQBbmS9SJeZL7.rpmBFKK6p2TX8SHuMdVoXJuP2ha",
+    "created_at": "2026-08-09T15:03:00.673494+00:00"
+  },
+  {
+    "_id": "9b07d660-2515-4331-aa82-7657b807d83e",
+    "name": "Tester",
+    "email": "test_ui_d8b0a2@jarvis.ai",
+    "password": "$2b$12$j1z8adkfr.LZrxBbM18pK.zF7Uk6JxfJXXi7q7Pm3mniZNU0jw3SG",
+    "created_at": "2026-08-09T15:05:24.762454+00:00"
+  },
+  {
+    "_id": "8de50ef7-93ef-4572-bfa7-e31f1b79ddc1",
+    "name": "S",
+    "email": "shop_1786288340@jarvis.ai",
+    "password": "$2b$12$vOsPa2mqkom5YpgnEqM/u.gI/ehGrLE0bvam99d3A5ZoDIpeNtsr6",
+    "created_at": "2026-08-09T15:12:21.260946+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:12:21.695114+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:12:21.695114+00:00",
+    "subscription_start": "2026-08-09T15:12:21.695114+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "fb49343c-fefc-4cbe-8b25-455400018218",
+    "name": "Tester",
+    "email": "test_shop_b164557f@jarvis.ai",
+    "password": "$2b$12$9o2IO5Bvojq5x43Dogu9xuP5R4ECRS9a0IzN24JlO95wdSuba/rGm",
+    "created_at": "2026-08-09T15:15:52.438225+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "67ea8b11-f809-4ef6-b5aa-37b54e7b249f",
+    "name": "Tester",
+    "email": "test_shop_784fc624@jarvis.ai",
+    "password": "$2b$12$/cUYa4Kk4o4TKwGSbQg8uOAuIIdzZjHC1Y2n/VvdiOZsOEfyQYnH.",
+    "created_at": "2026-08-09T15:15:52.662022+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "d4eb07c3-6b84-4229-9c98-77775eda022d",
+    "name": "Tester",
+    "email": "test_shop_be282a21@jarvis.ai",
+    "password": "$2b$12$csy8WEEZNdU9mQBuw/c7Ge5qCHUHi4.UuI2UOPwTNYxCkagfHIKui",
+    "created_at": "2026-08-09T15:15:53.068606+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:53.293547+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:53.293547+00:00",
+    "subscription_start": "2026-08-09T15:15:53.293547+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "948bc601-28b2-43e9-b0b4-3329d9930b96",
+    "name": "Tester",
+    "email": "test_shop_9df4e9c7@jarvis.ai",
+    "password": "$2b$12$Q3CNiwQtOCoxEX3qQfLhU.Ci3.Y64k3NFR6B7/IPa0N.Ay9iq8nSO",
+    "created_at": "2026-08-09T15:15:53.291809+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:53.335625+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:53.335625+00:00",
+    "subscription_start": "2026-08-09T15:15:53.335625+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "a420e536-ce59-4b93-8485-c053139e0eb2",
+    "name": "Tester",
+    "email": "test_shop_5a86f5ff@jarvis.ai",
+    "password": "$2b$12$FsNIppHU7QqWqIewi0WMsOpQ9KK4Be1MwoViZ0p4GJ2a5nlK8zaP2",
+    "created_at": "2026-08-09T15:15:53.666563+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:53.891564+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:53.891564+00:00",
+    "subscription_start": "2026-08-09T15:15:53.891564+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "82b9cf68-80de-4a36-aec6-184da82bc3ce",
+    "name": "Tester",
+    "email": "test_shop_9efb8d9e@jarvis.ai",
+    "password": "$2b$12$CLIfuQvEjrWWtC3QgpgBtOMKWx1vj3Cq6J9eUpxw8leUEcR6pm87K",
+    "created_at": "2026-08-09T15:15:53.889837+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:53.934011+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:53.934011+00:00",
+    "subscription_start": "2026-08-09T15:15:53.934011+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "8060dc67-35a5-4f27-8dff-b2d6db46ec3d",
+    "name": "Tester",
+    "email": "test_shop_2b72be97@jarvis.ai",
+    "password": "$2b$12$6WWvTXVZIfbIf0Xv41j6COIenWYTCP36wLimUiDsxScLyVkkJVDuq",
+    "created_at": "2026-08-09T15:15:54.255819+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "a4ae7143-d445-40c8-b461-31d56650026b",
+    "name": "Tester",
+    "email": "test_shop_5481ba3e@jarvis.ai",
+    "password": "$2b$12$YRSlNuFzkoM5rXTEqAXonOwxBSwgWQtYgm0gS96ufwOPHPqp5WglO",
+    "created_at": "2026-08-09T15:15:54.479395+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:54.525510+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:54.525510+00:00",
+    "subscription_start": "2026-08-09T15:15:54.525510+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "98dae548-cb70-4c9b-9d70-69884902301d",
+    "name": "Tester",
+    "email": "test_shop_4655ae61@jarvis.ai",
+    "password": "$2b$12$dERYrwP64DIkxVQ.c4iNbeW4lzUUNcgMRlU9oRjYTF47SxMMwIw82",
+    "created_at": "2026-08-09T15:15:54.848778+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:55.073596+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:55.073596+00:00",
+    "subscription_start": "2026-08-09T15:15:55.073596+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "2bede9be-3ea4-4836-b896-1b95a0d1f541",
+    "name": "Tester",
+    "email": "test_shop_54f4ff69@jarvis.ai",
+    "password": "$2b$12$.q8I.aI96vOdITXT31AkJ.NdrxOCqsw9GJHKhSg30grmJqaaYfTEi",
+    "created_at": "2026-08-09T15:15:55.071921+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:55.116597+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:55.116597+00:00",
+    "subscription_start": "2026-08-09T15:15:55.116597+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "939f60b1-f518-4c5f-9b12-7b3560f44915",
+    "name": "Tester",
+    "email": "test_shop_0f2f732e@jarvis.ai",
+    "password": "$2b$12$k4YH/KXnYgZ9KDmf1h9c..kmtqPEUChDXU2.2UqqwiydCy.vt9fp2",
+    "created_at": "2026-08-09T15:15:55.546343+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:55.642729+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:55.642729+00:00",
+    "subscription_start": "2026-08-09T15:15:55.642729+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "9a6de41c-384a-4d17-86ac-4a0716816daa",
+    "name": "Tester",
+    "email": "test_shop_9e101d53@jarvis.ai",
+    "password": "$2b$12$kjTcDdsyyfvsQ9eC7VCtMOw6EiGfo8eTUVQFR0FijjA3hkYTfJdIy",
+    "created_at": "2026-08-09T15:15:55.960627+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:56.006698+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:56.006698+00:00",
+    "subscription_start": "2026-08-09T15:15:56.006698+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "dab3f36b-9a3e-4639-93e3-b68fb7ee6751",
+    "name": "Tester",
+    "email": "test_shop_6d85570f@jarvis.ai",
+    "password": "$2b$12$iHYM2A2oIH5s81Za5PoU5uCe1ViY65HXO0vaTZB0oBG3YJzjkq4vW",
+    "created_at": "2026-08-09T15:15:56.388080+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:15:56.437670+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:15:56.437670+00:00",
+    "subscription_start": "2026-08-09T15:15:56.437670+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "b2a2b746-5049-475a-b638-f929b7d1c80e",
+    "name": "Tester",
+    "email": "test_shop_4b09be10@jarvis.ai",
+    "password": "$2b$12$gwXwCxSSGfEg9QkFgyEko.dbxuYuudpHZvx7mCDKHBxXZXPt7sqjy",
+    "created_at": "2026-08-09T15:16:27.511431+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "53f3733f-4854-41cf-ab99-e9c99fd9bf52",
+    "name": "Tester",
+    "email": "test_shop_4f607f68@jarvis.ai",
+    "password": "$2b$12$S69ayCWcIdEsJUuXPGiSiePNnobvopID3RYrkbA4vmcwZ.Jqz7b2.",
+    "created_at": "2026-08-09T15:16:27.735630+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "183ea288-89b8-4b8e-9fc7-c14f482e358c",
+    "name": "Tester",
+    "email": "test_shop_cb3b7a5c@jarvis.ai",
+    "password": "$2b$12$zudZeRW30hFJB6vVmCVgQ.xwnriiv62RUgIcGtzww8Kd4ubsX3uBy",
+    "created_at": "2026-08-09T15:16:28.156735+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:28.381652+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:28.381652+00:00",
+    "subscription_start": "2026-08-09T15:16:28.381652+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "b169d80c-a5e9-4328-92cb-2026eb99d9f8",
+    "name": "Tester",
+    "email": "test_shop_6f248e88@jarvis.ai",
+    "password": "$2b$12$puvTNfs60ShQcRnzoGxSdem3FNt4h3nVAkz8H2foc0P7RMix.qSwi",
+    "created_at": "2026-08-09T15:16:28.380017+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:28.427195+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:28.427195+00:00",
+    "subscription_start": "2026-08-09T15:16:28.427195+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "0bc39cd2-d737-4956-bcb0-1f8a32d83d44",
+    "name": "Tester",
+    "email": "test_shop_89604e73@jarvis.ai",
+    "password": "$2b$12$.NW8WRHCeidPNqBvTaBoG.quJ4hEAi1RV.RTGiM6KbcdV2ghs/L/u",
+    "created_at": "2026-08-09T15:16:28.804413+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:29.029097+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:29.029097+00:00",
+    "subscription_start": "2026-08-09T15:16:29.029097+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "63f01d1f-9d93-4500-a48b-bf4c0dba2487",
+    "name": "Tester",
+    "email": "test_shop_1aabef4a@jarvis.ai",
+    "password": "$2b$12$o.erPDU5NvVwDNa7MtspiOzDK6GTNo/NvDRfNp/9RBUdOrFOSnlhO",
+    "created_at": "2026-08-09T15:16:29.027323+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:29.081580+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:29.081580+00:00",
+    "subscription_start": "2026-08-09T15:16:29.081580+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "d41fb7aa-05c3-48bc-a651-8b05f0b5a705",
+    "name": "Tester",
+    "email": "test_shop_62433cf6@jarvis.ai",
+    "password": "$2b$12$mGTNfj/yRNULVE/9VNpPHu9CY8EJLkyGBsSFN5YsH2CXTP.GU4sg6",
+    "created_at": "2026-08-09T15:16:29.457249+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:29.682770+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:29.682770+00:00",
+    "subscription_start": "2026-08-09T15:16:29.682770+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "4a8657ef-3682-4425-a4ba-fd572175c065",
+    "name": "Tester",
+    "email": "test_shop_0732e445@jarvis.ai",
+    "password": "$2b$12$UTFcRLfdosfGHRnMJM1hvermCO5JPnB9drFDsrMerXqJRS6MQ1JTS",
+    "created_at": "2026-08-09T15:16:29.680323+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "0d437c04-0f35-4170-9f2d-ab8c870fb111",
+    "name": "Tester",
+    "email": "test_shop_bb721903@jarvis.ai",
+    "password": "$2b$12$V41Tzipp2x8U1b3pa2vgyOSd/6EwPSSehGaPoz5XPsDbPTfzShjt2",
+    "created_at": "2026-08-09T15:16:30.335327+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:30.385009+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:30.385009+00:00",
+    "subscription_start": "2026-08-09T15:16:30.385009+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "f3964f06-7b15-48d9-8790-edad5c9070e7",
+    "name": "Tester",
+    "email": "test_shop_8e1b5e77@jarvis.ai",
+    "password": "$2b$12$gCLh2gA2T8UtNjh.1gtfBOngmkNanTbNKKQfCp7ctJ4NyXs4mdVM.",
+    "created_at": "2026-08-09T15:16:30.682005+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:30.725120+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:30.725120+00:00",
+    "subscription_start": "2026-08-09T15:16:30.725120+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "d29b49f4-3167-43f1-a2f9-c1eac7eab1de",
+    "name": "Tester",
+    "email": "test_shop_d89c468e@jarvis.ai",
+    "password": "$2b$12$1JJp80R9r6gD3CbFkvBJvupiFTrnMQPMEIlsyc0UFfFbA1zFpjI3G",
+    "created_at": "2026-08-09T15:16:31.088066+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:31.172327+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:31.172327+00:00",
+    "subscription_start": "2026-08-09T15:16:31.172327+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "8074dbd5-8f44-4c23-a64a-a7da71ff48e5",
+    "name": "Tester",
+    "email": "test_shop_f338824d@jarvis.ai",
+    "password": "$2b$12$xt87ml61.Psl/7pvBEzIwuDlJk./aS8VOBxrcl5sK0Gcirz0CBtCm",
+    "created_at": "2026-08-09T15:16:31.491767+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:31.538200+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:31.538200+00:00",
+    "subscription_start": "2026-08-09T15:16:31.538200+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "7991df87-1411-49b2-bf3f-b4eaedf606dc",
+    "name": "Tester",
+    "email": "test_shop_e22aa7de@jarvis.ai",
+    "password": "$2b$12$LyhDH5OE3XSU6iJ7825G3u0TEqW9H2sFCz/Gak8rZI98lyh4tVeOe",
+    "created_at": "2026-08-09T15:16:32.088937+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:32.135580+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:32.135580+00:00",
+    "subscription_start": "2026-08-09T15:16:32.135580+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "1638e46d-d8e1-4f7c-a351-169587a74efd",
+    "name": "Tester",
+    "email": "test_shop_ba33d54a@jarvis.ai",
+    "password": "$2b$12$e0DhvbEB6YKeUgXS495TROrmUAmDjas8grR8Ojtak0xbo5XPcI7Pa",
+    "created_at": "2026-08-09T15:16:48.638891+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "0e542411-af6e-4fee-a4da-ae01c9627aed",
+    "name": "Tester",
+    "email": "test_shop_15ab5c17@jarvis.ai",
+    "password": "$2b$12$oQUry0ooogEIq5GfKgd20O4yNI1EGBmvYlEUQVpgJqtw9SM7fmIg.",
+    "created_at": "2026-08-09T15:16:48.860306+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "18f0b14e-c382-4b4e-8e83-7ab8059aa53b",
+    "name": "Tester",
+    "email": "test_shop_e329384b@jarvis.ai",
+    "password": "$2b$12$mjR15zAY5OuopcRtnZa3s.VyN0PE3QVo48jlBwCVajYBiY0SiYRC2",
+    "created_at": "2026-08-09T15:16:49.290080+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:49.515192+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:49.515192+00:00",
+    "subscription_start": "2026-08-09T15:16:49.515192+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "ef996931-4a58-4a99-9f3d-bf10af00a598",
+    "name": "Tester",
+    "email": "test_shop_47f30ccf@jarvis.ai",
+    "password": "$2b$12$NZeYkJwlucp1dHID0nlQeu1ZNVBowYLLOArChB1bbvGKeQOaJGRr2",
+    "created_at": "2026-08-09T15:16:49.513242+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:49.559825+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:49.559825+00:00",
+    "subscription_start": "2026-08-09T15:16:49.559825+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "cf467f87-9d80-4b0c-81a3-ad042f0867f5",
+    "name": "Tester",
+    "email": "test_shop_3ba08cf4@jarvis.ai",
+    "password": "$2b$12$2K0plnNRrKMbXM6QX9Voyulxyfgb1VIQAbXS5vaq/urW3HHyZHyyC",
+    "created_at": "2026-08-09T15:16:49.879356+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:50.103806+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:50.103806+00:00",
+    "subscription_start": "2026-08-09T15:16:50.103806+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "aee76e62-39ea-440e-82db-0eec9dfdbf24",
+    "name": "Tester",
+    "email": "test_shop_6b5480fa@jarvis.ai",
+    "password": "$2b$12$oGwDNLw5FdkZqGG12kyA6OPTHRouGw0QcVoQO6NyeFQFl8ExoDloi",
+    "created_at": "2026-08-09T15:16:50.102206+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:50.150787+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:50.150787+00:00",
+    "subscription_start": "2026-08-09T15:16:50.150787+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "68940ea0-59ed-48e5-97b6-ed4e11735633",
+    "name": "Tester",
+    "email": "test_shop_c099d954@jarvis.ai",
+    "password": "$2b$12$jQ.PSMpFgfPYrmHnnKwujuL/4qxP3o1pqt//pfqElnCUv8VIT8cg.",
+    "created_at": "2026-08-09T15:16:50.468904+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:50.553433+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:50.553433+00:00",
+    "subscription_start": "2026-08-09T15:16:50.553433+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "425b075e-280f-4be0-b559-55c71265d2b7",
+    "name": "Tester",
+    "email": "test_shop_b5d66e10@jarvis.ai",
+    "password": "$2b$12$sq5CMvdN09TxCIvz.ysVauzG7Z3UyIn/kMzi/8dS59U8ll0kGfjbu",
+    "created_at": "2026-08-09T15:16:50.790203+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "4f22c353-b5dd-4584-97a1-e94c9b8a7a10",
+    "name": "Tester",
+    "email": "test_shop_2a4658de@jarvis.ai",
+    "password": "$2b$12$mrGpwkE8hcI3rUKUoOH8U.v0dE3oqVDEK0r1jDnqLV9ZvKfqcppTq",
+    "created_at": "2026-08-09T15:16:51.374566+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:51.427342+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:51.427342+00:00",
+    "subscription_start": "2026-08-09T15:16:51.427342+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "8ff38c9b-f53a-4c27-9b5b-b39d8a2006cc",
+    "name": "Tester",
+    "email": "test_shop_9070548c@jarvis.ai",
+    "password": "$2b$12$zqUl35mIJ7GTxuKna0vWJ.T2b4EWM2Rr3AB5kj6nmb3pqbMT300tW",
+    "created_at": "2026-08-09T15:16:51.735417+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:51.779084+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:51.779084+00:00",
+    "subscription_start": "2026-08-09T15:16:51.779084+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "88392226-69ad-4ac5-85c5-c8d749331a6f",
+    "name": "Tester",
+    "email": "test_shop_7fbad4c7@jarvis.ai",
+    "password": "$2b$12$F.lbZeW9I2bPhLNCHj7aNOXFGLRuCxJLIliUZSUpYso1dgZgaQ6Mu",
+    "created_at": "2026-08-09T15:16:52.209948+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:52.266272+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:52.266272+00:00",
+    "subscription_start": "2026-08-09T15:16:52.266272+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "18404851-2806-4ede-9576-6df8ca77c835",
+    "name": "Tester",
+    "email": "test_shop_8b4a22b2@jarvis.ai",
+    "password": "$2b$12$CEaHMnBfMAhLPhNg7t4TH.9bqC0FtF9hTmYJTRYS6z1JdNXKZzAgq",
+    "created_at": "2026-08-09T15:16:52.587312+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:52.632193+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:52.632193+00:00",
+    "subscription_start": "2026-08-09T15:16:52.632193+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "830d666e-896b-4ecc-873e-0e566ee24750",
+    "name": "Tester",
+    "email": "test_shop_8cfe3cc5@jarvis.ai",
+    "password": "$2b$12$D4e.ZG9TUDWjJ.g6pskfOOBMWoSL0QVL5jxUel32vN9U9U2MXwfmO",
+    "created_at": "2026-08-09T15:16:53.224847+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:16:53.288043+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:16:53.288043+00:00",
+    "subscription_start": "2026-08-09T15:16:53.288043+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "f13cf509-c043-4d0a-9f74-d436305371f1",
+    "name": "Shop UI",
+    "email": "test_shop_ui_b6bbecc0@jarvis.ai",
+    "password": "$2b$12$/NCLXn0WNLuoTcJycBT49e0Z2ch32x.o5h9xRGJopnQob46jP5AhS",
+    "created_at": "2026-08-09T15:17:30.106010+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:17:30.167452+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:17:30.167452+00:00",
+    "subscription_start": "2026-08-09T15:17:30.167452+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "05abec97-b7a8-466b-a08b-17f749a58af3",
+    "name": "Shop UI",
+    "email": "test_shopui_a69d2d48@jarvis.ai",
+    "password": "$2b$12$dySvypfph.QIXJAJZKtD9e0OM0fMf4qeyOBPpHf9rvYuk/dbbi3ia",
+    "created_at": "2026-08-09T15:18:42.806247+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:18:42.857541+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:18:42.857541+00:00",
+    "subscription_start": "2026-08-09T15:18:42.857541+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "67132d42-0e5d-4541-ab64-0ec696421e89",
+    "name": "Free UI",
+    "email": "test_free_ui_e4cbe194@jarvis.ai",
+    "password": "$2b$12$BFiqAqICUn.wKj6OD5KMmO1YIb.Xk.QUr0NRV4eJEE3SsAvF21Zpq",
+    "created_at": "2026-08-09T15:19:38.398842+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "e3dbf559-a078-4e4f-84d0-f165868a7c78",
+    "name": "Pro UI",
+    "email": "test_pro_ui_c9eaf6a2@jarvis.ai",
+    "password": "$2b$12$x6AhrVDjGcsFjkSdNtxan.nZXgVbJNZXJxWQjNRtRNeeVEU2uXYne",
+    "created_at": "2026-08-09T15:19:56.030185+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T15:19:56.077083+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T15:19:56.077083+00:00",
+    "subscription_start": "2026-08-09T15:19:56.077083+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "aed4d610-b6f1-4b2a-9a86-c1ccc9810517",
+    "name": "Sec",
+    "email": "sectest_ef53054c58@jarvis.ai",
+    "password": "$2b$12$JIhcCaHVUJGLnQ7q1O7CT.FbapIG0zdV/.ZtU7yzNJq9kJT68bIom",
+    "created_at": "2026-08-09T16:14:08.548693+00:00"
+  },
+  {
+    "_id": "365da7d0-9635-4ac8-850c-d3963647b5fd",
+    "name": "Sec",
+    "email": "sectest_36d26bd3df@jarvis.ai",
+    "password": "$2b$12$bMYyabMqFCjbQ546rteIzescIRtddvHJz.eRdMj/SFrEaKuL6i20y",
+    "created_at": "2026-08-09T16:14:08.841138+00:00"
+  },
+  {
+    "_id": "e7ea2c8b-4365-4aab-8526-5f65a963cbef",
+    "name": "cap",
+    "email": "test_cap_7978df0a@jarvis.ai",
+    "password": "$2b$12$3khDKjZvA1EIIC6R0496ve8lBFzp4ulKS58.LF1SVMhOiOCyTAZ7K",
+    "created_at": "2026-08-09T16:14:09.084922+00:00"
+  },
+  {
+    "_id": "1acd73f6-3483-415c-9bc9-febe963d4859",
+    "name": "Sec",
+    "email": "sectest_b56d47b14d@jarvis.ai",
+    "password": "$2b$12$f2bIGgKVXwZm1dUbnuop.egEneXuYGTGDmMuH1qeDkcsVpe/j7PU2",
+    "created_at": "2026-08-09T16:14:09.357368+00:00"
+  },
+  {
+    "_id": "0226c21b-94a5-46b6-89e4-504f163405ff",
+    "name": "Sec",
+    "email": "sectest_861f1dfd06@jarvis.ai",
+    "password": "$2b$12$r0W9HLUw17aFU8AZwl1jG.wmg79N7y/dDeGC/mZAmfy6nVbAzWLAO",
+    "created_at": "2026-08-09T16:14:09.613321+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:09.617811+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:09.617811+00:00",
+    "subscription_start": "2026-08-09T16:14:09.617811+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "22f6935f-caed-43f1-ae73-a945be4b477c",
+    "name": "Sec",
+    "email": "sectest_a696840941@jarvis.ai",
+    "password": "$2b$12$JlerDOIhzUPxpHIpHR2kBeVV02nw5uIdos1Ad1dvKZNC8dyaLJ5m.",
+    "created_at": "2026-08-09T16:14:09.900639+00:00"
+  },
+  {
+    "_id": "0237a6e5-69bd-43ea-bd61-5183edcee162",
+    "name": "Sec",
+    "email": "sectest_a42d35d932@jarvis.ai",
+    "password": "$2b$12$T3Y5VPAnHihOH5nTWfr8SuhBD2zJfGX3GqrvHnVj0Mb4hzqsiHyDa",
+    "created_at": "2026-08-09T16:14:10.201675+00:00"
+  },
+  {
+    "_id": "d8509dfa-d6b1-4f4b-939c-b88053ca334b",
+    "name": "Sec",
+    "email": "sectest_ecdfe2ea5a@jarvis.ai",
+    "password": "$2b$12$e3SldJmgL28sD1jy7N3iLeU.kDOCTDaS51gehWMXOyj85BZLPLImO",
+    "created_at": "2026-08-09T16:14:10.490752+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:10.495994+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:10.495994+00:00",
+    "subscription_start": "2026-08-09T16:14:10.495994+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "a159d991-2b5b-4f54-9c96-ebfa34b22be0",
+    "name": "Sec",
+    "email": "sectest_0c892f6ccc@jarvis.ai",
+    "password": "$2b$12$TRUrEUytopyk.PkT2Bz2Ou2NxtXF6.s..9KYKyPQMZWgtc5CQxqee",
+    "created_at": "2026-08-09T16:14:11.869910+00:00"
+  },
+  {
+    "_id": "94d4ded9-37a0-40eb-899f-ee7f64000862",
+    "name": "Sec",
+    "email": "sectest_48e93c5fb8@jarvis.ai",
+    "password": "$2b$12$k1sFoXlhOd.18dSpJxPRHOn9PF7ITcqFXXk65EgsYrj2fLQ8F4Bcy",
+    "created_at": "2026-08-09T16:14:12.099147+00:00"
+  },
+  {
+    "_id": "f59de5ca-be36-4dd7-bdef-ad3c85fc4c52",
+    "name": "Sec",
+    "email": "sectest_250910767a@jarvis.ai",
+    "password": "$2b$12$IFyibjf1yMQqR7oZakszueIzHdEGfEMlKsBh6ibIlEjbfu.kd7k1u",
+    "created_at": "2026-08-09T16:14:12.329392+00:00"
+  },
+  {
+    "_id": "2219e104-a6a8-48a0-a2a6-bff679902c22",
+    "name": "prep",
+    "email": "test_prep_104d74c7@jarvis.ai",
+    "password": "$2b$12$9GiULZgAiNw9NY0JqsS4zeuCLWKKcbew9fJNeIpfm9gsDWVxUcXj6",
+    "created_at": "2026-08-09T16:14:12.552717+00:00"
+  },
+  {
+    "_id": "444801f3-0b86-4512-a822-3902d8f3dcbe",
+    "name": "Sec",
+    "email": "sectest_bb21e4147c@jarvis.ai",
+    "password": "$2b$12$h1ofOYzKaxkw0QmVYyGPCeyw/pi5g.f7nGfHwx4J4b68fDwvVsQv6",
+    "created_at": "2026-08-09T16:14:12.781597+00:00"
+  },
+  {
+    "_id": "6e06ff4f-e699-4cfd-9123-32ebcb58d5ec",
+    "name": "Sec",
+    "email": "sectest_e2f8e3a3ee@jarvis.ai",
+    "password": "$2b$12$VtkkkHonV6bkYtcpknB.sOudU6e0WkJorvNwiucA0BqhS2onb15tG",
+    "created_at": "2026-08-09T16:14:13.011718+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:13.016523+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:13.016523+00:00",
+    "subscription_start": "2026-08-09T16:14:13.016523+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "1e4084fc-dee1-4dee-b604-5d67aab7d2af",
+    "name": "cloud",
+    "email": "test_cloud_572f7892@jarvis.ai",
+    "password": "$2b$12$0E/Fp9lx0m8eDmofnUFYuuZd4DRVTM7pHk9SFE.8fY/KKYM7b1c6G",
+    "created_at": "2026-08-09T16:14:14.657381+00:00"
+  },
+  {
+    "_id": "ecfb9884-2b0e-4cf9-8949-4c31a5411602",
+    "name": "Sec",
+    "email": "sectest_a41d973475@jarvis.ai",
+    "password": "$2b$12$k6g69yBqPf9tznMNIUdqV.maXvx2hu.nYXfNtt5ugGO3QDl/tFpk2",
+    "created_at": "2026-08-09T16:14:16.600373+00:00"
+  },
+  {
+    "_id": "f20fc051-008c-4741-9ab4-b17ea398b46e",
+    "name": "T",
+    "email": "throttle_7257a4b7@j.ai",
+    "password": "$2b$12$KFkkn9fP.YQkg65zcgrqfOkikkY7wpqLpNkd215WX3OHHVkKLsgTu",
+    "created_at": "2026-08-09T16:14:17.053670+00:00"
+  },
+  {
+    "_id": "674eb1dd-0439-4401-aa6f-fee6c76cff23",
+    "name": "Sec",
+    "email": "sectest_3c1fc03ecf@jarvis.ai",
+    "password": "$2b$12$oz9r9JU4TePuMr4SIUTttOQyqCmR8v/mBC85.SFewdkCpSOGfEPUy",
+    "created_at": "2026-08-09T16:14:19.536205+00:00"
+  },
+  {
+    "_id": "7c8c8a50-280a-473e-9cc2-28c365e3d2ed",
+    "name": "Sec",
+    "email": "sectest_8df256bc51@jarvis.ai",
+    "password": "$2b$12$Lr3sruhVDZvVIQHkxAtVI.Ty3D4M/7DH1uL2BUJQCI6gCFo7P9/hC",
+    "created_at": "2026-08-09T16:14:19.764701+00:00"
+  },
+  {
+    "_id": "d19b5f82-903e-4a91-a8c6-cbad5d8b9769",
+    "name": "save",
+    "email": "test_save_429fbe12@jarvis.ai",
+    "password": "$2b$12$oYaMxTtpL6i294wvh/EoLOUADQAAju88HK3FTNVqfJ1ridk2dTVyK",
+    "created_at": "2026-08-09T16:14:20.160618+00:00"
+  },
+  {
+    "_id": "c3f88027-7782-40bb-bc90-74cad406a2aa",
+    "name": "cap",
+    "email": "test_cap_d97473ae@jarvis.ai",
+    "password": "$2b$12$MQFt.hOGBDEsvhAc78eRMO8xHQkkW5IaH0CVnACH1TksQNXlS9lEe",
+    "created_at": "2026-08-09T16:14:52.177090+00:00"
+  },
+  {
+    "_id": "1fbc1fdf-fc93-4758-a600-9842d53db5bf",
+    "name": "prep",
+    "email": "test_prep_a4ec6651@jarvis.ai",
+    "password": "$2b$12$iHgw74fkheWFUCBReMtLteEQWnf5RQ53Uzl8l/f3iWWe1qfuWwUBe",
+    "created_at": "2026-08-09T16:14:52.873963+00:00"
+  },
+  {
+    "_id": "e1743a92-e503-4cf6-b366-d5ea2f2cbca7",
+    "name": "Tester",
+    "email": "test_shop_1c196854@jarvis.ai",
+    "password": "$2b$12$cl8pefwuFYZdGPl/8f3u6.C1UbeNhPPRH2x.faCN4z0kAalnxwZ3C",
+    "created_at": "2026-08-09T16:14:53.758344+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "c2617cfe-2e38-4eac-a8a1-d56533f31665",
+    "name": "Tester",
+    "email": "test_shop_97e51736@jarvis.ai",
+    "password": "$2b$12$PQwoucb0ScVH9YWLckc5Legf1e6v9/ptSdxP0DivZ485ReT0PET1.",
+    "created_at": "2026-08-09T16:14:54.340260+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:54.390881+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:54.390881+00:00",
+    "subscription_start": "2026-08-09T16:14:54.390881+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "9b8c3add-aec6-46a4-859c-281b2e8dd999",
+    "name": "cloud",
+    "email": "test_cloud_e7f035ea@jarvis.ai",
+    "password": "$2b$12$LIAM5pQo3SYSM7OftiAVWewfVnVZg68ohxH6vVTuoLR.ZeSHAoDge",
+    "created_at": "2026-08-09T16:14:54.782079+00:00"
+  },
+  {
+    "_id": "11e88f59-2932-4470-bb59-88cf5d1d22ea",
+    "name": "Tester",
+    "email": "test_shop_6851fac7@jarvis.ai",
+    "password": "$2b$12$OHrO/coRsAgjVmG7B7uB4ubZRPIIThyPmsLy994bp.1SO4uClt3Iu",
+    "created_at": "2026-08-09T16:14:55.005187+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:55.047733+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:55.047733+00:00",
+    "subscription_start": "2026-08-09T16:14:55.047733+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "5b293634-4cb6-4949-a3be-b0ceccd5f1cb",
+    "name": "Tester",
+    "email": "test_shop_99dcc7e6@jarvis.ai",
+    "password": "$2b$12$JKl8NtH3eiaAt4ydq2V3N.ZPrgXa5FTfHOM3cVgXJSUyV8o4qdHzy",
+    "created_at": "2026-08-09T16:14:55.611183+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "00ea93c1-72bf-4687-9d65-45b859c13d25",
+    "name": "Tester",
+    "email": "test_shop_f2c4660e@jarvis.ai",
+    "password": "$2b$12$kRHiyEAZOBqwNojDddAuuuRmiBh.35qHXjunZIl9KvnxRbXXZI6CC",
+    "created_at": "2026-08-09T16:14:56.180621+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:56.225077+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:56.225077+00:00",
+    "subscription_start": "2026-08-09T16:14:56.225077+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "4bc2cb58-93ab-40b3-b52d-8a35f7cd0e20",
+    "name": "save",
+    "email": "test_save_5e047258@jarvis.ai",
+    "password": "$2b$12$N6VYK8bTNEDVwg8JiNPrJ.F1nDo9h0wAmwxj.bZZfqG/B621iCiq6",
+    "created_at": "2026-08-09T16:14:56.716390+00:00"
+  },
+  {
+    "_id": "9b122f32-154f-463f-bf6e-40fa89f0c58d",
+    "name": "Tester",
+    "email": "test_shop_67dcda03@jarvis.ai",
+    "password": "$2b$12$jzac..0Icy9vGjImJTfTOOZz0A1hvoKVhyr3042ps.z8ByoOTkO2a",
+    "created_at": "2026-08-09T16:14:57.874345+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "c67cde0d-cde1-4e19-b235-047318d4715f",
+    "name": "Tester",
+    "email": "test_shop_f65fbc94@jarvis.ai",
+    "password": "$2b$12$nacsUgP7Br5TnIu5kGRFruSffUmmXXl78votFxONFPoOYjJiCfdmC",
+    "created_at": "2026-08-09T16:14:58.298937+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:58.352393+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:58.352393+00:00",
+    "subscription_start": "2026-08-09T16:14:58.352393+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "d94b6dc3-ff33-4d7b-a63c-ce6e35da4427",
+    "name": "Tester",
+    "email": "test_shop_b604bce7@jarvis.ai",
+    "password": "$2b$12$PFSieZRRH49pZvfS28VnhuyUqS1cxrGolj2okr5kJ3IJISH.AZP3.",
+    "created_at": "2026-08-09T16:14:58.720804+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:58.768378+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:58.768378+00:00",
+    "subscription_start": "2026-08-09T16:14:58.768378+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "3b7cec33-ccdd-490b-b648-5263f0a7598f",
+    "name": "Tester",
+    "email": "test_shop_eecdbdb2@jarvis.ai",
+    "password": "$2b$12$tqI05NpgEKityxXCC3b9Ve9pTg273neYCfSwd5DivKk8kmfBegxKa",
+    "created_at": "2026-08-09T16:14:59.133653+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:59.181364+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:59.181364+00:00",
+    "subscription_start": "2026-08-09T16:14:59.181364+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "62e94361-1090-41cf-84d9-f884e31338d5",
+    "name": "Tester",
+    "email": "test_shop_1fbc20b5@jarvis.ai",
+    "password": "$2b$12$4zYA/69d.H4J2kZp9oEmp.uCdq4kMlt3jASMTvoKnlqMJ2ABs4SiS",
+    "created_at": "2026-08-09T16:14:59.914327+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:14:59.959563+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:14:59.959563+00:00",
+    "subscription_start": "2026-08-09T16:14:59.959563+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "7ae5d72b-f943-4d17-91d8-8917689d7df3",
+    "name": "Tester",
+    "email": "test_shop_01e8ee99@jarvis.ai",
+    "password": "$2b$12$PeE4p4WYY41cfWeQP4sra.Z5IAcXdgRN3kcut7enCXtzASyy5x7kq",
+    "created_at": "2026-08-09T16:15:00.701993+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:15:00.747610+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:15:00.747610+00:00",
+    "subscription_start": "2026-08-09T16:15:00.747610+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "2cceb407-1f73-4b88-b51b-c67e67ed04f5",
+    "name": "Tester",
+    "email": "test_shop_2ae02332@jarvis.ai",
+    "password": "$2b$12$ZO8S1SAlXnfi2vevC0ggpu9ZIIkNRWm2OV.YLoQl6fZuJcnjWROw2",
+    "created_at": "2026-08-09T16:15:01.065598+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:15:01.116040+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:15:01.116040+00:00",
+    "subscription_start": "2026-08-09T16:15:01.116040+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "40be62a3-46ba-4597-bc42-6e8799070cdd",
+    "name": "Tester",
+    "email": "test_shop_2b394092@jarvis.ai",
+    "password": "$2b$12$ccX65zRJTQDeNoorAEbgheLUFLCCieFvV4SSomi7gdbT6N40rVpKm",
+    "created_at": "2026-08-09T16:15:01.685562+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-09T16:15:01.728374+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-08T16:15:01.728374+00:00",
+    "subscription_start": "2026-08-09T16:15:01.728374+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "22440ee1-229c-403f-b8f8-6399e63b0770",
+    "name": "P",
+    "email": "pm_1786658983@jarvis.ai",
+    "password": "$2b$12$BRUn4Gin6Z9Gm2OTXf9ui.5.TFyJleyvK5bNR7c8L50M1R4B5q08.",
+    "created_at": "2026-08-13T22:09:43.848735+00:00"
+  },
+  {
+    "_id": "8ce8aff4-1722-4043-b27c-55c524bc4ce9",
+    "name": "P",
+    "email": "pm2_1786658999@jarvis.ai",
+    "password": "$2b$12$2SFkz2bK39q8mx1wC2G1ruBE4ZK.GGytxxTm1L9jdvRBw8C5WC1Fy",
+    "created_at": "2026-08-13T22:10:00.366241+00:00"
+  },
+  {
+    "_id": "ed56acc4-a055-45bf-857c-0d675a0f50b9",
+    "name": "Honesty",
+    "email": "test_5b7265546a@example.com",
+    "password": "$2b$12$U/o7UivCJ3FNaHTqVk5ve.301tZu1gs1kcgtIWM00DszfH4mNJJGi",
+    "created_at": "2026-08-13T22:13:18.947204+00:00"
+  },
+  {
+    "_id": "a1688935-ea0a-42b2-bc06-85b1a3f7168c",
+    "name": "UserA",
+    "email": "test_f1239b0ace@example.com",
+    "password": "$2b$12$D4iE3K47YpAFFDprkOmnAO1BGSwfWITtQKzacEcsCDAPK2DiOOiqa",
+    "created_at": "2026-08-13T22:13:19.168627+00:00"
+  },
+  {
+    "_id": "ada0c507-9db3-45e4-bc91-ba168c702bbb",
+    "name": "Honesty",
+    "email": "test_7f9c550779@example.com",
+    "password": "$2b$12$CD65cW2SOQOdnV4MQsCKZeW5gDlMbSRL5/TtwNi/7uYEB9rPjlQEi",
+    "created_at": "2026-08-13T22:13:40.480702+00:00"
+  },
+  {
+    "_id": "ae2844d7-18c6-40b0-827f-8190de437ed5",
+    "name": "UserA",
+    "email": "test_cedaf73ec1@example.com",
+    "password": "$2b$12$l.YJ3UF2Ttzdf43LqXTrqeGBqhM/UlEjMbvj7i45WcvlV7DddQgBq",
+    "created_at": "2026-08-13T22:13:40.705392+00:00"
+  },
+  {
+    "_id": "27475a72-5f2d-4055-9588-96f30bdcfb68",
+    "name": "Honesty",
+    "email": "test_4c6d00945f@example.com",
+    "password": "$2b$12$VLHZ.03BwsmjuN6ztuDgae3RhrFtkSr8P4S09r4HqEy8EodhsqR2W",
+    "created_at": "2026-08-13T22:13:53.510043+00:00"
+  },
+  {
+    "_id": "657f0a11-a56a-4666-a416-8fb286e0ae37",
+    "name": "UserA",
+    "email": "test_e937347619@example.com",
+    "password": "$2b$12$QUzQqNJqfhtu2OzNYZvK3OwKkeT7qwX.UP2aYzoDz.LOpeJBugT1m",
+    "created_at": "2026-08-13T22:13:53.733971+00:00"
+  },
+  {
+    "_id": "396e2752-002a-4206-a0a3-957ce2a44917",
+    "name": "UserB",
+    "email": "test_ad6dc2dc12@example.com",
+    "password": "$2b$12$egmH.NOSUJdXtY2VZyim/u6gVBN8mJxYe5aYzqEWIgeRLnCPaEzWW",
+    "created_at": "2026-08-13T22:13:59.913036+00:00"
+  },
+  {
+    "_id": "3a01b8ad-796c-454e-b90c-8e29dbf5f712",
+    "name": "Test QA",
+    "email": "test_21bb02f9@example.com",
+    "password": "$2b$12$sxwpaFn2xO3Mpzqiu3Dm/uS4vSoFN5fG00zTTXiyQLPN8UgBOBqHm",
+    "created_at": "2026-08-13T22:14:56.226668+00:00"
+  },
+  {
+    "_id": "cdb20dec-5d7a-43a0-a72d-a5bd08216ec5",
+    "name": "PredQA",
+    "email": "test_71eb5531@example.com",
+    "password": "$2b$12$T3mJckGjCjwv/hs2O9eqLeJzGkul7uVqum81olqgrWweze5lLTdva",
+    "created_at": "2026-08-13T22:15:44.374839+00:00"
+  },
+  {
+    "_id": "082f6422-8fb0-45e7-a85d-f1e302e2dad5",
+    "name": "ProQA",
+    "email": "test_03d46e00@example.com",
+    "password": "$2b$12$pYxLs5/F.FxcWkXCB.eVnOqqTSIDw5sKpbfnLb7Z5rWPwr.xX.vZS",
+    "created_at": "2026-08-13T22:16:35.313454+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-13T22:16:40.115015+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-12T22:16:40.115015+00:00",
+    "subscription_start": "2026-08-13T22:16:40.115015+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "4f9228db-8263-4983-ab00-a565fba2d3da",
+    "name": "GR Tester",
+    "email": "gr_e9d61b3a91@example.com",
+    "password": "$2b$12$PYQlTKGR0/6uCRni.cVI.eYygrun2xgS1af9rd/gfano79DJCwPZK",
+    "created_at": "2026-08-16T15:31:01.839711+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "90cfc33c-6a21-4cc8-8c13-9c4d8e186f6a",
+    "name": "X",
+    "email": "gr2_b4db91e4a1@example.com",
+    "password": "$2b$12$Fe94J/BvNUfB1Hy.AbMK6.c63GgUvC.dfgfjWhH6XlIKzsDby53rS",
+    "created_at": "2026-08-16T15:31:02.061472+00:00"
+  },
+  {
+    "_id": "21e1f5ca-2654-4071-bca0-429067630348",
+    "name": "GR Tester",
+    "email": "gr_69b14eb46c@example.com",
+    "password": "$2b$12$oY8hjXaSOXxv77zdTgYkCOEags23SphJcke6Kd5UpmSRTbp.3sLvy",
+    "created_at": "2026-08-16T15:31:02.818974+00:00"
+  },
+  {
+    "_id": "2773873a-944c-43f1-ad7c-fcf28de0693d",
+    "name": "Sec",
+    "email": "sectest_0014900b89@jarvis.ai",
+    "password": "$2b$12$3d0oQDRXOQQ.YiAx.iy1RuH8WpV5XK/L8SBNt/J6qNBG6IVNqDQ3a",
+    "created_at": "2026-08-16T15:31:14.198556+00:00"
+  },
+  {
+    "_id": "409e2c2a-9f9c-4533-8042-050bc29e031f",
+    "name": "UserA",
+    "email": "test_78317d954a@example.com",
+    "password": "$2b$12$HHF43ipNX1yrc4R2VcfbX.0Gc/iL2xzUAXoUtXfTY0zfMxRdb2pxy",
+    "created_at": "2026-08-16T15:31:14.422384+00:00"
+  },
+  {
+    "_id": "07ffd0a8-1a74-4f8d-9cc9-3864b3132f45",
+    "name": "Sec",
+    "email": "sectest_0d153d60ce@jarvis.ai",
+    "password": "$2b$12$yL9tTwP2R2ZSV6v2uwl02.tykEQqZfL20Y0EA1ZvmBWZphYQq6wBm",
+    "created_at": "2026-08-16T15:31:14.651374+00:00"
+  },
+  {
+    "_id": "6ce4d9b3-c1df-4629-a8c0-60eb119ddbfd",
+    "name": "Sec",
+    "email": "sectest_bb9be28c8c@jarvis.ai",
+    "password": "$2b$12$bjn6mTaSgoYHF1QEOETzK.VC46StTZ3gkb5m2wcI6Mb0DYoWrKvIy",
+    "created_at": "2026-08-16T15:31:14.879430+00:00"
+  },
+  {
+    "_id": "b81f25b6-3280-4473-ada1-683bf301535b",
+    "name": "Sec",
+    "email": "sectest_f43157f0b1@jarvis.ai",
+    "password": "$2b$12$0dSIgdp7TnOqJkPD3R/4MuGeuOWD76pK/jnbK/jfNXvSnA6GpVcwK",
+    "created_at": "2026-08-16T15:31:15.107825+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-16T15:31:15.114400+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-15T15:31:15.114400+00:00",
+    "subscription_start": "2026-08-16T15:31:15.114400+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "c976bbf2-adf4-4173-a126-c728d1f52f22",
+    "name": "Sec",
+    "email": "sectest_426399f5f2@jarvis.ai",
+    "password": "$2b$12$z341aSM6ZxBze9KC7ZyiPu10wWu9f9FOqnWSLdkA3uK8u8V.9Xsj2",
+    "created_at": "2026-08-16T15:31:15.339918+00:00"
+  },
+  {
+    "_id": "bc8c5639-9631-4709-a64d-ea0d81248ccf",
+    "name": "Sec",
+    "email": "sectest_b24749f994@jarvis.ai",
+    "password": "$2b$12$/8jHLo5qHEXVgtHzkCO.ouTECfOxVN2YCNbtGa3MokyqFRGnjiPsW",
+    "created_at": "2026-08-16T15:31:15.569953+00:00"
+  },
+  {
+    "_id": "40ca728f-9a21-4ddb-b6aa-0faa51474aee",
+    "name": "Sec",
+    "email": "sectest_8298092d0e@jarvis.ai",
+    "password": "$2b$12$VTzyVE.inIR5YoWBgbQ95uytsQKOuQ9YyQCLEW7K/Gsi2vahk5T5a",
+    "created_at": "2026-08-16T15:31:15.799331+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-16T15:31:15.803897+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-15T15:31:15.803897+00:00",
+    "subscription_start": "2026-08-16T15:31:15.803897+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "cd6447ce-27cd-4813-aed7-54c8538dea19",
+    "name": "Sec",
+    "email": "sectest_b393f02817@jarvis.ai",
+    "password": "$2b$12$9u4pX6jSgJGLpL8T8ao5lOXYLnHZtsQyu9dokQ00bMkwMCbQonlwm",
+    "created_at": "2026-08-16T15:31:16.788137+00:00"
+  },
+  {
+    "_id": "9c0c7811-5ff3-4b69-82b7-ac04f75acdd4",
+    "name": "Sec",
+    "email": "sectest_edf04885c6@jarvis.ai",
+    "password": "$2b$12$ZDVQTnf66qneoXbSKcU9cegp8nNp9R9NeP6Or68FbkVS6WB1xiv1e",
+    "created_at": "2026-08-16T15:31:17.016389+00:00"
+  },
+  {
+    "_id": "d2a53449-454b-4d32-96e6-0752364064c5",
+    "name": "Sec",
+    "email": "sectest_32ed368637@jarvis.ai",
+    "password": "$2b$12$hBtGBy5DIs94fEnHrmJ/Tu5F62FC1xStWWnjGLE4dZWWrtkuS8lu6",
+    "created_at": "2026-08-16T15:31:17.245596+00:00"
+  },
+  {
+    "_id": "2c0751cb-4370-4cc0-8a10-cb69665f684b",
+    "name": "Sec",
+    "email": "sectest_8de2a760b0@jarvis.ai",
+    "password": "$2b$12$5gaVSW0G4N0SJdBp03/0mOYOMWc6qYKpEaRFFuZoW2oreOPDfQho2",
+    "created_at": "2026-08-16T15:31:17.475613+00:00"
+  },
+  {
+    "_id": "78e1b3ed-f72b-4bb2-9cb8-c4e6b0fc4ecb",
+    "name": "Sec",
+    "email": "sectest_d9ce31dd4d@jarvis.ai",
+    "password": "$2b$12$fFHk/w.lQy8ajIcUsjWFmuCkp4oxXjCnQpTWa.jcXkpXtV15N2bJK",
+    "created_at": "2026-08-16T15:31:17.705190+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-16T15:31:17.709788+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-15T15:31:17.709788+00:00",
+    "subscription_start": "2026-08-16T15:31:17.709788+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "37873849-6633-442e-a3cc-dd0e44e31bca",
+    "name": "Sec",
+    "email": "sectest_7a1b7a0f66@jarvis.ai",
+    "password": "$2b$12$LO8kPSFhsPTPjlty4PA03e9LsCQuabsN4oDZRCDPp9SdUZkRqCvMe",
+    "created_at": "2026-08-16T15:31:22.075712+00:00"
+  },
+  {
+    "_id": "dd190859-6d6f-4f8b-81be-37cbf838dadb",
+    "name": "UserB",
+    "email": "test_6eb6d064fc@example.com",
+    "password": "$2b$12$rJnosnu9sYFpFoMJWsBSb.SgfhPg1c6LxDgZduaKDuxxdnpZr995W",
+    "created_at": "2026-08-16T15:31:22.298827+00:00"
+  },
+  {
+    "_id": "1161eb2d-9bfc-42dc-a48c-7e0b1729c5a2",
+    "name": "T",
+    "email": "throttle_34a98f4c@j.ai",
+    "password": "$2b$12$sFZt20/usbZKR34Tx1/t4eelqtjz4mSIv1UkoLjF8mcHIUYbNvOTG",
+    "created_at": "2026-08-16T15:31:22.748851+00:00"
+  },
+  {
+    "_id": "e5eadecc-0735-4df9-8114-9e7e78d71ffe",
+    "name": "Honesty",
+    "email": "test_6e525158f1@example.com",
+    "password": "$2b$12$sQQTlZ4LYVKSiox26ZgwNeeikUsUIKkcZA6BEzW49BKxYMBw/L8Zm",
+    "created_at": "2026-08-16T15:31:24.316342+00:00"
+  },
+  {
+    "_id": "427f7296-f701-401a-a753-cf1097ebe6cb",
+    "name": "Sec",
+    "email": "sectest_a6679ef158@jarvis.ai",
+    "password": "$2b$12$7hFWV44tjyLxZ6HxIddgZeZdnh5sPWYN.srZXJUkz8iqhlk3Mn/Tm",
+    "created_at": "2026-08-16T15:31:25.443294+00:00"
+  },
+  {
+    "_id": "a7888614-cd84-41ec-b018-62b4f1a73644",
+    "name": "Sec",
+    "email": "sectest_2f1127af2d@jarvis.ai",
+    "password": "$2b$12$nA.UZJ0hxjT8JNS.yYfHseoWV3djgF1uWd22Q2cdCf/3iBkE3/8ia",
+    "created_at": "2026-08-16T15:31:25.672210+00:00"
+  },
+  {
+    "_id": "c18c9823-ebeb-4e76-8877-8422c6be00e4",
+    "name": "GR",
+    "email": "gr_2abd9410@example.com",
+    "password": "$2b$12$65386vuDZK.vawPHZw8Ek.om5fP7GUDTSHYvuGnzp0at2Q9E3mh26",
+    "created_at": "2026-08-16T15:32:54.045235+00:00"
+  },
+  {
+    "_id": "4526c1f2-f8d9-434e-9ab5-c96a92112be7",
+    "name": "T",
+    "email": "catalog_7820@example.com",
+    "password": "$2b$12$efTNCUTK9TcOOJI1BLdYu.6LqSRNRNzpgK92EXel5qfxUsXe..jBu",
+    "created_at": "2026-08-16T15:48:01.395368+00:00"
+  },
+  {
+    "_id": "46d5f49d-4f16-4278-9d43-4117b7d302f5",
+    "name": "V",
+    "email": "voice_15272@example.com",
+    "password": "$2b$12$oHRK.wTUJ36zU6QPS1KFLeV1ohExvj8ebleuouKBxC2u9feoLie8.",
+    "created_at": "2026-08-16T15:54:20.611063+00:00"
+  },
+  {
+    "_id": "b4cbb741-31d0-4b81-8fd0-0aa27659b445",
+    "name": "T18",
+    "email": "vin18_72c7fcf71d@example.com",
+    "password": "$2b$12$12FLSuuEASqAPJ4ohI9CzOy93lRi8lrLQcuQSVSrAa8xFvv.4mQ7y",
+    "created_at": "2026-08-16T15:56:57.581579+00:00"
+  },
+  {
+    "_id": "ca6cfccf-b6ac-46c4-b41e-7c238435f1c2",
+    "name": "T18",
+    "email": "dev18_5711ad9d23@example.com",
+    "password": "$2b$12$5lhzypXxRq/XJDdZefs8q.3l9/ccXaLkF0pd63h1EwZAk4gCrGx9W",
+    "created_at": "2026-08-16T15:56:58.291563+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-16T15:56:58.296031+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-15T15:56:58.296031+00:00",
+    "subscription_start": "2026-08-16T15:56:58.296031+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "fb440345-eaec-4df5-be3f-62f318574dd0",
+    "name": "T18",
+    "email": "chat18_eea3b98870@example.com",
+    "password": "$2b$12$JBRRe3WFmgAkJqviRBWH..Ry0aicxqYMS.1fDooRcQoWVYfy/1ECy",
+    "created_at": "2026-08-16T15:56:58.720325+00:00"
+  },
+  {
+    "_id": "5ba28143-381a-4e29-b0bc-184000b66f0b",
+    "name": "T18",
+    "email": "voice18_1973501bde@example.com",
+    "password": "$2b$12$Eyjvp178r2WZBwq4aBbKVuzHSAOUG4YYi1vrV9StI.r6z.HXP1m/a",
+    "created_at": "2026-08-16T15:56:59.111233+00:00"
+  },
+  {
+    "_id": "457b60c0-ecd0-4b4c-9324-87ec839190b8",
+    "name": "T18",
+    "email": "dtc18_540de871f1@example.com",
+    "password": "$2b$12$VfZhpq2AzSfGY4QU5WAbjOxDdq2VRtNW9R3N86VNw4ocv7PL4glD.",
+    "created_at": "2026-08-16T15:56:59.334539+00:00"
+  },
+  {
+    "_id": "d1976dab-3e52-47f3-8966-e4a719620cf0",
+    "name": "T18",
+    "email": "voice18tr_31e053abbb@example.com",
+    "password": "$2b$12$yOhgS8wtpphvNLixJ7T9Fua5O5UNPo1dI4f0UQ4p.q.Hp2rMszNje",
+    "created_at": "2026-08-16T15:56:59.663898+00:00"
+  },
+  {
+    "_id": "154d0649-dead-46dd-81cf-78c8ddd54554",
+    "name": "T18",
+    "email": "uaa_af58643929@example.com",
+    "password": "$2b$12$y8UFX1l3OM4LLA/8GAkktOxfhl8GSQkAuKgj4XqHeR4VABK1ZSI/a",
+    "created_at": "2026-08-16T15:57:11.323286+00:00"
+  },
+  {
+    "_id": "6726e5f0-4783-4c4f-99e1-06a6a207c474",
+    "name": "T18",
+    "email": "uab_be2f4e86da@example.com",
+    "password": "$2b$12$vzRlm7QQn9bDjFj5fhTWq.VWRMVwdSlBQUHA9iSWJOci/nQpTZel2",
+    "created_at": "2026-08-16T15:57:11.548705+00:00"
+  },
+  {
+    "_id": "91847a43-cea0-43c0-8b1c-7b9fccdfb725",
+    "name": "Scan Tester",
+    "email": "test_scan_54d8a38bac@example.com",
+    "password": "$2b$12$kdZMjsiYr4yvxa9cRMBF5OI6MClpbFC//zQZq2LCN7Nd8O8suG6Yi",
+    "created_at": "2026-08-16T16:20:05.190626+00:00"
+  },
+  {
+    "_id": "9dc53a1a-369d-4f89-9c72-6ffbba4b25ae",
+    "name": "UI Tester",
+    "email": "test_ui_fa148fc8@example.com",
+    "password": "$2b$12$Q1CILMRFmJuurZBYulwA7O5ErvIXiyS0vOxDR4pGY83arL9nc4Vru",
+    "created_at": "2026-08-16T16:21:25.236866+00:00"
+  },
+  {
+    "_id": "ce0e6a27-a575-4fe1-8faf-c88f513660b7",
+    "name": "UI Tester",
+    "email": "test_ui_b9c708f0@example.com",
+    "password": "$2b$12$0wkcIlkWYDdDUtsaCB8/6u6DVLFooqXrSv/uFBeLLQ8sTxYBYWGXi",
+    "created_at": "2026-08-16T16:22:25.400019+00:00"
+  },
+  {
+    "_id": "2edd52bd-4846-49c3-a338-34dee420d3e0",
+    "name": "P",
+    "email": "pred_18920@example.com",
+    "password": "$2b$12$K6w21tJp8z7oHxqDS5EWcefxfW..ezRZiWaVo/PwxJdkvaI..rN7q",
+    "created_at": "2026-08-16T18:56:53.293376+00:00"
+  },
+  {
+    "_id": "b0276591-b283-464b-a25d-3ff2a6d345f6",
+    "name": "P",
+    "email": "pred2_4511@example.com",
+    "password": "$2b$12$M9TLvq77kfkazalOVeu2uupXquAPF3hiOCLLug6x5CDFVx0hTU/uK",
+    "created_at": "2026-08-16T18:57:06.591933+00:00"
+  },
+  {
+    "_id": "be0287b1-2e5e-48c6-a0dc-9228b9cf8175",
+    "name": "P",
+    "email": "pred3_18111@example.com",
+    "password": "$2b$12$SBXsX/.VLcGDPpG1sUqMoetpzrny.VJIAoAfRtsRfASH5WJOM.c7K",
+    "created_at": "2026-08-16T18:58:08.050145+00:00"
+  },
+  {
+    "_id": "70d9b533-e72b-4598-afca-0fcade26be68",
+    "name": "Phase A Tester",
+    "email": "test_pred_unavail_14f20acf@example.com",
+    "password": "$2b$12$Fr88roO4N6YJ0hL83Z.QW.4soe5j6yxJwEdPF26nkKMtHdFLuk9rS",
+    "created_at": "2026-08-16T19:00:51.667777+00:00"
+  },
+  {
+    "_id": "f883b644-3d23-4dea-a431-df7bec51ac31",
+    "name": "Phase A Tester",
+    "email": "test_nolastscan_c525351a@example.com",
+    "password": "$2b$12$4m2SXUFpgtPpnvJAJkqY8.NRu8UzWID9l4XdSSzG7JbS66sAL0VUK",
+    "created_at": "2026-08-16T19:00:51.892764+00:00"
+  },
+  {
+    "_id": "5f39e3f4-fd21-409b-9983-6ebad57f4c65",
+    "name": "Phase A Tester",
+    "email": "test_pred_general_a1bf02c2@example.com",
+    "password": "$2b$12$5JWfDY/5fSqZIdSvD7Al1.EwW58e0RgOY1F4NX2HjkpCwUXlztqv.",
+    "created_at": "2026-08-16T19:00:52.442058+00:00"
+  },
+  {
+    "_id": "112686d8-11ec-422f-92a7-5a9aaff16058",
+    "name": "Phase A Tester",
+    "email": "test_scan_a_8ab920e8@example.com",
+    "password": "$2b$12$3Nh0jLLuD8bYLNBS8oXMcuPFYTK0hQMBQORPOKjLBJVSuVwfyJqSa",
+    "created_at": "2026-08-16T19:00:53.168944+00:00"
+  },
+  {
+    "_id": "1f96f8b8-c282-4247-9aa8-77d534998019",
+    "name": "Phase A Tester",
+    "email": "test_scan_b_66646ca0@example.com",
+    "password": "$2b$12$3FLAZtiNAbAH6./pH5920O.PDwhAFJEBz9Wr8mFhB8XtDvP.vrcCu",
+    "created_at": "2026-08-16T19:00:53.516739+00:00"
+  },
+  {
+    "_id": "ebb4e6d9-9a6a-4b06-aee4-22d38e20ab38",
+    "name": "Phase A Tester",
+    "email": "test_pred_unavail_99d97709@example.com",
+    "password": "$2b$12$WxDS/Qglju7.khBO5siptuJwwooo5K3jgIvx83X.t4M2E.PlYKSgW",
+    "created_at": "2026-08-16T19:01:20.988691+00:00"
+  },
+  {
+    "_id": "f806f29d-04eb-45ad-9c9b-3d2c524492c8",
+    "name": "Phase A Tester",
+    "email": "test_nolastscan_ff02718c@example.com",
+    "password": "$2b$12$UisXmRW4s39scSldMADIruPG2MciZDONmM8XeZoJ2mFW5dTx4V6Pu",
+    "created_at": "2026-08-16T19:01:21.212587+00:00"
+  },
+  {
+    "_id": "dcafe294-a3fc-4158-8e92-4d01e87362c5",
+    "name": "Phase A Tester",
+    "email": "test_pred_general_596736c6@example.com",
+    "password": "$2b$12$gomBy7FUH6BKozbJ.FZITeTPpdamEpgXPCXbrGiZLDlpNNhlrbptq",
+    "created_at": "2026-08-16T19:01:21.701829+00:00"
+  },
+  {
+    "_id": "67286ec2-4e40-4d82-992c-30d68038c633",
+    "name": "Phase A Tester",
+    "email": "test_scan_a_61044bab@example.com",
+    "password": "$2b$12$KVBKe4WWnGnOozbxnxwHQO/UUe46OBZ5Uu74vZ5RAQIAuEHou3mkm",
+    "created_at": "2026-08-16T19:01:22.446169+00:00"
+  },
+  {
+    "_id": "0e694b61-6050-4ca0-aa11-3be333e0576c",
+    "name": "Phase A Tester",
+    "email": "test_scan_b_8ff37a88@example.com",
+    "password": "$2b$12$lVp0GPnvUZwAeAvaJ4vv4egJOx42Ehkq9aRjncS44v6qukPh.pTY6",
+    "created_at": "2026-08-16T19:01:22.847261+00:00"
+  },
+  {
+    "_id": "4247e29d-7a02-41c6-a786-4cce40b3ea8a",
+    "name": "Phase A Tester",
+    "email": "test_pred_unavail_298a8fc4@example.com",
+    "password": "$2b$12$V4S.ebDObokQAr7BT0AM5O54aJpweFHJPrtpDCYhs2ur6AjXNXRWO",
+    "created_at": "2026-08-16T19:01:31.827999+00:00"
+  },
+  {
+    "_id": "497c13d8-9649-405b-97bf-288824fdd1ac",
+    "name": "Phase A Tester",
+    "email": "test_nolastscan_468a7ec5@example.com",
+    "password": "$2b$12$Cc.m7tk4L0AGyRNFjlfcf.8W9RSq.uVxsgY/wwNjcXltKF7QHT5Xa",
+    "created_at": "2026-08-16T19:01:32.052105+00:00"
+  },
+  {
+    "_id": "24394c38-2f5d-493d-ab6c-711d14ee2270",
+    "name": "Phase A Tester",
+    "email": "test_pred_general_976393b7@example.com",
+    "password": "$2b$12$xg8IahP1bPvH9Pf6RBzLcuaEUN54EjrzOTECDQA3rTaB3F.888R9S",
+    "created_at": "2026-08-16T19:01:32.542447+00:00"
+  },
+  {
+    "_id": "11acb125-dd83-4406-a84a-8fb059cfda4c",
+    "name": "Phase A Tester",
+    "email": "test_scan_a_a5823bd7@example.com",
+    "password": "$2b$12$wPmq3VpBA1B2P7VCqMUQp.CbQHzfN9v3uybeRoU.XjWMA2CDLI04e",
+    "created_at": "2026-08-16T19:01:33.308912+00:00"
+  },
+  {
+    "_id": "fb1af3d6-5a5d-448b-b92c-4fb1d1360324",
+    "name": "Phase A Tester",
+    "email": "test_scan_b_ed85deb0@example.com",
+    "password": "$2b$12$gTxbiZN2xIr9ekOFaOKnj.A8kwdgCPRwmf82CvhVrf.VTjN4eVc/S",
+    "created_at": "2026-08-16T19:01:33.662671+00:00"
+  },
+  {
+    "_id": "59c1cfff-6cc0-4ea2-ab6b-f27ff81325c0",
+    "name": "Phase A Tester",
+    "email": "test_ph_a_62137bd0@example.com",
+    "password": "$2b$12$WG/SeFyJFk5NVvl/YH9FJe6T0yhDFJkg6qOZmBprCJW3wrykTObGm",
+    "created_at": "2026-08-16T19:02:29.795301+00:00"
+  },
+  {
+    "_id": "3604de96-eab7-4dfe-a910-d3fac0246680",
+    "name": "Phase A",
+    "email": "test_ph_a_afb4ef2c@example.com",
+    "password": "$2b$12$3DqfO.eC8oLAJ/f.QBvji.PZ8L3ld1hb23W0TVbKiRscHf2W8MNwe",
+    "created_at": "2026-08-16T19:03:04.662521+00:00"
+  },
+  {
+    "_id": "45173b55-33bc-4c45-a71e-7722ee04ebbe",
+    "name": "Phase A",
+    "email": "test_ph_a_5203a846@example.com",
+    "password": "$2b$12$KvgmW0KU5L62LbAZ1dotd.5gDS20xJTJH6zSIWgYJf05UoTNZZgtG",
+    "created_at": "2026-08-16T19:03:58.519994+00:00"
+  },
+  {
+    "_id": "bc039386-b9f3-4537-a6bd-1b7d96801c70",
+    "name": "Phase A",
+    "email": "test_ph_a_44463f1c@example.com",
+    "password": "$2b$12$wD.8UZntaBcLMeUpyVw7Be/qzkiUQjrMjQGfj3JYgGinL.i0XsQk6",
+    "created_at": "2026-08-16T19:04:35.955212+00:00"
+  },
+  {
+    "_id": "c8d3b610-1b38-4264-b2a8-279bcc535f39",
+    "name": "Phase A",
+    "email": "test_ph_a_de8d67e7@example.com",
+    "password": "$2b$12$hjQElYrfExd56ONRel2CouZabhJUdsEvP7Uv1ESj1Ch2CY1XYFsKO",
+    "created_at": "2026-08-16T19:05:21.104985+00:00"
+  },
+  {
+    "_id": "27d3e237-09ed-4e0d-921d-12a2ad3a8af4",
+    "name": "Phase A Pro",
+    "email": "test_ph_a_pro_dd68d4a1@example.com",
+    "password": "$2b$12$BeCDjJ20NVD6PBajBDtYpOsoqzJwP7.1YCfIQOK8MDkslWDF.cgBC",
+    "created_at": "2026-08-16T19:06:34.294187+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-08-16T19:06:38.073469+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-15T19:06:38.073469+00:00",
+    "subscription_start": "2026-08-16T19:06:38.073469+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "a6bd8ed2-f637-4fe3-a7fa-0e3b8c48445b",
+    "name": "Sec",
+    "email": "sectest_dea15271db@jarvis.ai",
+    "password": "$2b$12$BlT/6D4XEzTz2lVqeY0OxupSeOU5B3KazAt7hFKXAfx.UGfCLjtyC",
+    "created_at": "2026-09-04T17:19:04.776579+00:00"
+  },
+  {
+    "_id": "e1aafa1e-b794-4884-a1e3-a7f9f4697367",
+    "name": "Sec",
+    "email": "sectest_2213b565b2@jarvis.ai",
+    "password": "$2b$12$EGE.y/l3D5O3INoGmPEm0OPPg5j7F2xN6qmxnnMjEIzloSVrqzfNS",
+    "created_at": "2026-09-04T17:19:05.013560+00:00"
+  },
+  {
+    "_id": "33a5d5cf-5ed8-44f4-9b21-ee577799fb11",
+    "name": "TEST DEV",
+    "email": "test_dev_2a73494d07@jarvis.ai",
+    "password": "$2b$12$PunH9Hqej3hW92GAj5YHluDHPivrPQBGQsEdu4rHAErHk.FKvTa22",
+    "created_at": "2026-09-04T17:19:05.237402+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:05.467132+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:19:05.467132+00:00",
+    "subscription_start": "2026-09-04T17:19:05.467132+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "c2cfc667-deee-47dd-8cd4-680040d4a05c",
+    "name": "Sec",
+    "email": "sectest_08637e1d50@jarvis.ai",
+    "password": "$2b$12$w78Se9bHboEUGL8k3KT7IO5We01VNaPdpQpL3QxD/MkmpT3/E2kta",
+    "created_at": "2026-09-04T17:19:05.464294+00:00"
+  },
+  {
+    "_id": "548a1c44-e636-4f49-aa8a-f58153552080",
+    "name": "Sec",
+    "email": "sectest_9427d8be4c@jarvis.ai",
+    "password": "$2b$12$38I8TXQbLpuvXx/z.MzOruhjnUWxHdAL7v5p0YkPDMRjtrWP5bCTC",
+    "created_at": "2026-09-04T17:19:05.693104+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:05.918595+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:19:05.918595+00:00",
+    "subscription_start": "2026-09-04T17:19:05.918595+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "7202ef9e-689f-40b3-bf57-4d3a14ee90d8",
+    "name": "TEST DEV",
+    "email": "test_dev_1661281e92@jarvis.ai",
+    "password": "$2b$12$C2JtJ7yPXGzvIqKhoTEGsOUIVa6GoudHDdNGNUABi1pPVr5RUsHIu",
+    "created_at": "2026-09-04T17:19:05.916593+00:00",
+    "auto_renew": true,
+    "grace_period_end": "2026-09-07T17:19:06.148903+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-03T17:19:06.148903+00:00",
+    "subscription_start": "2026-08-04T17:19:06.148903+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "561fc243-c98d-48eb-9724-ee3d6222aecd",
+    "name": "Sec",
+    "email": "sectest_0371c3fdb9@jarvis.ai",
+    "password": "$2b$12$MER0URWvyKSr72nJM/mqquP491VA5x5WXJXCHVIrsyAFNC5cZ7/nG",
+    "created_at": "2026-09-04T17:19:06.143803+00:00"
+  },
+  {
+    "_id": "a7a55a44-7724-4ac4-82e9-fb5bb2ec66b1",
+    "name": "Sec",
+    "email": "sectest_ca468a9946@jarvis.ai",
+    "password": "$2b$12$8clBq3gABAGvKHpYU1A9au2QoVhTpUkxbw/ZAsRb/AfcB/V1mcnrK",
+    "created_at": "2026-09-04T17:19:06.373525+00:00"
+  },
+  {
+    "_id": "a4781190-f078-4281-bda7-2204d519e997",
+    "name": "TEST DEV",
+    "email": "test_dev_c92ad34bb7@jarvis.ai",
+    "password": "$2b$12$9u.ST7wHrbH4CEvZ2xu5xeM4RHfMkVP1DDdQzkWMcpQ/eG.xEd.FS",
+    "created_at": "2026-09-04T17:19:06.596556+00:00",
+    "auto_renew": false,
+    "grace_period_end": "2026-09-03T17:19:06.828732+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-03T17:19:06.828732+00:00",
+    "subscription_start": "2026-08-04T17:19:06.828732+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "de65244f-23ff-464d-91b7-00d7806ea5ea",
+    "name": "Sec",
+    "email": "sectest_19f94a1c96@jarvis.ai",
+    "password": "$2b$12$PGfQSme6VA7BeCTkR.0rEem8kjFQey.cZFPzH0fbckvOWsZAejk2e",
+    "created_at": "2026-09-04T17:19:06.823557+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:06.827690+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:19:06.827690+00:00",
+    "subscription_start": "2026-09-04T17:19:06.827690+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "42b177c5-f21d-4174-94ff-81a79976ce85",
+    "name": "TEST DEV",
+    "email": "test_dev_e346941764@jarvis.ai",
+    "password": "$2b$12$ho6pQZvX7M78Eu8w5kVOyeGwOeSXOJ4yPWkW/BlVJAROCVz.8fnCe",
+    "created_at": "2026-09-04T17:19:07.326108+00:00",
+    "last_validation": "2026-09-04T17:19:07.539224+00:00",
+    "provider": "developer",
+    "subscription_status": "trial",
+    "tier": "pro",
+    "trial_end": "2026-10-04T17:19:07.539224+00:00",
+    "trial_start": "2026-09-04T17:19:07.539224+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "904539fa-5182-4c74-a097-ee990630fe62",
+    "name": "TEST DEV",
+    "email": "test_dev_9ca677ff90@jarvis.ai",
+    "password": "$2b$12$./dH7I0mkyxsXy2M/JRLC.NmuQ63tPWydLCLb/V2b/7ey0mEFinWG",
+    "created_at": "2026-09-04T17:19:08.032322+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:08.303673+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:19:08.303673+00:00",
+    "subscription_start": "2026-09-04T17:19:08.303673+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "352f3c6c-5edb-4390-828e-9af762c4ce25",
+    "name": "TEST DEV",
+    "email": "test_dev_ca7588b19f@jarvis.ai",
+    "password": "$2b$12$NuqNtKQPeYm.6OuBnqtMBuDSP5.m2y/Aqoxyj2FzBN23yegChvYU2",
+    "created_at": "2026-09-04T17:19:08.670730+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:08.835024+00:00",
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "38ff7a09-d5a4-4f66-bdfe-00182c4e58a9",
+    "name": "Sec",
+    "email": "sectest_e7efa2b12b@jarvis.ai",
+    "password": "$2b$12$vdNTF7JTXr2aeJDEvwkyuexjaWnALU.4E/MMpS292rQCRp1W3B5Vy",
+    "created_at": "2026-09-04T17:19:09.088915+00:00"
+  },
+  {
+    "_id": "56500fda-a667-4380-83d8-06555ad4dac3",
+    "name": "Sec",
+    "email": "sectest_05cd470fbb@jarvis.ai",
+    "password": "$2b$12$994vCHrVykJbTBh8jRqkwOiw8mhdsVGOmtgVs7gipkNfnc0ILnpQS",
+    "created_at": "2026-09-04T17:19:09.317057+00:00"
+  },
+  {
+    "_id": "4a76349f-31e6-4c43-862f-feba5bc1bd86",
+    "name": "TEST DEV",
+    "email": "test_dev_e862c57e4d@jarvis.ai",
+    "password": "$2b$12$pPj5AU1otIP0Ktmj6KqsKuetF2XveQz3rXlqVPGEIFsNRUDas977G",
+    "created_at": "2026-09-04T17:19:09.540108+00:00",
+    "last_validation": "2026-09-04T17:19:09.998524+00:00",
+    "provider": "developer",
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null,
+    "trial_used": false,
+    "auto_renew": false,
+    "grace_period_end": null,
+    "subscription_end": null,
+    "subscription_start": null
+  },
+  {
+    "_id": "e99426a7-88dc-4235-9057-c80cb9c2a6dc",
+    "name": "Sec",
+    "email": "sectest_8bdbb376fe@jarvis.ai",
+    "password": "$2b$12$kz18BoY69iEO0MI5m2Fs4Omf3cg6M8T6jnooNPJsd5NCJfbgvOKi.",
+    "created_at": "2026-09-04T17:19:09.767565+00:00"
+  },
+  {
+    "_id": "b7d8f9d9-26a5-4b29-8864-761452c23040",
+    "name": "Sec",
+    "email": "sectest_bf56fa1d48@jarvis.ai",
+    "password": "$2b$12$tyR9BcwzWmwhIoSKV.7PQe3Y9Snl74P/30c7tkjUx45r3/wV3JaWG",
+    "created_at": "2026-09-04T17:19:09.996847+00:00"
+  },
+  {
+    "_id": "a4269887-9242-4797-9565-3b78bfd896cb",
+    "name": "Sec",
+    "email": "sectest_5b39849267@jarvis.ai",
+    "password": "$2b$12$m/6fqyYGYivQFMs.5HxY2OI6NY4lt1Fj2fmDP/GG/aKNqTbAZYqfi",
+    "created_at": "2026-09-04T17:19:10.226136+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:10.230770+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:19:10.230770+00:00",
+    "subscription_start": "2026-09-04T17:19:10.230770+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "7f38822d-5f7a-4d70-9eaf-65609450e09b",
+    "name": "TEST DEV",
+    "email": "test_dev_3db868ebb9@jarvis.ai",
+    "password": "$2b$12$4BOAkFMj0AZbX.khYP.OVeDwXyNgbxuskNzGEmPPCug.JLVO6LK7i",
+    "created_at": "2026-09-04T17:19:10.609386+00:00",
+    "last_validation": "2026-09-04T17:19:11.157156+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-10-04T17:19:11.157156+00:00",
+    "trial_start": "2026-09-04T17:19:11.157156+00:00",
+    "trial_used": true,
+    "tier": "free"
+  },
+  {
+    "_id": "15fdfb35-0343-4a92-afbb-b40ba773c2c4",
+    "name": "TEST Licensing",
+    "email": "test_lic_9a1105888c@jarvis.ai",
+    "password": "$2b$12$pH6tdzyrAqut4oryFA.cj.bt7CI.s69voJYmCopzS0zdx9WD.3QLW",
+    "created_at": "2026-09-04T17:19:11.521271+00:00"
+  },
+  {
+    "_id": "2f693267-b0b5-487f-b00e-feac3b00d0e4",
+    "name": "TEST DEV",
+    "email": "test_dev_fdaa4c752c@jarvis.ai",
+    "password": "$2b$12$bmDsVTayTpVtytVkzs/tFu2fx2eJUYU.BdTsUl.xr3/0EzyEK9KI6",
+    "created_at": "2026-09-04T17:19:12.079375+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:19:12.343592+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:19:12.343592+00:00",
+    "subscription_start": "2026-09-04T17:19:12.343592+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "a8753ff7-d396-42e1-9956-78e5c5a9f795",
+    "name": "TEST Reg",
+    "email": "test_reg_8b93b59e00@jarvis.ai",
+    "password": "$2b$12$IMlc4GtX.UpBpNtqmtBDWe1.jvLJ7KzuqWVr0i08f4ZBwmIhUK18C",
+    "created_at": "2026-09-04T17:19:12.876041+00:00"
+  },
+  {
+    "_id": "eeda4456-9488-4da4-a7ed-f377cbe65743",
+    "name": "TEST L",
+    "email": "test_login_8dc70ac39e@jarvis.ai",
+    "password": "$2b$12$ccef41saKUiiEF3/NIAwQuEbd68eCj5S4d3jETQqPBKk5CMx4upDa",
+    "created_at": "2026-09-04T17:19:13.287890+00:00"
+  },
+  {
+    "_id": "ed595503-ea5a-46b1-b4f0-b697dce37691",
+    "name": "TEST",
+    "email": "test_sub_f359c3cb54@jarvis.ai",
+    "password": "$2b$12$.7.c3GMj2sDtWu6vBrvmL.dzSdPxWHx27lgmrllDWe07PhbdsuWGO",
+    "created_at": "2026-09-04T17:19:14.277972+00:00"
+  },
+  {
+    "_id": "a6fd95b9-0124-4c3e-9294-e3c5a6fad61c",
+    "name": "TEST",
+    "email": "test_trial_35ae204d5b@jarvis.ai",
+    "password": "$2b$12$LBUOSElX98K7g7V5K9lHn.3jTa8yopLpgTkOxwadMvH8MJb3XmtI.",
+    "created_at": "2026-09-04T17:19:14.835122+00:00",
+    "last_validation": "2026-09-04T17:19:15.066115+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-10-04T17:19:15.066115+00:00",
+    "trial_start": "2026-09-04T17:19:15.066115+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "b2109615-a28a-4304-b89c-185973da3d92",
+    "name": "Sec",
+    "email": "sectest_904be795fe@jarvis.ai",
+    "password": "$2b$12$oS6gzARR/8UtmP1CDh/u2e8trLhgbPBfno.ssT1Xpu/4yus4SdCxa",
+    "created_at": "2026-09-04T17:19:15.064430+00:00"
+  },
+  {
+    "_id": "1e3bd9eb-abd3-45ac-b395-ba7c1df07254",
+    "name": "T",
+    "email": "throttle_ba6154b3@j.ai",
+    "password": "$2b$12$srjX8Rz9Txjdn.Ld0CRqM.u6XgR7lyrSOWg3xKjQPdZTX.sB1Ufou",
+    "created_at": "2026-09-04T17:19:15.516440+00:00"
+  },
+  {
+    "_id": "9493fbdc-5c1c-4410-8786-21f619a98263",
+    "name": "Sec",
+    "email": "sectest_0381ace4a9@jarvis.ai",
+    "password": "$2b$12$AJdwrzr/squj4YAG7b.SquudjRZkJ4Q3UxHTo2rwKu4.dRSo0V4dG",
+    "created_at": "2026-09-04T17:19:17.990331+00:00"
+  },
+  {
+    "_id": "37d8b064-3689-4d89-847d-90223163f994",
+    "name": "Sec",
+    "email": "sectest_784a6a0335@jarvis.ai",
+    "password": "$2b$12$I.8ajEdUs5m7QgEtUVKM5.6KbQc2N8CAoEm/WtHwNDrSQ0euZjFCu",
+    "created_at": "2026-09-04T17:19:18.218903+00:00"
+  },
+  {
+    "_id": "a01e0f66-f6bb-415e-8912-1292b62521e2",
+    "name": "UserA",
+    "email": "test_fc2935f7ad@example.com",
+    "password": "$2b$12$.jHKA4eP4BFtFv0Ta.9N3uRL7KXeIuWbcZNvAdkWdZfPdWTm/7mOS",
+    "created_at": "2026-09-04T17:19:33.774362+00:00"
+  },
+  {
+    "_id": "6edc682c-f2a3-452d-b987-2d32b2ba56c3",
+    "name": "Honesty",
+    "email": "test_fa6fba8e2d@example.com",
+    "password": "$2b$12$kTsnR/WPgip4AbmkAedbz.TwqT419z8ELV9vYKiV4mzH9mHTJwiOG",
+    "created_at": "2026-09-04T17:19:33.998308+00:00"
+  },
+  {
+    "_id": "0c1fa564-5b85-4f21-9c85-3186c4753a2a",
+    "name": "Phase A Tester",
+    "email": "test_pred_unavail_c2e23bcb@example.com",
+    "password": "$2b$12$JxXocV4GSWeA3VtnZGXw5u7kdJAFiEdwKt1QWzn7PNzeFr/XD43Tm",
+    "created_at": "2026-09-04T17:19:35.107296+00:00"
+  },
+  {
+    "_id": "e8b63e28-c1bb-4c75-bd46-d3cf4a932d3d",
+    "name": "Phase A Tester",
+    "email": "test_pred_general_9538a56d@example.com",
+    "password": "$2b$12$6TH5OqV0tjHG0/pdP.qt8OhHhJdZGvMsLXVKjdQvudRl.g/25mtF.",
+    "created_at": "2026-09-04T17:19:35.781695+00:00"
+  },
+  {
+    "_id": "85fa5af1-ec61-419f-b23b-9ffb42e8979b",
+    "name": "Phase A Tester",
+    "email": "test_nolastscan_3c3c2278@example.com",
+    "password": "$2b$12$h2VVw.vyO6c2qL9/yA1VKeLYhrOHSqVNMAalVs080upJtnk0pAAvO",
+    "created_at": "2026-09-04T17:19:37.033576+00:00"
+  },
+  {
+    "_id": "6210e519-9ace-40af-97f9-f6195b31869d",
+    "name": "Phase A Tester",
+    "email": "test_scan_a_02d314f4@example.com",
+    "password": "$2b$12$Ln8kDCHmwJVQDnKzj7M.YeSO8UgB7Ue.2t366IYmRW7YupaR8IUUu",
+    "created_at": "2026-09-04T17:19:37.795437+00:00"
+  },
+  {
+    "_id": "2ddcb4ac-2763-4409-b224-78c885b40cb2",
+    "name": "Phase A Tester",
+    "email": "test_scan_b_52eed4ae@example.com",
+    "password": "$2b$12$n4oPsjmcFDSdfn/4lc89iO95nC7Os3IBTFbnIIKG/vDb4aG5Cs1Qm",
+    "created_at": "2026-09-04T17:19:38.206201+00:00"
+  },
+  {
+    "_id": "2f72b1b9-3715-4935-b6fe-fdd755879913",
+    "name": "UserB",
+    "email": "test_c5526c307a@example.com",
+    "password": "$2b$12$zU.etrxGw9G07b50auh9RO2kPxhIBoMPmvIbWYklOOyZcZsFMY0Je",
+    "created_at": "2026-09-04T17:19:38.808202+00:00"
+  },
+  {
+    "_id": "394a55f4-9349-4808-9929-43b1726698f9",
+    "name": "Honesty",
+    "email": "test_3b60d22ac7@example.com",
+    "password": "$2b$12$Jlms2OK4rJjx9VlB3qMhC.HNXC.4i5ue1qZ9z5zn9pc2WrCBsBrBe",
+    "created_at": "2026-09-04T17:20:22.492927+00:00"
+  },
+  {
+    "_id": "d63b9fe3-dc0b-4af7-89a6-ebd3984b99ef",
+    "name": "UserA",
+    "email": "test_4673d1dc2d@example.com",
+    "password": "$2b$12$x1/QWoREIvG8fcQiE5XlWO2GjRL/0x5XHrk4Hi4ZdJoUePKT.yd0C",
+    "created_at": "2026-09-04T17:20:22.714430+00:00"
+  },
+  {
+    "_id": "ca69e725-666b-4df7-a62d-b8fa2638bc78",
+    "name": "Phase A Tester",
+    "email": "test_pred_unavail_8b032268@example.com",
+    "password": "$2b$12$GTC38ee8/MaYd5zAoXKye.apijCoFzFQXhqLV8S2Jl6pxmUvVsNpy",
+    "created_at": "2026-09-04T17:20:23.827687+00:00"
+  },
+  {
+    "_id": "661909e1-36b7-4604-a313-16a5c007b2d2",
+    "name": "Phase A Tester",
+    "email": "test_pred_general_126376fe@example.com",
+    "password": "$2b$12$7He74guc3xKzqsTkM6tIoOOoT8n/SW7IzD1FxqTrC8Rf4MhY7P2mm",
+    "created_at": "2026-09-04T17:20:24.652005+00:00"
+  },
+  {
+    "_id": "01388a06-bfcd-4fca-99e0-5cd7e7c68828",
+    "name": "Phase A Tester",
+    "email": "test_nolastscan_d02ccdb9@example.com",
+    "password": "$2b$12$3T3uiZxaPFnSlkDdYOVppu7LrGJHpAPvH5kPcduuBMVCztNnlnY6S",
+    "created_at": "2026-09-04T17:20:25.969471+00:00"
+  },
+  {
+    "_id": "0a52c9b3-2432-4600-b4bf-14e593250f74",
+    "name": "Phase A Tester",
+    "email": "test_scan_a_92898cd8@example.com",
+    "password": "$2b$12$hktH7G3ZFG9PwWMM0pzYw.13XthEZz5oqQRx/YCjEEtgxXw..NcqK",
+    "created_at": "2026-09-04T17:20:26.746440+00:00"
+  },
+  {
+    "_id": "a3026333-7e33-430b-b427-d2b807fa855a",
+    "name": "Phase A Tester",
+    "email": "test_scan_b_e9014303@example.com",
+    "password": "$2b$12$lglE//gH7ERafUau2jUQRelxfOxRQEA2NYDPpDoKWpiLVoOwBT4vW",
+    "created_at": "2026-09-04T17:20:27.121453+00:00"
+  },
+  {
+    "_id": "ebd67e62-0f2f-4d94-a0e2-d2a318f45dfd",
+    "name": "UserB",
+    "email": "test_59a5107bb5@example.com",
+    "password": "$2b$12$jmwqU5NZO123rP75yu7NaepsNJujUh873toaCpg3UCyN4fCxAYIKi",
+    "created_at": "2026-09-04T17:20:29.195176+00:00"
+  },
+  {
+    "_id": "83f35e81-7807-464b-bb8b-019dc6e0b7eb",
+    "name": "Sec",
+    "email": "sectest_788894058c@jarvis.ai",
+    "password": "$2b$12$51bShygrgnBy4KVYxKQm8OvvOYbEIpvOrpvbCgZ7Oqt5rOsnzSzOC",
+    "created_at": "2026-09-04T17:52:58.519231+00:00"
+  },
+  {
+    "_id": "7395f500-eb7b-4464-a7ce-7871c7cda92d",
+    "name": "Sec",
+    "email": "sectest_f115b87e91@jarvis.ai",
+    "password": "$2b$12$SLaE981jf0TKmLyq1YIrfesVolH.nPEs.g41PrU0cX.D6L8W0b/IK",
+    "created_at": "2026-09-04T17:52:58.750424+00:00"
+  },
+  {
+    "_id": "94d68ce3-0d29-451d-8dd4-580ac1605104",
+    "name": "TEST DEV",
+    "email": "test_dev_97815e1041@jarvis.ai",
+    "password": "$2b$12$6FgKjpeFs9Kis1mI9MP7HeJVacGIoOwaKs/SZqLNry6PppyXDw1wm",
+    "created_at": "2026-09-04T17:52:58.974277+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:52:59.430903+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:52:59.430903+00:00",
+    "subscription_start": "2026-09-04T17:52:59.430903+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "eaf7979b-8841-425a-9b1a-bdd5d040dd9f",
+    "name": "Sec",
+    "email": "sectest_0bbe202469@jarvis.ai",
+    "password": "$2b$12$FeyVrgaJiygbMv9aMSmMOuUlqxNIinCmDaM2sAVZhco7IHjdXomOy",
+    "created_at": "2026-09-04T17:52:59.201379+00:00"
+  },
+  {
+    "_id": "66649ece-0c53-4316-9934-5452744d3bdc",
+    "name": "Sec",
+    "email": "sectest_a60d0cd9db@jarvis.ai",
+    "password": "$2b$12$7caCB6gKt/Ay59esZT9XF.CUPCULfBrCzAm5pImumWQqV0MqrL98S",
+    "created_at": "2026-09-04T17:52:59.429079+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:52:59.433329+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:52:59.433329+00:00",
+    "subscription_start": "2026-09-04T17:52:59.433329+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "0b90d101-ab02-4429-882e-44e356686050",
+    "name": "Sec",
+    "email": "sectest_7976e0f156@jarvis.ai",
+    "password": "$2b$12$Hd0VYCJukTWz6t/xHheabuaudyVr/qcJBh57D/03AydixvR4QG7U2",
+    "created_at": "2026-09-04T17:52:59.659210+00:00"
+  },
+  {
+    "_id": "0542fc16-9c91-4047-abd7-00802edd1d0b",
+    "name": "TEST DEV",
+    "email": "test_dev_0d54576724@jarvis.ai",
+    "password": "$2b$12$hmiMJakIog/PBMfRWr8BFO1MUyyknf03q0nc6rI6hsHaOIjeDZ6We",
+    "created_at": "2026-09-04T17:52:59.882559+00:00",
+    "auto_renew": true,
+    "grace_period_end": "2026-09-07T17:53:00.343311+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-03T17:53:00.343311+00:00",
+    "subscription_start": "2026-08-04T17:53:00.343311+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "b3d090c3-122b-44d2-a011-b7437309a00a",
+    "name": "Sec",
+    "email": "sectest_5490c4a96a@jarvis.ai",
+    "password": "$2b$12$.UgErMesLiFkMAnEJuSg0epuout3rFNAwphtVen5bDLcXYOSlUiq6",
+    "created_at": "2026-09-04T17:53:00.111490+00:00"
+  },
+  {
+    "_id": "d6019f1a-9d63-4d66-aaba-b7b511177011",
+    "name": "Sec",
+    "email": "sectest_7ed54c906f@jarvis.ai",
+    "password": "$2b$12$YyTkDAvidgcgR9ii6hkWROmgMgxNPjRz13B7YzXvzp8AQ.AyGzYqe",
+    "created_at": "2026-09-04T17:53:00.341516+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:53:00.346082+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:53:00.346082+00:00",
+    "subscription_start": "2026-09-04T17:53:00.346082+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "95b4a994-10a6-4dcc-90ac-09dc69134c7b",
+    "name": "TEST DEV",
+    "email": "test_dev_224de20531@jarvis.ai",
+    "password": "$2b$12$vieAutQqMGNL5LOZONcZfOohmJrElzRGrChKMOIF1vhklTVvGmPmO",
+    "created_at": "2026-09-04T17:53:00.693929+00:00",
+    "auto_renew": false,
+    "grace_period_end": "2026-09-03T17:53:00.931445+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-09-03T17:53:00.931445+00:00",
+    "subscription_start": "2026-08-04T17:53:00.931445+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "8141abdc-9a48-4e19-aeeb-84a1543761d8",
+    "name": "TEST DEV",
+    "email": "test_dev_690491dc82@jarvis.ai",
+    "password": "$2b$12$bYXbnyrRbzNoAHhLA2Ube.sREPteDzE5YLEV/Dv/KZ5lJSC0HOsAC",
+    "created_at": "2026-09-04T17:53:01.397340+00:00",
+    "last_validation": "2026-09-04T17:53:01.624119+00:00",
+    "provider": "developer",
+    "subscription_status": "trial",
+    "tier": "pro",
+    "trial_end": "2026-10-04T17:53:01.624119+00:00",
+    "trial_start": "2026-09-04T17:53:01.624119+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "87c2c7ff-cb20-46fc-bb87-6f175ee5b098",
+    "name": "Sec",
+    "email": "sectest_386429866d@jarvis.ai",
+    "password": "$2b$12$OZ7SZ5IXgDifqGYTNfLrkOPTTOF6U22BtIdB27Zmr0WflHenZdgnS",
+    "created_at": "2026-09-04T17:53:01.912957+00:00"
+  },
+  {
+    "_id": "2eb14bd1-2ee8-4cf0-bbec-49fe3b532550",
+    "name": "TEST DEV",
+    "email": "test_dev_8926353bcb@jarvis.ai",
+    "password": "$2b$12$QC3r7.LrXuLhFiHafbGuA.d1sxf3m5Uaw7XjY8tZzgKI6EzApWYl6",
+    "created_at": "2026-09-04T17:53:02.136488+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:53:02.365372+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:53:02.365372+00:00",
+    "subscription_start": "2026-09-04T17:53:02.365372+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "8b1d709d-b1fa-4aca-9d51-c07e79266189",
+    "name": "Sec",
+    "email": "sectest_6105c819f0@jarvis.ai",
+    "password": "$2b$12$/V5VnKGpdyTnlPKbRyxFneT6rEjCBdK6rJ77kK59f9v/ENPi7Iy9q",
+    "created_at": "2026-09-04T17:53:02.363546+00:00"
+  },
+  {
+    "_id": "7d0f067a-a9bf-4a44-8c48-cdd57f9cfeb1",
+    "name": "Sec",
+    "email": "sectest_df195d7d8c@jarvis.ai",
+    "password": "$2b$12$NWLCFNRm27anMDDX8NvbPe8k7qTFwA3Q/doaucE59BZpRMSS8P.fa",
+    "created_at": "2026-09-04T17:53:02.592942+00:00"
+  },
+  {
+    "_id": "e074fe27-7063-4698-b16e-188a51c60d79",
+    "name": "TEST DEV",
+    "email": "test_dev_b963ab5d53@jarvis.ai",
+    "password": "$2b$12$OVxKDhyQe/sH8mrDsHE.HuuZiUOGPG7hscEnJa16TK5ldHzYLgPha",
+    "created_at": "2026-09-04T17:53:02.816954+00:00",
+    "auto_renew": false,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:53:03.045988+00:00",
+    "provider": "developer",
+    "subscription_end": null,
+    "subscription_start": null,
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null
+  },
+  {
+    "_id": "6988e97c-07a9-4d87-a80e-76de0aed4575",
+    "name": "Sec",
+    "email": "sectest_c3b82cf60a@jarvis.ai",
+    "password": "$2b$12$GlmBzvDHxI7FnjWCrmkMp.xHpxE7UFTJfYOaD2MIu7MrrXVSKMIt.",
+    "created_at": "2026-09-04T17:53:03.044188+00:00"
+  },
+  {
+    "_id": "08040ce8-b913-4ca3-91bd-b18ea15a8632",
+    "name": "Sec",
+    "email": "sectest_af1822aff9@jarvis.ai",
+    "password": "$2b$12$Z24DVL3dbcWse8X.yKmiF.dXLFA0Huu1FsxxblOSozPNioId010xG",
+    "created_at": "2026-09-04T17:53:03.273485+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:53:03.277736+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:53:03.277736+00:00",
+    "subscription_start": "2026-09-04T17:53:03.277736+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "851e6d41-126d-4455-a4e8-a9af5cf03716",
+    "name": "TEST DEV",
+    "email": "test_dev_cde210bfb4@jarvis.ai",
+    "password": "$2b$12$vOba70GCTd28p7b6ltDTbunL49aMO5W84H3oi1xFtJGmBQXF5qAkq",
+    "created_at": "2026-09-04T17:53:03.797103+00:00",
+    "last_validation": "2026-09-04T17:53:03.942390+00:00",
+    "provider": "developer",
+    "subscription_status": "none",
+    "tier": "free",
+    "trial_end": null,
+    "trial_start": null,
+    "trial_used": false,
+    "auto_renew": false,
+    "grace_period_end": null,
+    "subscription_end": null,
+    "subscription_start": null
+  },
+  {
+    "_id": "e6ae6eea-24e8-436c-ab88-07de8b8d6896",
+    "name": "TEST DEV",
+    "email": "test_dev_51f85a30eb@jarvis.ai",
+    "password": "$2b$12$W71ZFGpt28DBzGAgpjAAJej6yjBG9yD1GmCg9ura6JGe16MGdZ3yu",
+    "created_at": "2026-09-04T17:53:04.521069+00:00",
+    "last_validation": "2026-09-04T17:53:04.952156+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-10-04T17:53:04.952156+00:00",
+    "trial_start": "2026-09-04T17:53:04.952156+00:00",
+    "trial_used": true,
+    "tier": "free"
+  },
+  {
+    "_id": "0b186b52-8181-4afa-bb74-7bfa88fff450",
+    "name": "TEST Licensing",
+    "email": "test_lic_bff742660f@jarvis.ai",
+    "password": "$2b$12$3I0F8PjTchipodBnqNXLl.TL4XoPtBsOFU3j8dQx8IJmchIx.rTUi",
+    "created_at": "2026-09-04T17:53:05.353029+00:00"
+  },
+  {
+    "_id": "62569a54-d884-4774-b634-6d8914030d45",
+    "name": "TEST DEV",
+    "email": "test_dev_991465dbfb@jarvis.ai",
+    "password": "$2b$12$e9M4YX/0gjpywjph1JU6jexGIOXkRE8jYDwhZMhrWqBfoskTR.wZa",
+    "created_at": "2026-09-04T17:53:05.823490+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T17:53:05.996081+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T17:53:05.996081+00:00",
+    "subscription_start": "2026-09-04T17:53:05.996081+00:00",
+    "subscription_status": "active",
+    "tier": "shop"
+  },
+  {
+    "_id": "e1829565-b712-47e3-895e-98144070f641",
+    "name": "UserA",
+    "email": "test_1ab2646898@example.com",
+    "password": "$2b$12$6LFqj.90nlbtAxCmd7V2/ew98Gfpm9jS/7u0TftLD.5aMLh9S4Of.",
+    "created_at": "2026-09-04T17:53:06.561069+00:00"
+  },
+  {
+    "_id": "311ead23-0460-4206-b513-582b4a5ff7d0",
+    "name": "Sec",
+    "email": "sectest_c9d40cae88@jarvis.ai",
+    "password": "$2b$12$lbyoSotj5rQhOm2gK1Lpsux7tLML9r/hz84r4M3A2xZ81VTLr.FVW",
+    "created_at": "2026-09-04T17:53:09.411589+00:00"
+  },
+  {
+    "_id": "8a49538f-349f-468a-a598-c926469c950f",
+    "name": "T",
+    "email": "throttle_6f167114@j.ai",
+    "password": "$2b$12$DEx4z5O.ndLHewtBEjED6OqBy.uF6H2TMSb8E5BVsERJwvARLdUGi",
+    "created_at": "2026-09-04T17:53:09.865433+00:00"
+  },
+  {
+    "_id": "4da74f84-2369-4e6c-ae39-d05adf811de7",
+    "name": "UserB",
+    "email": "test_373864ad4a@example.com",
+    "password": "$2b$12$RReImLqyJSPf6K3ziDZO5eTa3IJqlSU2HnqTCAT6mOo0FiWkDBhC.",
+    "created_at": "2026-09-04T17:53:11.436740+00:00"
+  },
+  {
+    "_id": "6ea1a29b-c89e-45ed-879f-1ff12ac92167",
+    "name": "Sec",
+    "email": "sectest_42d2c12d66@jarvis.ai",
+    "password": "$2b$12$t4hSvwFgrPHs5F7skqjAPOfNalbS37FKSf8GEd5hYfSMQitkjw7b2",
+    "created_at": "2026-09-04T17:53:12.564913+00:00"
+  },
+  {
+    "_id": "0a3d940b-d0ae-440a-ae9e-3d423cd0fe85",
+    "name": "Sec",
+    "email": "sectest_326a588247@jarvis.ai",
+    "password": "$2b$12$mjvkpsdkHP9oa1plsfOMbOEU2os6FbIt3GPMQRC3Ddbj1/Ot6lTuy",
+    "created_at": "2026-09-04T17:53:12.793898+00:00"
+  },
+  {
+    "_id": "4c593f6e-b11b-4650-97ac-209febdbaa0c",
+    "name": "Honesty",
+    "email": "test_7d8e962e34@example.com",
+    "password": "$2b$12$eOHwqxknvab.NFTBPPD85OWPOLLvtG29C69lQbi5faM0M12RBbOF.",
+    "created_at": "2026-09-04T17:53:13.180207+00:00"
+  },
+  {
+    "_id": "7514aed7-3fd8-4209-b836-9320bdc08efb",
+    "name": "TEST Reg",
+    "email": "test_reg_14092ab806@jarvis.ai",
+    "password": "$2b$12$w/9L0DCd0I87GYPYmX4hk.N61J98Q.OYU0NZXtDKAcRGugl5INGF6",
+    "created_at": "2026-09-04T17:53:13.403222+00:00"
+  },
+  {
+    "_id": "3e213bd0-8214-48d8-9a95-66df8075e25f",
+    "name": "TEST L",
+    "email": "test_login_7921f2b609@jarvis.ai",
+    "password": "$2b$12$wBQnEf2Yca4kNjtevMujlOQSmXVaOEGY6zCtNkrpuFE7GYkCsWnkq",
+    "created_at": "2026-09-04T17:53:13.783088+00:00"
+  },
+  {
+    "_id": "78a8d885-8e5a-403c-9203-ef3cdd8bf65e",
+    "name": "TEST Licensing",
+    "email": "test_lic_7440b7fb17@jarvis.ai",
+    "password": "$2b$12$4vCyQOb.WbgQkWJmqa0sFuOcjYj9iJW6Zpxhkt01fChPiBc4O/o8O",
+    "created_at": "2026-09-04T17:53:14.541444+00:00"
+  },
+  {
+    "_id": "e41e770d-6899-4c41-88c1-916ba5e51d6f",
+    "name": "Phase A Tester",
+    "email": "test_pred_unavail_50483588@example.com",
+    "password": "$2b$12$Mr7LQ1nqULWl8cqDiPc/f.eO72JGfQAAaa.SSXNKj0bWv888c4hL2",
+    "created_at": "2026-09-04T17:53:14.977920+00:00"
+  },
+  {
+    "_id": "af5db051-f9ce-41bb-9d06-b10a9de10d08",
+    "name": "TEST",
+    "email": "test_sub_e6a8bbf138@jarvis.ai",
+    "password": "$2b$12$fiff3X9a9IJ/nEmf3/JD8.SE9zraSSCir40xXOJxx9Ot0Gy0q1jge",
+    "created_at": "2026-09-04T17:53:15.542102+00:00"
+  },
+  {
+    "_id": "00f3aaed-7847-46d5-b212-5f3bf13a0da8",
+    "name": "Phase A Tester",
+    "email": "test_pred_general_fe2370e7@example.com",
+    "password": "$2b$12$c0twlRCxjutBEWNMDYHAReBUWGcEJB/bM827AhXHmmYlpDBlsDIWW",
+    "created_at": "2026-09-04T17:53:15.765437+00:00"
+  },
+  {
+    "_id": "eda9ef4a-0ee4-434f-ace8-6a8403894d5f",
+    "name": "TEST Licensing",
+    "email": "test_lic_5e8b097b36@jarvis.ai",
+    "password": "$2b$12$FZecsP5PZ7kZcpYKF7nSRu5kuJN3iBxF6tunOXblID0A8I9ihIlc.",
+    "created_at": "2026-09-04T17:53:16.143847+00:00"
+  },
+  {
+    "_id": "c3a6dac7-42b2-4705-9249-6535a2d1f939",
+    "name": "TEST",
+    "email": "test_trial_a3f5754db2@jarvis.ai",
+    "password": "$2b$12$WwkGGJE.feQxBovYRmC7COCoJiyu53gzcZhTbUixeiA2xBQiPrt52",
+    "created_at": "2026-09-04T17:53:16.687456+00:00",
+    "last_validation": "2026-09-04T17:53:16.912271+00:00",
+    "provider": "trial",
+    "subscription_status": "trial",
+    "trial_end": "2026-10-04T17:53:16.912271+00:00",
+    "trial_start": "2026-09-04T17:53:16.912271+00:00",
+    "trial_used": true
+  },
+  {
+    "_id": "2c03ec23-0504-4d79-abaa-d241be6f28b2",
+    "name": "Phase A Tester",
+    "email": "test_nolastscan_6a0470ab@example.com",
+    "password": "$2b$12$IdhVW8ukb01CvXQ8W.0DmeoCXuaAcbdOwbEUlO008HYOMsY9LFngu",
+    "created_at": "2026-09-04T17:53:16.910560+00:00"
+  },
+  {
+    "_id": "8ade0aa9-2cd6-4aa2-bb3d-71e778153fb7",
+    "name": "Phase A Tester",
+    "email": "test_scan_a_1ba10178@example.com",
+    "password": "$2b$12$/bViY8BN0Zx4qLa5AsjED./AxZ3AO02txFFXvQaHgupjGDs1YboSe",
+    "created_at": "2026-09-04T17:53:17.722962+00:00"
+  },
+  {
+    "_id": "87d5ab40-a7e3-4765-86db-3121a7e7c090",
+    "name": "TEST Licensing",
+    "email": "test_lic_3dc5a40c15@jarvis.ai",
+    "password": "$2b$12$9ZV8VUcc0OGtAItL8xwF0uXel/ekzwqeqpiK/C8LaehmGc7r1zkDa",
+    "created_at": "2026-09-04T17:53:17.946278+00:00"
+  },
+  {
+    "_id": "38a12a60-cb1f-4d74-a7a6-89981c1aa1a4",
+    "name": "Phase A Tester",
+    "email": "test_scan_b_4b340fea@example.com",
+    "password": "$2b$12$O25NhqUClpoW0Gz0qgrgQ.QM2w.7q3Vs/HV4fNtAX1mriGGKvu1w6",
+    "created_at": "2026-09-04T17:53:18.169425+00:00"
+  },
+  {
+    "_id": "85efcb6b-e67a-4b1e-b4c2-64e07c63df4a",
+    "name": "Sec",
+    "email": "sectest_92c8bb78cf@jarvis.ai",
+    "password": "$2b$12$XerUnjkJedR1JOdqie85Ee0xB/GGK1tHsiHj5ngwjwuKovFTolGKq",
+    "created_at": "2026-09-04T18:57:21.982400+00:00"
+  },
+  {
+    "_id": "6db82846-d996-4207-9924-1215028eb698",
+    "name": "UserA",
+    "email": "test_82f48b943b@example.com",
+    "password": "$2b$12$PmYNI2ZmLmNM6S6N2Ac.9.A0wtBpYna5jwKFKje.axgLMKsxLuyAe",
+    "created_at": "2026-09-04T18:57:22.206342+00:00"
+  },
+  {
+    "_id": "bb1e17b7-0694-4837-964b-5e47c769b1b4",
+    "name": "Sec",
+    "email": "sectest_76b339c380@jarvis.ai",
+    "password": "$2b$12$P6pHv8v7jIzQA5Cr2xKrSuhoZMxWgL1JU4BS3/UW68qAZKorl6TFS",
+    "created_at": "2026-09-04T18:57:22.436523+00:00"
+  },
+  {
+    "_id": "7c9ebd65-34d6-4f26-b419-9f6db48ce032",
+    "name": "Sec",
+    "email": "sectest_8a5b0ff416@jarvis.ai",
+    "password": "$2b$12$EgSjgAr07z8TlxavONDZ7e4nX1C3.b0JQkJ/NC2h7yGAbL774.njq",
+    "created_at": "2026-09-04T18:57:22.665361+00:00"
+  },
+  {
+    "_id": "58596131-6db9-4b85-a607-8a8e9438efd1",
+    "name": "Sec",
+    "email": "sectest_19c8c91ee1@jarvis.ai",
+    "password": "$2b$12$VBsXl5p3/a/AycoU2qqoLerJZnHYHGnw6owQlIntKCjmS0oxT2Gia",
+    "created_at": "2026-09-04T18:57:22.893557+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T18:57:22.997999+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T18:57:22.997999+00:00",
+    "subscription_start": "2026-09-04T18:57:22.997999+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "b0287212-ebf0-40b0-82f5-f55b83f6b8bf",
+    "name": "Sec",
+    "email": "sectest_614a2c72b0@jarvis.ai",
+    "password": "$2b$12$sZB7PIw.FGy8CpJI8pQWTutsPoddtRFsjPTDrPkNCpnu1hOXtJJM.",
+    "created_at": "2026-09-04T18:57:23.223633+00:00"
+  },
+  {
+    "_id": "47c0f7fc-15a2-4555-9d84-018d8e275778",
+    "name": "Sec",
+    "email": "sectest_ee1fe49f6b@jarvis.ai",
+    "password": "$2b$12$Wf.Fwv2q/GE66w.MAaCjH.T8XfKRJUvKCRJDIKgT1zXKFS3/Eek.q",
+    "created_at": "2026-09-04T18:57:23.454326+00:00"
+  },
+  {
+    "_id": "52aadf01-0674-470c-ad4c-42e55dd8d181",
+    "name": "Sec",
+    "email": "sectest_223d3e3ac8@jarvis.ai",
+    "password": "$2b$12$xJA1oZ4rqkNAWIP4YHNj0uvSeYkBYxBDq3/p9m3dNLXwwaPaXKSKK",
+    "created_at": "2026-09-04T18:57:23.683428+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T18:57:23.687388+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T18:57:23.687388+00:00",
+    "subscription_start": "2026-09-04T18:57:23.687388+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "67e00836-0387-4bb6-8c73-6d53e5bda754",
+    "name": "Sec",
+    "email": "sectest_9504f2d373@jarvis.ai",
+    "password": "$2b$12$0rIjj7DznVSDCtkoPBMLTO3z2tt1FDa9DiuZV2C4Sdhb/pHzYLWQG",
+    "created_at": "2026-09-04T18:57:24.603911+00:00"
+  },
+  {
+    "_id": "157f15ee-49ae-4213-a8b7-3829d320914b",
+    "name": "Sec",
+    "email": "sectest_a5a84b1580@jarvis.ai",
+    "password": "$2b$12$0lKrUX88ugUP5N0S3Tx6ReKendyNmt8dTTKaut3WEuHN4vR70H/5W",
+    "created_at": "2026-09-04T18:57:24.831594+00:00"
+  },
+  {
+    "_id": "e1c0344a-f2fe-4d04-9b5b-818ca00e6f64",
+    "name": "Sec",
+    "email": "sectest_9c8d0d5621@jarvis.ai",
+    "password": "$2b$12$cc4D/QPCMahrYyM4oW/TreUuivADGIf5RETPNtwwb6iBZeG6omEhG",
+    "created_at": "2026-09-04T18:57:25.060293+00:00"
+  },
+  {
+    "_id": "ac11def3-e0e1-4d2f-9ccf-fc0e4e76be8a",
+    "name": "Sec",
+    "email": "sectest_8882584f78@jarvis.ai",
+    "password": "$2b$12$2Bh1P2mm/quyb.M0e/aAue/dh8/fCYSiXivD4QVMlYiQZqCLlxFdW",
+    "created_at": "2026-09-04T18:57:25.289063+00:00"
+  },
+  {
+    "_id": "e5e02498-db85-4e62-89da-07c2aa315184",
+    "name": "Sec",
+    "email": "sectest_05d76b5fbc@jarvis.ai",
+    "password": "$2b$12$ymLJ2RevocCx2rWR5BsV7O4s0mzdU.j9hHIrPzSlokLQaQW1xkWYq",
+    "created_at": "2026-09-04T18:57:25.517588+00:00",
+    "auto_renew": true,
+    "grace_period_end": null,
+    "last_validation": "2026-09-04T18:57:25.521588+00:00",
+    "provider": "developer",
+    "subscription_end": "2026-10-04T18:57:25.521588+00:00",
+    "subscription_start": "2026-09-04T18:57:25.521588+00:00",
+    "subscription_status": "active",
+    "tier": "pro"
+  },
+  {
+    "_id": "3869f553-a42b-4c04-9a43-365576c6153d",
+    "name": "Sec",
+    "email": "sectest_6ab8e37ffb@jarvis.ai",
+    "password": "$2b$12$WXGQ.wQhYlOTA2stlsDJ2.JZG7YziFzhJoTREeNa623TpOu2Vfwsq",
+    "created_at": "2026-09-04T18:57:29.156992+00:00"
+  },
+  {
+    "_id": "ac091940-7a35-45c7-8b00-198c4a361904",
+    "name": "T",
+    "email": "throttle_d8358487@j.ai",
+    "password": "$2b$12$62YYOaJNGNXoEj5e1Kxmh.yP1dDC2ALxh6osOwXK2PnEo9kKyflcK",
+    "created_at": "2026-09-04T18:57:29.608454+00:00"
+  },
+  {
+    "_id": "c6242686-fda9-4fcc-909d-7493b8aabe61",
+    "name": "UserB",
+    "email": "test_1fe812051c@example.com",
+    "password": "$2b$12$5EDMAgCRZDIIpviYJV2HDuUxL7xC5V9yGAbqc5hZfbn0HNBm2rvHu",
+    "created_at": "2026-09-04T18:57:30.954617+00:00"
+  },
+  {
+    "_id": "e6351e46-866c-4f13-a815-ec1555c10078",
+    "name": "Sec",
+    "email": "sectest_ec2e7eae72@jarvis.ai",
+    "password": "$2b$12$/PzLRLooNxcRb6M80Ll4pe1dZqt9wF5Ym8NKu5G7K99c5L8bM4Br2",
+    "created_at": "2026-09-04T18:57:32.305434+00:00"
+  },
+  {
+    "_id": "e0ddc9fa-6a44-4acf-b10a-576850dd5699",
+    "name": "Sec",
+    "email": "sectest_d34bd3a26a@jarvis.ai",
+    "password": "$2b$12$3nNnq6RiHfm4Xb/R4u0EVuOKdrPJQgXzZtCBs5WrOHtMqOVNgBTgq",
+    "created_at": "2026-09-04T18:57:32.534042+00:00"
+  },
+  {
+    "_id": "217f7983-40c0-4574-b38b-3581e50a1ebf",
+    "name": "Honesty",
+    "email": "test_b97503db53@example.com",
+    "password": "$2b$12$52su2EcgBQtj/oEK5L/pcuWuIzTX6TOnT7cEITe1w49L/qdIuwNpC",
+    "created_at": "2026-09-04T18:57:32.961000+00:00"
+  },
+  {
+    "_id": "legacy_test_1",
+    "created_at": "2025-01-01T00:00:00Z",
+    "email": "legacy_bob@example.com",
+    "name": "Legacy Bob",
+    "password": "$2b$hashed"
+  },
+  {
+    "_id": "user_google_1",
+    "auth_provider": "google",
+    "created_at": "2026-01-01T00:00:00Z",
+    "email": "gina@gmail.com",
+    "name": "Google Gina"
+  }
+]

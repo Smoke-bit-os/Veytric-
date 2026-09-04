@@ -1,0 +1,839 @@
+[
+  {
+    "_id": {
+      "$oid": "6a7657a0b71230b6b0cc48b1"
+    },
+    "user_id": "0",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7657a0b71230b6b0cc48b5"
+    },
+    "month": "2026-08",
+    "user_id": "f6192971-ee4c-4146-ac6d-9fd62d6d6b13",
+    "provider": "cloud",
+    "requests_used": 2
+  },
+  {
+    "_id": {
+      "$oid": "6a7657b6b71230b6b0cc48c5"
+    },
+    "month": "2026-08",
+    "user_id": "b0f1d157-24ea-4e72-a6e3-6a065b183541",
+    "provider": "cloud",
+    "requests_used": 21
+  },
+  {
+    "_id": {
+      "$oid": "6a765806b71230b6b0cc48fa"
+    },
+    "user_id": "93fe473a-d0e9-4aec-9a48-2795b6463acd",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a765807b71230b6b0cc4900"
+    },
+    "user_id": "6fbd582a-9fa8-474c-8c3d-22c707c37baf",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a765808b71230b6b0cc490b"
+    },
+    "user_id": "ab13dfda-baa4-4a77-bfcf-4fd08f997ca3",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a765864b71230b6b0cc4955"
+    },
+    "user_id": "100f4904-760a-4301-93a0-a1bb2af18b50",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a765864b71230b6b0cc495b"
+    },
+    "user_id": "783630f7-fbc6-4114-b53e-a06ea86237f3",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a765867b71230b6b0cc4966"
+    },
+    "user_id": "f5b80b63-63a2-48db-b8e5-a0067320e862",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a7658b3b71230b6b0cc49a4"
+    },
+    "user_id": "dd9b18e1-3e5c-46d8-8a09-1902024544cf",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a765917b71230b6b0cc49ca"
+    },
+    "user_id": "77338d1c-e99c-4ac0-b4d7-0caf190f899f",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 2
+  },
+  {
+    "_id": {
+      "$oid": "6a7886635e507e64989674e5"
+    },
+    "user_id": "c11324d0-e4d1-426b-8a4f-8a56d55ca73c",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a7886bb5e507e6498967505"
+    },
+    "user_id": "e4c36d8b-c9b8-4b40-ac90-7e06f66b244c",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a7886bc5e507e6498967510"
+    },
+    "provider": "cloud",
+    "user_id": "885544b9-efe7-4c5c-8d8d-09ee1a8941f2",
+    "month": "2026-08",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7886e15e507e6498967536"
+    },
+    "user_id": "3f9b298f-9660-465f-bf84-0d0e6216508c",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a7886e25e507e649896753b"
+    },
+    "user_id": "12a8eb1c-edf2-4c95-9c8d-97bb5abd3c52",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 2
+  },
+  {
+    "_id": {
+      "$oid": "6a7886f05e507e6498967557"
+    },
+    "month": "2026-08",
+    "user_id": "bd0c6926-4be0-4d6e-a558-53ad87071490",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7887325e507e6498967574"
+    },
+    "user_id": "9e44207f-53e7-446d-925c-9f12bb52bb54",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a7887605e507e6498967589"
+    },
+    "user_id": "1e6fbc27-604f-4794-9a54-91d39887efe6",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a7887825e507e64989675a6"
+    },
+    "provider": "cloud",
+    "user_id": "12a48666-05be-4a83-aeee-855ebdac3d91",
+    "month": "2026-08",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78894f5e507e6498967604"
+    },
+    "month": "2026-08",
+    "user_id": "fd7a98b4-30e1-4c25-88b4-5a042a764274",
+    "provider": "cloud",
+    "requests_used": 21
+  },
+  {
+    "_id": {
+      "$oid": "6a7889765e507e649896762e"
+    },
+    "user_id": "55d4c819-49a0-4c6a-9fa7-a87a45c8313c",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7889765e507e6498967634"
+    },
+    "user_id": "55549993-c678-4f5a-af65-1273b21e4ff1",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a7889785e507e649896763f"
+    },
+    "user_id": "cb590ec9-26d9-4500-8bd3-a49988783d0b",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a7889785e507e6498967645"
+    },
+    "user_id": "2dba5fd5-3914-484f-a1bf-f97cd5eecbd1",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7889785e507e649896764b"
+    },
+    "user_id": "9fd59bf0-fdac-4ccb-a09c-e7149bbd9c9d",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7889785e507e6498967651"
+    },
+    "user_id": "251ca4ac-cea8-40d3-a051-911434670521",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a7894f25e507e6498967838"
+    },
+    "user_id": "7e008bfb-9a6d-4b40-82c6-1a5cf66ab29c",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a78950a5e507e649896785e"
+    },
+    "user_id": "bf70a515-668c-4a97-8e14-69f8fce82559",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78950a5e507e6498967865"
+    },
+    "user_id": "4a626140-4cc1-484f-8198-89d83667c518",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a78950b5e507e6498967885"
+    },
+    "user_id": "80335742-1026-4ba4-91cd-739aed167d21",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 12
+  },
+  {
+    "_id": {
+      "$oid": "6a78950b5e507e649896788d"
+    },
+    "user_id": "7dc77bce-01ec-4f87-8042-e485f31de29b",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a78950c5e507e6498967893"
+    },
+    "user_id": "65a0b32d-3c8d-45ef-84a1-dc41ea0325fa",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78950c5e507e6498967899"
+    },
+    "user_id": "c19b72d7-73bb-4870-8248-ee06daaa0737",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78950c5e507e649896789f"
+    },
+    "user_id": "834d5737-6359-43cc-8834-d29221a8ff43",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a7895375e507e64989679c7"
+    },
+    "user_id": "0d8ba2f7-a90e-4c47-9a1e-693e8652fbe4",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a7895465e507e6498967a24"
+    },
+    "user_id": "98827aa2-3f7b-4d64-9418-66f0f1142af9",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a78954b5e507e6498967a2c"
+    },
+    "user_id": "a7ddd7fb-e4ce-4366-8c6a-8cd8e2862e14",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 2
+  },
+  {
+    "_id": {
+      "$oid": "6a7895585e507e6498967a5d"
+    },
+    "provider": "cloud",
+    "user_id": "92d3f7b6-7528-4830-a032-da0a53886854",
+    "month": "2026-08",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7896665e507e6498967b28"
+    },
+    "month": "2026-08",
+    "user_id": "03de2806-2563-4fe7-ab56-9b1706b7cb4b",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7896685e507e6498967b8c"
+    },
+    "user_id": "1eb5d370-2a3f-48ce-9ed0-158a05a74628",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a7896a25e507e6498967c06"
+    },
+    "user_id": "b14142a2-fae9-4d7f-82f6-dab1e1f86fd3",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a7896a45e507e6498967c81"
+    },
+    "user_id": "0f5b709b-498f-4104-847c-6319bb18389b",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7515e507e6498968287"
+    },
+    "user_id": "e7ea2c8b-4365-4aab-8526-5f65a963cbef",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7525e507e649896828e"
+    },
+    "user_id": "0237a6e5-69bd-43ea-bd61-5183edcee162",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7525e507e6498968296"
+    },
+    "user_id": "d8509dfa-d6b1-4f4b-939c-b88053ca334b",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7545e507e64989682c7"
+    },
+    "user_id": "94d4ded9-37a0-40eb-899f-ee7f64000862",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7545e507e64989682ce"
+    },
+    "user_id": "f59de5ca-be36-4dd7-bdef-ad3c85fc4c52",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7545e507e64989682d7"
+    },
+    "user_id": "444801f3-0b86-4512-a822-3902d8f3dcbe",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7555e507e64989682e0"
+    },
+    "user_id": "6e06ff4f-e699-4cfd-9123-32ebcb58d5ec",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a78a7565e507e6498968329"
+    },
+    "user_id": "1e4084fc-dee1-4dee-b604-5d67aab7d2af",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77c5e507e64989683b8"
+    },
+    "user_id": "c3f88027-7782-40bb-bc90-74cad406a2aa",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a78a77f5e507e6498968445"
+    },
+    "user_id": "9b8c3add-aec6-46a4-859c-281b2e8dd999",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 4
+  },
+  {
+    "_id": {
+      "$oid": "6a7e41a287fca592ed8917b3"
+    },
+    "user_id": "657f0a11-a56a-4666-a416-8fb286e0ae37",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7b636d2bfc0dcdc0f03"
+    },
+    "user_id": "21e1f5ca-2654-4071-bca0-429067630348",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c336d2bfc0dcdc0f1f"
+    },
+    "user_id": "409e2c2a-9f9c-4533-8042-050bc29e031f",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c336d2bfc0dcdc0f29"
+    },
+    "user_id": "bc8c5639-9631-4709-a64d-ea0d81248ccf",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c336d2bfc0dcdc0f2f"
+    },
+    "user_id": "40ca728f-9a21-4ddb-b6aa-0faa51474aee",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c536d2bfc0dcdc0f3a"
+    },
+    "user_id": "9c0c7811-5ff3-4b69-82b7-ac04f75acdd4",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c536d2bfc0dcdc0f40"
+    },
+    "user_id": "d2a53449-454b-4d32-96e6-0752364064c5",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c536d2bfc0dcdc0f46"
+    },
+    "user_id": "2c0751cb-4370-4cc0-8a10-cb69665f684b",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a81d7c536d2bfc0dcdc0f4c"
+    },
+    "user_id": "78e1b3ed-f72b-4bb2-9cb8-c4e6b0fc4ecb",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a81d82c36d2bfc0dcdc0fbd"
+    },
+    "user_id": "c18c9823-ebeb-4e76-8877-8422c6be00e4",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a81dd2c36d2bfc0dcdc1097"
+    },
+    "user_id": "46d5f49d-4f16-4278-9d43-4117b7d302f5",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a81ddcb36d2bfc0dcdc10d5"
+    },
+    "user_id": "5ba28143-381a-4e29-b0bc-184000b66f0b",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a81ddcb36d2bfc0dcdc10dc"
+    },
+    "user_id": "457b60c0-ecd0-4b4c-9324-87ec839190b8",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a81ddcb36d2bfc0dcdc10e0"
+    },
+    "user_id": "d1976dab-3e52-47f3-8966-e4a719620cf0",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a81de7436d2bfc0dcdc113e"
+    },
+    "user_id": "1fcf4c6b-4ac5-4c4a-8816-d471771c47b6",
+    "month": "2026-08",
+    "provider": "cloud",
+    "requests_used": 2
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd8a3547534d48cf9218"
+    },
+    "month": "2026-09",
+    "user_id": "a7a55a44-7724-4ac4-82e9-fb5bb2ec66b1",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd8a3547534d48cf921f"
+    },
+    "month": "2026-09",
+    "user_id": "de65244f-23ff-464d-91b7-00d7806ea5ea",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd8d3547534d48cf923b"
+    },
+    "month": "2026-09",
+    "user_id": "56500fda-a667-4380-83d8-06555ad4dac3",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd8d3547534d48cf9242"
+    },
+    "month": "2026-09",
+    "user_id": "e99426a7-88dc-4235-9057-c80cb9c2a6dc",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd8d3547534d48cf924a"
+    },
+    "month": "2026-09",
+    "user_id": "b7d8f9d9-26a5-4b29-8864-761452c23040",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd8e3547534d48cf9252"
+    },
+    "month": "2026-09",
+    "user_id": "a4269887-9242-4797-9565-3b78bfd896cb",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a9afd953547534d48cf929b"
+    },
+    "month": "2026-09",
+    "user_id": "9493fbdc-5c1c-4410-8786-21f619a98263",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a9afda63547534d48cf92b7"
+    },
+    "month": "2026-09",
+    "user_id": "a01e0f66-f6bb-415e-8912-1292b62521e2",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a9afdd73547534d48cf9338"
+    },
+    "month": "2026-09",
+    "user_id": "d63b9fe3-dc0b-4af7-89a6-ebd3984b99ef",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a9b057c3547534d48cf9407"
+    },
+    "month": "2026-09",
+    "user_id": "b3d090c3-122b-44d2-a011-b7437309a00a",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9b057c3547534d48cf940f"
+    },
+    "month": "2026-09",
+    "user_id": "d6019f1a-9d63-4d66-aaba-b7b511177011",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a9b057e3547534d48cf9426"
+    },
+    "month": "2026-09",
+    "user_id": "8b1d709d-b1fa-4aca-9d51-c07e79266189",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a9b057e3547534d48cf942e"
+    },
+    "month": "2026-09",
+    "user_id": "7d0f067a-a9bf-4a44-8c48-cdd57f9cfeb1",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9b057f3547534d48cf9437"
+    },
+    "month": "2026-09",
+    "user_id": "6988e97c-07a9-4d87-a80e-76de0aed4575",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9b057f3547534d48cf943d"
+    },
+    "month": "2026-09",
+    "user_id": "08040ce8-b913-4ca3-91bd-b18ea15a8632",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a9b05823547534d48cf9464"
+    },
+    "month": "2026-09",
+    "user_id": "e1829565-b712-47e3-895e-98144070f641",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a9b05883547534d48cf948d"
+    },
+    "month": "2026-09",
+    "user_id": "6ea1a29b-c89e-45ed-879f-1ff12ac92167",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14923547534d48cf986a"
+    },
+    "user_id": "6db82846-d996-4207-9924-1215028eb698",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 1
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14933547534d48cf9875"
+    },
+    "user_id": "47c0f7fc-15a2-4555-9d84-018d8e275778",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14933547534d48cf987c"
+    },
+    "user_id": "52aadf01-0674-470c-ad4c-42e55dd8d181",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14943547534d48cf9887"
+    },
+    "user_id": "157f15ee-49ae-4213-a8b7-3829d320914b",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 5
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14953547534d48cf988d"
+    },
+    "user_id": "e1c0344a-f2fe-4d04-9b5b-818ca00e6f64",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14953547534d48cf9893"
+    },
+    "user_id": "ac11def3-e0e1-4d2f-9ccf-fc0e4e76be8a",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 20
+  },
+  {
+    "_id": {
+      "$oid": "6a9b14953547534d48cf9899"
+    },
+    "user_id": "e5e02498-db85-4e62-89da-07c2aa315184",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 1000
+  },
+  {
+    "_id": {
+      "$oid": "6a9b149c3547534d48cf98c6"
+    },
+    "user_id": "e6351e46-866c-4f13-a815-ec1555c10078",
+    "month": "2026-09",
+    "provider": "cloud",
+    "requests_used": 1
+  }
+]

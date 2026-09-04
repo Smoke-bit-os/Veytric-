@@ -13,6 +13,7 @@ import os
 import uuid
 import pytest
 import requests
+from _helpers import seed_session
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL", "").rstrip("/")
 API = f"{BASE_URL}/api"
@@ -21,13 +22,9 @@ PW = "Jarvis2026!"
 
 
 def _register(session: requests.Session):
-    email = f"TEST_shop_{uuid.uuid4().hex[:8]}@jarvis.ai"
-    r = session.post(f"{API}/auth/register", json={"name": "Tester", "email": email, "password": PW})
-    assert r.status_code == 200, f"register failed {r.status_code} {r.text}"
-    body = r.json()
-    token = body["token"]
+    email, token, uid = seed_session("Tester")
     session.headers.update({"Authorization": f"Bearer {token}"})
-    return email, body["user"]["id"]
+    return email, uid
 
 
 def _set_tier(session: requests.Session, action: str):
