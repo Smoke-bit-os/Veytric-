@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,7 +20,7 @@ import { colors, font, radius, spacing } from "@/src/theme";
 
 export default function AuthScreen() {
   const router = useRouter();
-  const { login, register, loginAsGuest } = useAuth();
+  const { login, register, loginAsGuest, loginWithGoogle } = useAuth();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -129,6 +130,28 @@ export default function AuthScreen() {
             </Pressable>
           </View>
 
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>OR</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <Pressable
+            testID="auth-google-button"
+            style={styles.googleBtn}
+            onPress={async () => {
+              try {
+                const ok = await loginWithGoogle();
+                if (ok) router.replace("/(tabs)"); // web redirects away & returns via root gate
+              } catch {
+                Alert.alert("Sign-in failed", "Could not sign in with Google. Please try again.");
+              }
+            }}
+          >
+            <MaterialCommunityIcons name="google" size={18} color={colors.onSurface} />
+            <Text style={styles.googleText}>Continue with Google</Text>
+          </Pressable>
+
           <Pressable
             testID="auth-guest-button"
             style={styles.guestBtn}
@@ -214,5 +237,10 @@ const styles = StyleSheet.create({
   buttonGrad: { paddingVertical: 16, alignItems: "center" },
   buttonText: { color: colors.onBrandPrimary, fontWeight: "800", letterSpacing: 1.5, fontSize: 14 },
   guestBtn: { flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", marginTop: spacing.xl, padding: spacing.md },
+  divider: { flexDirection: "row", alignItems: "center", gap: spacing.md, marginTop: spacing.xl },
+  dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
+  dividerText: { color: colors.onSurfaceSecondary, fontSize: 11, letterSpacing: 1, fontWeight: "700" },
+  googleBtn: { flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "center", marginTop: spacing.lg, paddingVertical: 14, borderRadius: radius.md, borderWidth: 1, borderColor: colors.borderStrong, backgroundColor: colors.surfaceSecondary },
+  googleText: { color: colors.onSurface, fontSize: 15, fontWeight: "700" },
   guestText: { color: colors.onSurfaceSecondary, fontSize: 14, fontWeight: "600" },
 });

@@ -36,6 +36,8 @@ export const api = {
   login: (email: string, password: string) =>
     request("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
   me: () => request("/auth/me"),
+  authSession: (session_id: string) =>
+    request("/auth/session", { method: "POST", body: JSON.stringify({ session_id }) }),
 
   vehicles: () => request("/vehicles"),
   addVehicle: (v: any) => request("/vehicles", { method: "POST", body: JSON.stringify(v) }),

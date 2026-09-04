@@ -119,15 +119,69 @@ def make_token(user_id: str) -> str:
 async def get_current_user(cred: Optional[HTTPAuthorizationCredentials] = Depends(security)):
     if not cred:
         raise HTTPException(status_code=401, detail="Not authenticated")
+    token = cred.credentials
+    # 1) Email/password users carry a signed JWT (sub = user _id).
     try:
-        payload = jwt.decode(cred.credentials, JWT_SECRET, algorithms=[JWT_ALGO])
-        user_id = payload["sub"]
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGO])
+        user = await db.users.find_one({"_id": payload["sub"]})
+        if user:
+            return user
     except Exception:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    user = await db.users.find_one({"_id": user_id})
+        pass
+    # 2) Emergent Google sign-in users carry a session_token minted by
+    #    POST /auth/session and stored in user_sessions (never re-verified upstream).
+    sess = await db.user_sessions.find_one({"session_token": token})
+    if sess:
+        exp = sess.get("expires_at")
+        if exp is not None and getattr(exp, "tzinfo", None) is None:
+            exp = exp.replace(tzinfo=timezone.utc)
+        if exp is None or exp > datetime.now(timezone.utc):
+            user = await db.users.find_one({"_id": sess["user_id"]})
+            if user:
+                return user
+    raise HTTPException(status_code=401, detail="Invalid token")
+
+
+class SessionInput(BaseModel):
+    session_id: str
+
+
+@api_router.post("/auth/session")
+async def auth_session(inp: SessionInput):
+    # Exchange the one-time session_id with Emergent exactly once (backend only).
+    import httpx
+    try:
+        async with httpx.AsyncClient(timeout=15) as c:
+            r = await c.get(
+                "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
+                headers={"X-Session-ID": inp.session_id},
+            )
+    except Exception:
+        raise HTTPException(status_code=401, detail="Could not verify session")
+    if r.status_code != 200:
+        raise HTTPException(status_code=401, detail="Invalid or expired session")
+    d = r.json()
+    email = (d.get("email") or "").strip().lower()
+    session_token = d.get("session_token")
+    name = d.get("name") or (email.split("@")[0] if email else "Driver")
+    if not email or not session_token:
+        raise HTTPException(status_code=401, detail="Invalid session data")
+    # Upsert by email — reuse existing user_id, never duplicate accounts.
+    user = await db.users.find_one({"email": email})
     if not user:
-        raise HTTPException(status_code=401, detail="User not found")
-    return user
+        uid = f"user_{uuid.uuid4().hex[:12]}"
+        user = {"_id": uid, "name": name, "email": email,
+                "picture": d.get("picture"), "auth_provider": "google",
+                "created_at": now_iso()}
+        await db.users.insert_one(user)
+    await db.user_sessions.update_one(
+        {"session_token": session_token},
+        {"$set": {"session_token": session_token, "user_id": user["_id"],
+                  "created_at": datetime.now(timezone.utc),
+                  "expires_at": datetime.now(timezone.utc) + timedelta(days=7)}},
+        upsert=True,
+    )
+    return {"session_token": session_token, "user": public_user(user)}
 
 
 def public_user(u: dict) -> dict:
@@ -1978,6 +2032,17 @@ else:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+
+@app.on_event("startup")
+async def _ensure_indexes():
+    try:
+        await db.users.create_index("email", unique=True)
+        await db.user_sessions.create_index("session_token", unique=True)
+        await db.user_sessions.create_index("user_id")
+        await db.user_sessions.create_index("expires_at", expireAfterSeconds=0)
+    except Exception as e:
+        logger.warning(f"index ensure failed: {e}")
 
 
 @app.on_event("shutdown")

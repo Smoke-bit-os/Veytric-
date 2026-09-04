@@ -4021,7 +4021,7 @@ expo-updates@~29.0.19:
     ignore "^5.3.1"
     resolve-from "^5.0.0"
 
-expo-web-browser@15.0.11:
+expo-web-browser@~15.0.11:
   version "15.0.11"
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-15.0.11.tgz#6a8134e2398031ef79c89f516b15a18103903ef5"
   integrity sha512-r2LS4Ro6DgUPZkcaEfgt8mp9eJuoA93x11Jh7S6utFe0FEzvUNn2yFhxg8XVwESaaHGt2k5V8LuK36rsp0BeIw==

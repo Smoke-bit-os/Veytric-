@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import { Platform } from "react-native";
+import * as Linking from "expo-linking";
 import { storage } from "@/src/utils/storage";
 import { api, TOKEN_KEY } from "@/src/api";
 import { cacheClear } from "@/src/vehicle/intelligence/cache";
 import { licenseCache } from "@/src/licensing/licenseCache";
+import { startGoogleLogin, readWebCallback, cleanWebUrl, extractSessionId } from "@/src/googleAuth";
 
 type User = { id: string; name: string; email: string; entitlement?: any };
 type AuthProviderKind = "email" | "guest" | "apple" | "google" | null;
@@ -19,6 +22,7 @@ type AuthCtx = {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   loginAsGuest: () => Promise<void>;
+  loginWithGoogle: () => Promise<boolean>;
   logout: () => Promise<void>;
 };
 
@@ -28,9 +32,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [provider, setProvider] = useState<AuthProviderKind>(null);
   const [loading, setLoading] = useState(true);
+  const usedSessionIds = useRef<Set<string>>(new Set());
+
+  // Persist a Google session_token (same storage slot the API client reads) so
+  // every existing authed endpoint keeps working via the Bearer header.
+  const persistGoogle = async (res: any) => {
+    await clearLocalUserData();
+    await storage.secureSet(TOKEN_KEY, res.session_token);
+    await storage.removeItem(GUEST_KEY);
+    await storage.setItem(UID_KEY, res.user.id);
+    setUser(res.user);
+    setProvider("google");
+  };
+
+  const exchangeSession = async (sessionId: string) => {
+    if (!sessionId || usedSessionIds.current.has(sessionId)) return;
+    usedSessionIds.current.add(sessionId); // guard: same id can surface twice
+    const res = await api.authSession(sessionId);
+    await persistGoogle(res);
+  };
 
   useEffect(() => {
     (async () => {
+      // 1) OAuth callback takes priority (Critical Rule 3). Web: URL on mount.
+      try {
+        const webSid = readWebCallback();
+        if (webSid) {
+          await exchangeSession(webSid);
+          cleanWebUrl();
+          setLoading(false);
+          return;
+        }
+        // Mobile cold start: app opened via deep link carrying session_id.
+        if (Platform.OS !== "web") {
+          const initial = await Linking.getInitialURL();
+          const sid = extractSessionId(initial);
+          if (sid) {
+            await exchangeSession(sid);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // fall through to normal session/guest restore
+      }
+
       const token = await storage.secureGet<string>(TOKEN_KEY, "");
       if (token) {
         try {
@@ -53,6 +99,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       setLoading(false);
     })();
+
+    // Mobile hot deep links (app already open) also carry session_id.
+    const sub = Platform.OS !== "web"
+      ? Linking.addEventListener("url", (e) => {
+          const sid = extractSessionId(e.url);
+          if (sid) exchangeSession(sid).catch(() => {});
+        })
+      : null;
+    return () => sub?.remove();
   }, []);
 
   // Wipe every device-local, user-scoped cache so no data leaks across
@@ -94,6 +149,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProvider("guest");
   };
 
+  const loginWithGoogle = async (): Promise<boolean> => {
+    // Web navigates away and returns via the mount handler; mobile returns the id.
+    const sid = await startGoogleLogin();
+    if (sid) {
+      await exchangeSession(sid);
+      return true;
+    }
+    return false;
+  };
+
   const logout = async () => {
     await storage.secureRemove(TOKEN_KEY);
     await storage.removeItem(GUEST_KEY);
@@ -113,6 +178,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         register,
         loginAsGuest,
+        loginWithGoogle,
         logout,
       }}
     >
