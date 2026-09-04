@@ -199,18 +199,25 @@ export default function VehicleProfile() {
           </>
         )}
 
-        {/* Common failure patterns */}
+        {/* Common failure patterns — only curated, vehicle-specific data */}
         <Text style={styles.sectionTitle}>COMMON FAILURE PATTERNS</Text>
-        {issues.map((it) => (
-          <View key={it.title} style={styles.issue} testID={`issue-${it.title.slice(0, 8)}`}>
-            <View style={[styles.likeDot, { backgroundColor: likeColor(it.likelihood) }]} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.issueTitle}>{it.title}</Text>
-              <Text style={styles.issueSym}>{it.symptoms}</Text>
-              {it.relatedCodes.length > 0 && <Text style={styles.issueCodes}>{it.relatedCodes.join(" · ")}</Text>}
-            </View>
-          </View>
-        ))}
+        {issues.length === 0 ? (
+          <Text style={styles.dim} testID="issues-none">No vehicle-specific failure patterns on record for this platform. Patterns appear here only when we have verified data for your make.</Text>
+        ) : (
+          <>
+            <Text style={styles.issuesProv} testID="issues-prov">Known vehicle-specific patterns for {profile.make}</Text>
+            {issues.map((it) => (
+              <View key={it.title} style={styles.issue} testID={`issue-${it.title.slice(0, 8)}`}>
+                <View style={[styles.likeDot, { backgroundColor: likeColor(it.likelihood) }]} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.issueTitle}>{it.title}</Text>
+                  <Text style={styles.issueSym}>{it.symptoms}</Text>
+                  {it.relatedCodes.length > 0 && <Text style={styles.issueCodes}>{it.relatedCodes.join(" · ")}</Text>}
+                </View>
+              </View>
+            ))}
+          </>
+        )}
 
         {/* Scan reports */}
         <Text style={styles.sectionTitle}>SCAN HISTORY ({reports.length})</Text>
@@ -361,6 +368,7 @@ const styles = StyleSheet.create({
   issue: { flexDirection: "row", gap: spacing.md, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md, marginBottom: spacing.sm },
   likeDot: { width: 10, height: 10, borderRadius: 5, marginTop: 4 },
   issueTitle: { color: colors.onSurface, fontSize: 15, fontWeight: "600" },
+  issuesProv: { color: colors.onSurfaceSecondary, fontSize: 11, marginHorizontal: spacing.lg, marginBottom: spacing.sm, fontStyle: "italic" },
   issueSym: { color: colors.onSurfaceSecondary, fontSize: 13, marginTop: 2 },
   issueCodes: { color: colors.brand, fontSize: 12, marginTop: 4, fontFamily: font.display },
   sectionAdd: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" },

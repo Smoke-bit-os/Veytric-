@@ -396,7 +396,6 @@ async def upsert_by_vin(inp: VinUpsertInput, user=Depends(get_current_user)):
         "plant": spec.get("plant", ""),
         "decode_confidence": spec.get("confidence", 0),
         "decode_source": spec.get("source", spec.get("decodeSource", "")),
-        "last_scan_at": now_iso(),
     }
     if inp.mileage is not None:
         fields["mileage"] = inp.mileage
@@ -1307,35 +1306,46 @@ def _compute_predictions(bundle: dict) -> dict:
             continue
 
         # 3) We have a legitimate basis → interval / history / live-evidence prediction.
-        base_km = last_km if has_record else 0
-        km_since = max(0, mileage - base_km) if mileage else 0
-        remaining_km = interval - km_since
-        remaining_pct = max(0.0, min(1.0, remaining_km / interval)) if interval else 0.0
         reasons = []
         if has_record:
+            # Real baseline → we can legitimately compute remaining/overdue.
+            base_km = last_km
+            km_since = max(0, mileage - base_km) if mileage else 0
+            remaining_km = interval - km_since
+            remaining_pct = max(0.0, min(1.0, remaining_km / interval)) if interval else 0.0
             source, confidence = "USER_SERVICE_HISTORY", 0.85
-            reasons.append(f"Last service logged at {last_km:,} km")
+            reasons.append(f"Based on your service history (last logged at {last_km:,} km)")
+            measured_pct = None
+            if evidence:
+                remaining_pct = min(remaining_pct, evidence_pct)
+                measured_pct = round(remaining_pct, 2)
+                source, confidence = "LIVE_ECU", min(0.95, confidence + 0.15)
+                if evidence_reason:
+                    reasons.append(evidence_reason)
+            if remaining_km <= 0 or remaining_pct <= 0.02:
+                urgency = "overdue"
+            elif remaining_pct < 0.15:
+                urgency = "soon"
+            elif remaining_pct < 0.4:
+                urgency = "upcoming"
+            else:
+                urgency = "ok"
+            items.append({**base, "remainingKm": remaining_km if mileage else None,
+                          "remainingLifePct": measured_pct,
+                          "dueMileage": (base_km + interval) if mileage else None,
+                          "urgency": urgency, "source": source, "confidence": round(confidence, 2), "reasons": reasons})
+        elif evidence:
+            # Real measurement without a logged baseline → report the measurement.
+            items.append({**base, "remainingKm": None, "remainingLifePct": round(evidence_pct, 2),
+                          "dueMileage": None, "urgency": "soon" if evidence_pct < 0.3 else "upcoming",
+                          "source": "LIVE_ECU", "confidence": 0.7,
+                          "reasons": [evidence_reason] if evidence_reason else ["Live measurement"]})
         else:
-            source, confidence = "MANUFACTURER_INTERVAL", 0.55
-            reasons.append("Manufacturer interval (no service record logged)")
-        if evidence:
-            remaining_pct = min(remaining_pct, evidence_pct)
-            source, confidence = "LIVE_ECU", min(0.95, confidence + 0.15)
-            if evidence_reason:
-                reasons.append(evidence_reason)
-
-        if remaining_km <= 0 or remaining_pct <= 0.02:
-            urgency = "overdue"
-        elif remaining_pct < 0.15:
-            urgency = "soon"
-        elif remaining_pct < 0.4:
-            urgency = "upcoming"
-        else:
-            urgency = "ok"
-
-        items.append({**base, "remainingKm": remaining_km, "remainingLifePct": round(remaining_pct, 2),
-                      "dueMileage": (base_km + interval) if mileage else None,
-                      "urgency": urgency, "source": source, "confidence": round(confidence, 2), "reasons": reasons})
+            # We have a general interval but NO baseline → we cannot legitimately
+            # compute due/overdue. Show the recommended interval only.
+            items.append({**base, "remainingKm": None, "remainingLifePct": None, "dueMileage": None,
+                          "urgency": "unknown", "source": "GENERAL_INDUSTRY_INTERVAL", "confidence": 0.4,
+                          "reasons": [f"General industry interval is ~{interval:,} km (not vehicle-specific). Log your last service to see when it's due."]})
 
     order = {"overdue": 0, "soon": 1, "test": 2, "inspect": 3, "upcoming": 4, "ok": 5, "unknown": 6}
     items.sort(key=lambda i: (order.get(i["urgency"], 9), i["remainingLifePct"] if i["remainingLifePct"] is not None else 1.0))

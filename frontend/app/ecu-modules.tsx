@@ -153,49 +153,60 @@ export default function EcuModulesScreen() {
               {cls.total === 0 && <Text style={styles.dim}>No fault codes stored.</Text>}
             </View>
 
-            {/* Readiness monitors */}
-            <View style={styles.dataCard} testID="readiness">
-              <View style={styles.dataHead}><MaterialCommunityIcons name="checkbox-marked-circle-auto-outline" size={18} color={colors.brand} /><Text style={styles.dataTitle}>READINESS MONITORS</Text></View>
-              {monitors.map((mo) => (
-                <View key={mo.key} style={styles.monRow}>
-                  <Text style={styles.monName}>{mo.name}</Text>
-                  <View style={styles.monStatus}>
-                    <View style={[styles.sDot, { backgroundColor: monColor(mo.status) }]} />
-                    <Text style={[styles.monText, { color: monColor(mo.status) }]}>{mo.status === "ready" ? "READY" : mo.status === "not_ready" ? "NOT READY" : "N/A"}</Text>
+            {/* Live ECU-sourced data — only shown with a real OBD-II connection.
+                We never fabricate readiness/monitor/reliability values offline. */}
+            {connected ? (
+              <>
+                {/* Readiness monitors */}
+                <View style={styles.dataCard} testID="readiness">
+                  <View style={styles.dataHead}><MaterialCommunityIcons name="checkbox-marked-circle-auto-outline" size={18} color={colors.brand} /><Text style={styles.dataTitle}>READINESS MONITORS</Text></View>
+                  {monitors.map((mo) => (
+                    <View key={mo.key} style={styles.monRow}>
+                      <Text style={styles.monName}>{mo.name}</Text>
+                      <View style={styles.monStatus}>
+                        <View style={[styles.sDot, { backgroundColor: monColor(mo.status) }]} />
+                        <Text style={[styles.monText, { color: monColor(mo.status) }]}>{mo.status === "ready" ? "READY" : mo.status === "not_ready" ? "NOT READY" : mo.status === "not_supported" ? "NOT SUPPORTED" : "UNAVAILABLE"}</Text>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Mode 06 */}
+                <View style={styles.dataCard} testID="mode06">
+                  <View style={styles.dataHead}><MaterialCommunityIcons name="flask" size={18} color={colors.brand} /><Text style={styles.dataTitle}>MODE 06 · ON-BOARD MONITORS</Text></View>
+                  {m06.map((t) => (
+                    <View key={t.id} style={styles.m06Row}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.m06Name}>{t.name}</Text>
+                        <Text style={styles.m06Range}>{t.id} · limit {t.min}–{t.max} {t.unit}</Text>
+                      </View>
+                      <Text style={styles.m06Val}>{t.value}</Text>
+                      <MaterialCommunityIcons name={t.pass ? "check-circle" : "close-circle"} size={18} color={t.pass ? colors.success : colors.error} />
+                    </View>
+                  ))}
+                </View>
+
+                {/* Reliability */}
+                <View style={styles.dataCard} testID="reliability">
+                  <View style={styles.dataHead}><MaterialCommunityIcons name="shield-check" size={18} color={colors.brand} /><Text style={styles.dataTitle}>DIAGNOSTIC RELIABILITY</Text></View>
+                  <View style={styles.relGrid}>
+                    <Rel label="DATA QUALITY" value={`${rel.dataQuality}`} accent />
+                    <Rel label="COMM" value={rel.commQuality.toUpperCase()} />
+                    <Rel label="LATENCY" value={`${rel.latencyMs}ms`} />
+                    <Rel label="SUPPORTED PIDs" value={`${rel.supportedPidCount}`} />
+                    <Rel label="UNSUPPORTED" value={`${rel.unsupportedPidCount}`} />
+                    <Rel label="RETRY RATE" value={`${Math.round(rel.retryRate * 100)}%`} />
+                    <Rel label="PID CONF." value={`${Math.round(rel.avgPidConfidence * 100)}%`} />
+                    <Rel label="SENSOR CHK" value={`${rel.sensorChecksPassed}/${rel.sensorChecksTotal}`} />
                   </View>
                 </View>
-              ))}
-            </View>
-
-            {/* Mode 06 */}
-            <View style={styles.dataCard} testID="mode06">
-              <View style={styles.dataHead}><MaterialCommunityIcons name="flask" size={18} color={colors.brand} /><Text style={styles.dataTitle}>MODE 06 · ON-BOARD MONITORS</Text></View>
-              {m06.map((t) => (
-                <View key={t.id} style={styles.m06Row}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.m06Name}>{t.name}</Text>
-                    <Text style={styles.m06Range}>{t.id} · limit {t.min}–{t.max} {t.unit}</Text>
-                  </View>
-                  <Text style={styles.m06Val}>{t.value}</Text>
-                  <MaterialCommunityIcons name={t.pass ? "check-circle" : "close-circle"} size={18} color={t.pass ? colors.success : colors.error} />
-                </View>
-              ))}
-            </View>
-
-            {/* Reliability */}
-            <View style={styles.dataCard} testID="reliability">
-              <View style={styles.dataHead}><MaterialCommunityIcons name="shield-check" size={18} color={colors.brand} /><Text style={styles.dataTitle}>DIAGNOSTIC RELIABILITY</Text></View>
-              <View style={styles.relGrid}>
-                <Rel label="DATA QUALITY" value={`${rel.dataQuality}`} accent />
-                <Rel label="COMM" value={rel.commQuality.toUpperCase()} />
-                <Rel label="LATENCY" value={`${rel.latencyMs}ms`} />
-                <Rel label="SUPPORTED PIDs" value={`${rel.supportedPidCount}`} />
-                <Rel label="UNSUPPORTED" value={`${rel.unsupportedPidCount}`} />
-                <Rel label="RETRY RATE" value={`${Math.round(rel.retryRate * 100)}%`} />
-                <Rel label="PID CONF." value={`${Math.round(rel.avgPidConfidence * 100)}%`} />
-                <Rel label="SENSOR CHK" value={`${rel.sensorChecksPassed}/${rel.sensorChecksTotal}`} />
+              </>
+            ) : (
+              <View style={styles.dataCard} testID="ecu-live-unavailable">
+                <View style={styles.dataHead}><MaterialCommunityIcons name="access-point-network-off" size={18} color={colors.onSurfaceSecondary} /><Text style={styles.dataTitle}>READINESS · MODE 06 · RELIABILITY</Text></View>
+                <Text style={styles.dim}>Unavailable from vehicle. Connect an OBD-II adapter to read live readiness monitors, Mode 06 results and diagnostic reliability directly from the ECU.</Text>
               </View>
-            </View>
+            )}
           </>
         )}
       </ScrollView>

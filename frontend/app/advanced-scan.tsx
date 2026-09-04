@@ -34,6 +34,25 @@ export default function AdvancedScanScreen() {
   }, [id]);
   useFocusEffect(useCallback(() => { load(); }, [load]));
 
+  const confirmDelete = (scanId: string) => {
+    Alert.alert("Delete this scan?", "This permanently removes the scan record. This can't be undone.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          setScans((prev) => prev.filter((x) => x.id !== scanId)); // optimistic
+          try {
+            await scanService.remove(scanId);
+          } catch {
+            load(); // restore on failure
+            Alert.alert("Couldn't delete", "The scan could not be deleted. Please try again.");
+          }
+        },
+      },
+    ]);
+  };
+
   if (!gate.hasAccess) return <PremiumGate feature="advanced_scan" />;
 
   const start = (wf: WorkflowDef) => {
@@ -71,10 +90,14 @@ export default function AdvancedScanScreen() {
       setRunning(null);
       setProgress(0);
       router.push(`/scan-report?id=${res.id}`);
-    } catch {
+    } catch (e: any) {
       setRunning(null);
       setProgress(0);
-      Alert.alert("Scan failed", "Could not save the scan. Please check your connection and try again.");
+      if (e?.message === "SIMULATED_SCAN_NOT_SAVED") {
+        Alert.alert("Preview mode", "This is simulated preview data, so it isn't saved as a real scan. Connect a physical OBD-II adapter in the installed app to record a real diagnostic scan.");
+      } else {
+        Alert.alert("Scan failed", "Could not save the scan. Please check your connection and try again.");
+      }
     }
   };
 
@@ -126,7 +149,14 @@ export default function AdvancedScanScreen() {
                   <Text style={styles.scanTitle}>{s.title}</Text>
                   <Text style={styles.scanMeta}>{new Date(s.created_at).toLocaleString()}</Text>
                 </View>
-                <MaterialCommunityIcons name="file-document-outline" size={20} color={colors.onSurfaceSecondary} />
+                <Pressable
+                  testID={`delete-scan-${s.id}`}
+                  hitSlop={12}
+                  style={styles.scanDelete}
+                  onPress={() => confirmDelete(s.id)}
+                >
+                  <MaterialCommunityIcons name="trash-can-outline" size={20} color={colors.error} />
+                </Pressable>
               </Pressable>
             ))
           )}
@@ -157,6 +187,7 @@ const styles = StyleSheet.create({
   scanRow: { flexDirection: "row", alignItems: "center", gap: spacing.md, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md, marginBottom: spacing.sm },
   scoreRing: { width: 44, height: 44, borderRadius: 22, borderWidth: 2, alignItems: "center", justifyContent: "center" },
   scoreText: { fontFamily: font.display, fontSize: 16 },
+  scanDelete: { padding: 6 },
   scanTitle: { color: colors.onSurface, fontSize: 15, fontWeight: "600" },
   scanMeta: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 1 },
 });

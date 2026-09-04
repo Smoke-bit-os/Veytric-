@@ -2,6 +2,7 @@
 // gathers; runScan assembles the derived results and persists an AI report.
 
 import { api } from "@/src/api";
+import { Platform } from "react-native";
 import { DetectedModule } from "../ecu/ecuService";
 import { ReadinessMonitor } from "./dtcClassifier";
 import { ReliabilityReport } from "./reliability";
@@ -53,6 +54,11 @@ export interface RunScanArgs {
 }
 
 export async function runScan(a: RunScanArgs) {
+  // DATA INTEGRITY: simulated (web/preview) telemetry must NEVER be persisted as
+  // a real scan record. Real scans only come from the native OBD-II pipeline.
+  if (Platform.OS === "web") {
+    throw new Error("SIMULATED_SCAN_NOT_SAVED");
+  }
   const { workflow, sections } = { workflow: a.workflow, sections: a.workflow.sections };
   const score = overallScore(a.systems, a.dtcs, a.reliability);
   return api.createScan({

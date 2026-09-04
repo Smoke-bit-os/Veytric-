@@ -44,13 +44,7 @@ const BY_MAKE: Table = {
   ],
 };
 
-const GENERIC: KnownIssue[] = [
-  { title: "Misfire", symptoms: "Rough idle, hesitation, MIL", relatedCodes: ["P0300"], likelihood: "medium" },
-  { title: "Vacuum leak / lean", symptoms: "High fuel trims, unstable idle", relatedCodes: ["P0171"], likelihood: "medium" },
-  { title: "EVAP leak", symptoms: "MIL, fuel smell", relatedCodes: ["P0456", "P0442"], likelihood: "low" },
-];
-
 export function getKnownIssues(make?: string, _model?: string): KnownIssue[] {
   const key = (make || "").toUpperCase();
-  return BY_MAKE[key] || GENERIC;
+  return BY_MAKE[key] || [];
 }

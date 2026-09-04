@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
 import { computeSubsystems, overallHealth, analyzeFaults } from "@/src/vehicle/health";
 import { api } from "@/src/api";
+import { predictionsService, PredictionItem, PredictionResult, URGENCY_META, SOURCE_META } from "@/src/vehicle/predictions/predictionsService";
 import { isCloudActive, runPreparedOnActive } from "@/src/ai/diagnosticAI";
 import AIEngineBadge from "@/src/components/AIEngineBadge";
 import { colors, font, radius, spacing } from "@/src/theme";
@@ -17,12 +18,10 @@ const HERO =
 
 const sc = (s: string) => (s === "good" ? colors.success : s === "warn" ? colors.warning : colors.error);
 
-const REMINDERS = [
-  { icon: "oil", label: "Oil change", detail: "Due in 480 km", level: "warn", life: 18 },
-  { icon: "car-battery", label: "Battery", detail: "Est. 62% life remaining", level: "good", life: 62 },
-  { icon: "air-filter", label: "Air filter", detail: "Overdue by 300 km", level: "bad", life: 4 },
-  { icon: "flash", label: "Spark plugs", detail: "Est. 40% life remaining", level: "warn", life: 40 },  { icon: "car-brake-alert", label: "Brake pads", detail: "Est. 71% life remaining", level: "good", life: 71 },
-];
+const PRED_ICON: Record<string, string> = {
+  oil: "oil", coolant: "coolant-temperature", plugs: "flash", air: "air-filter",
+  battery: "car-battery", brakes: "car-brake-alert", trans: "car-shift-pattern", alternator: "car-battery",
+};
 
 export default function Health() {
   const insets = useSafeAreaInsets();
@@ -36,6 +35,30 @@ export default function Health() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<Record<string, string>>({});
   const [loadingCode, setLoadingCode] = useState<string | null>(null);
+
+  // Real, source-aware predictive maintenance (backend engine). NO fabricated values.
+  const [preds, setPreds] = useState<PredictionResult | null>(null);
+  const [predsLoading, setPredsLoading] = useState(true);
+
+  const loadPreds = useCallback(async () => {
+    setPredsLoading(true);
+    try {
+      const list: any = await api.vehicles();
+      const arr: any[] = Array.isArray(list) ? list : list?.vehicles || [];
+      const active = arr.find((v) => v.is_active) || arr[0] || null;
+      if (active?.id) {
+        const { data } = await predictionsService.get(active.id);
+        setPreds(data);
+      } else {
+        setPreds(null);
+      }
+    } catch {
+      setPreds(null);
+    }
+    setPredsLoading(false);
+  }, []);
+
+  useFocusEffect(useCallback(() => { loadPreds(); }, [loadPreds]));
 
   const analyze = async (code: string, desc: string) => {
     setLoadingCode(code);
@@ -192,23 +215,68 @@ export default function Health() {
           ))
         )}
 
-        {/* Predictive maintenance */}
-        <Text style={styles.sectionTitle}>PREDICTIVE MAINTENANCE</Text>
-        {REMINDERS.map((r) => (
-          <View key={r.label} style={styles.reminder} testID={`reminder-${r.icon}`}>
-            <View style={[styles.reminderIcon, { backgroundColor: sc(r.level) + "22" }]}>
-              <MaterialCommunityIcons name={r.icon as any} size={20} color={sc(r.level)} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.reminderLabel}>{r.label}</Text>
-              <Text style={[styles.reminderDetail, { color: sc(r.level) }]}>{r.detail}</Text>
-              <View style={styles.lifeTrack}>
-                <View style={[styles.lifeFill, { width: `${r.life}%`, backgroundColor: sc(r.level) }]} />
-              </View>
-            </View>
+        {/* Predictive maintenance — real, source-labeled, never fabricated */}
+        <View style={styles.pmHead}>
+          <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>PREDICTIVE MAINTENANCE</Text>
+          {preds?.mileage ? <Text style={styles.pmMileage}>{preds.mileage.toLocaleString()} km</Text> : null}
+        </View>
+        {predsLoading ? (
+          <ActivityIndicator color={colors.brand} style={{ marginVertical: spacing.lg }} />
+        ) : !preds || preds.items.length === 0 ? (
+          <View style={styles.pmEmpty} testID="pm-empty">
+            <MaterialCommunityIcons name="wrench-outline" size={34} color={colors.onSurfaceSecondary} />
+            <Text style={styles.pmEmptyText}>No maintenance data yet. Add a vehicle and log its service history to get accurate, source-backed predictions.</Text>
           </View>
-        ))}
+        ) : (
+          <>
+            {!preds.mileageKnown ? (
+              <Text style={styles.pmNotice}>Set your vehicle's current mileage to enable distance-based predictions.</Text>
+            ) : null}
+            {preds.items.map((r) => <PredictionCard key={r.key} item={r} />)}
+          </>
+        )}
       </ScrollView>
+    </View>
+  );
+}
+
+function PredictionCard({ item }: { item: PredictionItem }) {
+  const meta = URGENCY_META[item.urgency];
+  const src = SOURCE_META[item.source];
+  const measured = item.remainingLifePct != null; // only a REAL measurement sets this
+  const detail =
+    item.source === "UNAVAILABLE"
+      ? (item.reasons[0] || "Insufficient maintenance data")
+      : item.urgency === "overdue"
+        ? (item.remainingKm != null ? `Overdue by ${Math.abs(item.remainingKm).toLocaleString()} km` : "Service overdue")
+        : item.dueMileage != null
+          ? `Due at ${item.dueMileage.toLocaleString()} km${item.remainingKm != null ? ` · ${item.remainingKm.toLocaleString()} km left` : ""}`
+          : (item.reasons[0] || "Log service history or set mileage to estimate");
+  return (
+    <View style={styles.reminder} testID={`reminder-${item.key}`}>
+      <View style={[styles.reminderIcon, { backgroundColor: meta.color + "22" }]}>
+        <MaterialCommunityIcons name={(PRED_ICON[item.key] || "wrench") as any} size={20} color={meta.color} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <View style={styles.reminderTop}>
+          <Text style={styles.reminderLabel}>{item.name}</Text>
+          <View style={[styles.urgencyTag, { borderColor: meta.color }]}>
+            <Text style={[styles.urgencyTagText, { color: meta.color }]}>{meta.label}</Text>
+          </View>
+        </View>
+        <Text style={[styles.reminderDetail, { color: meta.color }]}>{detail}</Text>
+        {measured ? (
+          <View style={styles.lifeTrack}>
+            <View style={[styles.lifeFill, { width: `${Math.round((item.remainingLifePct || 0) * 100)}%`, backgroundColor: meta.color }]} />
+          </View>
+        ) : null}
+        <View style={styles.provRow}>
+          <MaterialCommunityIcons name="database-check-outline" size={11} color={colors.onSurfaceSecondary} />
+          <Text style={styles.provText}>
+            {src.label}{item.confidence != null ? ` · ${Math.round(item.confidence * 100)}% confidence` : ""}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -321,7 +389,17 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   reminderIcon: { width: 40, height: 40, borderRadius: radius.sm, alignItems: "center", justifyContent: "center" },
-  reminderLabel: { color: colors.onSurface, fontSize: 15 },
+  reminderTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  reminderLabel: { color: colors.onSurface, fontSize: 15, flex: 1 },
+  urgencyTag: { borderWidth: 1, borderRadius: radius.sm, paddingHorizontal: 6, paddingVertical: 1 },
+  urgencyTagText: { fontSize: 8, fontWeight: "800", letterSpacing: 0.5 },
+  provRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 6 },
+  provText: { color: colors.onSurfaceSecondary, fontSize: 10 },
+  pmHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: spacing.lg },
+  pmMileage: { color: colors.onSurfaceSecondary, fontSize: 12, fontWeight: "600", marginTop: spacing.lg },
+  pmEmpty: { alignItems: "center", gap: spacing.sm, marginHorizontal: spacing.lg, padding: spacing.xl, backgroundColor: colors.surfaceSecondary, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
+  pmEmptyText: { color: colors.onSurfaceSecondary, fontSize: 13, textAlign: "center", lineHeight: 19 },
+  pmNotice: { color: colors.onSurfaceSecondary, fontSize: 12, marginHorizontal: spacing.lg, marginBottom: spacing.sm, fontStyle: "italic" },
   reminderDetail: { fontSize: 12, marginTop: 2 },
   lifeTrack: { height: 3, backgroundColor: colors.surfaceTertiary, borderRadius: 2, marginTop: 6, overflow: "hidden" },
   lifeFill: { height: "100%" },

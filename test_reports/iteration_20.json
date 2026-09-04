@@ -1,0 +1,31 @@
+{
+  "summary": "Phase A — Production Data Integrity verified end-to-end. Backend: 4/4 pytest passed in test_phase_a_data_integrity.py — (a) predictions tiered model for vehicle with NO mileage/history returns ALL items source=UNAVAILABLE with remainingLifePct=null and dueMileage=null; (b) after PATCH /vehicles/{id} {mileage:82000} without service history, oil/coolant/plugs/air/trans/alternator are source=GENERAL_INDUSTRY_INTERVAL, urgency='unknown', dueMileage=null, remainingLifePct=null (NEVER fabricated), while battery=UNAVAILABLE/test and brakes=UNAVAILABLE/inspect; (c) POST /vehicles/upsert-by-vin does NOT set last_scan_at and GET /vehicles/{id}/dashboard returns lastScan=null on a fresh vehicle; (d) DELETE /scans/{id} is user-scoped — User B cannot delete User A's scan (scan still present after B's DELETE which correctly returns {ok:true}); after A deletes their own scan it is gone from GET /scans. Frontend (mobile web preview, 390x844): Health tab PREDICTIVE MAINTENANCE for a fresh vehicle with mileage=82,000 shows the source label 'General industry recommendation (not vehicle-specific) · 40% confidence' on oil/coolant/plugs/air/trans/alternator, 'Insufficient maintenance data' on brakes (INSPECT) and battery (TEST REQUIRED); life-bar is NOT rendered anywhere (remainingLifePct is null throughout); NO hard-coded strings 'Due in 480 km' / '62% life remaining' / '71%' / 'Overdue by 300 km' anywhere in the DOM; for a user with no vehicles the pm-empty testID appears with 'No maintenance data yet…'. Common Failure Patterns on /vehicle-profile for a BMW: issues-prov visible with 'Known vehicle-specific patterns for BMW' and only curated items (Valve cover, VANOS, Charging/IBS). Advanced Scan (/advanced-scan, Pro-gated): delete-scan-<id> trash button rendered on the Recent Scans row and running a workflow in web preview does NOT persist a scan (GET /api/scans count remained at 1 = our seeded record only, confirming the SIMULATED_SCAN_NOT_SAVED guard). ECU Intelligence /ecu-modules → Diagnostic Data tab: on web preview the SimulationProvider connects, so Readiness Monitors, Fault Codes and VIN Verification render (this is by-design per the agent-to-agent note); ecu-live-unavailable card exists in code (ecu-modules.tsx:205) and only renders when connection!=='connected'.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_phase_a_data_integrity.py",
+    "/app/test_reports/pytest/iteration_20.xml"
+  ],
+  "action_items": [
+    "No fixes needed — Phase A Production Data Integrity is verified. All fabricated maintenance/life-% values have been eliminated: predictions with no basis return UNAVAILABLE, mileage-only returns GENERAL_INDUSTRY_INTERVAL with urgency=unknown and remainingLifePct=null; upsert-by-vin no longer stamps last_scan_at; DELETE /scans/{id} is user-scoped; simulated web-preview scans are correctly NOT saved."
+  ],
+  "critical_code_review_comments": [
+    "_compute_predictions (server.py:1231-1352) correctly implements the tiered model — remainingLifePct is set ONLY inside the has_record OR evidence branch, and only via measured_pct (kept null in the GENERAL_INDUSTRY_INTERVAL branch). dueMileage is only computed when a real baseline last_km exists. Cannot fabricate a life-%.",
+    "health.tsx:246 — `const measured = item.remainingLifePct != null` and the life-bar (line 268-272) only renders when measured is true. Source label always renders with confidence when available.",
+    "advanced-scan.tsx runScan flow throws SIMULATED_SCAN_NOT_SAVED on web preview, caught at line 96-97 and surfaces the 'Preview mode' Alert. Verified end-to-end: GET /api/scans count stays flat after a preview workflow run.",
+    "delete_scan (server.py:1793-1796) filters on user_id which enforces cross-user isolation; the endpoint returns {ok:true} even when nothing was deleted, which is fine — the important guarantee (verified in test) is that a foreign user's scan remains listed and accessible for its owner."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_phase_a_data_integrity.py (new)"
+  ],
+  "success_rate": {"backend": "4/4 (100%)", "frontend": "5/5 flows verified — Health PM empty state, Health PM real-vehicle source labels, Common Failure Patterns (BMW curated), Advanced Scan delete button + no-persist on preview, ECU Diagnostic Data (by-design simulator)"},
+  "seed_data_creation": "Registered ephemeral TEST_ph_a_*@example.com users via /api/auth/register (Jarvis2026!); created TEST_ VIN vehicles and one persisted scan; all data prefixed with TEST_.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Test file /app/backend/tests/test_phase_a_data_integrity.py is idempotent — it registers fresh users per class. POST /api/scans requires readiness and systems to be LISTS (not dicts) per ScanInput. Web-preview Alert.alert renders as an in-DOM overlay so page.on('dialog') will NOT capture it — assert via the observable side-effect (e.g. GET /api/scans count unchanged for the Preview-mode simulated scan). Advanced Scan is Pro-gated: promote a test user via POST /api/subscription/developer/set {\"action\":\"pro\"} before verifying the Recent Scans UI."
+}
