@@ -32,8 +32,8 @@ export interface PurchasesApi {
 }
 
 export const MOCK_PRODUCTS: Product[] = [
-  { id: "pro_monthly", planId: "pro", period: "monthly", title: "JARVIS Pro (Monthly)", price: "$9.99" },
-  { id: "pro_annual", planId: "pro", period: "annual", title: "JARVIS Pro (Annual)", price: "$79.99" },
-  { id: "shop_monthly", planId: "shop", period: "monthly", title: "JARVIS Shop (Monthly)", price: "$29.99" },
-  { id: "shop_annual", planId: "shop", period: "annual", title: "JARVIS Shop (Annual)", price: "$249.99" },
+  { id: "pro_monthly", planId: "pro", period: "monthly", title: "VEYTRIC Pro (Monthly)", price: "$9.99" },
+  { id: "pro_annual", planId: "pro", period: "annual", title: "VEYTRIC Pro (Annual)", price: "$79.99" },
+  { id: "shop_monthly", planId: "shop", period: "monthly", title: "VEYTRIC Shop (Monthly)", price: "$29.99" },
+  { id: "shop_annual", planId: "shop", period: "annual", title: "VEYTRIC Shop (Annual)", price: "$249.99" },
 ];

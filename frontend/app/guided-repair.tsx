@@ -35,7 +35,7 @@ export default function GuidedRepair() {
       : `No trouble code selected. Repair category: ${category || "general"}. ` +
         `System/subsystem: ${system || "unspecified"}. Target difficulty: ${difficulty || "any"}.`;
     const prompt =
-      `You are JARVIS Auto AI providing GENERAL repair guidance for a home mechanic with little experience. ` +
+      `You are VEYTRIC — AI Vehicle Intelligence providing GENERAL repair guidance for a home mechanic with little experience. ` +
       `${focus} Vehicle: ${vehicleLabel || "unknown vehicle"}. ` +
       `Return clearly labeled plain-language sections with bold headers: Problem Summary; Why It Matters; Possible Causes (bulleted); ` +
       `Diagnostic Checks (numbered); Required Tools; Possible Parts; Safety Warnings; Difficulty (1-5) and Estimated Time; ` +
@@ -153,7 +153,7 @@ export default function GuidedRepair() {
               <Text style={styles.disclaimerText}>
                 This is AI-generated general guidance — not vehicle-specific instructions. Always verify exact procedures,
                 torque values and part numbers against the manufacturer service manual for your{vehicleLabel ? ` ${vehicleLabel}` : " vehicle"}.
-                JARVIS never guarantees a repair will resolve the fault. If unsure, consult a qualified technician.
+                VEYTRIC never guarantees a repair will resolve the fault. If unsure, consult a qualified technician.
               </Text>
             </View>
             <Pressable testID="gr-recheck" style={styles.recheck} onPress={() => router.push("/codes")}>

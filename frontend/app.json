@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "JARVIS Auto AI",
+    "name": "VEYTRIC",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.emergent.jarvisai.gx2hdi",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Talk to JARVIS hands-free for diagnostics",
+        "NSMicrophoneUsageDescription": "Talk to VEYTRIC hands-free for diagnostics",
         "NSBluetoothAlwaysUsageDescription": "Connect to your OBD-II scanner for live vehicle data",
         "NSCameraUsageDescription": "Scan your VIN to add a vehicle automatically"
       }
@@ -65,7 +65,7 @@
       [
         "expo-audio",
         {
-          "microphonePermission": "Talk to JARVIS hands-free for diagnostics"
+          "microphonePermission": "Talk to VEYTRIC hands-free for diagnostics"
         }
       ],
       [

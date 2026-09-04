@@ -8,7 +8,7 @@ import { AIProviderType } from "@/src/ai/types";
 import { colors, font, radius, spacing } from "@/src/theme";
 
 const OPTIONS: { type: AIProviderType; title: string; sub: string; icon: string }[] = [
-  { type: AIProviderType.JARVIS_CLOUD, title: "JARVIS Cloud AI", sub: "Powered by JARVIS servers · no setup", icon: "cloud" },
+  { type: AIProviderType.JARVIS_CLOUD, title: "VEYTRIC Cloud AI", sub: "Powered by VEYTRIC servers · no setup", icon: "cloud" },
   { type: AIProviderType.OPENAI_USER_KEY, title: "OpenAI Personal Key", sub: "Use your own OpenAI API key (BYOK)", icon: "key-variant" },
   { type: AIProviderType.LOCAL_AI, title: "Local AI", sub: "Offline processing via Ollama", icon: "laptop" },
 ];
@@ -81,7 +81,7 @@ export default function AISettingsScreen() {
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: insets.bottom + spacing["2xl"] }} keyboardShouldPersistTaps="handled">
           <Text style={styles.sectionTitle}>AI ENGINE</Text>
-          <Text style={styles.help}>Choose how JARVIS powers its AI features. Your selection is saved and used across the app.</Text>
+          <Text style={styles.help}>Choose how VEYTRIC powers its AI features. Your selection is saved and used across the app.</Text>
 
           {OPTIONS.map((o) => {
             const selected = ai.providerType === o.type;
@@ -163,7 +163,7 @@ export default function AISettingsScreen() {
           {/* Cloud info */}
           {ai.providerType === AIProviderType.JARVIS_CLOUD && (
             <View style={styles.panel} testID="cloud-panel">
-              <Text style={styles.help}>JARVIS Cloud is ready to use with no setup. AI runs on JARVIS servers using the managed model.</Text>
+              <Text style={styles.help}>VEYTRIC Cloud is ready to use with no setup. AI runs on VEYTRIC servers using the managed model.</Text>
             </View>
           )}
         </ScrollView>

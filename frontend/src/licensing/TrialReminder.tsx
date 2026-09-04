@@ -33,9 +33,9 @@ export default function TrialReminder() {
         await storage.setItem(KEY, JSON.stringify({ [trialKey]: seen }));
         const msg =
           stage === 0
-            ? "Your JARVIS Pro trial ends today. Upgrade now to keep Advanced Scan, AI Health Reports, Predictive Maintenance and more — your data stays safe either way."
-            : `Your JARVIS Pro trial ends in ${stage} day${stage === 1 ? "" : "s"}. Upgrade to keep full access to your Pro features.`;
-        Alert.alert("JARVIS Pro Trial", msg, [
+            ? "Your VEYTRIC Pro trial ends today. Upgrade now to keep Advanced Scan, AI Health Reports, Predictive Maintenance and more — your data stays safe either way."
+            : `Your VEYTRIC Pro trial ends in ${stage} day${stage === 1 ? "" : "s"}. Upgrade to keep full access to your Pro features.`;
+        Alert.alert("VEYTRIC Pro Trial", msg, [
           { text: "Later", style: "cancel" },
           { text: "Upgrade", onPress: () => router.push("/upgrade") },
         ]);

@@ -58,7 +58,7 @@ export async function exportPDF(rec: any, analysis?: string): Promise<string> {
   <html><head><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
   <body style="font-family:-apple-system,Helvetica,Arial;background:#06080D;color:#F0F2F5;padding:28px;">
     <div style="border-bottom:2px solid #00E5FF;padding-bottom:12px;margin-bottom:18px;">
-      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">JARVIS AI · PERFORMANCE REPORT</div>
+      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">VEYTRIC · PERFORMANCE REPORT</div>
       <h1 style="margin:6px 0;font-size:26px;">${rec.name || "Drive Session"}</h1>
       <div style="color:#9AA0B1;font-size:13px;">${rec.created_at ? new Date(rec.created_at).toLocaleString() : ""} · ${rec.vin || ""}</div>
     </div>
@@ -95,7 +95,7 @@ export async function exportScanPDF(scan: any): Promise<string> {
   <html><head><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
   <body style="font-family:-apple-system,Helvetica,Arial;background:#06080D;color:#F0F2F5;padding:28px;">
     <div style="border-bottom:2px solid #00E5FF;padding-bottom:12px;margin-bottom:12px;">
-      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">JARVIS AI · ${esc((scan.title || "SCAN").toUpperCase())}</div>
+      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">VEYTRIC · ${esc((scan.title || "SCAN").toUpperCase())}</div>
       <h1 style="margin:6px 0;font-size:26px;">${esc(scan.vehicle || "Vehicle")}</h1>
       <div style="color:#9AA0B1;font-size:13px;">Overall Score: <b style="color:#00E5FF;">${scan.overall_score ?? "—"}</b> · ${scan.vin || ""} · ${scan.created_at ? new Date(scan.created_at).toLocaleString() : ""}</div>
     </div>
@@ -117,7 +117,7 @@ export async function exportHealthReportPDF(opts: { vehicle: string; mileage?: n
   <html><head><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
   <body style="font-family:-apple-system,Helvetica,Arial;background:#06080D;color:#F0F2F5;padding:28px;">
     <div style="border-bottom:2px solid #00E5FF;padding-bottom:12px;margin-bottom:6px;">
-      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">JARVIS AI · VEHICLE HEALTH REPORT</div>
+      <div style="color:#00E5FF;letter-spacing:3px;font-size:12px;">VEYTRIC · VEHICLE HEALTH REPORT</div>
       <h1 style="margin:6px 0;font-size:26px;">${opts.vehicle}</h1>
       <div style="color:#9AA0B1;font-size:13px;">
         ${opts.mileage != null ? `${opts.mileage.toLocaleString()} km · ` : ""}

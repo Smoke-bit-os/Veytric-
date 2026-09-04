@@ -166,7 +166,7 @@ export default function Assistant() {
         <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
           <AIOrb size={40} active={thinking || recording} />
           <View style={{ marginLeft: spacing.md }}>
-            <Text style={styles.title}>JARVIS</Text>
+            <Text style={styles.title}>VEYTRIC</Text>
             <Text style={styles.subtitle}>
               {recording ? "Listening…" : thinking ? "Analyzing telemetry…" : transcribing ? "Transcribing…" : ai.providerName}
             </Text>
@@ -208,7 +208,7 @@ export default function Assistant() {
               testID={`message-${m.role}-${i}`}
               style={[styles.bubble, m.role === "user" ? styles.userBubble : styles.aiBubble]}
             >
-              {m.role === "assistant" && <Text style={styles.aiTag}>JARVIS</Text>}
+              {m.role === "assistant" && <Text style={styles.aiTag}>VEYTRIC</Text>}
               <Text style={m.role === "user" ? styles.userText : styles.aiText}>{m.content}</Text>
             </View>
           ))}
@@ -235,7 +235,7 @@ export default function Assistant() {
           <TextInput
             testID="chat-input"
             style={styles.textInput}
-            placeholder="Ask JARVIS…"
+            placeholder="Ask VEYTRIC…"
             placeholderTextColor={colors.onSurfaceSecondary}
             value={input}
             onChangeText={setInput}

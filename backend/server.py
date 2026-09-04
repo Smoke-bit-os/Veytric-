@@ -251,7 +251,7 @@ async def enforce_cloud_quota(user: dict) -> dict:
     used = int((doc or {}).get("requests_used", 0))
     if used >= limit:
         raise HTTPException(status_code=429, detail={
-            "message": f"You've reached the Free plan limit of {limit} JARVIS Cloud AI requests this month. Upgrade to Pro for unlimited AI, or switch to your own OpenAI key (BYOK) or Local AI in Settings → Artificial Intelligence.",
+            "message": f"You've reached the Free plan limit of {limit} VEYTRIC Cloud AI requests this month. Upgrade to Pro for unlimited AI, or switch to your own OpenAI key (BYOK) or Local AI in Settings → Artificial Intelligence.",
             "code": "cloud_quota_exceeded",
             "requests_used": used, "requests_limit": limit, "remaining": 0,
         })
@@ -273,7 +273,7 @@ async def ai_guard(user=Depends(get_current_user)):
 # ----------------------------- Routes: Auth ---------------------------------
 @api_router.get("/")
 async def root():
-    return {"message": "JARVIS AI online"}
+    return {"message": "VEYTRIC AI online"}
 
 
 @api_router.post("/auth/register")
@@ -573,7 +573,7 @@ async def shop_fleet(user=Depends(shop_guard)):
 
 # ----------------------------- Routes: AI Chat ------------------------------
 JARVIS_SYSTEM = (
-    "You are JARVIS, an elite AI automotive diagnostic assistant for mechanics and "
+    "You are VEYTRIC — AI Vehicle Intelligence, an elite AI automotive diagnostic assistant for mechanics and "
     "enthusiasts. You combine live OBD-II sensor data with deep automotive knowledge. "
     "Give confident, technically precise diagnostics. When relevant, reference the live "
     "sensor values provided. Structure answers with: a short direct assessment, likely "

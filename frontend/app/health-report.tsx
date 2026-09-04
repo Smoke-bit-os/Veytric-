@@ -73,7 +73,7 @@ export default function HealthReportScreen() {
         <View style={styles.empty} testID="hr-empty">
           <MaterialCommunityIcons name="clipboard-pulse" size={54} color={colors.onSurfaceSecondary} />
           <Text style={styles.emptyTitle}>No report generated yet</Text>
-          <Text style={styles.emptyText}>JARVIS will analyze this vehicle's full history — diagnostics, recordings, repairs, trends and predictions — into one professional report.</Text>
+          <Text style={styles.emptyText}>VEYTRIC will analyze this vehicle's full history — diagnostics, recordings, repairs, trends and predictions — into one professional report.</Text>
           <Pressable testID="btn-generate" style={styles.genBtn} onPress={generate} disabled={generating}>
             <LinearGradient colors={[colors.brand, colors.brandSecondary]} style={styles.genGrad}>
               {generating ? <ActivityIndicator color={colors.onBrandPrimary} /> : (

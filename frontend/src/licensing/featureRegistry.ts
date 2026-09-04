@@ -24,7 +24,7 @@ export const FEATURES: FeatureDef[] = [
 
   // ---- Pro ----
   { key: "unlimited_vehicles", label: "Unlimited Vehicles", description: "Save an unlimited number of vehicles.", tier: "pro", category: "Garage" },
-  { key: "ai_diagnostics", label: "AI Diagnostics", description: "JARVIS AI assistant for live diagnostic reasoning.", tier: "pro", category: "AI" },
+  { key: "ai_diagnostics", label: "AI Diagnostics", description: "VEYTRIC AI assistant for live diagnostic reasoning.", tier: "pro", category: "AI" },
   { key: "guided_repairs", label: "Guided Repairs", description: "Step-by-step AI-guided repair walkthroughs.", tier: "pro", category: "AI" },
   { key: "advanced_scan", label: "Advanced Scan", description: "Full multi-workflow ECU scans with AI reports.", tier: "pro", category: "Diagnostics" },
   { key: "ecu_modules", label: "ECU Intelligence", description: "Discover ECU modules with health and comm metrics.", tier: "pro", category: "Diagnostics" },

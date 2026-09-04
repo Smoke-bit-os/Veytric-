@@ -33,7 +33,7 @@ const FAILURE_CAUSES = [
   { icon: "power-plug-off", label: "Adapter unplugged", fix: "Reseat the scanner firmly in the OBD-II port." },
   { icon: "key-off", label: "Ignition off", fix: "Turn the ignition to ON (engine may be off)." },
   { icon: "sleep", label: "Adapter asleep", fix: "Unplug for 10s and reconnect to wake it." },
-  { icon: "sync-alert", label: "Protocol mismatch", fix: "JARVIS will retry with auto-protocol detection." },
+  { icon: "sync-alert", label: "Protocol mismatch", fix: "VEYTRIC will retry with auto-protocol detection." },
 ];
 
 function Wave({ delay, active }: { delay: number; active: boolean }) {
@@ -280,7 +280,7 @@ export default function ConnectionCenter() {
             <View style={styles.knownRow} testID="known-issues-note">
               <MaterialCommunityIcons name="brain" size={14} color={colors.brand} />
               <Text style={styles.knownText}>
-                JARVIS loaded {getKnownIssues(identity.make, identity.model).length} common failure patterns for this platform
+                VEYTRIC loaded {getKnownIssues(identity.make, identity.model).length} common failure patterns for this platform
               </Text>
             </View>
 
@@ -304,7 +304,7 @@ export default function ConnectionCenter() {
               <MaterialCommunityIcons name="bluetooth-off" size={20} color={colors.error} />
               <Text style={styles.errText}>{errMsg || NO_ADAPTER_MESSAGE}</Text>
             </View>
-            <Text style={styles.recoverTitle}>JARVIS diagnosis — likely causes</Text>
+            <Text style={styles.recoverTitle}>VEYTRIC diagnosis — likely causes</Text>
             {FAILURE_CAUSES.map((c) => (
               <View key={c.label} style={styles.recoverRow}>
                 <MaterialCommunityIcons name={c.icon as any} size={20} color={colors.warning} />

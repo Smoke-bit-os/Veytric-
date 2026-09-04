@@ -160,6 +160,9 @@ Verified: lint clean; Codes page renders (web sim). NOT yet tested via testing_a
 Remaining Phase 1 (next): Guided Repairs (AI, /guided-repair — Codes cards will deep-link once built), dropdown-menu audit (year/make/model/engine/filters), VPIC caching/labeling hardening, business-contact (MichaelBryant@JarvisAutoAI.com) in About/Support, production security audit, consolidated testing_agent QA.
 Phase 2 (needs native build): Camera VIN (native OCR), Google Sign-In (own OAuth), Google Play Billing (client + backend receipt verification; prod-guard dev tier endpoints).
 
+## PROMPT R — VEYTRIC Rebrand (2026, this session)
+Full production-safe rebrand JARVIS Auto AI → **VEYTRIC — AI Vehicle Intelligence** (tagline "Diagnose. Understand. Repair."). Report: `/app/PROMPT_R_REBRAND_REPORT.md`. All user-facing branding, AI identity (frontend+backend system prompt), plan labels, reports/exports headers, app display name + permission strings → VEYTRIC. AI now self-identifies as VEYTRIC; `GET /api/` → "VEYTRIC AI online". RETAINED for compatibility (documented): package/bundle `com.emergent.jarvisai.gx2hdi`, all `jarvis_*` storage keys, `AIProviderType.JARVIS_CLOUD` enum value, `JARVIS_SYSTEM(_PROMPT)` const names, logger name, `JarvisAutoAI.com` business contact (§12 — no invented domain), test creds `@jarvis.ai`/`Jarvis2026!`. Zero unexplained legacy occurrences. Prompt 0 regression rerun: **58/58 passed**; guards intact. Prompt 1 NOT started. GATE: PASS (rebrand) / production-DB-backup blocker still open.
+
 ## PROMPT 0 — Baseline Truth & Production Safety (2026, this session)
 Audit/hardening pass (NOT new features; Prompt 1 deliberately NOT started). Full report: `/app/PROMPT0_BASELINE_TRUTH.md`. Deliverables: `/app/docs/feature_inventory.json`, `data_flow_map.md`, `fake_data_audit.md`, `protected_interfaces.md`.
 - Checkpoint commit `cc98737`; ending commit `62d4e18`.

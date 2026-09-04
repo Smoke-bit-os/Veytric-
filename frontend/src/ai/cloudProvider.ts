@@ -16,7 +16,7 @@ import { TOKEN_KEY } from "@/src/api";
 // ============================================================================
 
 class CloudProvider implements AIProvider {
-  name = "JARVIS Cloud AI";
+  name = "VEYTRIC Cloud AI";
   type = AIProviderType.JARVIS_CLOUD;
 
   async connect(): Promise<boolean> {

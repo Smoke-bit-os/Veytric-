@@ -40,7 +40,7 @@ def auth(token):
 def test_root(client):
     r = client.get(f"{API}/")
     assert r.status_code == 200
-    assert "JARVIS" in r.json()["message"]
+    assert "VEYTRIC" in r.json()["message"]
 
 
 # ---- Auth ----

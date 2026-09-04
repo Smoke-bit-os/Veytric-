@@ -55,7 +55,7 @@ export default function AuthScreen() {
           <View style={styles.orbWrap}>
             <AIOrb size={130} active />
           </View>
-          <Text style={styles.brand}>JARVIS Auto AI</Text>
+          <Text style={styles.brand}>VEYTRIC</Text>
           <Text style={styles.tagline}>NEXT-GEN AUTOMOTIVE COMMAND CENTER</Text>
 
           <View style={styles.card}>

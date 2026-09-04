@@ -53,7 +53,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="assistant"
         options={{
-          title: "JARVIS",
+          title: "VEYTRIC",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="robot-happy" color={color} size={size} />
           ),

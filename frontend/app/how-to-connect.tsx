@@ -9,20 +9,20 @@ const STEPS: { icon: string; title: string; body: string }[] = [
   { icon: "car-info", title: "1. Find your OBD-II port", body: "Almost every car built since 1996 has one. It's a trapezoid-shaped socket usually under the dashboard on the driver's side, near your knees or behind a small cover." },
   { icon: "bluetooth", title: "2. Get a Bluetooth OBD-II adapter", body: "You need an ELM327-based Bluetooth adapter (e.g. Innova, Veepeak, Vgate). Plug it firmly into the OBD-II port." },
   { icon: "key-variant", title: "3. Turn the ignition on", body: "Turn the key to the 'ON' position (dash lights up) or start the engine. The adapter needs power from the car to talk to the computer." },
-  { icon: "bluetooth-settings", title: "4. Enable Bluetooth", body: "Turn on Bluetooth on your phone. You do NOT need to pair the adapter in phone settings — JARVIS connects to it directly." },
-  { icon: "shield-check", title: "5. Allow JARVIS permissions", body: "When prompted, allow JARVIS to use Bluetooth / Nearby devices (and Location on older Android). This is required to find the adapter." },
-  { icon: "access-point", title: "6. Open the Connection Center & scan", body: "In JARVIS, open the Connection Center and tap scan. Your adapter appears in the list — select it and connect." },
-  { icon: "engine", title: "7. Wait for ECU communication", body: "JARVIS runs the ELM327 handshake and detects your vehicle's protocol. When you see 'LIVE BLE — REAL VEHICLE DATA', you're connected." },
+  { icon: "bluetooth-settings", title: "4. Enable Bluetooth", body: "Turn on Bluetooth on your phone. You do NOT need to pair the adapter in phone settings — VEYTRIC connects to it directly." },
+  { icon: "shield-check", title: "5. Allow VEYTRIC permissions", body: "When prompted, allow VEYTRIC to use Bluetooth / Nearby devices (and Location on older Android). This is required to find the adapter." },
+  { icon: "access-point", title: "6. Open the Connection Center & scan", body: "In VEYTRIC, open the Connection Center and tap scan. Your adapter appears in the list — select it and connect." },
+  { icon: "engine", title: "7. Wait for ECU communication", body: "VEYTRIC runs the ELM327 handshake and detects your vehicle's protocol. When you see 'LIVE BLE — REAL VEHICLE DATA', you're connected." },
   { icon: "speedometer", title: "8. Start live diagnostics", body: "You'll now see real RPM, speed, temperatures and trouble codes straight from your car's computer." },
 ];
 
 const TROUBLE: { q: string; a: string }[] = [
   { q: "Adapter not found", a: "Make sure the adapter is fully plugged in and the ignition is ON. Toggle phone Bluetooth off/on and scan again." },
-  { q: "Bluetooth permission denied", a: "Open your phone Settings → Apps → JARVIS Auto AI → Permissions and enable Bluetooth/Nearby devices (and Location on older Android), then retry." },
+  { q: "Bluetooth permission denied", a: "Open your phone Settings → Apps → VEYTRIC → Permissions and enable Bluetooth/Nearby devices (and Location on older Android), then retry." },
   { q: "Connection failed", a: "Unplug the adapter, wait 10 seconds, plug it back in, restart the engine and try again. Cheap clone adapters can be unreliable." },
-  { q: "Vehicle not responding / No supported PIDs", a: "Some vehicles expose fewer sensors. JARVIS only shows what your ECU actually reports — unsupported values are marked unavailable, never faked." },
-  { q: "Connection drops", a: "Keep the phone near the adapter and avoid other apps grabbing the Bluetooth radio. JARVIS auto-reconnects when the link returns." },
-  { q: "\"No vehicle data\"", a: "This means there's no live connection. JARVIS will NOT invent readings — connect a real adapter to a running vehicle to see live data." },
+  { q: "Vehicle not responding / No supported PIDs", a: "Some vehicles expose fewer sensors. VEYTRIC only shows what your ECU actually reports — unsupported values are marked unavailable, never faked." },
+  { q: "Connection drops", a: "Keep the phone near the adapter and avoid other apps grabbing the Bluetooth radio. VEYTRIC auto-reconnects when the link returns." },
+  { q: "\"No vehicle data\"", a: "This means there's no live connection. VEYTRIC will NOT invent readings — connect a real adapter to a running vehicle to see live data." },
 ];
 
 export default function HowToConnect() {
@@ -38,9 +38,9 @@ export default function HowToConnect() {
         <View style={{ width: 28 }} />
       </View>
       <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: insets.bottom + spacing["2xl"] }}>
-        <Text style={styles.h1}>How to Connect JARVIS to Your Vehicle</Text>
+        <Text style={styles.h1}>How to Connect VEYTRIC to Your Vehicle</Text>
         <Text style={styles.intro}>
-          JARVIS Auto AI reads live data and trouble codes directly from your car's computer using a small Bluetooth
+          VEYTRIC reads live data and trouble codes directly from your car's computer using a small Bluetooth
           adapter. It's easy — no mechanical experience needed. Follow these steps.
         </Text>
 
@@ -67,7 +67,7 @@ export default function HowToConnect() {
         <View style={styles.note}>
           <MaterialCommunityIcons name="information" size={16} color={colors.brand} />
           <Text style={styles.noteText}>
-            JARVIS cannot generate real vehicle data without an actual vehicle connection. On the installed app, no
+            VEYTRIC cannot generate real vehicle data without an actual vehicle connection. On the installed app, no
             adapter means no live readings — it will never show made-up numbers.
           </Text>
         </View>

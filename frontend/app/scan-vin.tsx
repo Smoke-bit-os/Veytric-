@@ -125,7 +125,7 @@ export default function ScanVin() {
           <Text style={styles.h2}>Camera scanning needs the app</Text>
           <Text style={styles.body}>
             VIN scanning uses your phone's camera and runs entirely on your device. It only works in the installed
-            JARVIS Auto AI app (Android/iOS build){Platform.OS === "web" ? ", not the web preview" : ""}.
+            VEYTRIC app (Android/iOS build){Platform.OS === "web" ? ", not the web preview" : ""}.
           </Text>
           <PrimaryButton icon="pencil-outline" label="ADD VEHICLE MANUALLY" onPress={goManual} />
         </View>
@@ -150,7 +150,7 @@ export default function ScanVin() {
           <MaterialCommunityIcons name="camera-outline" size={48} color={colors.brand} />
           <Text style={styles.h2}>Allow camera access</Text>
           <Text style={styles.body}>
-            JARVIS uses your camera to read your VIN so we can set up your vehicle automatically. Images are processed
+            VEYTRIC uses your camera to read your VIN so we can set up your vehicle automatically. Images are processed
             on your device and never uploaded.
           </Text>
           {blocked ? (

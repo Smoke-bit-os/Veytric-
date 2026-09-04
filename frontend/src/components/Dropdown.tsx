@@ -38,7 +38,7 @@ function normalize(options: (DropdownOption | string)[]): DropdownOption[] {
 }
 
 /**
- * JARVIS Auto AI shared searchable select. Modal-based so it renders above all
+ * VEYTRIC shared searchable select. Modal-based so it renders above all
  * other layers on both web preview and native, never clipped by parent overflow.
  * Never fabricates options — an empty list surfaces the empty/error state.
  */

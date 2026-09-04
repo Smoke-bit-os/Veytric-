@@ -204,7 +204,7 @@ export default function Health() {
                       ) : (
                         <>
                           <MaterialCommunityIcons name="robot" size={16} color={colors.brand} />
-                          <Text style={styles.analyzeText}>Ask JARVIS to analyze this code</Text>
+                          <Text style={styles.analyzeText}>Ask VEYTRIC to analyze this code</Text>
                         </>
                       )}
                     </Pressable>

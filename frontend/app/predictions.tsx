@@ -124,7 +124,7 @@ export default function PredictionsScreen() {
               </View>
             );
           })}
-          <Text style={styles.disclaimer}>JARVIS never fabricates component condition. Interval items are manufacturer recommendations; live items use your recorded telemetry/fault codes; brake pads and battery require a physical inspection/test. Log services (with mileage) in the Repair Log to improve accuracy.</Text>
+          <Text style={styles.disclaimer}>VEYTRIC never fabricates component condition. Interval items are manufacturer recommendations; live items use your recorded telemetry/fault codes; brake pads and battery require a physical inspection/test. Log services (with mileage) in the Repair Log to improve accuracy.</Text>
         </ScrollView>
       )}
     </View>

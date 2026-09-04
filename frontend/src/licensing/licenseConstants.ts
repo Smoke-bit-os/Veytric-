@@ -15,8 +15,8 @@ export const TIER_RANK: Record<Tier, number> = { free: 0, pro: 1, shop: 2 };
 
 export const TIER_LABELS: Record<Tier, string> = {
   free: "Free",
-  pro: "JARVIS Pro",
-  shop: "JARVIS Shop",
+  pro: "VEYTRIC Pro",
+  shop: "VEYTRIC Shop",
 };
 
 export const TIER_ACCENT: Record<Tier, string> = {

@@ -92,7 +92,7 @@ export class BleProvider implements VehicleDataProvider {
     }
     if (this.permState === "denied") {
       this.lastError =
-        "Bluetooth permission denied. Enable Bluetooth & Nearby-devices permissions for JARVIS in Settings, then retry.";
+        "Bluetooth permission denied. Enable Bluetooth & Nearby-devices permissions for VEYTRIC in Settings, then retry.";
       throw new Error(this.lastError);
     }
 

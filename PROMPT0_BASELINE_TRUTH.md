@@ -1,4 +1,6 @@
 # PROMPT 0 — Baseline Truth, Regression Inventory & Production Safety
+> App is now **VEYTRIC — AI Vehicle Intelligence** (formerly JARVIS Auto AI) — rebranded in Prompt R; see `PROMPT_R_REBRAND_REPORT.md`. Technical identifiers (package id, storage keys, `JARVIS_CLOUD` enum, `JARVIS_SYSTEM` const) intentionally retained for compatibility.
+
 
 Environment executed in: **PREVIEW / dev** (`https://jarvis-ai-1486.preview.emergentagent.com`).
 The **production** environment and its database are **not accessible from here** (separate deploy).

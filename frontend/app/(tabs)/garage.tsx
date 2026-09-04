@@ -227,7 +227,7 @@ export default function Garage() {
             if (vehicles.length >= VEHICLE_LIMITS[tier]) {
               Alert.alert(
                 "Vehicle limit reached",
-                `The ${TIER_LABELS[tier]} plan allows ${VEHICLE_LIMITS[tier]} vehicle. Upgrade to JARVIS Pro for unlimited vehicles.`,
+                `The ${TIER_LABELS[tier]} plan allows ${VEHICLE_LIMITS[tier]} vehicle. Upgrade to VEYTRIC Pro for unlimited vehicles.`,
                 [{ text: "Not now", style: "cancel" }, { text: "Upgrade", onPress: () => router.push("/upgrade") }],
               );
               return;

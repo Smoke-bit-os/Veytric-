@@ -52,7 +52,7 @@ export default function UpgradeScreen() {
     const res = await startTrial();
     setBusy(null);
     if (!res.ok) Alert.alert("Trial unavailable", res.error || "Could not start trial.");
-    else Alert.alert("Trial started", "Your 30-day JARVIS Pro trial is active.");
+    else Alert.alert("Trial started", "Your 30-day VEYTRIC Pro trial is active.");
   };
 
   const doRestore = async () => {
@@ -68,7 +68,7 @@ export default function UpgradeScreen() {
         <Pressable testID="upgrade-back" onPress={() => router.back()} hitSlop={12}>
           <MaterialCommunityIcons name="close" size={26} color={colors.onSurface} />
         </Pressable>
-        <Text style={styles.title}>JARVIS MEMBERSHIP</Text>
+        <Text style={styles.title}>VEYTRIC MEMBERSHIP</Text>
         <View style={{ width: 26 }} />
       </View>
 
