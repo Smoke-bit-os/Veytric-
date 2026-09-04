@@ -122,6 +122,8 @@ export default function GuidedRepair() {
             />
           </View>
         ) : null}
+
+        {!text && !loading ? (
           <Pressable testID="gr-start" style={styles.startBtn} onPress={run}>
             <MaterialCommunityIcons name="tools" size={18} color={colors.onBrandPrimary} />
             <Text style={styles.startText}>Start Guided Repair</Text>

@@ -127,17 +127,19 @@ class TestPredictionsHonesty:
         assert items["battery"]["source"] == "UNAVAILABLE"
         assert items["battery"]["remainingLifePct"] is None
 
-        # All OTHER (interval) items must now carry MANUFACTURER_INTERVAL
-        # with a numeric remainingLifePct — never fabricated on nothing.
+        # All OTHER (interval) items must now carry GENERAL_INDUSTRY_INTERVAL
+        # (we ship no manufacturer-specific tables). With mileage but NO service
+        # history there is no baseline, so we do NOT fabricate a due/overdue or a
+        # % life — urgency is "unknown" and remainingLifePct/dueMileage are null.
         interval_keys = [
             k for k in items if k not in ("brakes", "battery")
         ]
         for k in interval_keys:
             it = items[k]
-            assert it["source"] == "MANUFACTURER_INTERVAL", (k, it)
-            assert isinstance(it["remainingLifePct"], (int, float)), (k, it)
-            assert 0.0 <= it["remainingLifePct"] <= 1.0
-            assert it["urgency"] in {"overdue", "soon", "upcoming", "ok"}
+            assert it["source"] == "GENERAL_INDUSTRY_INTERVAL", (k, it)
+            assert it["remainingLifePct"] is None, (k, it)  # never fabricated
+            assert it["dueMileage"] is None, (k, it)         # no baseline -> no due
+            assert it["urgency"] == "unknown", (k, it)
             assert it["confidence"] is not None
 
     def test_service_history_promotes_source_to_user_service_history(self):
@@ -160,7 +162,12 @@ class TestPredictionsHonesty:
         oil = items["oil"]
         assert oil["source"] == "USER_SERVICE_HISTORY", oil
         assert oil["lastServiceKm"] == 80000
-        assert oil["remainingLifePct"] is not None
+        # With a real baseline we compute due/remaining, but remainingLifePct
+        # stays null (no physical measurement) — a % life is never fabricated.
+        assert oil["remainingLifePct"] is None, oil
+        assert oil["dueMileage"] is not None, oil
+        assert oil["remainingKm"] is not None, oil
+        assert oil["urgency"] in {"overdue", "soon", "upcoming", "ok"}, oil
         assert oil["confidence"] is not None
         # Brakes/battery still UNAVAILABLE — service log on oil doesn't touch them.
         assert items["brakes"]["source"] == "UNAVAILABLE"

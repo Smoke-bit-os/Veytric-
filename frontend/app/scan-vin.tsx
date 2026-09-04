@@ -360,7 +360,7 @@ function PrimaryButton({ icon, label, onPress, loading }: { icon: any; label: st
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: colors.background },
+  root: { flex: 1, backgroundColor: colors.surface },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.divider },
   backBtn: { padding: 4 },
   headerTitle: { color: colors.onSurface, fontFamily: font.display, fontSize: 16, letterSpacing: 2 },
@@ -391,9 +391,9 @@ const styles = StyleSheet.create({
   processing: { alignItems: "center", gap: spacing.sm, paddingVertical: spacing.lg },
   processingText: { color: "#fff", fontSize: 15 },
 
-  card: { backgroundColor: colors.surface, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, padding: spacing.lg, alignItems: "center", gap: spacing.sm },
-  candidate: { width: "100%", borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, padding: spacing.md, backgroundColor: colors.surfaceSecondary, marginTop: spacing.sm },
-  candidateVin: { color: colors.onSurface, fontSize: 16, letterSpacing: 1, fontFamily: font.mono || undefined, fontWeight: "700" },
+  card: { backgroundColor: colors.surfaceSecondary, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, padding: spacing.lg, alignItems: "center", gap: spacing.sm },
+  candidate: { width: "100%", borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, padding: spacing.md, backgroundColor: colors.surface, marginTop: spacing.sm },
+  candidateVin: { color: colors.onSurface, fontSize: 16, letterSpacing: 1, fontWeight: "700" },
   candidateTags: { flexDirection: "row", gap: 8, marginTop: 6 },
   tagOk: { color: colors.success, fontSize: 11, fontWeight: "700" },
   tagWarn: { color: colors.warning, fontSize: 11, fontWeight: "700" },
