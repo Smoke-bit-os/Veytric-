@@ -1,8 +1,10 @@
 # VEYTRIC — Provider Registry & Capability Router
 
-_Prompt 1._ Phase 1A documents the **contract intent** and the **current provider
-surface** these will wrap. The executable registry/router + adapters land in
-**Phase 1B** (additive; existing services are wrapped, never replaced).
+_Prompt 1._ Phase 1A documented the contract intent. **Phase 1B (implemented)**
+adds the executable registry + router + BLE adapter and their tests:
+`frontend/src/providers/registry.ts`, `router.ts`,
+`adapters/bleVehicleAdapter.ts`, tests `frontend/src/__tests__/providerRouter.test.mjs`.
+Existing services are wrapped (never replaced).
 
 ## Design rules (binding)
 - One versioned Provider Registry contract; one Capability Router.
