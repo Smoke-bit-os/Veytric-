@@ -50,7 +50,7 @@ export default function AboutScreen() {
         <View style={styles.brandWrap}>
           <View style={styles.logo}><MaterialCommunityIcons name="robot" size={40} color={colors.brand} /></View>
           <Text style={styles.brand}>VEYTRIC — AI Vehicle Intelligence</Text>
-          <Text style={styles.tagline}>Automotive Command Center</Text>
+          <Text style={styles.tagline}>Diagnose. Understand. Repair.</Text>
         </View>
 
         {/* Account */}
