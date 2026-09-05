@@ -109,6 +109,17 @@ export const api = {
   developerSetSubscription: (action: string) =>
     request("/subscription/developer/set", { method: "POST", body: JSON.stringify({ action }) }),
 
+  // --- Prompt 2 (2B) diagnostic session persistence (ownership server-derived) ---
+  createDiagnosticSession: (payload: any) =>
+    request("/diagnostic-sessions", { method: "POST", body: JSON.stringify(payload) }),
+  getDiagnosticSession: (id: string) => request(`/diagnostic-sessions/${id}`),
+  createDiagnosticTask: (sessionId: string, payload: any) =>
+    request(`/diagnostic-sessions/${sessionId}/tasks`, { method: "POST", body: JSON.stringify(payload) }),
+  transitionDiagnosticTask: (sessionId: string, taskId: string, payload: any) =>
+    request(`/diagnostic-sessions/${sessionId}/tasks/${taskId}`, { method: "PATCH", body: JSON.stringify(payload) }),
+  putTaskEnvelope: (sessionId: string, taskId: string, payload: any) =>
+    request(`/diagnostic-sessions/${sessionId}/tasks/${taskId}/envelope`, { method: "PUT", body: JSON.stringify(payload) }),
+
   transcribe: async (uri: string) => {
     const form = new FormData();
     form.append("file", { uri, name: "voice.m4a", type: "audio/m4a" } as any);
