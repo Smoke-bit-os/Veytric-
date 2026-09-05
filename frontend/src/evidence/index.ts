@@ -5,3 +5,4 @@ export * from "./evidenceFactory";
 export * from "./freshness";
 export * from "./calculators";
 export * from "./rawCapture";
+export * from "./migration";
