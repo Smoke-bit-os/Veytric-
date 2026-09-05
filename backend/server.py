@@ -17,6 +17,7 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field, BeforeValidator
 from bson import ObjectId
+from pymongo.errors import DuplicateKeyError
 
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from emergentintegrations.llm.openai.speech_to_text import OpenAISpeechToText
@@ -1985,6 +1986,303 @@ async def developer_set(inp: DeveloperSetInput, user=Depends(get_current_user)):
     return {"entitlement": compute_entitlement({**user, **f}), "action": a}
 
 
+# ============================================================================
+#  Prompt 2 (Phase 2B) — Diagnostic Session Persistence
+#  --------------------------------------------------------------------------
+#  Ownership is ALWAYS server-derived from the authenticated session token.
+#  Any user_id / owner id / ownership field supplied by the client is ignored.
+#  Another user's resources return 404 (never reveal that they exist).
+#  Orchestrator state transitions are validated server-side; terminal task
+#  states are immutable; audit events are append-only. Idempotent requests
+#  return the original resource without duplicating sessions / tasks /
+#  evidence / audit events. No vehicle data is fabricated or substituted here.
+# ============================================================================
+
+# Server-side mirror of frontend/src/orchestrator/stateMachine.ts transitions.
+_TASK_STATES = {
+    "CREATED", "VALIDATING", "AWAITING_CONNECTION", "ACQUIRING_EVIDENCE",
+    "NORMALIZING", "CALCULATING", "RETRIEVING", "INTERPRETING",
+    "VALIDATING_OUTPUT", "COMPLETED", "PARTIAL", "UNAVAILABLE",
+    "CANCELLED", "FAILED",
+}
+_TASK_TERMINAL = {"COMPLETED", "PARTIAL", "UNAVAILABLE", "CANCELLED", "FAILED"}
+_TASK_TRANSITIONS = {
+    "CREATED": {"VALIDATING"},
+    "VALIDATING": {"AWAITING_CONNECTION", "ACQUIRING_EVIDENCE", "NORMALIZING",
+                   "RETRIEVING", "INTERPRETING", "UNAVAILABLE", "FAILED"},
+    "AWAITING_CONNECTION": {"ACQUIRING_EVIDENCE", "UNAVAILABLE", "FAILED"},
+    "ACQUIRING_EVIDENCE": {"NORMALIZING", "PARTIAL", "UNAVAILABLE", "FAILED"},
+    "NORMALIZING": {"CALCULATING", "RETRIEVING", "INTERPRETING",
+                    "VALIDATING_OUTPUT", "COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED"},
+    "CALCULATING": {"RETRIEVING", "INTERPRETING", "VALIDATING_OUTPUT",
+                    "COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED"},
+    "RETRIEVING": {"INTERPRETING", "VALIDATING_OUTPUT", "COMPLETED",
+                   "PARTIAL", "UNAVAILABLE", "FAILED"},
+    "INTERPRETING": {"VALIDATING_OUTPUT", "COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED"},
+    "VALIDATING_OUTPUT": {"COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED"},
+    "COMPLETED": set(), "PARTIAL": set(), "UNAVAILABLE": set(),
+    "CANCELLED": set(), "FAILED": set(),
+}
+_TASK_TYPES = {
+    "READ_VEHICLE_EVIDENCE", "NORMALIZE_SCAN", "SUMMARIZE_SCAN", "EXPLAIN_CODE",
+    "EXPLAIN_PID", "BUILD_REPORT_EVIDENCE", "REVIEW_MAINTENANCE_EVIDENCE",
+    "RESEARCH_TOPIC", "VALIDATE_EVIDENCE", "COMPARE_SESSIONS",
+}
+
+
+def _server_can_transition(frm: str, to: str) -> bool:
+    if to == "CANCELLED":
+        return frm not in _TASK_TERMINAL  # cancel from any active state
+    return to in _TASK_TRANSITIONS.get(frm, set())
+
+
+class DiagnosticSessionInput(BaseModel):
+    vehicle_id: Optional[str] = None
+    idempotency_key: Optional[str] = None
+    label: Optional[str] = None
+    meta: dict = {}
+
+
+class DiagnosticTaskCreateInput(BaseModel):
+    task_type: str
+    idempotency_key: Optional[str] = None
+    required_capability: Optional[str] = None
+    input_evidence_ids: List[str] = []
+    user_symptoms: List[str] = []
+    safety_context: List[str] = []
+    output_format: Optional[str] = None
+    meta: dict = {}
+
+
+class TaskTransitionInput(BaseModel):
+    to_state: str
+    note: Optional[str] = None
+    idempotency_key: Optional[str] = None
+    unavailable_reason: Optional[str] = None
+
+
+class EnvelopeInput(BaseModel):
+    schema_version: int = 1
+    generated_at: Optional[int] = None
+    task: dict = {}
+    records: List[dict] = []
+    unavailable_items: List[dict] = []
+
+
+async def _owned_session(session_id: str, user: dict) -> dict:
+    """Return the session iff it belongs to this user, else 404 (no disclosure)."""
+    s = await db.diagnostic_sessions.find_one({"_id": session_id, "user_id": user["_id"]})
+    if not s:
+        raise HTTPException(status_code=404, detail="Session not found")
+    return s
+
+
+async def _owned_task(session_id: str, task_id: str, user: dict) -> dict:
+    t = await db.diagnostic_tasks.find_one(
+        {"_id": task_id, "user_id": user["_id"], "session_id": session_id})
+    if not t:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return t
+
+
+def _task_public(t: dict) -> dict:
+    return _clean(t) | {"id": t["_id"], "task_id": t["_id"]}
+
+
+async def _append_audit(uid, session_id, task_id, frm, to, note, idem):
+    """Append-only, immutable audit record. Idempotent on idempotency_key."""
+    doc = {
+        "_id": str(uuid.uuid4()), "user_id": uid, "session_id": session_id,
+        "task_id": task_id, "from_state": frm, "to_state": to,
+        "note": note, "idempotency_key": idem, "at": now_iso(),
+    }
+    try:
+        await db.audit_events.insert_one(doc)
+    except DuplicateKeyError:
+        pass  # replay of an already-recorded transition — do not duplicate
+    return doc
+
+
+@api_router.post("/diagnostic-sessions")
+async def create_diagnostic_session(inp: DiagnosticSessionInput, user=Depends(get_current_user)):
+    uid = user["_id"]
+    if inp.vehicle_id:
+        v = await db.vehicles.find_one({"_id": inp.vehicle_id, "user_id": uid}) \
+            or await db.vehicles.find_one({"id": inp.vehicle_id, "user_id": uid})
+        if not v:
+            raise HTTPException(status_code=404, detail="Vehicle not found")
+    if inp.idempotency_key:
+        existing = await db.diagnostic_sessions.find_one(
+            {"user_id": uid, "idempotency_key": inp.idempotency_key})
+        if existing:
+            return _clean(existing) | {"id": existing["_id"]}
+    sid = str(uuid.uuid4())
+    ts = now_iso()
+    doc = {
+        "_id": sid, "user_id": uid, "vehicle_id": inp.vehicle_id,
+        "idempotency_key": inp.idempotency_key, "label": inp.label or "",
+        "state": "active", "meta": inp.meta, "created_at": ts, "updated_at": ts,
+    }
+    try:
+        await db.diagnostic_sessions.insert_one(doc)
+    except DuplicateKeyError:
+        existing = await db.diagnostic_sessions.find_one(
+            {"user_id": uid, "idempotency_key": inp.idempotency_key})
+        return _clean(existing) | {"id": existing["_id"]}
+    return _clean(doc) | {"id": sid}
+
+
+@api_router.get("/diagnostic-sessions")
+async def list_diagnostic_sessions(vehicle_id: Optional[str] = None, user=Depends(get_current_user)):
+    q = {"user_id": user["_id"]}
+    if vehicle_id:
+        q["vehicle_id"] = vehicle_id
+    docs = await db.diagnostic_sessions.find(q).sort("updated_at", -1).to_list(200)
+    return [_clean(d) | {"id": d["_id"]} for d in docs]
+
+
+@api_router.get("/diagnostic-sessions/{session_id}")
+async def get_diagnostic_session(session_id: str, include_tasks: bool = True,
+                                 user=Depends(get_current_user)):
+    """Full session for restart recovery: session + tasks + current states."""
+    s = await _owned_session(session_id, user)
+    out = _clean(s) | {"id": s["_id"]}
+    if include_tasks:
+        tasks = await db.diagnostic_tasks.find(
+            {"user_id": user["_id"], "session_id": session_id}).sort("created_at", 1).to_list(500)
+        out["tasks"] = [_task_public(t) for t in tasks]
+    return out
+
+
+@api_router.post("/diagnostic-sessions/{session_id}/tasks")
+async def create_diagnostic_task(session_id: str, inp: DiagnosticTaskCreateInput,
+                                 user=Depends(get_current_user)):
+    uid = user["_id"]
+    await _owned_session(session_id, user)
+    if inp.task_type not in _TASK_TYPES:
+        raise HTTPException(status_code=400, detail="Unknown task_type")
+    if inp.idempotency_key:
+        existing = await db.diagnostic_tasks.find_one(
+            {"user_id": uid, "idempotency_key": inp.idempotency_key})
+        if existing:
+            return _task_public(existing)
+    tid = str(uuid.uuid4())
+    ts = now_iso()
+    doc = {
+        "_id": tid, "user_id": uid, "session_id": session_id,
+        "task_type": inp.task_type, "idempotency_key": inp.idempotency_key,
+        "required_capability": inp.required_capability,
+        "input_evidence_ids": inp.input_evidence_ids,
+        "user_symptoms": inp.user_symptoms, "safety_context": inp.safety_context,
+        "output_format": inp.output_format, "meta": inp.meta,
+        "state": "CREATED", "unavailable_reason": None,
+        "created_at": ts, "updated_at": ts,
+    }
+    try:
+        await db.diagnostic_tasks.insert_one(doc)
+    except DuplicateKeyError:
+        existing = await db.diagnostic_tasks.find_one(
+            {"user_id": uid, "idempotency_key": inp.idempotency_key})
+        return _task_public(existing)
+    await _append_audit(uid, session_id, tid, None, "CREATED", "task created", None)
+    await db.diagnostic_sessions.update_one(
+        {"_id": session_id, "user_id": uid}, {"$set": {"updated_at": ts}})
+    return _task_public(doc)
+
+
+@api_router.get("/diagnostic-sessions/{session_id}/tasks")
+async def list_diagnostic_tasks(session_id: str, user=Depends(get_current_user)):
+    await _owned_session(session_id, user)
+    docs = await db.diagnostic_tasks.find(
+        {"user_id": user["_id"], "session_id": session_id}).sort("created_at", 1).to_list(500)
+    return [_task_public(d) for d in docs]
+
+
+@api_router.get("/diagnostic-sessions/{session_id}/tasks/{task_id}")
+async def get_diagnostic_task(session_id: str, task_id: str, user=Depends(get_current_user)):
+    await _owned_session(session_id, user)
+    t = await _owned_task(session_id, task_id, user)
+    audit = await db.audit_events.find(
+        {"user_id": user["_id"], "task_id": task_id}).sort("at", 1).to_list(1000)
+    out = _task_public(t)
+    out["audit"] = [_clean(a) | {"id": a["_id"]} for a in audit]
+    return out
+
+
+@api_router.patch("/diagnostic-sessions/{session_id}/tasks/{task_id}")
+async def transition_diagnostic_task(session_id: str, task_id: str, inp: TaskTransitionInput,
+                                     user=Depends(get_current_user)):
+    uid = user["_id"]
+    await _owned_session(session_id, user)
+    t = await _owned_task(session_id, task_id, user)
+    to = inp.to_state
+    if to not in _TASK_STATES:
+        raise HTTPException(status_code=400, detail="Unknown to_state")
+    cur = t["state"]
+    # Idempotency: a transition already applied under this key is a no-op.
+    if inp.idempotency_key:
+        seen = await db.audit_events.find_one(
+            {"user_id": uid, "idempotency_key": inp.idempotency_key})
+        if seen:
+            return _task_public(t)
+    # Terminal states are immutable (idempotent no-op only if target == current).
+    if cur in _TASK_TERMINAL:
+        if cur == to:
+            return _task_public(t)
+        raise HTTPException(status_code=409,
+                            detail=f"Task is terminal ({cur}); cannot transition to {to}")
+    if cur == to:
+        return _task_public(t)  # already there — idempotent no-op
+    if not _server_can_transition(cur, to):
+        raise HTTPException(status_code=409, detail=f"Illegal transition {cur} -> {to}")
+    ts = now_iso()
+    setf = {"state": to, "updated_at": ts}
+    if to == "UNAVAILABLE" and inp.unavailable_reason:
+        setf["unavailable_reason"] = inp.unavailable_reason
+    await db.diagnostic_tasks.update_one({"_id": task_id, "user_id": uid}, {"$set": setf})
+    await _append_audit(uid, session_id, task_id, cur, to, inp.note, inp.idempotency_key)
+    await db.diagnostic_sessions.update_one(
+        {"_id": session_id, "user_id": uid}, {"$set": {"updated_at": ts}})
+    t = await db.diagnostic_tasks.find_one({"_id": task_id, "user_id": uid})
+    return _task_public(t)
+
+
+@api_router.put("/diagnostic-sessions/{session_id}/tasks/{task_id}/envelope")
+async def put_task_envelope(session_id: str, task_id: str, inp: EnvelopeInput,
+                            user=Depends(get_current_user)):
+    """Persist the evidence envelope produced for a task (one per task).
+    Ownership is server-stamped; cross-user records are rejected, never accepted."""
+    uid = user["_id"]
+    await _owned_session(session_id, user)
+    t = await _owned_task(session_id, task_id, user)
+    for r in inp.records:
+        ruid = r.get("userId")
+        if ruid is not None and ruid != uid:
+            raise HTTPException(status_code=403, detail="Evidence belongs to another user")
+        r["userId"] = uid  # server-derived ownership, always
+    ts = now_iso()
+    doc = {
+        "_id": task_id, "user_id": uid, "session_id": session_id, "task_id": task_id,
+        "schema_version": inp.schema_version, "generated_at": inp.generated_at,
+        "task": inp.task, "records": inp.records, "unavailable_items": inp.unavailable_items,
+        "owner": {"userId": uid, "vehicleId": t.get("vehicle_id"), "sessionId": session_id},
+        "updated_at": ts,
+    }
+    await db.evidence_records.replace_one({"_id": task_id, "user_id": uid}, doc, upsert=True)
+    return _clean(doc) | {"id": task_id, "task_id": task_id}
+
+
+@api_router.get("/diagnostic-sessions/{session_id}/tasks/{task_id}/envelope")
+async def get_task_envelope(session_id: str, task_id: str, user=Depends(get_current_user)):
+    await _owned_session(session_id, user)
+    await _owned_task(session_id, task_id, user)
+    d = await db.evidence_records.find_one(
+        {"_id": task_id, "user_id": user["_id"], "session_id": session_id})
+    if not d:
+        raise HTTPException(status_code=404, detail="Envelope not found")
+    return _clean(d) | {"id": d["_id"], "task_id": d["_id"]}
+
+
 app.include_router(api_router)
 
 # CORS: explicit allowlist in production (set CORS_ORIGINS as a comma-separated
@@ -2016,6 +2314,24 @@ async def _ensure_indexes():
         await db.user_sessions.create_index("session_token", unique=True)
         await db.user_sessions.create_index("user_id")
         await db.user_sessions.create_index("expires_at", expireAfterSeconds=0)
+        # Prompt 2 (2B) diagnostic sessions — ownership + idempotency + lookup.
+        await db.diagnostic_sessions.create_index([("user_id", 1), ("updated_at", -1)])
+        await db.diagnostic_sessions.create_index(
+            [("user_id", 1), ("idempotency_key", 1)], unique=True,
+            partialFilterExpression={"idempotency_key": {"$type": "string"}})
+        await db.diagnostic_sessions.create_index([("user_id", 1), ("vehicle_id", 1)])
+        # Prompt 2 (2B) tasks — ownership + idempotency + ordered lookup.
+        await db.diagnostic_tasks.create_index([("user_id", 1), ("session_id", 1), ("created_at", 1)])
+        await db.diagnostic_tasks.create_index(
+            [("user_id", 1), ("idempotency_key", 1)], unique=True,
+            partialFilterExpression={"idempotency_key": {"$type": "string"}})
+        # Prompt 2 (2B) audit events — append-only; idempotency-key dedupe.
+        await db.audit_events.create_index([("user_id", 1), ("task_id", 1), ("at", 1)])
+        await db.audit_events.create_index(
+            [("user_id", 1), ("idempotency_key", 1)], unique=True,
+            partialFilterExpression={"idempotency_key": {"$type": "string"}})
+        # Prompt 2 (2B) evidence envelopes — one per task, ownership-scoped.
+        await db.evidence_records.create_index([("user_id", 1), ("session_id", 1)])
     except Exception as e:
         logger.warning(f"index ensure failed: {e}")
 
