@@ -58,6 +58,12 @@ async function main() {
     jarvis_guest: true,
     jarvis_current_uid: "legacy_uid_123",
     jarvis_openai_api_key: "sk-legacy",
+    jarvis_openai_model: "gpt-legacy",
+    jarvis_local_ai_url: "http://192.168.1.9:11434",
+    jarvis_local_ai_model: "llama-legacy",
+    jarvis_dev_unlocked: true,
+    jarvis_trial_reminders: { at: 123 },
+    jarvis_ai_provider_type: "cloud",
     "veh_intel:predictions:x": { a: 1 },
     "veh:state": { b: 2 },
     "scan:cache": { c: 3 },
@@ -73,6 +79,12 @@ async function main() {
   assert(!("jarvis_guest" in kv), "guest flag removed");
   assert(!("jarvis_current_uid" in kv), "legacy cached uid removed");
   assert(!("jarvis_openai_api_key" in kv), "legacy BYOK key removed");
+  assert(!("jarvis_openai_model" in kv), "legacy BYOK model removed");
+  assert(!("jarvis_local_ai_url" in kv), "legacy local AI url removed");
+  assert(!("jarvis_local_ai_model" in kv), "legacy local AI model removed");
+  assert(!("jarvis_dev_unlocked" in kv), "legacy developer-unlock removed");
+  assert(!("jarvis_trial_reminders" in kv), "legacy trial reminders removed");
+  assert(kv.jarvis_ai_provider_type === "cloud", "safe engine preference preserved");
   assert(!("veh_intel:predictions:x" in kv), "veh_intel namespace cleared");
   assert(!("veh:state" in kv), "veh namespace cleared");
   assert(!("scan:cache" in kv), "scan namespace cleared");

@@ -138,3 +138,37 @@ a real ECU.
 (Two acceptance items are environmentally BLOCKED/NOT TESTED — signed Android build
 validation and physical BLE/vehicle decode — and require your device + build step;
 all code-verifiable gates have objective automated evidence.)
+
+---
+
+## K. Runtime-integration matrix (honest boundary)
+The Prompt 1 modules (`frontend/src/evidence/*`, `frontend/src/providers/*`) are a
+COMPILED, UNIT-TESTED FOUNDATION. They are **not yet imported by any production
+screen/service** — verified: `grep` for imports of `@/src/evidence` / `@/src/providers`
+in `app/**` and non-test `src/**` returns NONE. Screen wiring is **Prompt 2** work and
+was intentionally NOT done here. The existing screens keep their current, already-safe
+data path (real BLE + `DataSource`/UNAVAILABLE discipline from Prompt 0).
+
+| Screen / service | Current data source | Uses EvidenceRecord | Uses envelope | Uses registry/router | Legacy path remaining | Planned prompt | Risk if unwired |
+|---|---|---|---|---|---|---|---|
+| Connection Center | `vehicle/service.tsx` (BLE) | No | No | No | Direct provider | Prompt 2 | Low — already fail-closed |
+| Codes (DTC) | `service.refreshDtcs` | No | No | No | Direct provider | Prompt 2 | Low — real reads only |
+| Clear Codes (Mode 04) | `service.clearDtcs` | No | No | No | Direct provider | Prompt 2 | Low — confirm+re-read preserved |
+| Freeze Frame | `service` freeze frame | No | No | No | Direct provider | Prompt 2 | Low |
+| Readiness | `system-monitor/*` | No | No | No | Direct provider | Prompt 2 | Low — UNAVAILABLE when unknown |
+| Mode 06 | (no decoder) | No | No | No | UNAVAILABLE today | Prompt 2 | Low |
+| Live Data | `service` live subscribe | No | No | No | Direct provider | Prompt 2 | Low — LIVE only on real frames |
+| ECU Intelligence | `ecu/*`,`modules/*` | No | No | No | Direct provider | Prompt 2 | Low |
+| Advanced Scan | `vehicle/*` | No | No | No | Direct provider | Prompt 2 | Low |
+| Vehicle Health | `health.ts` | No | No | No | Direct provider | Prompt 2 | Low |
+| Predictive Maintenance | `predictions/*` | No | No | No | Derived (no fabrication) | Prompt 2 | Low |
+| Trend Analysis | `trends/*` | No | No | No | Derived | Prompt 2 | Low |
+| Performance Recorder | `performance/*`,`recording/*` | No | No | No | Direct provider | Prompt 2 | Low |
+| AI Assistant | `ai/*` + `/api/ai/*` | No | No | No | Central gateway | Prompt 2 | Med — provenance/citations land at wiring |
+| AI Health Report | `ai/*` + `/api/reports` | No | No | No | Central gateway | Prompt 2 | Med — envelope citations land at wiring |
+| PDF/CSV/JSON reports | `performance/export.ts` + `/api/reports` | No | No | No | Existing formatter | Prompt 2 | Low |
+
+**Prompt 2 integration work (explicit):** replace each screen's ad-hoc reads with
+Capability Router calls, render `EvidenceRecord` provenance + freshness (+ "Unavailable"),
+and feed AI/reports the read-only evidence envelope (enforcing citations). No orchestrator
+/ agent work is part of Prompt 1.

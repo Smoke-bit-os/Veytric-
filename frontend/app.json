@@ -2,7 +2,7 @@
   "expo": {
     "name": "VEYTRIC",
     "slug": "frontend",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "veytric",
@@ -35,6 +35,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.emergent.jarvisai.gx2hdi",
+      "versionCode": 120,
       "allowBackup": false,
       "usesCleartextTraffic": false,
       "permissions": [
@@ -91,7 +92,8 @@
           "cameraPermission": "Scan your VIN to add a vehicle automatically"
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "./plugins/withVeytricAndroidHardening.js"
     ],
     "experiments": {
       "typedRoutes": true

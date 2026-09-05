@@ -26,14 +26,23 @@ type MigrationStorage = {
 };
 
 // Bump the suffix to force a fresh migration in a future corrected release.
-export const MIGRATION_FLAG = "veytric_migration_v2_done";
+export const MIGRATION_FLAG = "veytric_migration_v3_done";
 
 // Legacy identity / token keys (email-password + guest era).
 const LEGACY_TOKEN_KEY = "jarvis_token";       // shared token slot (SecureStore)
 const LEGACY_GUEST_KEY = "jarvis_guest";        // guest-mode flag
 const LEGACY_UID_KEY = "jarvis_current_uid";    // cached legacy user id
-// Legacy BYOK secret — cannot be re-attributed to a new Google user.
-const LEGACY_BYOK_KEY = "jarvis_openai_api_key"; // SecureStore
+// Legacy BYOK + AI-engine config tied to the old identity (SecureStore + Async).
+const LEGACY_BYOK_KEY = "jarvis_openai_api_key"; // SecureStore secret
+const LEGACY_AI_CONFIG_KEYS = [
+  "jarvis_openai_model",   // BYOK model choice (reset with the wiped key)
+  "jarvis_local_ai_url",   // local engine endpoint
+  "jarvis_local_ai_model", // local engine model
+  "jarvis_dev_unlocked",   // developer-mode unlock (must not carry across identities)
+  "jarvis_trial_reminders" // trial reminder schedule tied to the old identity
+];
+// NOTE: "jarvis_ai_provider_type" is intentionally PRESERVED — it is a safe
+// device-only preference (which engine the user prefers), not identity data.
 
 // Namespaces holding unattributed / user-owned cached data.
 const LEGACY_NAMESPACES = [
@@ -59,8 +68,11 @@ export async function runLegacyMigration(s: MigrationStorage = storage): Promise
   await s.removeItem(LEGACY_GUEST_KEY);
   await s.removeItem(LEGACY_UID_KEY);
 
-  // 2) Legacy BYOK secret — unattributable to the new Google user.
+  // 2) Legacy BYOK secret + AI-engine config tied to the old identity.
   await s.secureRemove(LEGACY_BYOK_KEY);
+  for (const k of LEGACY_AI_CONFIG_KEYS) {
+    await s.removeItem(k);
+  }
 
   // 3) Unattributed / user-owned cached data.
   for (const ns of LEGACY_NAMESPACES) {
