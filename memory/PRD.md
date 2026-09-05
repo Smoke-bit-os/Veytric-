@@ -215,3 +215,9 @@ Additive, production-safe. **PROMPT 1 PASSED — READY FOR PROMPT 2.** Full repo
 - **Tests**: 7 Node suites (real modules, transpiled) + backend 95 pytest passed; lint clean; About smoke OK.
 - **BLOCKED (needs user/device)**: signed Android build validation + physical BLE/real-vehicle decode correctness (preview cannot build/connect). All code-verifiable gates have automated evidence.
 - **Do NOT start Prompt 2 without user's go-ahead.**
+
+## PROMPT 2 — Core Orchestrator & Runtime Evidence Integration (in progress, this session)
+Additive; entry gate PASSED; checkpoint `veytric-prompt2-checkpoint` @ `b3cb1ac`. Phased build (2A–2F).
+- **Phase 2A (DONE)**: Orchestrator typed task contract + state machine — `frontend/src/orchestrator/{taskTypes,stateMachine,index}.ts`. 10 TaskTypes; versioned `DiagnosticTask` (contractVersion=1) with idempotencyKey (no duplicate tasks on restart); explicit `TaskState` machine (CREATED→…→COMPLETED/PARTIAL/UNAVAILABLE/CANCELLED/FAILED) with validated, timestamped, auditable transitions; illegal transitions throw; terminal states immutable; cancel from any active state (idempotent). Tests: `src/__tests__/orchestratorStateMachine.test.mjs` (13 assertions pass). Pure module (no provider/AI imports).
+- **Pending phases**: 2B session model + persistence/ownership/audit (backend); 2C orchestrator core (router→evidence→validate→calculate→envelope, fail-closed); 2D bounded agents (Intake/VehicleEvidence/Integrity/Calc/Research/Explanation/Report/Safety, capability-only, declared permissions); 2E versioned AI boundary + structured AI-response validation (no model routing/billing — Prompt 3); 2F runtime screen integration (evidence boundary + provenance/freshness badges + UNAVAILABLE, remove fabricated defaults) + regression.
+- Decisions: keep existing AI abstraction (Cloud/BYOK/Local); screens get compact provenance+freshness badge with tap-through detail. Do NOT start Prompt 3.
