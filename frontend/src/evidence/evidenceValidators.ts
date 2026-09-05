@@ -57,6 +57,8 @@ export function validateEvidence(r: EvidenceRecord): ValidationResult {
       if (!r.providerId) push("MEASURED evidence requires providerId");
       if (r.decodedValue === undefined || r.decodedValue === null)
         push("MEASURED evidence must carry a decoded value (else use UNAVAILABLE)");
+      if (typeof r.decodedValue === "number" && !Number.isFinite(r.decodedValue))
+        push("MEASURED numeric value must be finite (no NaN/Infinity) — use UNAVAILABLE instead");
       // Measurement does not DERIVE from other evidence (one-way references).
       if (r.inputEvidenceIds && r.inputEvidenceIds.length > 0)
         push("MEASURED evidence must not depend on other evidence (inputEvidenceIds must be empty)");

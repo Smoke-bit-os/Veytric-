@@ -1,0 +1,30 @@
+{
+  "_comment": "VEYTRIC sanitized golden OBD fixtures (Prompt 1, Phase 1D). Each entry is a raw ELM327 response and the EXACT expected decoder output (or an explicit safe-failure). Validated by frontend/src/__tests__/decoderFixtures.test.mjs against the REAL decoders in src/vehicle/obd/decoders.ts. nonProduction=true: replay can never be treated as live vehicle data.",
+  "fixtures": [
+    { "id": "m01_rpm_single", "description": "Valid single-frame RPM", "protocol": "CAN", "request": "010C", "response": "410C1AF8", "expect": { "kind": "mode01", "pid": "0C", "signalKey": "rpm", "value": 1726 }, "nonProduction": true },
+    { "id": "m01_speed", "description": "Vehicle speed", "request": "010D", "response": "410D50", "expect": { "kind": "mode01", "pid": "0D", "signalKey": "speed", "value": 80 }, "nonProduction": true },
+    { "id": "m01_coolant", "description": "Coolant temp", "request": "0105", "response": "41055A", "expect": { "kind": "mode01", "pid": "05", "signalKey": "coolantTemp", "value": 50 }, "nonProduction": true },
+    { "id": "m01_throttle", "description": "Throttle position", "request": "0111", "response": "411133", "expect": { "kind": "mode01", "pid": "11", "signalKey": "throttle", "value": 20 }, "nonProduction": true },
+    { "id": "m01_map", "description": "Intake MAP", "request": "010B", "response": "410B64", "expect": { "kind": "mode01", "pid": "0B", "signalKey": "map", "value": 100 }, "nonProduction": true },
+    { "id": "m01_voltage", "description": "Control module voltage", "request": "0142", "response": "41423A98", "expect": { "kind": "mode01", "pid": "42", "signalKey": "batteryVoltage", "value": 15 }, "nonProduction": true },
+    { "id": "m01_echo", "description": "Echoed command before response", "request": "010C", "response": "010C\r410C1AF8", "expect": { "kind": "mode01", "pid": "0C", "signalKey": "rpm", "value": 1726 }, "nonProduction": true },
+    { "id": "m01_searching", "description": "SEARCHING... then valid frame", "request": "010C", "response": "SEARCHING...\r410C1AF8", "expect": { "kind": "mode01", "pid": "0C", "signalKey": "rpm", "value": 1726 }, "nonProduction": true },
+    { "id": "m01_duplicate", "description": "Duplicate frame handled deterministically", "request": "010C", "response": "410C1AF8410C1AF8", "expect": { "kind": "mode01", "pid": "0C", "signalKey": "rpm", "value": 1726 }, "nonProduction": true },
+    { "id": "m01_multi_ecu", "description": "Two ECUs respond; first frame used, not merged", "request": "010C", "response": "7E8 06 41 0C 1A F8\r7E9 06 41 0C 00 00", "expect": { "kind": "mode01", "pid": "0C", "signalKey": "rpm", "value": 1726 }, "nonProduction": true },
+    { "id": "m01_nodata", "description": "NO DATA -> no value", "request": "010C", "response": "NO DATA", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "no matching frame" }, "nonProduction": true },
+    { "id": "m01_unable", "description": "UNABLE TO CONNECT -> no value", "request": "010C", "response": "UNABLE TO CONNECT", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "no matching frame" }, "nonProduction": true },
+    { "id": "m01_stopped", "description": "STOPPED -> no value", "request": "010C", "response": "STOPPED", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "no matching frame" }, "nonProduction": true },
+    { "id": "m01_timeout", "description": "Empty (timeout) -> no value", "request": "010C", "response": "", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "no matching frame" }, "nonProduction": true },
+    { "id": "m01_truncated", "description": "Truncated (1 of 2 bytes) -> NaN, fails safe", "request": "010C", "response": "410C1A", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "insufficient bytes" }, "nonProduction": true },
+    { "id": "m01_odd_nibbles", "description": "Odd nibble count -> fails safe", "request": "010C", "response": "410C1AF", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "insufficient bytes" }, "nonProduction": true },
+    { "id": "m01_invalid_hex", "description": "Invalid hex in payload -> fails safe", "request": "010C", "response": "410CZZF8", "expect": { "kind": "mode01_fail", "pid": "0C", "reason": "non-hex payload" }, "nonProduction": true },
+    { "id": "m03_single", "description": "Mode 03 single stored DTC", "request": "03", "response": "430171", "expect": { "kind": "dtc", "codeType": "current", "codes": ["P0171"] }, "nonProduction": true },
+    { "id": "m03_multi", "description": "Mode 03 multiple DTCs", "request": "03", "response": "43 01 71 00 42 00 00", "expect": { "kind": "dtc", "codeType": "current", "codes": ["P0171", "P0042"] }, "nonProduction": true },
+    { "id": "m03_ucode", "description": "Mode 03 U-code letter mapping", "request": "03", "response": "43C123", "expect": { "kind": "dtc", "codeType": "current", "codes": ["U0123"] }, "nonProduction": true },
+    { "id": "m07_pending", "description": "Mode 07 pending DTC", "request": "07", "response": "470171", "expect": { "kind": "dtc", "codeType": "pending", "codes": ["P0171"] }, "nonProduction": true },
+    { "id": "m0a_permanent", "description": "Mode 0A permanent DTC", "request": "0A", "response": "4A0171", "expect": { "kind": "dtc", "codeType": "permanent", "codes": ["P0171"] }, "nonProduction": true },
+    { "id": "m09_vin", "description": "Mode 09 VIN (framing stripped)", "request": "0902", "response": "490201 31 48 47 42 48 34 31 4A 58 4D 4E 31 30 39 31 38 36", "expect": { "kind": "vin", "vin": "1HGBH41JXMN109186" }, "nonProduction": true },
+    { "id": "m01_supported", "description": "Supported PID bitmask (0100)", "request": "0100", "response": "4100BE1FB811", "expect": { "kind": "supported_pids", "base": 0, "includes": ["01", "03", "04", "05"], "excludes": ["02", "08"] }, "nonProduction": true },
+    { "id": "m06_unsupported", "description": "Mode 06 currently has no decoder -> UNAVAILABLE", "request": "0600", "response": "46 00 00 00 00 00", "expect": { "kind": "unsupported", "note": "Mode 06 decoding not implemented in decoders.ts; router returns UNAVAILABLE." }, "nonProduction": true }
+  ]
+}
