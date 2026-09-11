@@ -13,7 +13,7 @@ export default function GuidedRepair() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const ai = useAI();
-  const { identity, dtcs } = useVehicle();
+  const { identity, dtcs, dataSource } = useVehicle();
   const params = useLocalSearchParams<{ code?: string; desc?: string }>();
   const code = (params.code as string) || (dtcs[0]?.code ?? "");
   const desc = (params.desc as string) || (dtcs.find((d) => d.code === code)?.desc ?? "");
@@ -68,8 +68,8 @@ export default function GuidedRepair() {
         <View style={styles.ctx}>
           <Row tag="ECU DATA" tagColor={colors.error} label="Trouble code" value={code ? `${code}${desc ? ` — ${desc}` : ""}` : "Not specified"} />
           <Row
-            tag={identity ? "REAL VEHICLE DATA" : "UNAVAILABLE"}
-            tagColor={identity ? colors.success : colors.onSurfaceSecondary}
+            tag={dataSource === "REAL_BLE" ? "REAL VEHICLE DATA" : dataSource === "SIMULATION" ? "SIMULATED" : "UNAVAILABLE"}
+            tagColor={dataSource === "REAL_BLE" ? colors.success : dataSource === "SIMULATION" ? colors.warning : colors.onSurfaceSecondary}
             label="Vehicle"
             value={vehicleLabel || "Unknown — connect & decode VIN"}
           />

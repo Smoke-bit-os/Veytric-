@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Alert, Platform } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useVehicle } from "@/src/vehicle/service";
 import { useAuth } from "@/src/auth";
 import { api } from "@/src/api";
+import { confirmDialog, alertDialog } from "@/src/utils/dialog";
 import {
   runCodesRead,
   CodeStatus,
@@ -122,20 +123,20 @@ export default function CodesPage() {
       setLastScan(new Date().toLocaleString());
       persist(v);
     } catch (e: any) {
-      Alert.alert("Read Codes", e?.message || "Unable to read trouble codes — connect to the vehicle.");
+      alertDialog("Read Codes", e?.message || "Unable to read trouble codes — connect to the vehicle.");
     }
     setBusy(null);
   };
 
   const confirmClear = () => {
-    Alert.alert(
-      "Clear Codes?",
-      "Clearing codes ERASES stored trouble codes and turns off the check-engine light — it does NOT repair the underlying problem. VEYTRIC will run a post-clear rescan to verify which codes actually remain. Continue?",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Clear Codes", style: "destructive", onPress: doClear },
-      ]
-    );
+    confirmDialog({
+      title: "Clear Codes?",
+      message:
+        "Clearing codes ERASES stored trouble codes and turns off the check-engine light — it does NOT repair the underlying problem. VEYTRIC will run a post-clear rescan to verify which codes actually remain. Continue?",
+      confirmText: "Clear Codes",
+      destructive: true,
+      onConfirm: doClear,
+    });
   };
 
   const doClear = async () => {
@@ -148,15 +149,15 @@ export default function CodesPage() {
       setLastScan(new Date().toLocaleString());
       persist(v);
       if (remaining.length === 0) {
-        Alert.alert("Codes Cleared", "The clear command succeeded and no trouble codes remain after re-scanning.");
+        alertDialog("Codes Cleared", "The clear command succeeded and no trouble codes remain after re-scanning.");
       } else {
-        Alert.alert(
+        alertDialog(
           "Codes Still Present",
           `The clear command was sent, but ${remaining.length} code(s) returned immediately after re-scanning — this usually means the fault is still active.`
         );
       }
     } catch (e: any) {
-      Alert.alert("Clear Failed", e?.message || "The vehicle did not confirm the clear command. No codes were reported as cleared.");
+      alertDialog("Clear Failed", e?.message || "The vehicle did not confirm the clear command. No codes were reported as cleared.");
     }
     setBusy(null);
   };
