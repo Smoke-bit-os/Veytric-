@@ -1,0 +1,64 @@
+{
+  "summary": "Prompt 2 Phase 2B (diagnostic-session persistence) fully verified: all 14 tests in /app/backend/tests/test_diagnostic_sessions.py pass end-to-end against the public EXPO_PUBLIC_BACKEND_URL (auth guards, session/task/envelope lifecycle, cross-user 404 isolation on GET/PATCH/PUT + list omission, client-supplied user_id/owner ignored, vehicle ownership enforced on create with 404 for another user's vehicle, session/task/transition idempotency with no duplicate audit events, illegal transition -> 409, unknown to_state -> 400, unknown task_type -> 400, terminal state immutable (409 leaving, 200 same-terminal no-op), cancel from any active state, append-only ordered audit trail, full-session restart recovery). Regression suite added at tests/test_regression_with_diag_session.py (4 new tests) confirms /api/vehicles CRUD + /api/scans list + /api/subscription + /api/shop/fleet still work after seeding a diagnostic session with tasks + envelope for the same user (all pass). Full pre-existing suite (74 tests across auth, security, isolation, shop-fleet, subscription, predictions, google-only) also passes — 74/74 + new 4/4 + 14/14 diag-sessions = 92 backend tests green. Frontend Phase 2F /codes screen (web SimulationProvider): banner text is literally 'SIMULATED — preview only, not from a real vehicle' (verified in DOM), every code card renders a SIMULATED provenance chip + UNKNOWN freshness chip, NEVER 'LIVE' or 'MEASURED' anywhere in the DOM, groups render distinctly (CURRENT/PENDING/PERMANENT observed with the simulator's 4 default codes), status filter dropdown present (testID codes-status-filter), tapping a code navigates to /guided-repair?code=P0300&desc=... as required. BLOCKING ISSUE: On web, react-native-web@0.21.0 ships Alert.alert as a NO-OP (verified in node_modules/react-native-web/dist/exports/Alert/index.js -> `static alert() {}`). Consequently, tapping the Clear Codes button (testID=codes-clear) produces NO confirmation dialog, NO post-clear rescan feedback ('Codes Cleared'/'Codes Still Present'/'Clear Failed'), and NO destructive action fires — the Phase 2F clear-flow spec fails on web. This will also silently swallow the read-error alert on web. Fix required: replace Alert.alert calls in /app/frontend/app/codes.tsx (confirmClear, doClear, read) with either a cross-platform custom modal or a Platform.OS === 'web' branch that uses window.confirm + a toast/banner. Real-BLE MEASURED/LIVE path + physical OBD-II Mode 03/04/07 are correctly deferred to a signed native build (documented environment limitation, not tested).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "codes.tsx (Clear Codes flow)",
+        "issue": "On web, react-native-web@0.21.0 has `Alert.alert` implemented as a no-op (`class Alert { static alert() {} }` in node_modules/react-native-web/dist/exports/Alert/index.js). Result: tapping [data-testid=codes-clear] neither shows the 'Clear Codes?' confirmation dialog nor invokes doClear(), so no post-clear rescan happens and no success/failure text is ever surfaced. Same class of silent failure applies to the read-error path (Alert.alert('Read Codes', ...)) and to the 'Codes Cleared' / 'Codes Still Present' / 'Clear Failed' toasts. This directly breaks the Phase 2F acceptance criterion 'Clear Codes shows a confirmation dialog mentioning a post-clear rescan; after confirming it runs a rescan and reports remaining codes'. Reference: /app/frontend/app/codes.tsx:125, :131-138, :151-159.",
+        "testID": "codes-clear",
+        "priority": "HIGH"
+      },
+      {
+        "component": "guided-repair (downstream of /codes)",
+        "issue": "When a code originating from the SIMULATED codes list is tapped, the /guided-repair screen renders a green 'REAL VEHICLE DATA' pill next to the code. This is inconsistent with the spec's truth-labeling boundary: simulated evidence must never be presented as real vehicle data. Not part of the /codes vertical slice per the review scope but visible one hop away and worth fixing while the provenance chain is being wired up. Reference: /app/frontend/app/guided-repair.tsx (label 'REAL VEHICLE DATA').",
+        "testID": "n/a",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Clear Codes -> confirmation -> post-clear rescan feedback",
+        "issue": "Because Alert.alert is a no-op on web, the confirmation dialog and the post-clear result banner never render, so the destructive-action UX + rescan reporting cannot be exercised at all on the web SimulationProvider build.",
+        "affected_testIDs": ["codes-clear"]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "react-native-web Alert",
+        "issue": "react-native-web@0.21.0 (package.json) ships a no-op Alert. Anywhere the app relies on Alert.alert with buttons (destructive confirmations, error toasts), the web build silently swallows the interaction. Prefer a cross-platform confirm/modal utility (e.g., a small wrapper that uses Alert.alert on native and a custom View/Modal on web, or window.confirm for yes/no)."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/pytest/iteration_22.xml",
+    "/app/backend/tests/test_diagnostic_sessions.py",
+    "/app/backend/tests/test_regression_with_diag_session.py"
+  ],
+  "action_items": [
+    "Replace Alert.alert in /app/frontend/app/codes.tsx (confirmClear, doClear success/failure, read error) with a cross-platform primitive so the Clear Codes confirmation + post-clear rescan feedback + read errors are actually surfaced on web (react-native-web 0.21.0 Alert is a no-op). Native/Expo Go path is unaffected. Suggested pattern: `Platform.OS === 'web' ? (window.confirm(msg) && doClear()) : Alert.alert(...)` OR extract a small confirmDialog() wrapper that renders a Modal on web.",
+    "(Adjacent, MEDIUM) On /guided-repair, gate the 'REAL VEHICLE DATA' pill on the same isLiveEvidence / provenanceLabel === MEASURED signal used by /codes so simulated codes never carry a live-evidence pill downstream."
+  ],
+  "critical_code_review_comments": [
+    "Backend diagnostic-sessions routes correctly derive ownership server-side: user_id/owner in the request body is stripped, sessions/tasks/envelopes are all filtered by the token's user_id, and cross-user reads return 404 (not 403) — no existence disclosure. Good.",
+    "Idempotency keys are enforced for session create, task create, AND task transitions with an audit-event dedupe check; verified no duplicate audit rows on replay. Good.",
+    "State machine rejects illegal transitions with 409, unknown to_state with 400, and treats terminal states as immutable except for same-terminal no-op (200). CANCELLED reachable from any active state. Good.",
+    "Envelope records are stamped with the caller's userId server-side; verbatim displayValue/records preserved (no fabrication). Good.",
+    "Frontend codes.tsx correctly wires runCodesRead() through the orchestrator, respects mode==='simulation' by never emitting isLiveEvidence=true and forcing Freshness.UNKNOWN + provenance='SIMULATED'. Group headers gate on non-empty status buckets. Good.",
+    "codes.tsx `persist()` only fires when v.mode === 'MEASURED' — simulated data is NEVER persisted to /api/diagnostic-sessions. Good.",
+    "codes.tsx uses Alert.alert for the destructive-action confirmation on web — this is the single blocking miss (see frontend_issues.ui_bugs). Native builds are fine."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_regression_with_diag_session.py (added; 4 new regression tests for vehicles CRUD / scans list / subscription / shop-fleet with a seeded diag session)"
+  ],
+  "success_rate": {"backend": "100% (92/92 across diag-sessions + regression + full pre-existing suite)", "frontend": "83% — /codes read/list/filter/navigate flows verified; Clear-Codes confirmation + post-clear rescan feedback broken on web due to RN-Web Alert no-op"},
+  "seed_data_creation": "Ran /app/backend/scripts/seed_test_session.py to (re)seed the stable QA Google session user_test_google01 / veytric.tester@gmail.com with token test_session_token_veytric_qa_001. Frontend tests injected that token into localStorage under keys 'jarvis_token' (JSON-stringified, SecureStore web polyfill) and 'jarvis_current_uid' before navigating to /codes. Pytest suite also seeds fresh per-call Google users via tests/_helpers.py::seed_session.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend Phase 2B is green (14/14) plus new regression suite (4/4) plus prior suite (74/74). Frontend /codes screen: use mobile viewport (390x844), seed localStorage['jarvis_token']=JSON.stringify('test_session_token_veytric_qa_001') + localStorage['jarvis_current_uid']=JSON.stringify('user_test_google01') then goto /codes. The Clear Codes flow will NOT produce a confirmation dialog on web until Alert.alert is replaced — do not mark that miss as fixed just because pressing the button 'does nothing broken': verify a visible confirmation UI + a visible 'Codes Cleared'/'Codes Still Present' outcome text (or destructive Modal) is rendered post-fix. Real BLE MEASURED path requires a signed native build + physical OBD-II adapter and cannot be exercised on Expo Go / web.",
+  "rca_of_issue": "Root cause of the Clear Codes miss on web: /app/frontend/node_modules/react-native-web/dist/exports/Alert/index.js exports `class Alert { static alert() {} } export default Alert;` — a deliberate no-op in react-native-web 0.21.0. Because /app/frontend/app/codes.tsx uses `Alert.alert('Clear Codes?', ..., [{text:'Cancel'},{text:'Clear Codes', style:'destructive', onPress: doClear}])` for the destructive confirmation and the same primitive for post-clear result feedback, none of those events reach the user on the web SimulationProvider preview. Native builds (iOS/Android) DO render Alert normally, so this is web-specific. Mitigation: swap to a cross-platform confirm utility (Platform.OS === 'web' -> window.confirm or a Modal, otherwise Alert.alert). No backend change required."
+}
