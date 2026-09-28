@@ -10,7 +10,8 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Annotated, Any
 
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Request
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -22,6 +23,14 @@ from pymongo.errors import DuplicateKeyError
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from emergentintegrations.llm.openai.speech_to_text import OpenAISpeechToText
 from emergentintegrations.llm.openai.text_to_speech import OpenAITextToSpeech
+
+# Prompt 3 — Central AI Gateway (Phase 3B/3C)
+from gateway.contracts import (
+    AIGatewayRequest as GwAIRequest, ProviderMode as GwProviderMode,
+    GatewayError as GwError,
+)
+from gateway.providers import AIProviderRegistry, CloudAIProvider, MockAIProvider
+from gateway.service import CentralAIGateway
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -2283,6 +2292,87 @@ async def get_task_envelope(session_id: str, task_id: str, user=Depends(get_curr
     return _clean(d) | {"id": d["_id"], "task_id": d["_id"]}
 
 
+# ============================================================================
+#  Prompt 3 (Phase 3B/3C) — Central AI Gateway endpoints
+#  Single server path for CLOUD AI. Ownership server-derived; idempotent
+#  metering; server-authoritative budgets/rate limits; no BYOK/Local->Cloud
+#  fallback. BYOK/Local execute on-device and are metered via /gateway/ai/record.
+# ============================================================================
+async def _gateway_allowance(user: dict, mode) -> dict:
+    """CLOUD requests consume the existing monthly Cloud allowance + rate
+    guard. BYOK/Local never reach here."""
+    return await enforce_cloud_quota(user)
+
+
+_ai_registry = AIProviderRegistry()
+_ai_registry.register(CloudAIProvider(LlmChat, UserMessage, EMERGENT_LLM_KEY, "gpt-5.4"))
+_ai_gateway = CentralAIGateway(db, _ai_registry, allowance_fn=_gateway_allowance)
+
+
+def _gw_fail_response(exc: GwError):
+    f = exc.failure
+    return JSONResponse(status_code=f.http_status, content={
+        "error": f.code.value, "message": f.message, "retryable": f.retryable,
+        "user_action_required": f.user_action_required,
+        "provider_spend_occurred": f.provider_spend_occurred,
+        "partial_results_available": f.partial_results_available,
+        "workflow_may_continue": f.workflow_may_continue,
+    })
+
+
+def _test_mock(request: Request):
+    """Deterministic provider for automated tests. Active ONLY in non-production
+    when the caller sends X-Veytric-Test-Mock; ignored in production."""
+    if APP_ENV == "production":
+        return None
+    if request.headers.get("x-veytric-test-mock") != "1":
+        return None
+    return MockAIProvider(request.headers.get("x-veytric-test-mock-mode", "ok"))
+
+
+@api_router.post("/gateway/ai")
+async def gateway_ai(req: GwAIRequest, request: Request, user=Depends(get_current_user)):
+    try:
+        resp = await _ai_gateway.execute(req, user, mock=_test_mock(request))
+        return resp.model_dump(mode="json")
+    except GwError as e:
+        return _gw_fail_response(e)
+
+
+class GatewayRecordInput(BaseModel):
+    request: GwAIRequest
+    input_tokens: int = 0
+    output_tokens: int = 0
+    model: str = "byok"
+    final_status: str = "COMPLETED"
+
+
+@api_router.post("/gateway/ai/record")
+async def gateway_ai_record(inp: GatewayRecordInput, user=Depends(get_current_user)):
+    try:
+        return await _ai_gateway.record_client_usage(
+            inp.request, user, input_tokens=inp.input_tokens,
+            output_tokens=inp.output_tokens, model=inp.model, final_status=inp.final_status)
+    except GwError as e:
+        return _gw_fail_response(e)
+
+
+@api_router.get("/gateway/usage")
+async def gateway_usage(user=Depends(get_current_user)):
+    summary = await _ai_gateway.meter.summary(user["_id"], _month_key())
+    events = await db.usage_events.find({"owner_id": user["_id"]}).sort("created_at", -1).to_list(50)
+    return {"summary": summary, "recent": [_clean(e) | {"id": e["_id"]} for e in events]}
+
+
+@api_router.get("/gateway/usage/{gateway_request_id}")
+async def gateway_usage_one(gateway_request_id: str, user=Depends(get_current_user)):
+    e = await db.usage_events.find_one(
+        {"owner_id": user["_id"], "gateway_request_id": gateway_request_id})
+    if not e:
+        raise HTTPException(status_code=404, detail="Usage event not found")
+    return _clean(e) | {"id": e["_id"]}
+
+
 app.include_router(api_router)
 
 # CORS: explicit allowlist in production (set CORS_ORIGINS as a comma-separated
@@ -2332,6 +2422,19 @@ async def _ensure_indexes():
             partialFilterExpression={"idempotency_key": {"$type": "string"}})
         # Prompt 2 (2B) evidence envelopes — one per task, ownership-scoped.
         await db.evidence_records.create_index([("user_id", 1), ("session_id", 1)])
+        # Prompt 3 (3B/3C) AI gateway ledger — idempotency + double-charge guards.
+        await db.usage_events.create_index(
+            [("owner_id", 1), ("gateway_request_id", 1)], unique=True)
+        await db.usage_events.create_index([("owner_id", 1), ("created_at", -1)])
+        await db.usage_events.create_index(
+            [("owner_id", 1), ("idempotency_key", 1)], unique=True,
+            partialFilterExpression={"idempotency_key": {"$type": "string"}})
+        await db.usage_events.create_index([("owner_id", 1), ("diagnostic_session_id", 1)])
+        await db.ai_gateway_requests.create_index([("owner_id", 1), ("created_at", -1)])
+        await db.ai_gateway_requests.create_index(
+            [("owner_id", 1), ("idempotency_key", 1)], unique=True,
+            partialFilterExpression={"idempotency_key": {"$type": "string"}})
+        await db.budget_reservations.create_index([("owner_id", 1)])
     except Exception as e:
         logger.warning(f"index ensure failed: {e}")
 
